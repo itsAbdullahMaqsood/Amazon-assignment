@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 
@@ -37,12 +38,17 @@ const ProductSwiper = ({ images }: any) => {
             >
                 {images.map((img: any, i: number) => (
                     <SwiperSlide key={i}>
-                        <div className="flex items-center justify-center bg-white w-[220px] h-[300px]">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
+                        {/* Served through next/image so the browser only ever
+                            fetches from this origin: a content blocker or a
+                            network that drops the CDN host would otherwise leave
+                            every card blank. */}
+                        <div className="relative flex items-center justify-center bg-white w-[220px] h-[300px]">
+                            <Image
                                 src={img.url}
                                 alt=""
-                                className="rounded object-cover w-full h-full"
+                                fill
+                                sizes="220px"
+                                className="rounded object-cover"
                             />
                         </div>
                     </SwiperSlide>
