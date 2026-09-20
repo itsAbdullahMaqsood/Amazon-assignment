@@ -31,7 +31,12 @@ const ROWS = [
         label: "Featured Originals and Exclusives",
         path: "/discover/tv",
         // TMDB network 1024 is Prime Video.
-        params: { with_networks: "1024", sort_by: "popularity.desc" },
+        params: {
+            with_networks: "1024",
+            with_original_language: "en",
+            "vote_count.gte": "200",
+            sort_by: "popularity.desc",
+        },
         original: true,
     },
     {
@@ -150,7 +155,16 @@ const run = async () => {
             const price = priceFor(config.priceBand, item.id);
 
             if (byKey.has(key)) {
-                byKey.get(key).rows.push(config.row);
+                const seen = byKey.get(key);
+                seen.rows.push(config.row);
+
+                // A title can appear in a free row first and a priced row later;
+                // without this it would sit in the deals row with no price.
+                if (config.priceBand && !seen.price) {
+                    seen.price = price;
+                    seen.badge = "DEAL";
+                }
+
                 continue;
             }
 
@@ -164,6 +178,7 @@ const run = async () => {
                 backdropPath: item.backdrop_path || "",
                 genres: (item.genre_ids || []).map((id) => genreName.get(id)).filter(Boolean),
                 rating: item.vote_average || 0,
+                popularity: item.popularity || 0,
                 voteCount: item.vote_count || 0,
                 releaseDate: item.release_date || item.first_air_date || "",
                 maturity: mediaType === "tv" ? "TV-MA" : "PG-13",

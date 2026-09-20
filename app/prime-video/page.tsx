@@ -33,11 +33,17 @@ const Page = async () => {
         serialized.filter((video: any) => (video.rows || []).includes(row));
 
     // The hero runs on the four most popular originals that have a backdrop.
+    const byPopularity = (a: any, b: any) => (b.popularity || 0) - (a.popularity || 0);
+
     const heroSlides = serialized
         .filter((video: any) => video.backdropPath && video.isOriginal)
+        .sort(byPopularity)
         .slice(0, 4);
 
-    const fallbackHero = serialized.filter((video: any) => video.backdropPath).slice(0, 4);
+    const fallbackHero = serialized
+        .filter((video: any) => video.backdropPath)
+        .sort(byPopularity)
+        .slice(0, 4);
     const slides = heroSlides.length ? heroSlides : fallbackHero;
 
     return (

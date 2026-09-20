@@ -12,6 +12,7 @@ const videoSchema = new mongoose.Schema(
         backdropPath: { type: String },
         genres: [String],
         rating: { type: Number, default: 0 },
+        popularity: { type: Number, default: 0 },
         voteCount: { type: Number, default: 0 },
         releaseDate: { type: String },
         maturity: { type: String, default: "" },
