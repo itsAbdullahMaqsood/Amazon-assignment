@@ -9,7 +9,8 @@
         "lint": "eslint",
         "seed": "node scripts/seed.mjs",
         "seed:videos": "node scripts/seed-videos.mjs",
-        "seed:grocery": "node scripts/seed-grocery.mjs"
+        "seed:grocery": "node scripts/seed-grocery.mjs",
+        "seed:meds": "node scripts/seed-medications.mjs"
     },
     "dependencies": {
         "@heroicons/react": "^2.2.0",
