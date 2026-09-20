@@ -7,7 +7,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 import StarRating from "@/components/shared/StarRating";
 import Price from "@/components/shared/Price";
-import AddToCartButton from "./AddToCartButton";
+import AddToCartButton from "@/components/shared/AddToCartButton";
 
 const PER_PAGE = 6;
 

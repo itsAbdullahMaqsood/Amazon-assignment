@@ -130,6 +130,7 @@ const Search = ({ searchHandler }: any) => {
                     <option value="Arts & Crafts">Arts &amp; Crafts</option>
                     <option value="Baby">Baby</option>
                     <option value="Book">Book</option>
+                    <option value="Grocery">Grocery</option>
                 </select>
 
                 <label htmlFor="search-input" className="sr-only">

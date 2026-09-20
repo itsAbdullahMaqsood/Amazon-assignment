@@ -8,7 +8,8 @@
         "start": "next start",
         "lint": "eslint",
         "seed": "node scripts/seed.mjs",
-        "seed:videos": "node scripts/seed-videos.mjs"
+        "seed:videos": "node scripts/seed-videos.mjs",
+        "seed:grocery": "node scripts/seed-grocery.mjs"
     },
     "dependencies": {
         "@heroicons/react": "^2.2.0",

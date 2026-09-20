@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Bars3Icon, ChevronDownIcon, MapPinIcon } from "@heroicons/react/24/outline";
 
 import { placeholder } from "@/components/profile/accountLinks";
@@ -10,7 +11,7 @@ const links = [
     { label: "Early Prime Deals", href: placeholder("Early Prime Deals") },
     { label: "Prime Video", href: "/prime-video" },
     { label: "Buy Again", href: "/buy-again" },
-    { label: "Groceries", href: placeholder("Groceries") },
+    { label: "Groceries", href: "/groceries" },
     { label: "Coupons", href: placeholder("Coupons") },
     { label: "Pharmacy", href: placeholder("Pharmacy") },
     { label: "Automotive", href: placeholder("Automotive") },
@@ -21,6 +22,8 @@ const links = [
 ];
 
 const HeaderBottom = ({ handleOpenMenu }: any) => {
+    const pathname = usePathname();
+
     return (
         <>
             <nav
@@ -56,7 +59,13 @@ const HeaderBottom = ({ handleOpenMenu }: any) => {
 
                     {links.map((link) => (
                         <li key={link.label}>
-                            <Link href={link.href} className="link flex items-center">
+                            <Link
+                                href={link.href}
+                                aria-current={pathname === link.href ? "page" : undefined}
+                                className={`link flex items-center ${
+                                    pathname === link.href ? "font-bold" : ""
+                                }`}
+                            >
                                 {link.label}
                                 {link.caret && <ChevronDownIcon className="h-3 ml-1 stroke-[3]" />}
                             </Link>
