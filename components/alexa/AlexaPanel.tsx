@@ -8,26 +8,11 @@ import {
     EllipsisVerticalIcon,
     HandThumbDownIcon,
     HandThumbUpIcon,
-    SparklesIcon,
-    TruckIcon,
-    UserIcon,
     XMarkIcon,
 } from "@heroicons/react/24/outline";
 
 import AlexaWordmark from "./AlexaWordmark";
 import ProductSuggestion from "./ProductSuggestion";
-
-const capabilities = [
-    { icon: SparklesIcon, label: "Design merch with AI" },
-    { icon: TruckIcon, label: "Track orders", href: "/profile/orders" },
-    { icon: SparklesIcon, label: "Best deals on women's dresses", prompt: "Best deals on women's dresses" },
-];
-
-const openers = [
-    "What should I treat myself to?",
-    "Recommend summer essentials under $25",
-    "What do my purchases say about me?",
-];
 
 const deliveryText = () => {
     const date = new Date();
@@ -119,63 +104,7 @@ const AlexaPanel = ({ open, onClose }: any) => {
                 </header>
 
                 <div className="flex-1 overflow-y-auto px-5 py-4">
-                    {messages.length === 0 ? (
-                        <>
-                            <p className="text-lg">
-                                Hello! I&apos;m the new Alexa.
-                                <br />
-                                Please select your profile so that I can provide personalized help.
-                            </p>
-
-                            <Link
-                                href="/profile"
-                                className="inline-flex items-center gap-2 bg-[#0a66c2] text-white rounded-full px-5 py-2.5 mt-4"
-                            >
-                                <UserIcon className="w-5 h-5" />
-                                Select your profile
-                            </Link>
-
-                            <h3 className="font-bold mt-8">Things I can do</h3>
-
-                            <div className="space-y-3 mt-3">
-                                {capabilities.map((item) =>
-                                    item.href ? (
-                                        <Link
-                                            key={item.label}
-                                            href={item.href}
-                                            className="flex items-center gap-4 bg-white border border-slate-200 rounded-xl p-4 font-bold"
-                                        >
-                                            <item.icon className="w-8 h-8 text-slate-500" />
-                                            {item.label}
-                                        </Link>
-                                    ) : (
-                                        <button
-                                            key={item.label}
-                                            onClick={() => send(item.prompt || item.label)}
-                                            className="w-full flex items-center gap-4 bg-white border border-slate-200 rounded-xl p-4 font-bold text-left cursor-pointer"
-                                        >
-                                            <item.icon className="w-8 h-8 text-slate-500" />
-                                            {item.label}
-                                        </button>
-                                    )
-                                )}
-                            </div>
-
-                            <h3 className="font-bold mt-8">Questions while you shop? Ask away!</h3>
-
-                            <div className="flex flex-col items-start gap-2 mt-3">
-                                {openers.map((opener) => (
-                                    <button
-                                        key={opener}
-                                        onClick={() => send(opener)}
-                                        className="bg-[#dceaf8] text-[#0f4c81] rounded-full px-4 py-2 text-left cursor-pointer"
-                                    >
-                                        {opener}
-                                    </button>
-                                ))}
-                            </div>
-                        </>
-                    ) : (
+                    {messages.length === 0 ? null : (
                         <div className="space-y-6">
                             {messages.map((message: any, i: number) =>
                                 message.role === "user" ? (
@@ -258,7 +187,7 @@ const AlexaPanel = ({ open, onClose }: any) => {
                     }}
                     className="p-4 bg-[#f7f7f7]"
                 >
-                    <div className="flex items-end gap-2 bg-white border border-slate-300 rounded-2xl p-3">
+                    <div className="bg-white border border-slate-300 rounded-2xl px-4 pt-4 pb-3">
                         <label htmlFor="alexa-input" className="sr-only">
                             Ask a shopping question
                         </label>
@@ -267,17 +196,19 @@ const AlexaPanel = ({ open, onClose }: any) => {
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Ask a shopping question"
-                            className="flex-1 outline-none"
+                            className="w-full text-lg outline-none placeholder:text-slate-500"
                         />
 
-                        <button
-                            type="submit"
-                            disabled={loading || !input.trim()}
-                            aria-label="Send"
-                            className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center disabled:opacity-40 cursor-pointer"
-                        >
-                            <ArrowUpIcon className="w-5 h-5" />
-                        </button>
+                        <div className="flex justify-end mt-4">
+                            <button
+                                type="submit"
+                                disabled={loading || !input.trim()}
+                                aria-label="Send"
+                                className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center disabled:opacity-40 cursor-pointer"
+                            >
+                                <ArrowUpIcon className="w-5 h-5" />
+                            </button>
+                        </div>
                     </div>
                 </form>
             </aside>
