@@ -78,6 +78,9 @@
 }
 
 @layer components {
+    .move {
+        @apply transition-all duration-150 text-xs -translate-y-2;
+    }
     .error-input input {
         @apply bg-red-300 placeholder:text-gray-800 border-gray-500;
     }
