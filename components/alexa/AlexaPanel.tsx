@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import axios from "axios";
 import {
@@ -77,12 +78,15 @@ const AlexaPanel = ({ open, onClose }: any) => {
         }
     };
 
-    if (!open) {
+    if (!open || typeof document === "undefined") {
         return null;
     }
 
-    return (
-        <>
+    // Portalled to the body: inside the header nav the panel inherited
+    // text-white and whitespace-nowrap, and shared that nav's stacking and
+    // overflow context.
+    return createPortal(
+        <div className="text-[#0f1111] whitespace-normal normal-case">
             <div className="fixed inset-0 bg-black/30 z-40" onClick={onClose} aria-hidden="true" />
 
             <aside
@@ -212,7 +216,8 @@ const AlexaPanel = ({ open, onClose }: any) => {
                     </div>
                 </form>
             </aside>
-        </>
+        </div>,
+        document.body
     );
 };
 
