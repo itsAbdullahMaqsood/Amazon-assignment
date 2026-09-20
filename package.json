@@ -11,7 +11,8 @@
         "seed:videos": "node scripts/seed-videos.mjs",
         "seed:grocery": "node scripts/seed-grocery.mjs",
         "seed:meds": "node scripts/seed-medications.mjs",
-        "seed:registries": "node scripts/seed-registries.mjs"
+        "seed:registries": "node scripts/seed-registries.mjs",
+        "seed:furniture": "node scripts/seed-furniture.mjs"
     },
     "dependencies": {
         "@heroicons/react": "^2.2.0",

@@ -16,7 +16,7 @@ const links = [
     { label: "Coupons", href: "/coupons" },
     { label: "Pharmacy", href: "/pharmacy" },
     { label: "Automotive", href: placeholder("Automotive") },
-    { label: "Amazon Home", href: placeholder("Amazon Home"), caret: true },
+    { label: "Amazon Home", href: "/furniture", caret: true },
     { label: "Registry", href: placeholder("Registry") },
     { label: "Video Games", href: placeholder("Video Games") },
     { label: "Whole Foods", href: placeholder("Whole Foods") },
