@@ -41,7 +41,7 @@ export const Hero = () => (
                     href={placeholder(registry.title)}
                     className="border border-slate-200 rounded-lg overflow-hidden group"
                 >
-                    <RegistryArt art={registry.key} className="h-[230px] rounded-none" />
+                    <RegistryArt art={registry.key} className="h-[230px] w-full rounded-none" />
 
                     <div className="p-4">
                         <h2 className="text-xl font-bold group-hover:underline">{registry.title}</h2>
@@ -63,7 +63,7 @@ export const Reasons = () => (
                     key={reason.title}
                     className="border border-slate-200 rounded-lg p-8 text-center flex flex-col items-center"
                 >
-                    <RegistryArt art={reason.art} className="h-24 w-24 rounded-full" />
+                    <RegistryArt art={reason.art} className="h-24 w-24 shrink-0 rounded-full" />
 
                     <h3 className="mt-5 text-lg font-bold">{reason.title}</h3>
                     <p className="mt-2 text-[15px] max-w-sm">{reason.body}</p>
@@ -88,7 +88,7 @@ export const UniqueToYou = () => (
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {uniqueCards.map((card) => (
                 <div key={card.title}>
-                    <RegistryArt art={card.art} className="h-[260px]" />
+                    <RegistryArt art={card.art} className="h-[260px] w-full" />
 
                     <h3 className="mt-3 text-lg font-bold">{card.title}</h3>
                     <p className="mt-1 text-[15px]">{card.body}</p>

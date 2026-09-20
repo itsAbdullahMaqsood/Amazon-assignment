@@ -43,7 +43,7 @@ const OccasionStrip = () => {
                         href={placeholder(`Create a ${occasion.label} registry`)}
                         className="shrink-0 w-[220px] group"
                     >
-                        <RegistryArt art={occasion.key} className="h-[220px]" />
+                        <RegistryArt art={occasion.key} className="h-[220px] w-full" />
                         <p className="mt-2 text-center group-hover:underline">{occasion.label}</p>
                     </Link>
                 ))}
@@ -53,7 +53,7 @@ const OccasionStrip = () => {
                 <button
                     onClick={() => move(-1)}
                     aria-label="Previous occasions"
-                    className="absolute left-0 top-[90px] bg-white shadow-lg rounded-r-lg p-3 cursor-pointer"
+                    className="absolute left-0 top-[110px] -translate-y-1/2 bg-white shadow-lg rounded-r-lg p-3 cursor-pointer"
                 >
                     <ChevronLeftIcon className="w-5 h-5" />
                 </button>
@@ -63,7 +63,7 @@ const OccasionStrip = () => {
                 <button
                     onClick={() => move(1)}
                     aria-label="More occasions"
-                    className="absolute right-0 top-[90px] bg-white shadow-lg rounded-l-lg p-3 cursor-pointer"
+                    className="absolute right-0 top-[110px] -translate-y-1/2 bg-white shadow-lg rounded-l-lg p-3 cursor-pointer"
                 >
                     <ChevronRightIcon className="w-5 h-5" />
                 </button>

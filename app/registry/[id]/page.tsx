@@ -30,14 +30,7 @@ const loadRegistry = async (id: string) => {
         return null;
     }
 
-    const owner: any = await User.findOne({ "lists._id": id })
-        .select("name lists")
-        .populate({
-            path: "lists.items.product",
-            model: Product,
-            select: "name slug rating numberReviews subProducts",
-        })
-        .lean();
+    const owner: any = await User.findOne({ "lists._id": id }).select("name lists").lean();
 
     const list = (owner?.lists || []).find((entry: any) => String(entry._id) === id);
 
@@ -47,9 +40,22 @@ const loadRegistry = async (id: string) => {
         return null;
     }
 
+    // The saved items are two arrays deep, which populate does not reach, so the
+    // products they point at are fetched and joined on here.
+    const saved = (list.items || []).filter((entry: any) => entry.product);
+
+    const products = await Product.find({ _id: { $in: saved.map((entry: any) => entry.product) } })
+        .select("name slug rating numberReviews subProducts")
+        .lean();
+
+    const byId = new Map(products.map((product: any) => [String(product._id), product]));
+
     return {
         registry: toRegistryResult(owner, list),
-        items: (list.items || []).filter((entry: any) => entry.product).map(toRegistryItem),
+        items: saved
+            .map((entry: any) => ({ ...entry, product: byId.get(String(entry.product)) }))
+            .filter((entry: any) => entry.product)
+            .map(toRegistryItem),
     };
 };
 

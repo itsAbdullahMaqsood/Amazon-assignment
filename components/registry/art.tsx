@@ -34,14 +34,14 @@ const tiles: Record<string, { from: string; to: string; ink: string; Icon: any }
 
 // One tile shape drives every registry image on the page: a soft wash in the
 // occasion's colour with its mark sitting on top.
-const RegistryArt = ({ art, className = "h-44", label = "" }: any) => {
+const RegistryArt = ({ art, className = "h-44 w-full", label = "" }: any) => {
     const tile = tiles[art] || tiles.gift;
     const Icon = tile.Icon;
 
     return (
         <div
             aria-hidden="true"
-            className={`w-full ${className} rounded overflow-hidden relative flex items-center justify-center`}
+            className={`${className} rounded overflow-hidden relative flex items-center justify-center`}
             style={{ background: `linear-gradient(135deg, ${tile.from}, ${tile.to})` }}
         >
             <span
