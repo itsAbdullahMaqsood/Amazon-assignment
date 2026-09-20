@@ -19,8 +19,11 @@ const RootLayout = async ({ children }: any) => {
     const session = await auth();
 
     return (
+        // Extensions such as Grammarly add attributes to <body> before React
+        // hydrates, which React reports as a hydration mismatch. Suppressing it
+        // here keeps real mismatches visible everywhere else.
         <html lang="en">
-            <body>
+            <body suppressHydrationWarning>
                 <Providers session={session}>
                     <div className={inter.className}>{children}</div>
                 </Providers>
