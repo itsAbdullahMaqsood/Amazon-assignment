@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .link {
+        @apply cursor-pointer hover:underline;
+    }
+    .show-account-popup {
+        @apply invisible opacity-0 transition duration-500 cursor-default;
+    }
+    .show-account:hover .show-account-popup {
+        @apply visible opacity-100;
+    }
+    .show-language-popup {
+        @apply invisible opacity-0 transition duration-500 cursor-default;
+    }
+    .show-language:hover .show-language-popup {
+        @apply visible opacity-100;
+    }
+    .button-orange {
+        @apply bg-gradient-to-b from-[#f8e3ad] to-[#EEBA37] border border-[#b0820f] rounded;
+    }
+    .menu-sidebar h3 {
+        @apply font-bold text-sm md:text-base px-8 py-3;
+    }
+    .menu-sidebar ul > li {
+        @apply text-sm md:text-base flex items-center px-8 py-2.5 md:py-3 hover:bg-gray-200 cursor-pointer;
+    }
+    .menu-sidebar ul > li svg {
+        @apply h-5 ml-auto text-gray-500 stroke-[3];
+    }
+    .link-footer ul {
+        @apply text-slate-200 text-xs space-y-2;
+    }
+    .link-footer h5 {
+        @apply font-semibold text-white mb-3;
+    }
+    .link-footer ul > li {
+        @apply hover:underline;
+    }
+    .footer-link-services li {
+        @apply w-24 hover:underline text-slate-300 text-xs;
+    }
+    .footer-link-services li p {
+        @apply text-[#999];
+    }
+}
