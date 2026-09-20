@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Bars3Icon, ChevronDownIcon, MapPinIcon } from "@heroicons/react/24/outline";
 
 import { placeholder } from "@/components/profile/accountLinks";
+import AlexaLauncher from "@/components/alexa/AlexaLauncher";
 
 // Partner names stay as plain text labels rather than reproduced logos.
 const links = [
@@ -40,12 +41,7 @@ const HeaderBottom = ({ handleOpenMenu }: any) => {
 
                 <ul className="flex items-center gap-4 overflow-x-scroll scrollbar-hide whitespace-nowrap py-2 md:ml-2 w-full">
                     <li>
-                        <Link
-                            href={placeholder("Alexa for shopping")}
-                            className="flex items-center bg-white/10 rounded-full px-3 py-1"
-                        >
-                            <span className="italic lowercase mr-1">alexa</span> for shopping
-                        </Link>
+                        <AlexaLauncher />
                     </li>
 
                     <li>
