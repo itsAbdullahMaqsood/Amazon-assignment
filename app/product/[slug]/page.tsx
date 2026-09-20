@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
 
+import { auth } from "@/auth";
 import connectDb from "@/lib/db";
 import Product from "@/models/Product";
 import Category from "@/models/Category";
@@ -10,6 +11,7 @@ import Header from "@/components/Header/Header";
 import MenuSideBar from "@/components/Header/MenuSidebar";
 import Footer from "@/components/Footer";
 import ProductPage from "@/components/ProductPage/ProductPage";
+import { recordProductView } from "@/lib/recommendations";
 
 const applyDiscount = (price: number, discount: number) =>
     discount > 0 ? price - price / 100 * discount : price;
@@ -124,6 +126,14 @@ const Page = async ({ params, searchParams }: any) => {
 
     if (!product) {
         notFound();
+    }
+
+    const session = await auth();
+
+    // Browsing history is recorded here, so the account page's carousels run on
+    // what the user actually looked at.
+    if (session) {
+        await recordProductView(session.user.id, String(product._id), style);
     }
 
     const serialized = JSON.parse(JSON.stringify(product));

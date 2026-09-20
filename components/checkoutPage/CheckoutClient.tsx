@@ -10,7 +10,10 @@ import Summary from "./Summary/Summary";
 
 const CheckoutClient = ({ user, cart }: any) => {
     const [addresses, setAddresses] = useState<any[]>(user.address || []);
-    const [paymentMethod, setPaymentMethod] = useState<string>("paypal");
+    // Preselects whatever the user saved under Your Payments.
+    const [paymentMethod, setPaymentMethod] = useState<string>(
+        user.defaultPaymentMethod || "paypal"
+    );
     const [totalAfterDiscount, setTotalAfterDiscount] = useState<any>("");
     const [loading, setLoading] = useState<boolean>(false);
 

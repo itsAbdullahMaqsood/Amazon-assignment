@@ -50,6 +50,17 @@ const userSchema = new mongoose.Schema(
                 },
             },
         ],
+        // Most-recent-first, de-duplicated, capped in the route that writes it.
+        recentlyViewed: [
+            {
+                product: {
+                    type: ObjectId,
+                    ref: "Product",
+                },
+                style: Number,
+                viewedAt: Date,
+            },
+        ],
         // Misspelled on purpose: later prompts read `whishlist`.
         whishlist: [
             {
