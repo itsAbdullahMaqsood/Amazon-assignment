@@ -1,0 +1,4 @@
+# Capture bookkeeping only (turn counters). The logs themselves are NOT ignored:
+# .agent-logs/ is committed and ships with the repo.
+.claude/.capture-state/
+.DS_Store
