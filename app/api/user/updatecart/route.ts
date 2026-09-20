@@ -49,7 +49,7 @@ export const POST = async (req: Request) => {
                     price: applyDiscount(sizeRow.price, discount),
                     discount,
                     quantity: sizeRow.qty,
-                    shippingFee: dbProduct.shipping,
+                    shipping: dbProduct.shipping,
                 };
             })
         );

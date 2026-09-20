@@ -1,4 +1,4 @@
-const Checkout = ({ subtotal, shippingFee, total, selected, onContinue }: any) => {
+const Checkout = ({ subtotal, shipping, total, selected, onContinue }: any) => {
     const disabled = selected.length === 0;
 
     return (
@@ -12,8 +12,8 @@ const Checkout = ({ subtotal, shippingFee, total, selected, onContinue }: any) =
 
             <div className="flex items-center justify-between text-sm py-1">
                 <span>Shipping</span>
-                {shippingFee > 0 ? (
-                    <span>+{shippingFee}$</span>
+                {shipping > 0 ? (
+                    <span>+{shipping}$</span>
                 ) : (
                     <span className="text-blue-500">Free Shipping</span>
                 )}

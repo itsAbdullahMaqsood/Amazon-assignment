@@ -7,9 +7,9 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "@/redux/store";
 import DialogModal from "@/components/shared/DialogModal";
 
-const Providers = ({ children }: any) => {
+const Providers = ({ children, session }: any) => {
     return (
-        <SessionProvider>
+        <SessionProvider session={session}>
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
                     <DialogModal />

@@ -40,13 +40,13 @@ const CartPage = ({ cartItems }: any) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const shippingFee = Number(
+    const shipping = Number(
         selected.reduce((acc: number, product: any) => acc + Number(product.shipping || 0), 0).toFixed(2)
     );
     const subTotal = Number(
         selected.reduce((acc: number, product: any) => acc + product.price * product.qty, 0).toFixed(2)
     );
-    const total = Number((subTotal + shippingFee).toFixed(2));
+    const total = Number((subTotal + shipping).toFixed(2));
 
     const continueHandler = async () => {
         try {
@@ -94,7 +94,7 @@ const CartPage = ({ cartItems }: any) => {
             <div className="md:w-1/4">
                 <Checkout
                     subtotal={subTotal}
-                    shippingFee={shippingFee}
+                    shipping={shipping}
                     total={total}
                     selected={selected}
                     onContinue={continueHandler}

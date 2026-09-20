@@ -15,5 +15,5 @@ export default auth((req) => {
 // Only routes that require a signed-in user run through Auth.js. Public routes,
 // static assets and the auth endpoints themselves are left untouched.
 export const config = {
-    matcher: ["/profile/:path*", "/orders/:path*"],
+    matcher: ["/cart", "/profile/:path*", "/orders/:path*"],
 };
