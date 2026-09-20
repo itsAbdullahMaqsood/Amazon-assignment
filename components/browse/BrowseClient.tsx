@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
@@ -28,19 +28,6 @@ const BrowseClient = ({
     paginationCount,
 }: any) => {
     const { current, filter, filterDebounced, replaceQuery } = useBrowseQuery();
-    const chromeRef = useRef<HTMLDivElement | null>(null);
-    const [stuck, setStuck] = useState<boolean>(false);
-
-    // The sidebar pins itself once the breadcrumb and chip block scroll away.
-    useEffect(() => {
-        const onScroll = () => {
-            const height = chromeRef.current?.offsetHeight ?? 0;
-            setStuck(window.scrollY > height);
-        };
-
-        window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
 
     const activeCategory = current.category || "";
     const activeFilterCount = Object.keys(current).filter((key) => key !== "page").length;
@@ -69,7 +56,7 @@ const BrowseClient = ({
 
     return (
         <main className="max-w-screen-2xl mx-auto bg-slate-100 p-1 md:p-6 gap-2">
-            <div ref={chromeRef}>
+            <div>
                 <nav aria-label="Breadcrumb" className="flex items-center text-sm">
                     <Link href="/" className="hover:underline">
                         Home
@@ -105,12 +92,12 @@ const BrowseClient = ({
             </div>
 
             <div className="relative mt-4 grid grid-cols-5 gap-1 md:gap-5">
-                {stuck && <div className="hidden md:block md:col-span-1" aria-hidden="true" />}
-
+                {/* Sticky rather than fixed: a fixed sidebar needs a hard-coded
+                    width, which stops matching its grid column as the viewport
+                    changes and paints over the results. Sticky keeps the column
+                    width it already has. */}
                 <aside
-                    className={`col-span-5 md:col-span-1 h-[680px] overflow-y-auto bg-white rounded p-3 ${
-                        stuck ? "md:fixed md:w-[274px] md:top-2" : ""
-                    }`}
+                    className="col-span-5 md:col-span-1 md:sticky md:top-2 md:self-start max-h-[680px] md:max-h-[calc(100vh-1rem)] overflow-y-auto bg-white rounded p-3"
                     aria-label="Filters"
                 >
                     <button
