@@ -7,7 +7,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "eslint",
-        "seed": "node scripts/seed.mjs"
+        "seed": "node scripts/seed.mjs",
+        "seed:videos": "node scripts/seed-videos.mjs"
     },
     "dependencies": {
         "@heroicons/react": "^2.2.0",

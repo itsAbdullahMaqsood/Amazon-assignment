@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     transpilePackages: ["next-auth", "@auth/core"],
     images: {
         remotePatterns: [
+            { protocol: "https", hostname: "image.tmdb.org" },
             { protocol: "https", hostname: "cdn.dummyjson.com" },
             { protocol: "https", hostname: "i.dummyjson.com" },
             { protocol: "https", hostname: "res.cloudinary.com" },
