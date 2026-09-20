@@ -30,7 +30,7 @@ const Header = ({ title, searchHandler }: any) => {
 
             <header>
                 <div className="bg-amazon-blue_dark flex flex-col md:flex-row">
-                    <div className="flex flex-grow items-center p-3 md:space-x-5 md:px-4 text-white">
+                    <div className="flex grow items-center p-3 md:space-x-5 md:px-4 text-white">
                         <Bars3Icon
                             className="h-8 md:hidden cursor-pointer mr-3"
                             onClick={openMenuHandler}
@@ -48,7 +48,7 @@ const Header = ({ title, searchHandler }: any) => {
 
                         <DeliveryTo />
 
-                        <div className="hidden md:flex flex-grow">
+                        <div className="hidden md:flex grow">
                             <Search searchHandler={searchHandler} />
                         </div>
 

@@ -16,7 +16,7 @@ const Language = () => {
             <div className="flex items-end">
                 <Image src={enFlag} alt="en flag" width={24} height={24} className="object-contain" />
                 <span className="font-bold text-sm ml-1">EN</span>
-                <ChevronDownIcon className="h-4 text-slate-300 stroke-[3]" />
+                <ChevronDownIcon className="h-4 text-slate-300 stroke-3" />
             </div>
 
             <div className="show-account-popup absolute top-full left-1/2 -translate-x-1/2 pt-4 z-50">

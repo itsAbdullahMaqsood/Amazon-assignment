@@ -100,16 +100,16 @@ const Footer = () => {
                     className="object-contain w-20"
                 />
 
-                <div className="flex items-center border border-slate-500 rounded text-white text-xs px-3 py-1.5 link">
+                <div className="flex items-center border border-slate-500 rounded-sm text-white text-xs px-3 py-1.5 link">
                     <GlobeAltIcon className="h-4 mr-1" />
                     English
                 </div>
 
-                <div className="flex items-center border border-slate-500 rounded text-white text-xs px-3 py-1.5 link">
+                <div className="flex items-center border border-slate-500 rounded-sm text-white text-xs px-3 py-1.5 link">
                     $ USD - U.S. Dollar
                 </div>
 
-                <div className="flex items-center border border-slate-500 rounded text-white text-xs px-3 py-1.5 link">
+                <div className="flex items-center border border-slate-500 rounded-sm text-white text-xs px-3 py-1.5 link">
                     <Image
                         src={enFlag}
                         alt="en flag"

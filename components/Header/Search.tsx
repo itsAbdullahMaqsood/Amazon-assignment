@@ -23,7 +23,7 @@ const Search = ({ searchHandler }: any) => {
     return (
         <form
             onSubmit={submitHandler}
-            className="flex items-center flex-grow bg-amazon-orange rounded-md overflow-hidden"
+            className="flex items-center grow bg-amazon-orange rounded-md overflow-hidden"
         >
             <select className="hidden md:inline h-11 w-16 bg-gray-200 text-xs text-gray-600 border-r border-gray-300 outline-none cursor-pointer px-2">
                 <option value="All">All</option>
@@ -38,7 +38,7 @@ const Search = ({ searchHandler }: any) => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search Amazon"
-                className="h-11 flex-grow flex-shrink w-full px-3 outline-none text-black"
+                className="h-11 grow shrink w-full px-3 outline-none text-black"
             />
 
             <button type="submit" className="px-2">

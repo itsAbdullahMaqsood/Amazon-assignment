@@ -65,7 +65,7 @@ const MenuSideBar = () => {
             {menuOpened && (
                 <div
                     onClick={closeMenuHandler}
-                    className="fixed top-0 left-0 w-full h-full bg-zinc-900/[0.85] z-40"
+                    className="fixed top-0 left-0 w-full h-full bg-zinc-900/85 z-40"
                 />
             )}
         </>

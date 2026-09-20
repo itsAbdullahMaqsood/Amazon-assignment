@@ -17,7 +17,7 @@ const AccountButtons = () => {
         <div className="flex items-center space-x-6 ml-auto md:ml-0 text-white">
             <Link href="/auth/signin" className="flex items-center md:hidden text-xs">
                 <span>Sign in</span>
-                <ChevronRightIcon className="h-3 stroke-[3]" />
+                <ChevronRightIcon className="h-3 stroke-3" />
                 <UserIcon className="h-6 ml-1" />
             </Link>
 
@@ -28,14 +28,14 @@ const AccountButtons = () => {
                     </p>
                     <p className="font-bold text-sm flex items-center">
                         Account &amp; Lists
-                        <ChevronDownIcon className="h-4 text-slate-300 stroke-[3]" />
+                        <ChevronDownIcon className="h-4 text-slate-300 stroke-3" />
                     </p>
                 </div>
 
                 <div className="show-account-popup absolute top-full right-0 pt-4 z-50">
                     <div className="absolute top-2 right-12 h-3 w-3 bg-white rotate-45" />
                     <div className="w-96 bg-white text-black rounded shadow-lg p-5">
-                        <div className="flex flex-col items-center border-b pb-4">
+                        <div className="flex flex-col items-center border-b border-gray-200 pb-4">
                             {session ? (
                                 <>
                                     <Link href="/profile" className="text-sm font-semibold link mb-3">
@@ -85,7 +85,7 @@ const AccountButtons = () => {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="border-l pl-4">
+                            <div className="border-l border-gray-200 pl-4">
                                 <h5 className="font-semibold text-sm mb-2">Your Account</h5>
                                 <ul className="text-xs text-gray-600 space-y-1.5">
                                     {yourAccount.map((item) => (
