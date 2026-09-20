@@ -78,6 +78,27 @@
 }
 
 @layer components {
+    .dropdown_sortby {
+        @apply relative flex items-center;
+    }
+    .dropdown_sortby > ul {
+        @apply z-20 absolute top-10 right-0 px-4 bg-white rounded border border-slate-200 shadow w-64 h-[250px] transition-all duration-500 overflow-y-auto;
+    }
+    .dropdown_sortby > ul > li {
+        @apply py-2 hover:font-semibold cursor-pointer;
+    }
+    .dropdown_sortby > button {
+        @apply py-2 px-3 rounded border border-slate-300;
+    }
+    .tooltip_btn {
+        @apply relative w-[30px] h-[30px] cursor-pointer;
+    }
+    .tooltip_btn > span:first-child {
+        @apply absolute left-[2px] bottom-0 bg-red-400 w-[27px] hover:bg-red-600;
+    }
+    .tooltip_bubble {
+        @apply invisible opacity-0 transition-opacity duration-200 absolute bottom-[38px] left-1/2 -translate-x-1/2 z-30 w-44 rounded bg-amazon-blue_dark px-2 py-1 text-xs text-white text-center;
+    }
     .move {
         @apply transition-all duration-150 text-xs -translate-y-2;
     }

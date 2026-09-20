@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+import StarRating from "@/components/shared/StarRating";
 import ProductSwiper from "./ProductSwiper";
 
 const ProductCard = ({ product }: any) => {
@@ -19,6 +20,17 @@ const ProductCard = ({ product }: any) => {
     const href = `/product/${product.slug}?style=${active}${
         subProduct.sizes.length > 1 ? `&size=${active}` : ""
     }`;
+
+    // Amazon splits the price into a large integer and small cents.
+    const priceParts = (value: number) => {
+        const [whole, cents = "00"] = Number(value).toFixed(2).split(".");
+        return { whole, cents };
+    };
+
+    const low = priceParts(prices[0]);
+    const high = priceParts(prices[prices.length - 1]);
+    const singlePrice = prices.length === 1 || prices[0] === prices[prices.length - 1];
+    const sold = product.subProducts.reduce((acc: number, sub: any) => acc + (sub.sold || 0), 0);
 
     return (
         <div className="relative flex flex-col w-[215px] rounded p-1">
@@ -36,11 +48,37 @@ const ProductCard = ({ product }: any) => {
                 {product.name.length > 45 ? `${product.name.slice(0, 45)}...` : product.name}
             </Link>
 
-            <span className="text-xs text-red-500 mt-1">
-                {prices.length === 1 || prices[0] === prices[prices.length - 1]
-                    ? `USD${prices[0]}$`
-                    : `USD${prices[0]} - ${prices[prices.length - 1]}$`}
+            {product.numberReviews > 0 && (
+                <div className="flex items-center gap-1 mt-1">
+                    <StarRating value={product.rating} size="w-4 h-4" />
+                    <span className="text-xs text-[#007185]">({product.numberReviews})</span>
+                </div>
+            )}
+
+            <span className="text-red-500 mt-1 flex items-baseline">
+                <span className="text-xs mr-0.5">USD</span>
+                <span className="text-lg font-medium leading-none">{low.whole}</span>
+                <span className="text-xs">{low.cents}</span>
+                {!singlePrice && (
+                    <>
+                        <span className="text-xs mx-1">-</span>
+                        <span className="text-lg font-medium leading-none">{high.whole}</span>
+                        <span className="text-xs">{high.cents}</span>
+                    </>
+                )}
+                <span className="text-xs ml-0.5">$</span>
             </span>
+
+            {sold > 0 && (
+                <span className="text-xs text-slate-600 mt-0.5">{sold}+ bought in past month</span>
+            )}
+
+            {product.subProducts.length > 1 && (
+                <span className="text-xs text-[#007185] mt-0.5">
+                    +{product.subProducts.length - 1} other colour
+                    {product.subProducts.length > 2 ? "s" : ""}
+                </span>
+            )}
 
             <div className="flex items-center gap-2 mt-2">
                 {product.subProducts.map((sub: any, i: number) => (
