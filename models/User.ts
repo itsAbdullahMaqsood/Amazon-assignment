@@ -4,15 +4,35 @@ const { ObjectId } = mongoose.Schema.Types;
 
 const userSchema = new mongoose.Schema(
     {
-        name: { type: String, required: true },
-        email: { type: String, required: true, unique: true },
-        password: { type: String },
+        name: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+            trim: true,
+            unique: true,
+        },
+        password: {
+            type: String,
+        },
+        role: {
+            type: String,
+            default: "user",
+        },
         image: {
             type: String,
-            default: "https://res.cloudinary.com/dmhcnhtng/image/upload/v1664642479/992490_b0iqzq.png",
+            default: "https://i.im.ge/2023/04/25/Lg2cWX.user-image-default.jpg",
         },
-        emailVerified: { type: Boolean, default: false },
-        role: { type: String, default: "user", enum: ["admin", "user"] },
+        emailVerified: {
+            type: Boolean,
+            default: false,
+        },
+        defaultPaymentMethod: {
+            type: String,
+            default: "",
+        },
         address: [
             {
                 firstName: String,
@@ -21,15 +41,22 @@ const userSchema = new mongoose.Schema(
                 address1: String,
                 address2: String,
                 city: String,
-                state: String,
                 zipCode: String,
+                state: String,
                 country: String,
-                active: { type: Boolean, default: false },
+                active: {
+                    type: Boolean,
+                    default: false,
+                },
             },
         ],
-        wishlist: [
+        // Misspelled on purpose: later prompts read `whishlist`.
+        whishlist: [
             {
-                product: { type: ObjectId, ref: "Product" },
+                product: {
+                    type: ObjectId,
+                    ref: "Product",
+                },
                 style: String,
             },
         ],

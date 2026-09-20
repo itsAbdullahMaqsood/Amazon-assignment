@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 
 import connectDb from "@/lib/db";
@@ -13,7 +14,10 @@ import ProductPage from "@/components/ProductPage/ProductPage";
 const applyDiscount = (price: number, discount: number) =>
     discount > 0 ? price - price / 100 * discount : price;
 
-const getProduct = async (slug: string, style: number, size: number) => {
+// Cached so generateMetadata and the page share one query. Resolving (and 404ing)
+// in generateMetadata happens before the shell streams, so a missing product gets a
+// real 404 status instead of a 200 carrying the not-found UI.
+const getProduct = cache(async (slug: string, style: number, size: number) => {
     await connectDb();
 
     const product: any = await Product.findOne({ slug })
@@ -80,15 +84,34 @@ const getProduct = async (slug: string, style: number, size: number) => {
         ratings,
         allSizes,
     };
-};
+});
 
-export const generateMetadata = async ({ params }: any) => {
+const getSimilarProducts = cache(async (categoryId: string, currentId: string) => {
+    const products: any[] = await Product.find({
+        category: categoryId,
+        _id: { $ne: currentId },
+    })
+        .limit(12)
+        .lean();
+
+    return products.map((product: any) => ({
+        _id: String(product._id),
+        name: product.name,
+        slug: product.slug,
+        image: product.subProducts?.[0]?.images?.[0]?.url || "",
+    }));
+});
+
+export const generateMetadata = async ({ params, searchParams }: any) => {
     const { slug } = await params;
+    const query = await searchParams;
+    const product = await getProduct(slug, Number(query?.style) || 0, Number(query?.size) || 0);
 
-    await connectDb();
-    const product: any = await Product.findOne({ slug }).select("name").lean();
+    if (!product) {
+        notFound();
+    }
 
-    return { title: product?.name || "Product" };
+    return { title: product.name };
 };
 
 const Page = async ({ params, searchParams }: any) => {
@@ -104,13 +127,14 @@ const Page = async ({ params, searchParams }: any) => {
     }
 
     const serialized = JSON.parse(JSON.stringify(product));
+    const similar = await getSimilarProducts(String(product.category?._id), String(product._id));
 
     return (
         <>
             <Header title={serialized.name} />
 
             <main className="bg-white w-full">
-                <ProductPage product={serialized} />
+                <ProductPage product={serialized} similar={similar} />
             </main>
 
             <Footer />

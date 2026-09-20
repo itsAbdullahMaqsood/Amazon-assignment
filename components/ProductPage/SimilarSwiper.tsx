@@ -5,12 +5,14 @@ import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 
-import similarProducts from "./similarProducts";
-
 import "swiper/css";
 import "swiper/css/navigation";
 
-const SimilarSwiper = () => {
+const SimilarSwiper = ({ products }: any) => {
+    if (!products?.length) {
+        return null;
+    }
+
     return (
         <div>
             <h3 className="font-semibold border-b border-slate-200 pb-1">Similar Product</h3>
@@ -24,10 +26,16 @@ const SimilarSwiper = () => {
                 breakpoints={{ 640: { slidesPerView: 5 } }}
                 className="products-swiper py-3"
             >
-                {similarProducts.map((img, i) => (
-                    <SwiperSlide key={i}>
-                        <Link href="/">
-                            <Image src={img} alt="" width={150} height={150} />
+                {products.map((product: any) => (
+                    <SwiperSlide key={product._id}>
+                        <Link href={`/product/${product.slug}`}>
+                            <Image
+                                src={product.image}
+                                alt={product.name}
+                                width={150}
+                                height={150}
+                                className="object-cover rounded"
+                            />
                         </Link>
                     </SwiperSlide>
                 ))}

@@ -1,38 +1,38 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI as string;
+// One connection promise is cached on globalThis so hot reloads in development and
+// concurrent route handlers reuse the same socket instead of opening a new one.
+const globalCache = globalThis as any;
 
-// Next.js hot-reloads modules in development, so the connection is cached on the
-// global object to avoid opening a new one on every reload.
-let cached = (global as any).mongoose;
-
-if (!cached) {
-    cached = (global as any).mongoose = { conn: null, promise: null };
+if (!globalCache.mongooseConn) {
+    globalCache.mongooseConn = { conn: null, promise: null };
 }
 
 const connectDb = async () => {
-    if (cached.conn) {
-        return cached.conn;
+    if (globalCache.mongooseConn.conn) {
+        return globalCache.mongooseConn.conn;
     }
+
+    const MONGODB_URI = process.env.MONGODB_URI;
 
     if (!MONGODB_URI) {
-        throw new Error("Please define the MONGODB_URI environment variable");
+        throw new Error("MONGODB_URI is not set. Add it to .env.local before querying the database.");
     }
 
-    if (!cached.promise) {
-        cached.promise = mongoose
-            .connect(MONGODB_URI, { bufferCommands: false })
-            .then((mongooseInstance) => mongooseInstance);
+    if (!globalCache.mongooseConn.promise) {
+        globalCache.mongooseConn.promise = mongoose.connect(MONGODB_URI, {
+            bufferCommands: false,
+        });
     }
 
     try {
-        cached.conn = await cached.promise;
+        globalCache.mongooseConn.conn = await globalCache.mongooseConn.promise;
     } catch (error) {
-        cached.promise = null;
+        globalCache.mongooseConn.promise = null;
         throw error;
     }
 
-    return cached.conn;
+    return globalCache.mongooseConn.conn;
 };
 
 export default connectDb;

@@ -3,34 +3,94 @@ import mongoose from "mongoose";
 const { ObjectId } = mongoose.Schema.Types;
 
 const reviewSchema = new mongoose.Schema({
-    reviewBy: { type: ObjectId, ref: "User" },
-    rating: { type: Number, default: 0 },
-    review: { type: String },
-    size: { type: String },
+    reviewBy: {
+        type: ObjectId,
+        ref: "User",
+        required: true,
+    },
+    rating: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    review: {
+        type: String,
+        required: true,
+    },
+    size: String,
     style: {
         color: String,
         image: String,
     },
-    fit: { type: String },
+    fit: String,
     images: [],
     likes: [],
 });
 
+// One Product is a listing; each subProducts entry is a COLOR VARIANT carrying its
+// own images, size/price/qty rows and discount.
 const productSchema = new mongoose.Schema(
     {
-        name: { type: String, required: true, trim: true },
-        description: { type: String, required: true },
-        brand: { type: String },
-        slug: { type: String, required: true, unique: true, lowercase: true, index: true },
-        category: { type: ObjectId, ref: "Category", required: true },
-        subCategories: [{ type: ObjectId, ref: "SubCategory" }],
-        details: [{ name: String, value: String }],
-        questions: [{ question: String, answer: String }],
+        name: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        description: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        brand: {
+            type: String,
+        },
+        slug: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true,
+            index: true,
+        },
+        category: {
+            type: ObjectId,
+            ref: "Category",
+            required: true,
+        },
+        subCategories: [
+            {
+                type: ObjectId,
+                ref: "SubCategory",
+            },
+        ],
+        details: [
+            {
+                name: String,
+                value: String,
+            },
+        ],
+        questions: [
+            {
+                question: String,
+                answer: String,
+            },
+        ],
         reviews: [reviewSchema],
-        refundPolicy: { type: String, default: "30 days" },
-        rating: { type: Number, default: 0 },
-        numReviews: { type: Number, default: 0 },
-        shipping: { type: Number, default: 0 },
+        refundPolicy: {
+            type: String,
+            default: "30 days",
+        },
+        rating: {
+            type: Number,
+            default: 0,
+        },
+        numberReviews: {
+            type: Number,
+            default: 0,
+        },
+        shipping: {
+            type: Number,
+            default: 0,
+        },
         subProducts: [
             {
                 sku: String,
@@ -47,8 +107,14 @@ const productSchema = new mongoose.Schema(
                         price: Number,
                     },
                 ],
-                discount: { type: Number, default: 0 },
-                sold: { type: Number, default: 0 },
+                discount: {
+                    type: Number,
+                    default: 0,
+                },
+                sold: {
+                    type: Number,
+                    default: 0,
+                },
             },
         ],
     },

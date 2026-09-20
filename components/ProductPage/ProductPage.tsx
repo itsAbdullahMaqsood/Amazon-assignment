@@ -8,7 +8,7 @@ import Infos from "./Infos";
 import InfosShipping from "./InfosShipping";
 import SimilarSwiper from "./SimilarSwiper";
 
-const ProductPage = ({ product }: any) => {
+const ProductPage = ({ product, similar }: any) => {
     const [activeImg, setActiveImg] = useState<string>("");
 
     return (
@@ -24,7 +24,7 @@ const ProductPage = ({ product }: any) => {
             </div>
 
             <div className="mt-2 mx-auto w-full md:w-4/5 p-2 border border-slate-200 rounded-lg">
-                <SimilarSwiper />
+                <SimilarSwiper products={similar} />
             </div>
 
             {/* Reviews section slots in here in a later prompt. */}
