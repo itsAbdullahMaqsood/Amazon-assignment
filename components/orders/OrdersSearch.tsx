@@ -4,14 +4,26 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-// Searches the signed-in user's own orders.
-const OrderSearch = () => {
+// Searches the signed-in user's own orders. `params` carries the tab and the
+// time range along, so searching does not throw away the current view.
+const OrdersSearch = ({ initial = "", params = "" }: any) => {
     const router = useRouter();
-    const [query, setQuery] = useState<string>("");
+    const [query, setQuery] = useState<string>(initial);
 
     const submitHandler = (e: any) => {
         e.preventDefault();
-        router.push(query.trim() ? `/profile/orders?search=${encodeURIComponent(query)}` : "/profile/orders");
+
+        const next = new URLSearchParams(params);
+        const term = query.trim();
+
+        if (term) {
+            next.set("search", term);
+        } else {
+            next.delete("search");
+        }
+
+        const search = next.toString();
+        router.push(search ? `/profile/orders?${search}` : "/profile/orders");
     };
 
     return (
@@ -27,7 +39,7 @@ const OrderSearch = () => {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search all orders"
-                    className="w-[260px] md:w-[420px] border border-slate-400 rounded-lg py-2.5 pl-10 pr-3 outline-none focus:border-[#007185]"
+                    className="w-[260px] md:w-[360px] border border-slate-400 rounded-lg py-2.5 pl-10 pr-3 outline-none focus:border-[#007185]"
                 />
             </div>
 
@@ -41,4 +53,4 @@ const OrderSearch = () => {
     );
 };
 
-export default OrderSearch;
+export default OrdersSearch;

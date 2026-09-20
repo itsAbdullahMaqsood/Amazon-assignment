@@ -10,7 +10,7 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import MenuSideBar from "@/components/Header/MenuSidebar";
 import SubTabs from "@/components/buyAgain/SubTabs";
-import OrderSearch from "@/components/buyAgain/OrderSearch";
+import OrdersSearch from "@/components/orders/OrdersSearch";
 import AislesRow from "@/components/buyAgain/AislesRow";
 import ProductRow from "@/components/buyAgain/ProductRow";
 import RecommendationCarousel from "@/components/profile/RecommendationCarousel";
@@ -110,7 +110,7 @@ const Page = async () => {
                 <div className="max-w-[1500px] mx-auto px-6 py-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <h1 className="text-3xl font-bold">Buy Again</h1>
-                        <OrderSearch />
+                        <OrdersSearch />
                     </div>
 
                     {buyAgain.length > 0 ? (

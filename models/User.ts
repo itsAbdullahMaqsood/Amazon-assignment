@@ -61,6 +61,27 @@ const userSchema = new mongoose.Schema(
                 viewedAt: Date,
             },
         ],
+        // Named lists created on /lists/create. `whishlist` below stays the one
+        // unnamed default list the product page saves into.
+        lists: [
+            {
+                name: String,
+                privacy: {
+                    type: String,
+                    default: "private",
+                },
+                items: [
+                    {
+                        product: {
+                            type: ObjectId,
+                            ref: "Product",
+                        },
+                        style: String,
+                    },
+                ],
+                createdAt: Date,
+            },
+        ],
         // Misspelled on purpose: later prompts read `whishlist`.
         whishlist: [
             {

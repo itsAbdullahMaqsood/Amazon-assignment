@@ -199,15 +199,15 @@ export const accountLinkCards = [
 ];
 
 export const flyoutLists = [
-    { label: "Create a List", href: placeholder("Create a List") },
-    { label: "Find a List or Registry", href: placeholder("Find a List or Registry") },
+    { label: "Create a List", href: "/lists/create" },
+    { label: "Find a List or Registry", href: "/registry/find" },
     { label: "Your Saved Books", href: placeholder("Your Saved Books") },
 ];
 
 export const flyoutAccount = [
     { label: "Account", href: "/profile" },
     { label: "Orders", href: "/profile/orders" },
-    { label: "Keep Shopping For", href: "/profile/recent" },
+    { label: "Keep Shopping For", href: "/keep-shopping" },
     { label: "Recommendations", href: "/profile" },
     { label: "Returns", href: placeholder("Returns") },
     { label: "Browsing History", href: "/profile/recent" },
