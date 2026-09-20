@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @plugin "tailwind-scrollbar-hide";
 
-@source "../pages";
+@source "../app";
 @source "../components";
 
 @theme {

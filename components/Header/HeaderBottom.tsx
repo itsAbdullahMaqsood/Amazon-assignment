@@ -1,3 +1,5 @@
+"use client";
+
 import { Bars3Icon, MapPinIcon } from "@heroicons/react/24/outline";
 
 const links = ["Deals", "Customer Service", "Registery", "Gift Cards", "Electoronics"];

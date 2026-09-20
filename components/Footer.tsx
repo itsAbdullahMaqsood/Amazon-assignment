@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
 

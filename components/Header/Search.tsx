@@ -1,21 +1,25 @@
+"use client";
+
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const Search = ({ searchHandler }: any) => {
     const router = useRouter();
-    const [query, setQuery] = useState<string>((router.query.search as string) || "");
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const [query, setQuery] = useState<string>(searchParams.get("search") || "");
 
     const submitHandler = (e: any) => {
         e.preventDefault();
 
         if (query.trim().length > 1) {
-            if (router.pathname !== "/browse") {
+            if (pathname !== "/browse") {
                 router.push(`/browse?search=${query}`);
             } else if (searchHandler) {
                 searchHandler(query);
             }
-        } else if (router.pathname === "/browse" && searchHandler) {
+        } else if (pathname === "/browse" && searchHandler) {
             searchHandler("");
         }
     };

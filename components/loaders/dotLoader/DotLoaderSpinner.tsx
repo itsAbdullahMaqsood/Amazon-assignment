@@ -1,3 +1,5 @@
+"use client";
+
 import { DotLoader } from "react-spinners";
 
 const DotLoaderSpinner = ({ loading }: any) => {

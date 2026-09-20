@@ -1,3 +1,5 @@
+"use client";
+
 import { MapPinIcon } from "@heroicons/react/24/outline";
 
 const DeliveryTo = () => {

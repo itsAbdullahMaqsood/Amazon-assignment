@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { ChevronDownIcon, ChevronRightIcon, ShoppingCartIcon, UserIcon } from "@heroicons/react/24/outline";
 
