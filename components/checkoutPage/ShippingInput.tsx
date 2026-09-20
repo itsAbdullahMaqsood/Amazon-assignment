@@ -32,9 +32,9 @@ const ShippingInput = ({ name, placeholder }: any) => {
                         setFocused(false);
                         onBlur(e);
                     }}
-                    className={`w-full rounded-xl py-4 px-3 outline outline-2 outline-slate-300 focus:outline-4 focus:outline-slate-300 ${
-                        error ? "text-red-500 outline-red-200 bg-red-50" : ""
-                    }`}
+                    className={`w-full rounded-xl px-3 outline outline-2 outline-slate-300 focus:outline-4 focus:outline-slate-300 ${
+                        moved ? "pt-6 pb-2" : "py-4"
+                    } ${error ? "text-red-500 outline-red-200 bg-red-50" : ""}`}
                 />
 
                 <span

@@ -26,11 +26,13 @@ const SingularSelect = ({ name, placeholder, data, header }: any) => {
                         setFocused(false);
                         onBlur(e);
                     }}
-                    className={`w-full rounded-xl py-4 px-3 bg-white outline outline-2 outline-slate-300 focus:outline-4 focus:outline-slate-300 cursor-pointer ${
+                    className={`w-full rounded-xl bg-white outline outline-2 outline-slate-300 focus:outline-4 focus:outline-slate-300 cursor-pointer px-3 ${
+                        moved ? "pt-6 pb-2" : "py-4"
+                    } ${
                         error ? "text-red-500 outline-red-200 bg-red-50" : ""
                     }`}
                 >
-                    <option value="">{header || "No Selected"}</option>
+                    <option value="">{header || ""}</option>
                     {data?.map((item: any) => (
                         <option key={item.code || item.name} value={item.name}>
                             {item.name}
@@ -43,7 +45,7 @@ const SingularSelect = ({ name, placeholder, data, header }: any) => {
                         moved ? "move" : ""
                     }`}
                 >
-                    {moved ? "" : placeholder}
+                    {placeholder}
                 </span>
             </div>
 
