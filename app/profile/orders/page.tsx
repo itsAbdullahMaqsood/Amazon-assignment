@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import connectDb from "@/lib/db";
 import Order from "@/models/Order";
 import Product from "@/models/Product";
+import { escapeRegex } from "@/utils/regex";
 import ProfileShell from "@/components/profile/ProfileShell";
 import OrdersList from "@/components/profile/OrdersList";
 
@@ -16,6 +17,7 @@ const Page = async ({ searchParams }: any) => {
 
     const query = await searchParams;
     const filter = query?.filter || "";
+    const search = query?.search || "";
 
     const clause: any = { user: session.user.id };
 
@@ -27,6 +29,10 @@ const Page = async ({ searchParams }: any) => {
         clause.status = filter;
     }
 
+    if (search) {
+        clause["products.name"] = { $regex: escapeRegex(search), $options: "i" };
+    }
+
     await connectDb();
 
     const orders = await Order.find(clause)
@@ -36,7 +42,7 @@ const Page = async ({ searchParams }: any) => {
 
     return (
         <ProfileShell title="Your Orders">
-            <OrdersList orders={JSON.parse(JSON.stringify(orders))} active={filter} />
+            <OrdersList orders={JSON.parse(JSON.stringify(orders))} active={filter} search={search} />
         </ProfileShell>
     );
 };

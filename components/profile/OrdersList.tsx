@@ -15,9 +15,19 @@ const filters = [
 const formatDate = (value: string) =>
     new Date(value).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
 
-const OrdersList = ({ orders, active }: any) => {
+const OrdersList = ({ orders, active, search }: any) => {
     return (
         <div>
+            {search && (
+                <p className="mb-4 text-sm">
+                    Showing orders matching{" "}
+                    <span className="font-semibold">&quot;{search}&quot;</span>{" "}
+                    <Link href="/profile/orders" className="text-[#0F5FA6] hover:underline">
+                        clear
+                    </Link>
+                </p>
+            )}
+
             <div className="flex flex-wrap gap-2 mb-6">
                 {filters.map((filter) => (
                     <Link

@@ -9,7 +9,7 @@ import { placeholder } from "@/components/profile/accountLinks";
 const links = [
     { label: "Early Prime Deals", href: placeholder("Early Prime Deals") },
     { label: "Prime Video", href: "/prime-video" },
-    { label: "Buy Again", href: placeholder("Buy Again") },
+    { label: "Buy Again", href: "/buy-again" },
     { label: "Groceries", href: placeholder("Groceries") },
     { label: "Coupons", href: placeholder("Coupons") },
     { label: "Pharmacy", href: placeholder("Pharmacy") },
