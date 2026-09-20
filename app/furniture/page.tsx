@@ -14,6 +14,7 @@ import {
     moreCategories,
     rooms,
     styles,
+    withTileImages,
     type Tile,
 } from "@/lib/furniture";
 
@@ -64,6 +65,16 @@ const Page = async ({ searchParams }: any) => {
 
     const linked = (tiles: Tile[]) => tiles.map((tile) => ({ ...tile, href: hrefFor(tile) }));
 
+    // Each tile picks up a real catalogue photo where one matches; the composed
+    // art stays as the fallback.
+    const [departmentTiles, categoryTiles, roomTiles, styleTiles, moreTiles] = await Promise.all([
+        withTileImages(departments),
+        withTileImages(categories),
+        withTileImages(rooms),
+        withTileImages(styles),
+        withTileImages(moreCategories),
+    ]);
+
     const room = query.room ? labelFor(rooms, query.room) || query.room : "";
     const style = query.style ? labelFor(styles, query.style) || query.style : "";
     const filtered = room || style;
@@ -76,7 +87,7 @@ const Page = async ({ searchParams }: any) => {
                 <div className="max-w-[1180px] mx-auto px-4">
                     <DepartmentStrip
                         title="Explore Amazon Home"
-                        tiles={linked(departments)}
+                        tiles={linked(departmentTiles)}
                         active="Furniture"
                     />
 
@@ -89,12 +100,12 @@ const Page = async ({ searchParams }: any) => {
                         <>
                             <TileCarousel
                                 title="Shop by category"
-                                tiles={linked(categories)}
+                                tiles={linked(categoryTiles)}
                             />
 
-                            <TileCarousel title="Shop by room" tiles={linked(rooms)} />
+                            <TileCarousel title="Shop by room" tiles={linked(roomTiles)} />
 
-                            <TileCarousel title="Shop by style" tiles={linked(styles)} />
+                            <TileCarousel title="Shop by style" tiles={linked(styleTiles)} />
 
                             <FeaturedDeals
                                 products={deals}
@@ -103,7 +114,7 @@ const Page = async ({ searchParams }: any) => {
 
                             <TileCarousel
                                 title="Explore more categories"
-                                tiles={linked(moreCategories)}
+                                tiles={linked(moreTiles)}
                             />
 
                             <BrandStrip />

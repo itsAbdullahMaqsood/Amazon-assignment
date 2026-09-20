@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
+import Image from "next/image";
+
 import FurnitureArt from "./art";
 
 // Declared outside the carousel so it is not recreated on every scroll tick.
@@ -91,7 +93,19 @@ const DepartmentStrip = ({ title, tiles, active }: any) => {
                                             : "border-transparent hover:border-[#d5d9d9]"
                                     }`}
                                 >
-                                    <FurnitureArt art={tile.art} className="h-[112px] w-full" />
+                                    {tile.image ? (
+                                        <div className="relative h-[112px] w-full rounded-lg overflow-hidden bg-[#f7f7f7]">
+                                            <Image
+                                                src={tile.image}
+                                                alt=""
+                                                fill
+                                                sizes="160px"
+                                                className="object-contain p-2"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <FurnitureArt art={tile.art} className="h-[112px] w-full" />
+                                    )}
 
                                     <p className="py-2 px-1 text-center text-sm text-[#0f1111] truncate">
                                         {tile.label}

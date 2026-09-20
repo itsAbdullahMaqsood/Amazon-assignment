@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
+import Image from "next/image";
+
 import FurnitureArt from "./art";
 
 // Declared outside the carousel so it is not recreated on every scroll tick.
@@ -82,10 +84,22 @@ const TileCarousel = ({ title, tiles }: any) => {
                     {tiles.map((tile: any) => (
                         <li key={tile.label} className="shrink-0 w-[216px]">
                             <Link href={tile.href} className="group block">
-                                <FurnitureArt
-                                    art={tile.art}
-                                    className="h-[216px] w-[216px] group-hover:opacity-90 transition-opacity"
-                                />
+                                {tile.image ? (
+                                    <div className="relative h-[216px] w-[216px] rounded-lg overflow-hidden bg-[#f7f7f7] group-hover:opacity-90 transition-opacity">
+                                        <Image
+                                            src={tile.image}
+                                            alt=""
+                                            fill
+                                            sizes="216px"
+                                            className="object-contain p-3"
+                                        />
+                                    </div>
+                                ) : (
+                                    <FurnitureArt
+                                        art={tile.art}
+                                        className="h-[216px] w-[216px] group-hover:opacity-90 transition-opacity"
+                                    />
+                                )}
 
                                 <p className="mt-2 text-center text-base leading-[1.3] text-[#0f1111] group-hover:text-[#C7511F] group-hover:underline">
                                     {tile.label}

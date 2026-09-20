@@ -2,6 +2,7 @@ import connectDb from "@/lib/db";
 import Category from "@/models/Category";
 import Product from "@/models/Product";
 import { toCardProduct } from "@/lib/recommendations";
+import { escapeRegex } from "@/utils/regex";
 import { placeholder } from "@/components/profile/accountLinks";
 
 // The tiles the Furniture storefront carries, in Amazon's own order and with its
@@ -10,6 +11,9 @@ import { placeholder } from "@/components/profile/accountLinks";
 export type Tile = {
     label: string;
     art: string;
+    // Filled in server-side by withTileImages: a real catalogue photo when one
+    // matches, otherwise the tile keeps its composed art.
+    image?: string;
     // A room or style tile filters this storefront; everything else hands off to
     // the catalog search the way Amazon's tiles hand off to /s.
     room?: string;
@@ -110,6 +114,31 @@ const detail = (product: any, name: string) =>
 
 // The whole storefront in one read: the deals strip, plus every product shaped
 // for a card and tagged with the room and style its tiles filter on.
+const imageOf = (product: any) => product?.subProducts?.[0]?.images?.[0]?.url || "";
+
+// Tiles used to render as composed art only, which read as missing images. Each
+// one now looks for a real product to illustrate it, by its search term, its
+// room or its style, and falls back to the art when the catalogue has nothing.
+export const withTileImages = async (tiles: Tile[]) => {
+    await connectDb();
+
+    return Promise.all(
+        tiles.map(async (tile) => {
+            const term = tile.search || tile.room || tile.style || tile.label;
+            const pattern = { $regex: escapeRegex(term), $options: "i" };
+
+            const product: any = await Product.findOne({
+                $or: [{ name: pattern }, { "details.value": pattern }],
+            })
+                .select("subProducts")
+                .sort({ "subProducts.sold": -1 })
+                .lean();
+
+            return { ...tile, image: imageOf(product) };
+        })
+    );
+};
+
 export const getFurnitureStorefront = async () => {
     await connectDb();
 
