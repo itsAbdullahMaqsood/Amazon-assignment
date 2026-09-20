@@ -1,16 +1,111 @@
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+import GitHub from "next-auth/providers/github";
+import bcrypt from "bcrypt";
+import crypto from "crypto";
 
-// Providers are added in the authentication prompt. The callbacks below are what
-// put the Mongo user id on the session, which every /api/user/* handler reads.
+import connectDb from "@/lib/db";
+import User from "@/models/User";
+
+// Auth.js v5 swallows plain Errors thrown from authorize() and reports a generic
+// failure, so the message travels in `code`, which signIn() returns to the client.
+class CredentialsError extends CredentialsSignin {
+    code: string;
+
+    constructor(message: string) {
+        super(message);
+        this.code = message;
+    }
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
-    providers: [],
     session: { strategy: "jwt" },
+    pages: { signIn: "/auth/signin" },
+    providers: [
+        Credentials({
+            credentials: {
+                email: { label: "Email", type: "email" },
+                password: { label: "Password", type: "password" },
+            },
+            authorize: async (credentials: any) => {
+                await connectDb();
+
+                const user: any = await User.findOne({ email: credentials?.email }).lean();
+
+                if (!user) {
+                    throw new CredentialsError("This email does not exist.");
+                }
+
+                const passwordMatches = await bcrypt.compare(
+                    String(credentials?.password || ""),
+                    user.password || ""
+                );
+
+                if (!passwordMatches) {
+                    throw new CredentialsError("Please enter the correct password.");
+                }
+
+                return {
+                    id: String(user._id),
+                    name: user.name,
+                    email: user.email,
+                    image: user.image,
+                    role: user.role,
+                };
+            },
+        }),
+        Google({
+            clientId: process.env.GOOGLE_ID,
+            clientSecret: process.env.GOOGLE_SECRET,
+        }),
+        GitHub({
+            clientId: process.env.GITHUB_ID,
+            clientSecret: process.env.GITHUB_SECRET,
+        }),
+    ],
     callbacks: {
-        jwt: async ({ token, user }: any) => {
-            if (user) {
-                token.sub = user.id || token.sub;
-                token.role = user.role || token.role;
+        // OAuth users get a Mongo document on first sign-in, so every signed-in
+        // user has an _id the API routes can resolve.
+        signIn: async ({ user, account }: any) => {
+            if (account?.provider === "credentials") {
+                return true;
             }
+
+            await connectDb();
+
+            const existing = await User.findOne({ email: user.email });
+
+            if (!existing) {
+                await new User({
+                    name: user.name,
+                    email: user.email,
+                    image: user.image,
+                    emailVerified: true,
+                    password: await bcrypt.hash(crypto.randomBytes(24).toString("base64url"), 12),
+                }).save();
+            }
+
+            return true;
+        },
+        jwt: async ({ token, user, account }: any) => {
+            if (user) {
+                if (account?.provider === "credentials") {
+                    token.sub = user.id;
+                    token.role = user.role;
+                } else {
+                    // The provider's own id must never survive here: every API route
+                    // resolves the user by token.sub.
+                    await connectDb();
+                    const dbUser: any = await User.findOne({ email: user.email }).lean();
+
+                    if (dbUser) {
+                        token.sub = String(dbUser._id);
+                        token.role = dbUser.role;
+                    }
+                }
+            }
+
             return token;
         },
         session: async ({ session, token }: any) => {
@@ -18,6 +113,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 session.user.id = token.sub;
                 session.user.role = token.role;
             }
+
             return session;
         },
     },

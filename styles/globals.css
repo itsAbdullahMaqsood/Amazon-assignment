@@ -78,6 +78,12 @@
 }
 
 @layer components {
+    .error-input input {
+        @apply bg-red-300 placeholder:text-gray-800 border-gray-500;
+    }
+    .error-input label svg {
+        @apply text-red-500;
+    }
     .products-swiper .swiper-button-next,
     .products-swiper .swiper-button-prev {
         @apply bg-white w-9 h-9 rounded-full text-slate-800 shadow-md;
@@ -106,5 +112,25 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
+}
+
+/* "New to Amazon?" divider: a centered caption flanked by two hairlines. */
+.auth-divider {
+    position: relative;
+}
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 31%;
+    height: 1px;
+    background-color: var(--color-slate-200);
+}
+.auth-divider::before {
+    left: 0;
+}
+.auth-divider::after {
+    right: 0;
 }
 

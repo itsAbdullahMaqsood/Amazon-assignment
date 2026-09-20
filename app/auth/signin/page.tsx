@@ -1,0 +1,36 @@
+import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+import Header from "@/components/Header/Header";
+import Footer from "@/components/Footer";
+import MenuSideBar from "@/components/Header/MenuSidebar";
+import SignInPage from "@/components/User/SignInPage";
+
+const Page = async ({ searchParams }: any) => {
+    const query = await searchParams;
+    const session = await auth();
+
+    if (session) {
+        redirect(query?.callbackUrl || "/");
+    }
+
+    return (
+        <>
+            <Header title="Sign in" />
+
+            <main className="bg-slate-100">
+                <SignInPage
+                    callbackUrl={query?.callbackUrl || ""}
+                    activated={query?.activated === "1"}
+                    tokenError={query?.error === "invalid_token"}
+                />
+            </main>
+
+            <Footer />
+
+            <MenuSideBar />
+        </>
+    );
+};
+
+export default Page;

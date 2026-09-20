@@ -15,8 +15,10 @@ export const GET = async (req: Request, { params }: any) => {
         const product: any = await Product.findById(id).lean();
         const subProduct = product.subProducts[style];
         const discount = subProduct.discount || 0;
-        const priceBefore = subProduct.sizes[size].price;
-        const price = discount ? priceBefore - priceBefore / 100 * discount : priceBefore;
+        // Rounded once here: cart lines are built straight from this response.
+        const round2 = (value: number) => Number(value.toFixed(2));
+        const priceBefore = round2(subProduct.sizes[size].price);
+        const price = round2(discount ? priceBefore - priceBefore / 100 * discount : priceBefore);
 
         return NextResponse.json({
             _id: product._id,

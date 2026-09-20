@@ -1,19 +1,36 @@
 import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-import { auth } from "@/auth";
+// Next 16 renamed middleware.ts to proxy.ts. Signed-out visitors are bounced to
+// the project's own sign-in page, carrying the path they asked for.
+const proxy = async (req: any) => {
+    const token = await getToken({
+        req,
+        secret: process.env.AUTH_SECRET,
+        secureCookie: process.env.NODE_ENV === "production",
+        cookieName:
+            process.env.NODE_ENV === "production"
+                ? "__Secure-authjs.session-token"
+                : "authjs.session-token",
+    });
 
-// Auth protection for the App Router. Next 16 renamed middleware.ts to proxy.ts,
-// so the Auth.js handler is exported as the default proxy function here.
-export default auth((req) => {
-    if (!req.auth) {
-        const signInUrl = new URL("/api/auth/signin", req.nextUrl.origin);
-        signInUrl.searchParams.set("callbackUrl", req.nextUrl.href);
+    const { pathname, search, origin } = req.nextUrl;
+
+    if (!token) {
+        const signInUrl = new URL("/auth/signin", origin);
+        signInUrl.searchParams.set("callbackUrl", `${pathname}${search}`);
         return NextResponse.redirect(signInUrl);
     }
-});
 
-// Only routes that require a signed-in user run through Auth.js. Public routes,
-// static assets and the auth endpoints themselves are left untouched.
+    if (pathname.startsWith("/admin") && token.role !== "admin") {
+        return NextResponse.redirect(new URL("/", origin));
+    }
+
+    return NextResponse.next();
+};
+
+export default proxy;
+
 export const config = {
-    matcher: ["/cart", "/profile/:path*", "/orders/:path*"],
+    matcher: ["/cart", "/checkout", "/order/:path*", "/profile/:path*", "/admin/:path*"],
 };
