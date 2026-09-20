@@ -9,7 +9,7 @@ other than the one that created it.
 |---|---|
 | Tool | Claude Code (CLI + VS Code extension), v2.1.109 |
 | Model (planning + execution) | `claude-opus-5[1m]` — Opus 5, 1M context. One model does both; there is no separate planner/executor split. |
-| Canary sessions | `claude-sonnet-4-6` (see note below) |
+| Canary sessions | `claude-sonnet-4-6` (canaries 1–2, see note below); `claude-opus-5[1m]` (canary 3) |
 
 Note on the canary model: the canaries were run as separate non-interactive
 sessions via `claude -p`. The first attempt inherited the 1M-context model and
@@ -55,6 +55,7 @@ The canaries landed in:
 
 - `.agent-logs/2026-09-20_11-41-55_056cbfd7-93dd-4f29-bdcb-eb0c2e225e85.md`
 - `.agent-logs/2026-09-20_11-42-09_82058e42-df3a-4487-b99a-7bd3cb46ff4f.md`
+- `.agent-logs/2026-09-20_11-49-53_6decef82-67cf-4d61-b26b-7ddb12b864b2.md`
 
 `.agent-logs/` is **not** gitignored. `.gitignore` excludes only
 `.claude/.capture-state/`, which holds per-session turn counters, not log content.
@@ -99,6 +100,55 @@ Memory intact. Second session confirmed.
 
 Profile already captured. Want me to update the "8x assignment" note with more detail — or is this purely a memory persistence test?
 ```
+
+## Canary 3 — session `6decef82`, raw
+
+A third session, started from the VS Code extension rather than `claude -p`, and
+running on `claude-opus-5[1m]` instead of the sonnet canaries. Hooks fired with no
+change to config and no prompting. Two things this one adds over canaries 1 and 2:
+
+- The prompt entry was written at submit time, **before** the model ran a single
+  tool, and was visible on disk mid-turn.
+- The IDE injected an `<ide_selection>` block into the prompt. It is stored
+  verbatim, tags and all, rather than being cleaned up — the log records what was
+  actually submitted, not a tidied version of it.
+
+```
+[LOG_ENTRY type=PROMPT num=1 session=6decef82]
+timestamp: 2026-09-20T11:49:53.196Z
+model: claude-opus-5
+
+<ide_selection>The user selected the lines 1 to 4 from /Users/mac/Desktop/Vs Code Folders/flutter/Amazon-assignment/CAPTURE-TEST.md:
+# Capture Test
+
+Proof that prompt/response capture is installed, automatic, and works in sessions
+other than the one that created it.
+
+This may or may not be related to the current task.</ide_selection>
+CAPTURE TEST — 8x assignment, Abdullah Maqsood
+
+
+[LOG_ENTRY type=RESPONSE num=1 session=6decef82]
+timestamp: 2026-09-20T11:50:14.658Z
+model: claude-opus-5
+
+Capture works. This session (`6decef82`) already logged, live, no manual step.
+
+Proof:
+- [.agent-logs/2026-09-20_11-49-53_6decef82-...md](.agent-logs/2026-09-20_11-49-53_6decef82-67cf-4d61-b26b-7ddb12b864b2.md) — created at prompt submit, before I did anything
+- Prompt stored verbatim, including `<ide_selection>` block IDE injected
+- Sidecar counter exists: `.claude/.capture-state/6decef82-....json` — numbering not parsed from log, so pasted `LOG_ENTRY` text can't corrupt it
+- `model: pending` in entry + `model: unknown` in frontmatter — both patched when `Stop` hook fires at end of this turn
+
+Session count now 7 logs. This one is the 3rd independent session proving hook lives in repo, not in the session that built it.
+
+Uncommitted: current session log (still being written — `Stop` appends response after this message). Want me to commit it next turn?
+```
+
+Note on the recorded model string: the entry says `claude-opus-5`, while the
+session's full model id is `claude-opus-5[1m]`. The hook records the model name
+Claude Code reports on the transcript entry, which drops the context-window
+suffix. Not corrected by hand — the log says what the hook saw.
 
 ## What did not work first time
 
