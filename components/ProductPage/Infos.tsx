@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
-import { useSearchParams } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import {
     ArrowPathIcon,
     HeartIcon,
@@ -22,6 +22,8 @@ import Accordion from "@/components/shared/Accordion";
 
 const Infos = ({ product, setActiveImg }: any) => {
     const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
     const dispatch = useAppDispatch();
     const cart = useAppSelector((state) => state.cart);
     const { data: session }: any = useSession();
@@ -84,7 +86,7 @@ const Infos = ({ product, setActiveImg }: any) => {
 
     const addToWishListHandler = async () => {
         if (!session) {
-            signIn();
+            router.push(`/auth/signin?callbackUrl=${encodeURIComponent(pathname)}`);
             return;
         }
 

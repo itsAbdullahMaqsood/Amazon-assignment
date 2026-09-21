@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 
 const Empty = () => {
@@ -21,12 +21,12 @@ const Empty = () => {
             </Link>
 
             {!session && (
-                <button
-                    onClick={() => signIn()}
-                    className="w-52 rounded-full p-2 bg-amazon-blue_light text-slate-100 cursor-pointer"
+                <Link
+                    href="/auth/signin?callbackUrl=/cart"
+                    className="w-52 text-center rounded-full p-2 bg-amazon-blue_light text-slate-100"
                 >
                     Sign In / Register
-                </button>
+                </Link>
             )}
         </div>
     );

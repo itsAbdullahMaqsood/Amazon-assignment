@@ -4,7 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 import { flyoutAccount, flyoutLists } from "@/components/profile/accountLinks";
@@ -15,6 +15,10 @@ const AccountFlyout = () => {
     const [open, setOpen] = useState<boolean>(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const panelId = useId();
+
+    // next-auth's signIn() with no provider hard-navigates to /api/auth/signin,
+    // which only bounces back here once the config is read. Link to our own page.
+    const signInHref = `/auth/signin?callbackUrl=${encodeURIComponent(pathname || "/")}`;
 
     // Closing on navigation is a render-time adjustment: an effect that only
     // calls setState would trigger a second render pass.
@@ -100,7 +104,7 @@ const AccountFlyout = () => {
 
                                     <div className="ml-auto flex items-center gap-4 text-[#007185] text-sm">
                                         <button
-                                            onClick={() => signIn()}
+                                            onClick={() => signOut({ callbackUrl: "/auth/signin" })}
                                             className="hover:underline cursor-pointer"
                                         >
                                             Switch Accounts
@@ -115,12 +119,12 @@ const AccountFlyout = () => {
                                 </div>
                             ) : (
                                 <div className="flex flex-col items-center gap-2 bg-[#e7f2f3] rounded-lg p-4">
-                                    <button
-                                        onClick={() => signIn()}
-                                        className="button-orange px-10 py-1.5 text-sm cursor-pointer"
+                                    <Link
+                                        href={signInHref}
+                                        className="button-orange px-10 py-1.5 text-sm text-center"
                                     >
                                         Sign in
-                                    </button>
+                                    </Link>
                                     <p className="text-xs">
                                         New customer?{" "}
                                         <Link href="/auth/register" className="text-[#007185] hover:underline">
