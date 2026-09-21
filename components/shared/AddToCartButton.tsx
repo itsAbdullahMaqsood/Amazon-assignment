@@ -8,7 +8,7 @@ import { addToCart, updateCart } from "@/redux/slices/CartSlice";
 
 // Builds the same cart line the product page does: the API response plus qty,
 // size and _uid.
-const AddToCartButton = ({ productId, style = 0, size = 0 }: any) => {
+const AddToCartButton = ({ productId, style = 0, size }: any) => {
     const dispatch = useAppDispatch();
     const cart = useAppSelector((state) => state.cart);
     const [loading, setLoading] = useState<boolean>(false);
@@ -19,14 +19,17 @@ const AddToCartButton = ({ productId, style = 0, size = 0 }: any) => {
             setLoading(true);
             setError("");
 
-            const { data } = await axios.get(`/api/product/${productId}?style=${style}&size=${size}`);
+            const query = size === undefined ? "" : `&size=${size}`;
+            const { data } = await axios.get(`/api/product/${productId}?style=${style}${query}`);
 
             if (data.quantity < 1) {
                 setError("Out of stock");
                 return;
             }
 
-            const _uid = `${data._id}_${style}_${size}`;
+            // sizeIndex is whatever row the API resolved, so the line matches the
+            // one the product page would have built.
+            const _uid = `${data._id}_${style}_${data.sizeIndex}`;
             const existing = cart.cartItems.find((item: any) => item._uid === _uid);
 
             if (existing) {

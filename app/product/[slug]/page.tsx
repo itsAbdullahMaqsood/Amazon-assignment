@@ -12,6 +12,7 @@ import MenuSideBar from "@/components/Header/MenuSidebar";
 import Footer from "@/components/Footer";
 import ProductPage from "@/components/ProductPage/ProductPage";
 import { recordProductView } from "@/lib/recommendations";
+import { resolveSizeIndex } from "@/utils/sizes";
 
 const applyDiscount = (price: number, discount: number) =>
     discount > 0 ? price - price / 100 * discount : price;
@@ -19,7 +20,7 @@ const applyDiscount = (price: number, discount: number) =>
 // Cached so generateMetadata and the page share one query. Resolving (and 404ing)
 // in generateMetadata happens before the shell streams, so a missing product gets a
 // real 404 status instead of a 200 carrying the not-found UI.
-const getProduct = cache(async (slug: string, style: number, size: number) => {
+const getProduct = cache(async (slug: string, style: number, sizeParam: any) => {
     await connectDb();
 
     const product: any = await Product.findOne({ slug })
@@ -33,6 +34,10 @@ const getProduct = cache(async (slug: string, style: number, size: number) => {
     }
 
     const subProduct = product.subProducts?.[style];
+
+    // A product with one size row (most of the catalogue) has nothing to pick,
+    // so the page resolves a size itself instead of waiting for ?size= .
+    const size = resolveSizeIndex(subProduct?.sizes, sizeParam);
 
     if (!subProduct || !subProduct.sizes?.[size]) {
         return null;
@@ -72,6 +77,7 @@ const getProduct = cache(async (slug: string, style: number, size: number) => {
     return {
         ...product,
         style,
+        size,
         images: subProduct.images,
         sizes: subProduct.sizes,
         discount,
@@ -107,7 +113,7 @@ const getSimilarProducts = cache(async (categoryId: string, currentId: string) =
 export const generateMetadata = async ({ params, searchParams }: any) => {
     const { slug } = await params;
     const query = await searchParams;
-    const product = await getProduct(slug, Number(query?.style) || 0, Number(query?.size) || 0);
+    const product = await getProduct(slug, Number(query?.style) || 0, query?.size);
 
     if (!product) {
         notFound();
@@ -120,9 +126,8 @@ const Page = async ({ params, searchParams }: any) => {
     const { slug } = await params;
     const query = await searchParams;
     const style = Number(query?.style) || 0;
-    const size = Number(query?.size) || 0;
 
-    const product = await getProduct(slug, style, size);
+    const product = await getProduct(slug, style, query?.size);
 
     if (!product) {
         notFound();

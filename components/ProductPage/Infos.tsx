@@ -19,6 +19,7 @@ import { addToCart, updateCart } from "@/redux/slices/CartSlice";
 import { showDialog } from "@/redux/slices/DialogSlice";
 import StarRating from "@/components/shared/StarRating";
 import Accordion from "@/components/shared/Accordion";
+import { hasSizeChoice } from "@/utils/sizes";
 
 const Infos = ({ product, setActiveImg }: any) => {
     const searchParams = useSearchParams();
@@ -29,18 +30,21 @@ const Infos = ({ product, setActiveImg }: any) => {
     const { data: session }: any = useSession();
 
     const styleParam = searchParams.get("style");
-    const sizeParam = searchParams.get("size");
+    // product.size is the index the server priced this render with: the query
+    // param when it was given, otherwise the variant's default row.
+    const sizeIndex = product.size;
+    const sizeChoice = hasSizeChoice(product.sizes);
 
     const [loading, setLoading] = useState<boolean>(false);
     const [qty, setQty] = useState<number>(1);
     const [error, setError] = useState<string>("");
-    const [tracked, setTracked] = useState({ style: styleParam, size: sizeParam });
+    const [tracked, setTracked] = useState({ style: styleParam, size: sizeIndex });
 
     // Adjusting state while rendering rather than in an effect: picking another
     // color resets the quantity (and drops the size from the URL), while picking
     // another size only clamps the quantity to what that size has in stock.
-    if (tracked.style !== styleParam || tracked.size !== sizeParam) {
-        setTracked({ style: styleParam, size: sizeParam });
+    if (tracked.style !== styleParam || tracked.size !== sizeIndex) {
+        setTracked({ style: styleParam, size: sizeIndex });
 
         if (tracked.style !== styleParam) {
             setQty(1);
@@ -50,15 +54,10 @@ const Infos = ({ product, setActiveImg }: any) => {
     }
 
     const addToCartHandler = async () => {
-        if (!sizeParam) {
-            setError("Please Select a size");
-            return;
-        }
-
         setLoading(true);
 
         const { data } = await axios.get(
-            `/api/product/${product._id}?style=${product.style}&size=${sizeParam}`
+            `/api/product/${product._id}?style=${product.style}&size=${sizeIndex}`
         );
 
         if (qty > data.quantity) {
@@ -66,7 +65,7 @@ const Infos = ({ product, setActiveImg }: any) => {
         } else if (data.quantity < 1) {
             setError("this Product is out of stock!");
         } else {
-            const _uid = `${product._id}_${product.style}_${sizeParam}`;
+            const _uid = `${product._id}_${product.style}_${sizeIndex}`;
             const existing = cart.cartItems.find((item: any) => item._uid === _uid);
 
             if (existing) {
@@ -112,9 +111,7 @@ const Infos = ({ product, setActiveImg }: any) => {
         }
     };
 
-    const availableQty = sizeParam
-        ? product.quantity
-        : product.sizes.reduce((acc: number, s: any) => acc + s.qty, 0);
+    const availableQty = product.quantity;
 
     return (
         <div className="flex flex-col row-span-3 md:col-span-3 max-md:px-2 mb-4">
@@ -131,17 +128,13 @@ const Infos = ({ product, setActiveImg }: any) => {
             <div className="h-px w-full bg-slate-200 my-3" />
 
             <div className="flex items-center gap-3">
-                <span className="text-4xl font-semibold text-red-500">
-                    {sizeParam ? `${product.price}$` : product.priceRange}
-                </span>
+                <span className="text-4xl font-semibold text-red-500">{product.price}$</span>
 
                 {product.discount > 0 && (
                     <>
-                        {sizeParam && (
-                            <span className="text-xl line-through text-slate-400">
-                                {product.priceBefore}$
-                            </span>
-                        )}
+                        <span className="text-xl line-through text-slate-400">
+                            {product.priceBefore}$
+                        </span>
                         <span className="text-blue-500">(-{product.discount}%)</span>
                     </>
                 )}
@@ -151,7 +144,7 @@ const Infos = ({ product, setActiveImg }: any) => {
 
             <p className="text-sm my-4">{product.description}</p>
 
-            <div className="mt-2">
+            <div className={`mt-2 ${sizeChoice ? "" : "hidden"}`}>
                 <h4 className="font-semibold mb-2">Select a Size:</h4>
                 <div className="flex flex-wrap gap-3">
                     {product.sizes.map((s: any, i: number) => (
@@ -159,7 +152,7 @@ const Infos = ({ product, setActiveImg }: any) => {
                             key={i}
                             href={`/product/${product.slug}?style=${product.style}&size=${i}`}
                             className={`w-11 h-11 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center hover:outline hover:outline-1 hover:outline-slate-400 hover:outline-offset-[3px] ${
-                                Number(sizeParam) === i
+                                sizeIndex === i
                                     ? "font-semibold bg-linear-to-r from-amazon-orange to-slate-100"
                                     : ""
                             }`}
