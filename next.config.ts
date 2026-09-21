@@ -24,6 +24,11 @@ const nextConfig: NextConfig = {
     typescript: {
         ignoreBuildErrors: true,
     },
+    // Enables forbidden(): an admin page reached by a non-admin renders a real
+    // 403 (app/forbidden.tsx) instead of quietly redirecting.
+    experimental: {
+        authInterrupts: true,
+    },
 };
 
 export default nextConfig;

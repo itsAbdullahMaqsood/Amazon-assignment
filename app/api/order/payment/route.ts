@@ -7,6 +7,7 @@ import Order from "@/models/Order";
 import Product from "@/models/Product";
 import Cart from "@/models/Cart";
 import User from "@/models/User";
+import { adjustStock } from "@/lib/stock";
 
 // Simulated payment. Marking an order paid is also the only place stock is
 // consumed, so the already-paid guard below is what keeps it from being applied
@@ -47,42 +48,7 @@ export const PUT = async (req: Request) => {
 
         await order.save();
 
-        for (const line of order.products) {
-            const product: any = await Product.findById(line.product);
-
-            if (!product) {
-                continue;
-            }
-
-            // The line's image is the variant's own first image, so it identifies
-            // the variant exactly; two variants of one product can share a colour
-            // hex, which would otherwise decrement the wrong one.
-            const subProduct =
-                product.subProducts.find((sub: any) => sub.images?.[0]?.url === line.image) ||
-                product.subProducts.find(
-                    (sub: any) =>
-                        sub.color?.color === line.color?.color &&
-                        (sub.color?.image || "") === (line.color?.image || "")
-                ) ||
-                product.subProducts.find((sub: any) =>
-                    sub.sizes.some((size: any) => size.size === line.size)
-                );
-
-            if (!subProduct) {
-                continue;
-            }
-
-            const sizeRow = subProduct.sizes.find((size: any) => size.size === line.size);
-
-            if (!sizeRow) {
-                continue;
-            }
-
-            sizeRow.qty = Math.max(0, sizeRow.qty - line.qty);
-            subProduct.sold = (subProduct.sold || 0) + line.qty;
-
-            await product.save();
-        }
+        await adjustStock(Product, order, -1);
 
         await Cart.deleteOne({ user: order.user });
 

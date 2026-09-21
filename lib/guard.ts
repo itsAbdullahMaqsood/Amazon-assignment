@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { forbidden, redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import connectDb from "@/lib/db";
@@ -36,4 +37,20 @@ export const requireAdmin = async () => {
     }
 
     return { who };
+};
+
+// For admin pages. The proxy already turns non-admins away, but it trusts the
+// JWT; this re-checks against the database on every render.
+export const requireAdminPage = async (callbackUrl = "/admin/dashboard") => {
+    const who = await currentUser();
+
+    if (!who) {
+        redirect(`/auth/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`);
+    }
+
+    if (!isAdmin(who)) {
+        forbidden();
+    }
+
+    return who;
 };
