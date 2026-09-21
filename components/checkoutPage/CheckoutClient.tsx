@@ -15,6 +15,8 @@ const CheckoutClient = ({ user, cart }: any) => {
         user.defaultPaymentMethod || "paypal"
     );
     const [totalAfterDiscount, setTotalAfterDiscount] = useState<any>("");
+    // Amazon spends a gift-card balance by default and lets you opt out.
+    const [useGiftCard, setUseGiftCard] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(false);
 
     // Derived from the address list, never mirrored into its own state.
@@ -33,6 +35,9 @@ const CheckoutClient = ({ user, cart }: any) => {
                 <Payment paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} />
                 <Summary
                     cart={cart}
+                    giftCardBalance={Number(user.giftCardBalance || 0)}
+                    useGiftCard={useGiftCard}
+                    setUseGiftCard={setUseGiftCard}
                     paymentMethod={paymentMethod}
                     selectedAddress={selectedAddress}
                     totalAfterDiscount={totalAfterDiscount}

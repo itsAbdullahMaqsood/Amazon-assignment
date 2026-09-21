@@ -18,7 +18,7 @@ export const POST = async (req: Request) => {
             return NextResponse.json({ message: "Not signed in" }, { status: 401 });
         }
 
-        const { shippingAddress, paymentMethod, couponApplied } = await req.json();
+        const { shippingAddress, paymentMethod, couponApplied, useGiftCard } = await req.json();
 
         await connectDb();
 
@@ -50,6 +50,19 @@ export const POST = async (req: Request) => {
             }
         }
 
+        // The balance is spent here, never on the client: the request only says
+        // whether to use it.
+        let giftCardApplied = 0;
+
+        if (useGiftCard && user.giftCardBalance > 0) {
+            giftCardApplied = Number(Math.min(user.giftCardBalance, total).toFixed(2));
+            total = Number((total - giftCardApplied).toFixed(2));
+
+            user.giftCardBalance = Number((user.giftCardBalance - giftCardApplied).toFixed(2));
+            user.giftCardHistory.push({ code: "", amount: giftCardApplied, type: "used", at: new Date() });
+            await user.save();
+        }
+
         const order = await new Order({
             user: user._id,
             products: cart.products,
@@ -58,6 +71,7 @@ export const POST = async (req: Request) => {
             total,
             totalBeforeDiscount: cart.cartTotal,
             couponApplied: validCoupon,
+            giftCardApplied,
             shippingPrice: 0,
             taxPrice: 0,
             isPaid: false,

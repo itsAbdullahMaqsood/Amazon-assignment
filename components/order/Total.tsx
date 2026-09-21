@@ -1,7 +1,8 @@
 const Total = ({ order }: any) => {
     // The saving is derived from the two stored totals rather than read from a
     // separate field, so it can never disagree with them.
-    const saving = (order.totalBeforeDiscount - order.total).toFixed(2);
+    const giftCard = Number(order.giftCardApplied || 0);
+    const saving = (order.totalBeforeDiscount - order.total - giftCard).toFixed(2);
 
     return (
         <div className="space-y-2 mt-4 text-right">
@@ -16,6 +17,13 @@ const Total = ({ order }: any) => {
                         Coupon Applied: (<i className="text-green-600">{order.couponApplied}</i>)
                     </span>
                     <span>- {saving}$</span>
+                </div>
+            )}
+
+            {giftCard > 0 && (
+                <div className="flex items-center justify-between font-semibold text-slate-800">
+                    <span>Gift card balance:</span>
+                    <span>- {giftCard.toFixed(2)}$</span>
                 </div>
             )}
 

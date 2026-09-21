@@ -19,6 +19,9 @@ const schema = z.object({
 
 const Summary = ({
     cart,
+    giftCardBalance = 0,
+    useGiftCard,
+    setUseGiftCard,
     paymentMethod,
     selectedAddress,
     totalAfterDiscount,
@@ -67,6 +70,7 @@ const Summary = ({
                 shippingAddress: selectedAddress,
                 paymentMethod,
                 couponApplied: methods.getValues("coupon"),
+                useGiftCard,
             });
 
             router.push(`/order/${data.order_id}`);
@@ -107,6 +111,21 @@ const Summary = ({
 
             {totalAfterDiscount !== "" && Number(totalAfterDiscount) < cart.cartTotal && (
                 <p className="font-bold">New Price: {totalAfterDiscount}$</p>
+            )}
+
+            {giftCardBalance > 0 && (
+                <label className="flex items-start gap-2 mt-3 text-sm cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={useGiftCard}
+                        onChange={(e) => setUseGiftCard(e.target.checked)}
+                        className="mt-1"
+                    />
+                    <span>
+                        Use your gift card balance ({giftCardBalance.toFixed(2)}$). Whatever it
+                        does not cover is charged to your payment method.
+                    </span>
+                </label>
             )}
 
             <button
