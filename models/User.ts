@@ -33,6 +33,24 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: "",
         },
+        // Gift card money is only ever written by /api/user/giftcard/redeem, so the
+        // balance and the ledger behind it stay server-owned.
+        giftCardBalance: {
+            type: Number,
+            default: 0,
+        },
+        giftCardHistory: [
+            {
+                code: String,
+                amount: Number,
+                type: {
+                    type: String,
+                    enum: ["redeemed", "used"],
+                    default: "redeemed",
+                },
+                at: Date,
+            },
+        ],
         address: [
             {
                 firstName: String,
