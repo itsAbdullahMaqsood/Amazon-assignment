@@ -120,6 +120,14 @@ Client code never decides a price.
   line's own name, image and price rather than trusting the request.
 - Search terms are escaped before they reach a Mongo `$regex` (`utils/regex.ts`).
 
+## Admin
+
+The dashboard lives at `/admin/dashboard` (orders, products, categories, sub-categories,
+coupons, users). `npm run seed` creates an admin account and prints its password once. To
+make any existing account an admin, change its `role` to `"admin"` from the Users screen
+(or in the database). Every admin page and route re-reads the role from the database, so a
+demoted admin loses access immediately.
+
 ## Auth notes
 
 - Sessions are JWTs; there is no database adapter. OAuth users get a Mongo document on first
