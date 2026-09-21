@@ -2,30 +2,42 @@ import mongoose from "mongoose";
 
 const { ObjectId } = mongoose.Schema.Types;
 
-const reviewSchema = new mongoose.Schema({
-    reviewBy: {
-        type: ObjectId,
-        ref: "User",
-        required: true,
+// Timestamped so "Most recent" sorts on something real. Reviews seeded before
+// this was added carry no createdAt, so the cards fall back to no date rather
+// than rendering an invalid one.
+const reviewSchema = new mongoose.Schema(
+    {
+        reviewBy: {
+            type: ObjectId,
+            ref: "User",
+            required: true,
+        },
+        rating: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
+        review: {
+            type: String,
+            required: true,
+        },
+        size: String,
+        style: {
+            color: String,
+            image: String,
+        },
+        fit: String,
+        images: [],
+        likes: [],
+        // Earned, never claimed: the review route sets this from the reviewer's
+        // own paid orders and ignores anything the request says about it.
+        verified: {
+            type: Boolean,
+            default: false,
+        },
     },
-    rating: {
-        type: Number,
-        required: true,
-        default: 0,
-    },
-    review: {
-        type: String,
-        required: true,
-    },
-    size: String,
-    style: {
-        color: String,
-        image: String,
-    },
-    fit: String,
-    images: [],
-    likes: [],
-});
+    { timestamps: true }
+);
 
 // One Product is a listing; each subProducts entry is a COLOR VARIANT carrying its
 // own images, size/price/qty rows and discount.
@@ -120,6 +132,13 @@ const productSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+// Every catalogue query the app runs was a collection scan. These cover the
+// browse filters, the department links and the "top selling" sorts.
+productSchema.index({ category: 1, rating: -1 });
+productSchema.index({ brand: 1 });
+productSchema.index({ "subProducts.sold": -1 });
+productSchema.index({ createdAt: -1 });
 
 const Product = mongoose.models.Product || mongoose.model("Product", productSchema);
 

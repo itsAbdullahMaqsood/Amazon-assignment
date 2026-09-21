@@ -27,6 +27,10 @@ const videoSchema = new mongoose.Schema(
 
 videoSchema.index({ tmdbId: 1, mediaType: 1 }, { unique: true });
 
+// The rows sort by popularity, sometimes within one media type.
+videoSchema.index({ popularity: -1 });
+videoSchema.index({ mediaType: 1, popularity: -1 });
+
 const Video = mongoose.models.Video || mongoose.model("Video", videoSchema);
 
 export default Video;

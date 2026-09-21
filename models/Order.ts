@@ -102,6 +102,9 @@ const orderSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+// Every order screen reads one customer's orders newest first.
+orderSchema.index({ user: 1, createdAt: -1 });
+
 const Order = mongoose.models.Order || mongoose.model("Order", orderSchema);
 
 export default Order;
