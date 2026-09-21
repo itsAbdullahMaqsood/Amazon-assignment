@@ -54,6 +54,11 @@ const orderSchema = new mongoose.Schema(
         },
         totalBeforeDiscount: Number,
         couponApplied: String,
+        // What the customer's gift-card balance covered, deducted from total.
+        giftCardApplied: {
+            type: Number,
+            default: 0,
+        },
         taxPrice: {
             type: Number,
             default: 0,
@@ -70,6 +75,29 @@ const orderSchema = new mongoose.Schema(
         },
         paidAt: Date,
         deliveredAt: Date,
+        // One entry per line the shopper asked to send back. `line` is the index
+        // into `products`, and the name/image/qty are copied from that line by the
+        // route handler so the card keeps rendering if the catalogue moves on.
+        returnRequests: [
+            {
+                line: Number,
+                name: String,
+                image: String,
+                qty: Number,
+                reason: String,
+                comments: String,
+                refundTo: String,
+                status: {
+                    type: String,
+                    default: "Return requested",
+                    enum: ["Return requested", "Return approved", "Refunded"],
+                },
+                requestedAt: {
+                    type: Date,
+                    default: Date.now,
+                },
+            },
+        ],
     },
     { timestamps: true }
 );
