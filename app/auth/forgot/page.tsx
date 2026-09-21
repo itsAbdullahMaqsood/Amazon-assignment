@@ -1,22 +1,8 @@
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer";
-import MenuSideBar from "@/components/Header/MenuSidebar";
 import ForgotPage from "@/components/User/ForgotPage";
 
-const Page = () => {
-    return (
-        <>
-            <Header title="Forgot password" />
+export const metadata = { title: "Amazon Password Assistance" };
 
-            <main className="bg-slate-100">
-                <ForgotPage />
-            </main>
-
-            <Footer />
-
-            <MenuSideBar />
-        </>
-    );
-};
+// Bare chrome, like the rest of the ap/* screens.
+const Page = () => <ForgotPage />;
 
 export default Page;

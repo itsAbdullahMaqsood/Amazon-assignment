@@ -7,10 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import axios from "axios";
 
-import LoginInput from "./LoginInput";
-import ButtonInput from "./ButtonInput";
+import ApField from "./ApField";
+import { ApAlert, ApButton, ApCard, ApPage } from "./ApShell";
 import DotLoaderSpinner from "@/components/loaders/dotLoader/DotLoaderSpinner";
-import { AuthCard } from "./AuthShell";
 
 const schema = z
     .object({
@@ -57,34 +56,47 @@ const ResetPage = ({ token }: any) => {
     };
 
     return (
-        <AuthCard>
+        <ApPage>
             {loading && <DotLoaderSpinner loading={loading} />}
 
-            <div className="bg-white border border-slate-300 rounded p-5 mt-4">
-                <h1 className="text-xl font-bold">Reset Password</h1>
+            <ApCard>
+                <h1 className="text-[28px] leading-9 text-[#0F1111]">Create new password</h1>
 
-                <FormProvider {...methods}>
-                    <form onSubmit={methods.handleSubmit(submitHandler)}>
-                        <LoginInput
-                            name="new_password"
-                            type="password"
-                            icon="password"
-                            placeholder="New password"
-                        />
-                        <LoginInput
-                            name="conf_password"
-                            type="password"
-                            icon="password"
-                            placeholder="Re-type new password"
-                        />
-                        <ButtonInput text="Reset" />
-                    </form>
-                </FormProvider>
+                <p className="text-[13px] text-[#0F1111] mt-2">
+                    We&apos;ll ask for this password whenever you sign in.
+                </p>
 
-                {success && <p className="text-green-600 text-sm mt-2">{success}</p>}
-                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-            </div>
-        </AuthCard>
+                {error && <ApAlert>{error}</ApAlert>}
+
+                {success ? (
+                    <div className="border border-[#067D62] bg-[#f5fbf9] rounded p-3 mt-4">
+                        <p className="text-[13px] text-[#0F1111]">{success}</p>
+                    </div>
+                ) : (
+                    <FormProvider {...methods}>
+                        <form onSubmit={methods.handleSubmit(submitHandler)}>
+                            <ApField
+                                name="new_password"
+                                label="New password"
+                                type="password"
+                                autoComplete="new-password"
+                                hint="Passwords must be at least 6 characters."
+                            />
+                            <ApField
+                                name="conf_password"
+                                label="Re-enter password"
+                                type="password"
+                                autoComplete="new-password"
+                            />
+
+                            <ApButton type="submit" disabled={loading}>
+                                {loading ? "Saving…" : "Save changes and Sign-In"}
+                            </ApButton>
+                        </form>
+                    </FormProvider>
+                )}
+            </ApCard>
+        </ApPage>
     );
 };
 

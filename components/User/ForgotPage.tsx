@@ -6,13 +6,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import axios from "axios";
 
-import LoginInput from "./LoginInput";
-import ButtonInput from "./ButtonInput";
+import ApField from "./ApField";
+import { ApAlert, ApButton, ApCard, ApPage } from "./ApShell";
 import DotLoaderSpinner from "@/components/loaders/dotLoader/DotLoaderSpinner";
-import { AuthCard } from "./AuthShell";
 
 const schema = z.object({
-    email: z.string().min(1, "Email address is required.").email("Please enter a valid address"),
+    email: z
+        .string()
+        .min(1, "Enter your email or mobile phone number")
+        .email("Wrong or Invalid email address or mobile phone number. Please correct and try again."),
 });
 
 const ForgotPage = () => {
@@ -38,23 +40,40 @@ const ForgotPage = () => {
     };
 
     return (
-        <AuthCard>
+        <ApPage>
             {loading && <DotLoaderSpinner loading={loading} />}
 
-            <div className="bg-white border border-slate-300 rounded p-5 mt-4">
-                <h1 className="text-xl font-bold">Forgot Password</h1>
+            <ApCard>
+                <h1 className="text-[28px] leading-9 text-[#0F1111]">Password assistance</h1>
 
-                <FormProvider {...methods}>
-                    <form onSubmit={methods.handleSubmit(submitHandler)}>
-                        <LoginInput name="email" type="text" icon="email" placeholder="Email address" />
-                        <ButtonInput text="Send" />
-                    </form>
-                </FormProvider>
+                <p className="text-[13px] text-[#0F1111] mt-2">
+                    Enter the email address associated with your Amazon account.
+                </p>
 
-                {success && <p className="text-green-600 text-sm mt-2">{success}</p>}
-                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-            </div>
-        </AuthCard>
+                {error && <ApAlert>{error}</ApAlert>}
+
+                {success ? (
+                    <div className="border border-[#067D62] bg-[#f5fbf9] rounded p-3 mt-4">
+                        <p className="text-[13px] text-[#0F1111]">{success}</p>
+                    </div>
+                ) : (
+                    <FormProvider {...methods}>
+                        <form onSubmit={methods.handleSubmit(submitHandler)}>
+                            <ApField name="email" label="Email" autoComplete="email" />
+
+                            <ApButton type="submit" disabled={loading}>
+                                {loading ? "Sending…" : "Continue"}
+                            </ApButton>
+                        </form>
+                    </FormProvider>
+                )}
+
+                <p className="text-[12px] text-[#0F1111] mt-5">
+                    Has your email address changed? If you no longer use the address on your
+                    account, sign in with it and update it under Login &amp; security.
+                </p>
+            </ApCard>
+        </ApPage>
     );
 };
 
