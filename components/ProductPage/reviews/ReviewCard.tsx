@@ -1,151 +1,194 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import axios from "axios";
-import { usePathname, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { CheckBadgeIcon } from "@heroicons/react/24/solid";
-import { HandThumbUpIcon } from "@heroicons/react/24/outline";
+import { signIn } from "next-auth/react";
+import { CheckBadgeIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
 
 import StarRating from "@/components/shared/StarRating";
-import { useAppDispatch } from "@/redux/hooks";
-import { showDialog } from "@/redux/slices/DialogSlice";
+import Lightbox from "@/components/shared/Lightbox";
 import { formatDate } from "@/lib/localStore";
-import { initialOf, likeCount, likedBy, splitReview, variantLabel } from "./reviewUtils";
+import { initialOf, likeCount, likedBy, splitReview } from "./reviewUtils";
 
-const ReviewCard = ({ productId, review, onEdit, mine }: any) => {
-    const router = useRouter();
-    const pathname = usePathname();
-    const dispatch = useAppDispatch();
-    const { data: session }: any = useSession();
+// Long enough that clamping to four lines hides something worth a "Read more".
+const LONG = 280;
 
-    const stored = {
-        count: likeCount(review),
-        liked: likedBy(review, session?.user?.id),
-    };
+const Chip = ({ children }: any) => (
+    <span className="inline-flex items-center gap-1.5 text-xs text-slate-700 bg-[#F0F2F2] border border-slate-300 rounded-full px-2.5 py-0.5">
+        {children}
+    </span>
+);
 
-    const [busy, setBusy] = useState<boolean>(false);
-    const [vote, setVote] = useState(stored);
-    const [tracked, setTracked] = useState(stored);
-
-    // Adjusting state while rendering rather than in an effect: a refreshed page
-    // (or a sign-in) brings new stored likes, and the button follows them instead
-    // of keeping whatever the last click left behind.
-    if (tracked.count !== stored.count || tracked.liked !== stored.liked) {
-        setTracked(stored);
-        setVote(stored);
-    }
+const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
+    const [expanded, setExpanded] = useState<boolean>(false);
+    const [photo, setPhoto] = useState<number | null>(null);
+    const [voting, setVoting] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
 
     const { title, body } = splitReview(review.review);
-    const variant = variantLabel(review);
-    // Reviews seeded before the schema was timestamped have no date at all, and
-    // formatDate returns an empty string for those rather than "Invalid Date".
-    const date = formatDate(review.createdAt);
+    const mine = userId && String(review.reviewBy?._id) === String(userId);
+    const liked = likedBy(review, userId);
+    const helpful = likeCount(review);
+    const date = review.createdAt ? formatDate(review.createdAt) : "";
+    const images = review.images || [];
 
-    const helpfulHandler = async () => {
-        if (!session) {
-            router.push(`/auth/signin?callbackUrl=${encodeURIComponent(pathname)}`);
+    const voteHandler = async () => {
+        if (!userId) {
+            signIn(undefined, { callbackUrl: `${window.location.pathname}#customer-reviews` });
             return;
         }
 
-        setBusy(true);
-
         try {
-            const { data } = await axios.patch(`/api/product/${productId}/review`, {
+            setVoting(true);
+            setError("");
+
+            const { data } = await axios.put(`/api/product/${productId}/review/like`, {
                 review_id: review._id,
             });
 
-            setVote({ count: data.likes, liked: data.liked });
-            setTracked({ count: data.likes, liked: data.liked });
-        } catch (error: any) {
-            dispatch(
-                showDialog({
-                    header: "Helpful vote",
-                    msgs: [
-                        {
-                            msg: error.response?.data?.message || error.message,
-                            type: "error",
-                        },
-                    ],
-                })
-            );
+            // The parent owns the list, so the new likes go back up to it.
+            onVoted(review._id, data.liked, userId);
+        } catch (err: any) {
+            setError(err.response?.data?.message || err.message);
+        } finally {
+            setVoting(false);
         }
-
-        setBusy(false);
     };
 
     return (
         <article className="py-5 border-b border-slate-200 last:border-b-0">
             <div className="flex items-center gap-2">
-                <span
-                    aria-hidden="true"
-                    className="w-8 h-8 shrink-0 rounded-full bg-slate-300 text-slate-800 text-sm font-semibold flex items-center justify-center"
-                >
-                    {initialOf(review.reviewBy?.name)}
-                </span>
-
-                <span className="text-sm font-medium text-slate-800">
-                    {review.reviewBy?.name || "Amazon customer"}
-                </span>
-
-                {mine && (
-                    <span className="text-xs text-slate-500 border border-slate-300 rounded-full px-2 py-0.5">
-                        Your review
+                {review.reviewBy?.image ? (
+                    <Image
+                        src={review.reviewBy.image}
+                        alt=""
+                        width={32}
+                        height={32}
+                        className="w-8 h-8 rounded-full object-cover"
+                    />
+                ) : (
+                    <span className="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-sm font-semibold">
+                        {initialOf(review.reviewBy?.name)}
                     </span>
                 )}
+                <span className="text-sm">{review.reviewBy?.name || "Amazon Customer"}</span>
+                {mine && <Chip>Your review</Chip>}
             </div>
 
             <div className="flex items-center gap-2 mt-2">
                 <StarRating value={review.rating} size="w-4 h-4" />
-                {title && <h4 className="font-bold text-sm">{title}</h4>}
+                {title && <h4 className="font-bold text-sm text-[#0F1111]">{title}</h4>}
             </div>
 
-            {(date || variant) && (
-                <p className="text-xs text-slate-600 mt-1">
-                    {[date && `Reviewed on ${date}`, variant].filter(Boolean).join(" · ")}
-                </p>
-            )}
+            {date && <p className="text-sm text-slate-600 mt-1">Reviewed on {date}</p>}
 
-            {review.verified && (
-                <p className="flex items-center gap-1 text-xs font-semibold text-[#C45500] mt-1">
-                    <CheckBadgeIcon className="w-4 h-4" />
-                    Verified Purchase
-                </p>
-            )}
+            <div className="flex flex-wrap items-center gap-2 mt-2">
+                {review.size && <Chip>Size: {review.size}</Chip>}
+                {review.style?.color && (
+                    <Chip>
+                        Colour:
+                        {review.style.image ? (
+                            <Image
+                                src={review.style.image}
+                                alt=""
+                                width={14}
+                                height={14}
+                                className="w-3.5 h-3.5 rounded-full object-cover"
+                            />
+                        ) : (
+                            <span
+                                aria-hidden="true"
+                                className="w-3.5 h-3.5 rounded-full border border-slate-400"
+                                style={{ backgroundColor: review.style.color }}
+                            />
+                        )}
+                    </Chip>
+                )}
+                {review.fit && <Chip>Fit: {review.fit}</Chip>}
+                {review.verified && (
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-[#C45500]">
+                        <CheckBadgeIcon className="w-4 h-4" />
+                        Verified Purchase
+                    </span>
+                )}
+            </div>
 
-            {body && <p className="text-sm mt-2 whitespace-pre-line">{body}</p>}
-
-            {review.fit && (
-                <p className="text-xs text-slate-600 mt-2">
-                    <span className="font-semibold">Fit:</span> {review.fit}
-                </p>
-            )}
-
-            <div className="flex items-center gap-3 mt-3">
-                <button
-                    type="button"
-                    onClick={helpfulHandler}
-                    disabled={busy}
-                    aria-pressed={vote.liked}
-                    className={`flex items-center gap-1.5 text-xs px-3 py-1 rounded-full border border-slate-400 shadow-sm hover:bg-slate-100 ${
-                        busy ? "cursor-not-allowed opacity-60" : "cursor-pointer"
-                    } ${vote.liked ? "bg-slate-100 font-semibold" : "bg-white"}`}
+            {body && (
+                <p
+                    className={`text-sm text-[#0F1111] mt-2 whitespace-pre-line ${
+                        body.length > LONG && !expanded ? "line-clamp-4" : ""
+                    }`}
                 >
-                    <HandThumbUpIcon className="w-4 h-4" />
-                    {vote.liked ? "Marked helpful" : "Helpful"}
-                    {vote.count > 0 && <span className="text-slate-600">({vote.count})</span>}
-                </button>
+                    {body}
+                </p>
+            )}
 
-                {mine && (
+            {body.length > LONG && (
+                <button
+                    onClick={() => setExpanded(!expanded)}
+                    aria-expanded={expanded}
+                    className="text-sm text-[#007185] hover:text-[#C7511F] hover:underline mt-1 cursor-pointer"
+                >
+                    {expanded ? "Read less" : "Read more"}
+                </button>
+            )}
+
+            {images.length > 0 && (
+                <div className="flex gap-2 mt-3">
+                    {images.map((image: any, i: number) => (
+                        <button
+                            key={image.public_url || image.url}
+                            onClick={() => setPhoto(i)}
+                            aria-label={`Open photo ${i + 1} of ${images.length}`}
+                            className="relative w-20 h-20 rounded-lg overflow-hidden border border-slate-300 cursor-pointer hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#007185]"
+                        >
+                            <Image src={image.url} alt="" fill sizes="80px" className="object-cover" />
+                        </button>
+                    ))}
+                </div>
+            )}
+
+            <div className="flex flex-wrap items-center gap-3 mt-3">
+                {helpful > 0 && (
+                    <span className="text-xs text-slate-600">
+                        {helpful} {helpful === 1 ? "person" : "people"} found this helpful
+                    </span>
+                )}
+
+                {mine ? (
                     <button
-                        type="button"
                         onClick={onEdit}
-                        className="text-xs text-[#0F5FA6] hover:text-[#C7511F] hover:underline cursor-pointer"
+                        className="text-sm text-[#007185] hover:text-[#C7511F] hover:underline cursor-pointer"
                     >
                         Edit your review
                     </button>
+                ) : (
+                    <button
+                        onClick={voteHandler}
+                        disabled={voting}
+                        aria-pressed={liked}
+                        className={`inline-flex items-center gap-1.5 h-9 px-4 rounded-full border text-sm shadow-sm cursor-pointer disabled:opacity-60 ${
+                            liked
+                                ? "bg-[#EDFDFF] border-[#007185] text-[#007185]"
+                                : "bg-white border-slate-400 hover:bg-slate-50"
+                        }`}
+                    >
+                        <HandThumbUpIcon className="w-4 h-4" />
+                        {liked ? "Helpful ✓" : "Helpful"}
+                    </button>
                 )}
+
+                {error && <span className="text-xs text-red-600">{error}</span>}
             </div>
+
+            <Lightbox
+                images={images}
+                index={photo}
+                onIndex={setPhoto}
+                onClose={() => setPhoto(null)}
+                label="Customer photo"
+            />
         </article>
     );
 };

@@ -12,7 +12,7 @@ import Header from "@/components/Header/Header";
 import MenuSideBar from "@/components/Header/MenuSidebar";
 import Footer from "@/components/Footer";
 import ProductPage from "@/components/ProductPage/ProductPage";
-import { recordProductView } from "@/lib/recommendations";
+import { recordProductView, toCardProduct } from "@/lib/recommendations";
 import { resolveSizeIndex } from "@/utils/sizes";
 import { HISTORY_COOKIE } from "@/lib/preferences";
 
@@ -107,12 +107,9 @@ const getSimilarProducts = cache(async (categoryId: string, currentId: string) =
         .limit(12)
         .lean();
 
-    return products.map((product: any) => ({
-        _id: String(product._id),
-        name: product.name,
-        slug: product.slug,
-        image: product.subProducts?.[0]?.images?.[0]?.url || "",
-    }));
+    // Same card shape as the recommendation rows, so similar products carry
+    // their real rating, review count and price.
+    return products.map(toCardProduct);
 });
 
 export const generateMetadata = async ({ params, searchParams }: any) => {

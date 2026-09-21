@@ -5,18 +5,31 @@ import connectDb from "@/lib/db";
 import Product from "@/models/Product";
 import Order from "@/models/Order";
 import User from "@/models/User";
+import { CLOUDINARY_ROOT, destroyAsset } from "@/lib/cloudinary";
 
+const FITS = ["Small", "True to size", "Large"];
 const MAX_REVIEW = 1000;
+const MAX_IMAGES = 3;
 
-// Reloaded the way the product page loads them, trimmed to the two fields a
-// review card renders: the rest of a User document has no business on the client.
+const bad = (message: string) => NextResponse.json({ message }, { status: 400 });
+
+// Newest first, reviewer trimmed to what a card shows: the rest of a User
+// document has no business on the client.
 const loadReviews = async (productId: string) => {
     const product: any = await Product.findById(productId)
-        .select("reviews")
+        .select("reviews rating numberReviews")
         .populate({ path: "reviews.reviewBy", model: User, select: "name image" })
         .lean();
 
-    return JSON.parse(JSON.stringify(product?.reviews || []));
+    const reviews = [...(product?.reviews || [])].sort(
+        (a: any, b: any) => Date.parse(b.createdAt || 0) - Date.parse(a.createdAt || 0)
+    );
+
+    return {
+        reviews: JSON.parse(JSON.stringify(reviews)),
+        rating: product?.rating || 0,
+        numberReviews: product?.numberReviews || 0,
+    };
 };
 
 // The average is always recomputed from what is stored, so no request can talk a
@@ -29,33 +42,66 @@ const recount = (product: any) => {
     product.numberReviews = reviews.length;
 };
 
-export const POST = async (req: Request, { params }: any) => {
+// Review photos must be ones this app uploaded into this product's review
+// folder; anything else (an arbitrary URL, another product's folder) is refused.
+const validImages = (images: any, productId: string) => {
+    if (!Array.isArray(images) || images.length > MAX_IMAGES) {
+        return null;
+    }
+
+    const cloud = String(process.env.CLOUDINARY_NAME || "").trim();
+    const folder = `${CLOUDINARY_ROOT}/reviews/${productId}/`;
+
+    for (const image of images) {
+        const url = String(image?.url || "");
+        const publicId = String(image?.public_url || "");
+
+        if (!url.startsWith(`https://res.cloudinary.com/${cloud}/image/upload/`) || !publicId.startsWith(folder)) {
+            return null;
+        }
+    }
+
+    return images.map((image: any) => ({ url: String(image.url), public_url: String(image.public_url) }));
+};
+
+export const GET = async (_req: Request, { params }: any) => {
+    const { id } = await params;
+
+    await connectDb();
+
+    return NextResponse.json(await loadReviews(id));
+};
+
+export const PUT = async (req: Request, { params }: any) => {
     try {
         const session = await auth();
 
         if (!session) {
-            return NextResponse.json({ message: "Not signed in" }, { status: 401 });
+            return NextResponse.json({ message: "Please sign in to write a review." }, { status: 401 });
         }
 
         const { id } = await params;
-        const { rating, review, size, style, fit } = await req.json();
+        const { rating, review, size, style, fit, images } = await req.json();
 
+        // Half-star steps between 0.5 and 5, nothing in between.
         const score = Number(rating);
 
-        if (!Number.isFinite(score) || score < 1 || score > 5) {
-            return NextResponse.json(
-                { message: "Please choose a rating between 1 and 5 stars." },
-                { status: 400 }
-            );
+        if (!Number.isFinite(score) || score < 0.5 || score > 5 || !Number.isInteger(score * 2)) {
+            return bad("Please select a rating between half a star and 5 stars.");
         }
 
         const text = String(review ?? "").trim();
 
-        if (!text || text.length > MAX_REVIEW) {
-            return NextResponse.json(
-                { message: `Your review has to be between 1 and ${MAX_REVIEW} characters.` },
-                { status: 400 }
-            );
+        if (!text) {
+            return bad("Please add a review!");
+        }
+
+        if (text.length > MAX_REVIEW) {
+            return bad(`Reviews are limited to ${MAX_REVIEW} characters.`);
+        }
+
+        if (!FITS.includes(fit)) {
+            return bad("Please select a Fit!");
         }
 
         await connectDb();
@@ -66,13 +112,35 @@ export const POST = async (req: Request, { params }: any) => {
             return NextResponse.json({ message: "Product not found." }, { status: 404 });
         }
 
-        // The badge keys off a paid order of THIS product placed by the signed-in
-        // user — checked here rather than trusted from the form.
+        // Size and style must be ones this product actually comes in.
+        const sizes = new Set<string>(
+            product.subProducts.flatMap((sub: any) => sub.sizes.map((row: any) => String(row.size)))
+        );
+
+        if (!sizes.has(String(size))) {
+            return bad("Please select a size!");
+        }
+
+        const colour = product.subProducts
+            .map((sub: any) => sub.color)
+            .find((c: any) => c && String(c.color) === String(style?.color));
+
+        if (!colour) {
+            return bad("Please select a style!");
+        }
+
+        const photos = validImages(images || [], String(product._id));
+
+        if (!photos) {
+            return bad(`Add up to ${MAX_IMAGES} photos uploaded for this product.`);
+        }
+
+        // Earned, never claimed: a paid order of THIS product by THIS user.
         const verified = Boolean(
             await Order.exists({
                 user: session.user.id,
                 isPaid: true,
-                "products.product": id,
+                "products.product": product._id,
             })
         );
 
@@ -80,81 +148,40 @@ export const POST = async (req: Request, { params }: any) => {
             (entry: any) => String(entry.reviewBy) === String(session.user.id)
         );
 
-        // One review per person per product: a second submission is an edit, which
-        // is also why the average is recomputed instead of nudged.
+        const entry = {
+            rating: score,
+            review: text,
+            size: String(size),
+            style: { color: colour.color, image: colour.image || "" },
+            fit,
+            images: photos,
+            verified,
+        };
+
+        let dropped: string[] = [];
+
+        // One review per person per product: a second submission edits the first.
         if (existing) {
-            existing.rating = score;
-            existing.review = text;
-            existing.size = size || existing.size;
-            existing.style = style || existing.style;
-            existing.fit = fit || "";
-            existing.verified = verified;
+            const kept = new Set(photos.map((photo: any) => photo.public_url));
+            dropped = (existing.images || [])
+                .map((photo: any) => photo?.public_url)
+                .filter((publicId: any) => publicId && !kept.has(publicId));
+
+            Object.assign(existing, entry);
         } else {
-            product.reviews.push({
-                reviewBy: session.user.id,
-                rating: score,
-                review: text,
-                size: size || "",
-                style: style || {},
-                fit: fit || "",
-                verified,
-                likes: [],
-            });
+            product.reviews.push({ ...entry, reviewBy: session.user.id, likes: [] });
         }
 
         recount(product);
         await product.save();
 
+        // Photos taken off an edited review are not left orphaned in Cloudinary.
+        await Promise.allSettled(dropped.map((publicId) => destroyAsset(publicId)));
+
         return NextResponse.json({
-            reviews: await loadReviews(id),
-            rating: product.rating,
-            numberReviews: product.numberReviews,
-            message: existing
-                ? "Your review has been updated."
-                : "Thanks — your review is now on this product.",
+            ...(await loadReviews(id)),
+            message: existing ? "Your review has been updated." : "Thanks — your review is live.",
         });
-    } catch (error: any) {
-        return NextResponse.json({ message: error.message }, { status: 500 });
-    }
-};
-
-// Helpful votes. The signed-in user's id goes in and out of the review's `likes`,
-// so the count is a count of people rather than of clicks.
-export const PATCH = async (req: Request, { params }: any) => {
-    try {
-        const session = await auth();
-
-        if (!session) {
-            return NextResponse.json({ message: "Not signed in" }, { status: 401 });
-        }
-
-        const { id } = await params;
-        const { review_id } = await req.json();
-
-        await connectDb();
-
-        const product: any = await Product.findById(id);
-
-        if (!product) {
-            return NextResponse.json({ message: "Product not found." }, { status: 404 });
-        }
-
-        const review = product.reviews.id(review_id);
-
-        if (!review) {
-            return NextResponse.json({ message: "Review not found." }, { status: 404 });
-        }
-
-        const userId = String(session.user.id);
-        const liked = review.likes.some((like: any) => String(like) === userId);
-
-        review.likes = liked
-            ? review.likes.filter((like: any) => String(like) !== userId)
-            : [...review.likes, userId];
-
-        await product.save();
-
-        return NextResponse.json({ likes: review.likes.length, liked: !liked });
     } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 500 });
     }

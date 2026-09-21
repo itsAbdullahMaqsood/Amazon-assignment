@@ -3,7 +3,6 @@
 
 export const RATINGS = [5, 4, 3, 2, 1];
 
-export const MIN_REVIEW = 10;
 export const MAX_REVIEW = 1000;
 
 export const FITS = ["Small", "True to size", "Large"];
@@ -32,18 +31,6 @@ export const likeCount = (review: any) => (review?.likes || []).length;
 
 export const likedBy = (review: any, userId: any) =>
     (review?.likes || []).some((like: any) => String(like) === String(userId));
-
-// The variant line under a review: whichever of size and colour the reviewer
-// actually recorded.
-const readableColour = (value: any) =>
-    // Colours are stored as hex, which says nothing to a reader; a named colour
-    // is shown as-is and a hex value is dropped in favour of the swatch.
-    value && !/^#?[0-9a-f]{3,8}$/i.test(String(value)) ? value : "";
-
-export const variantLabel = (review: any) =>
-    [review?.size && `Size: ${review.size}`, readableColour(review?.style?.color) && `Colour: ${review.style.color}`]
-        .filter(Boolean)
-        .join(" · ");
 
 export const initialOf = (name: any) => String(name || "A").trim().charAt(0).toUpperCase() || "A";
 

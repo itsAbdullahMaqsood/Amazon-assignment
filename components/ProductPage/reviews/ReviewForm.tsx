@@ -1,235 +1,373 @@
 "use client";
 
-import { useState } from "react";
-import axios from "axios";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { CameraIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import StarRating from "@/components/shared/StarRating";
 import DotLoaderSpinner from "@/components/loaders/dotLoader/DotLoaderSpinner";
 import { useAppDispatch } from "@/redux/hooks";
 import { showDialog } from "@/redux/slices/DialogSlice";
-import { FITS, MAX_REVIEW, MIN_REVIEW } from "./reviewUtils";
+import { toUploadForm, uploadImages } from "@/request/upload";
+import { FITS, MAX_REVIEW } from "./reviewUtils";
 
-// Defaults to the variant the URL is already showing, because that is the one the
-// shopper was looking at when they pressed the button.
-const defaultColor = (product: any, existing: any) => {
-    const stored = (product.colors || []).findIndex(
-        (color: any) => color.color === existing?.style?.color
-    );
+const MAX_PHOTOS = 3;
+const MAX_BYTES = 5 * 1024 * 1024;
+const TYPES = ["image/jpeg", "image/png", "image/webp"];
 
-    return stored > -1 ? stored : product.style || 0;
-};
+// The messages are the ones the dialog shows, in this order, all at once.
+const schema = z.object({
+    size: z.string().min(1, "Please select a size!"),
+    style: z.string().min(1, "Please select a style!"),
+    fit: z.string().refine((value) => FITS.includes(value), "Please select a Fit!"),
+    rating: z.number().min(0.5, "Please select a rating!"),
+    review: z
+        .string()
+        .trim()
+        .min(1, "Please add a review!")
+        .max(MAX_REVIEW, `Reviews are limited to ${MAX_REVIEW} characters.`),
+});
 
-const ReviewForm = ({ product, existing, onCancel }: any) => {
+const ORDER = ["size", "style", "fit", "rating", "review"];
+
+const select =
+    "w-full h-11 border border-slate-400 rounded-lg px-3 text-sm bg-[#F0F2F2] shadow-sm outline-none focus:border-[#007185] focus:ring-2 focus:ring-[#007185]/30";
+
+const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
     const router = useRouter();
     const dispatch = useAppDispatch();
+    const [saving, setSaving] = useState<boolean>(false);
 
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string>("");
-    const [rating, setRating] = useState<number>(Number(existing?.rating) || 0);
-    const [size, setSize] = useState<string>(
-        existing?.size || product.sizes?.[product.size]?.size || ""
+    // Photos already on the review (remote) and photos picked now (local files
+    // with an object-URL preview) share one list, capped at three.
+    const [photos, setPhotoState] = useState<any[]>(
+        (mine?.images || []).map((image: any) => ({ kind: "remote", ...image, preview: image.url }))
     );
-    const [colorIndex, setColorIndex] = useState<number>(defaultColor(product, existing));
-    const [fit, setFit] = useState<string>(existing?.fit || "");
-    const [text, setText] = useState<string>(existing?.review || "");
+    // Mirrors the list for the unmount cleanup below; written only from the
+    // handlers, never during render.
+    const photosRef = useRef<any[]>([]);
 
-    const trimmed = text.trim();
-
-    // The stars are buttons, so Tab and Enter already work; the arrow keys are
-    // added because that is what a rating widget is expected to answer to.
-    const arrowHandler = (e: any) => {
-        if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-            e.preventDefault();
-            setRating(Math.min(rating + 1, 5));
-        } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
-            e.preventDefault();
-            setRating(Math.max(rating - 1, 1));
-        }
+    const setPhotos = (next: any[]) => {
+        photosRef.current = next;
+        setPhotoState(next);
     };
 
-    const submitHandler = async (e: any) => {
-        e.preventDefault();
+    // Object URLs are released when the form goes away.
+    useEffect(
+        () => () =>
+            photosRef.current
+                .filter((photo) => photo.kind === "local")
+                .forEach((photo) => URL.revokeObjectURL(photo.preview)),
+        []
+    );
 
-        if (rating < 1) {
-            setError("Please pick a star rating first.");
-            return;
+    const sizes = (product.allSizes || []).map((row: any) => String(row.size));
+    const colors = (product.colors || []).filter((c: any) => c?.color);
+
+    const { control, register, handleSubmit } = useForm({
+        resolver: zodResolver(schema),
+        defaultValues: {
+            size: mine?.size || "",
+            style: mine?.style?.color || "",
+            fit: mine?.fit || "",
+            rating: Number(mine?.rating) || 0,
+            review: mine?.review || "",
+        },
+    });
+
+    const addPhotos = (files: FileList | null) => {
+        const picked = [...(files || [])];
+        const errors: any[] = [];
+        const room = MAX_PHOTOS - photos.length;
+
+        const accepted = picked.filter((file) => {
+            if (!TYPES.includes(file.type)) {
+                errors.push({ msg: `"${file.name}" is not a JPEG, PNG or WebP image.`, type: "error" });
+                return false;
+            }
+
+            if (file.size > MAX_BYTES) {
+                errors.push({ msg: `"${file.name}" is larger than 5 MB.`, type: "error" });
+                return false;
+            }
+
+            return true;
+        });
+
+        if (accepted.length > room) {
+            errors.push({ msg: `You can add up to ${MAX_PHOTOS} photos.`, type: "error" });
         }
 
-        if (trimmed.length < MIN_REVIEW) {
-            setError(`Please write at least ${MIN_REVIEW} characters so the review is useful.`);
-            return;
+        if (errors.length) {
+            dispatch(showDialog({ header: "Some photos were not added", msgs: errors }));
         }
 
-        setError("");
-        setLoading(true);
+        setPhotos([
+            ...photos,
+            ...accepted.slice(0, Math.max(room, 0)).map((file) => ({
+                kind: "local",
+                file,
+                preview: URL.createObjectURL(file),
+            })),
+        ]);
+    };
 
+    const removePhoto = (index: number) => {
+        const photo = photos[index];
+
+        if (photo.kind === "local") {
+            URL.revokeObjectURL(photo.preview);
+        }
+
+        setPhotos(photos.filter((_, i) => i !== index));
+    };
+
+    const onInvalid = (errors: any) => {
+        dispatch(
+            showDialog({
+                header: "Please check your review",
+                msgs: ORDER.filter((key) => errors[key]).map((key) => ({
+                    msg: errors[key].message,
+                    type: "error",
+                })),
+            })
+        );
+    };
+
+    const onValid = async (values: any) => {
         try {
-            const { data } = await axios.post(`/api/product/${product._id}/review`, {
-                rating,
-                review: trimmed,
-                size,
-                style: {
-                    color: product.colors?.[colorIndex]?.color || "",
-                    image: product.colors?.[colorIndex]?.image || "",
-                },
-                fit,
+            setSaving(true);
+
+            const local = photos.filter((photo) => photo.kind === "local");
+            const uploaded = local.length
+                ? await uploadImages(
+                      toUploadForm(
+                          local.map((photo) => photo.file),
+                          `reviews/${product._id}`
+                      )
+                  )
+                : [];
+
+            const images = [
+                ...photos
+                    .filter((photo) => photo.kind === "remote")
+                    .map(({ url, public_url }: any) => ({ url, public_url })),
+                ...uploaded,
+            ];
+
+            const colour = colors.find((c: any) => c.color === values.style);
+
+            const { data } = await axios.put(`/api/product/${product._id}/review`, {
+                rating: values.rating,
+                review: values.review,
+                size: values.size,
+                style: { color: colour?.color, image: colour?.image || "" },
+                fit: values.fit,
+                images,
             });
 
             dispatch(
                 showDialog({
-                    header: "Customer review",
+                    header: mine ? "Review updated" : "Review submitted",
                     msgs: [{ msg: data.message, type: "success" }],
                 })
             );
 
-            onCancel();
-            // The page owns the reviews, the average and the histogram, so the
-            // server render is what has to be re-run after a submission.
+            onSaved(data);
+            // The product's average and count live in the server-rendered parts of
+            // the page (buy box, cards), so they are re-fetched too.
             router.refresh();
-        } catch (err: any) {
-            setError(err.response?.data?.message || err.message);
+        } catch (error: any) {
+            dispatch(
+                showDialog({
+                    header: "Your review was not saved",
+                    msgs: [{ msg: error.response?.data?.message || error.message, type: "error" }],
+                })
+            );
+        } finally {
+            setSaving(false);
         }
-
-        setLoading(false);
     };
 
     return (
         <form
-            onSubmit={submitHandler}
-            className="relative mt-4 p-4 border border-slate-300 rounded-lg bg-[#F7FAFA]"
+            onSubmit={handleSubmit(onValid, onInvalid)}
+            noValidate
+            className="border border-slate-300 rounded-lg p-4 md:p-5 bg-white"
         >
-            {loading && <DotLoaderSpinner loading={loading} />}
+            {saving && <DotLoaderSpinner loading={saving} />}
 
-            <h3 className="font-bold">
-                {existing ? "Edit your review" : "Write a customer review"}
-            </h3>
-
-            <div className="mt-3">
-                <p id="review-rating-label" className="text-sm font-semibold">
-                    Overall rating
-                </p>
-
-                <div
-                    role="group"
-                    aria-labelledby="review-rating-label"
-                    onKeyDown={arrowHandler}
-                    className="flex items-center gap-2 mt-1"
-                >
-                    <StarRating value={rating} precision={1} size="w-7 h-7" onChange={setRating} />
-                    <span aria-live="polite" className="text-sm text-slate-700">
-                        {rating ? `${rating} out of 5` : "Select a rating"}
-                    </span>
-                </div>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-3 mt-4">
-                <div>
-                    <label htmlFor="review-size" className="block text-sm font-semibold">
-                        Size you are reviewing
-                    </label>
-                    <select
-                        id="review-size"
-                        value={size}
-                        onChange={(e) => setSize(e.target.value)}
-                        className="w-full mt-1 p-2 text-sm bg-white border border-slate-400 rounded cursor-pointer"
-                    >
-                        {(product.sizes || []).map((row: any, i: number) => (
-                            <option key={i} value={row.size}>
-                                {row.size}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                <div>
-                    <label htmlFor="review-color" className="block text-sm font-semibold">
-                        Colour you are reviewing
-                    </label>
-                    <select
-                        id="review-color"
-                        value={colorIndex}
-                        onChange={(e) => setColorIndex(Number(e.target.value))}
-                        className="w-full mt-1 p-2 text-sm bg-white border border-slate-400 rounded cursor-pointer"
-                    >
-                        {(product.colors || []).map((color: any, i: number) => (
-                            <option key={i} value={i}>
-                                {color.color || `Colour ${i + 1}`}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-
-            <fieldset className="mt-4">
-                <legend className="text-sm font-semibold">How does it fit? (optional)</legend>
-
-                <div className="flex flex-wrap gap-4 mt-1">
-                    {FITS.map((option) => (
-                        <label key={option} className="flex items-center gap-1.5 text-sm cursor-pointer">
-                            <input
-                                type="radio"
-                                name="review-fit"
-                                value={option}
-                                checked={fit === option}
-                                onChange={() => setFit(option)}
-                                className="cursor-pointer"
-                            />
-                            {option}
-                        </label>
-                    ))}
-
-                    {fit && (
-                        <button
-                            type="button"
-                            onClick={() => setFit("")}
-                            className="text-sm text-[#0F5FA6] hover:text-[#C7511F] hover:underline cursor-pointer"
-                        >
-                            Clear
-                        </button>
-                    )}
-                </div>
-            </fieldset>
+            <h3 className="text-lg font-bold">{mine ? "Edit your review" : "Create review"}</h3>
 
             <div className="mt-4">
-                <label htmlFor="review-text" className="block text-sm font-semibold">
-                    Add a written review
-                </label>
-                <textarea
-                    id="review-text"
-                    rows={5}
-                    value={text}
-                    maxLength={MAX_REVIEW}
-                    onChange={(e) => setText(e.target.value)}
-                    placeholder="What did you like or dislike? What did you use this product for?"
-                    className="w-full mt-1 p-2 text-sm bg-white border border-slate-400 rounded"
-                />
-                <p className="text-xs text-slate-600">
-                    {trimmed.length}/{MAX_REVIEW} characters — at least {MIN_REVIEW} to submit.
+                <p className="text-sm font-bold mb-1" id="rating-label">
+                    Overall rating
                 </p>
+                <Controller
+                    control={control}
+                    name="rating"
+                    render={({ field }) => (
+                        <div className="flex items-center gap-3">
+                            <StarRating
+                                value={field.value}
+                                onChange={field.onChange}
+                                size="w-8 h-8"
+                                label="Overall rating"
+                            />
+                            <span className="text-sm text-slate-600">
+                                {field.value ? `${field.value} out of 5` : "Click to rate"}
+                            </span>
+                        </div>
+                    )}
+                />
             </div>
 
-            {error && (
-                <p role="alert" className="text-sm font-semibold text-[#B12704] mt-2">
-                    {error}
-                </p>
-            )}
+            <div className="grid md:grid-cols-2 gap-4 mt-5">
+                <label className="block">
+                    <span className="text-sm font-bold">Size</span>
+                    <select {...register("size")} className={`${select} mt-1`}>
+                        <option value="">Select a size</option>
+                        {sizes.map((size: string) => (
+                            <option key={size} value={size}>
+                                {size}
+                            </option>
+                        ))}
+                    </select>
+                </label>
 
-            <div className="flex items-center gap-3 mt-4">
+                <label className="block">
+                    <span className="text-sm font-bold">How does it fit?</span>
+                    <select {...register("fit")} className={`${select} mt-1`}>
+                        <option value="">Select a fit</option>
+                        {FITS.map((fit) => (
+                            <option key={fit} value={fit}>
+                                {fit}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+            </div>
+
+            <fieldset className="mt-5">
+                <legend className="text-sm font-bold">Style</legend>
+                <Controller
+                    control={control}
+                    name="style"
+                    render={({ field }) => (
+                        <div className="flex flex-wrap gap-3 mt-2" role="radiogroup" aria-label="Style">
+                            {colors.map((colour: any, i: number) => {
+                                const active = field.value === colour.color;
+
+                                return (
+                                    <button
+                                        key={`${colour.color}-${i}`}
+                                        type="button"
+                                        role="radio"
+                                        aria-checked={active}
+                                        aria-label={`Style ${i + 1}`}
+                                        onClick={() => field.onChange(colour.color)}
+                                        className={`w-11 h-11 rounded-full overflow-hidden border-2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#007185] focus-visible:ring-offset-2 ${
+                                            active ? "border-[#007185]" : "border-slate-300"
+                                        }`}
+                                    >
+                                        {colour.image ? (
+                                            <Image
+                                                src={colour.image}
+                                                alt=""
+                                                width={44}
+                                                height={44}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <span
+                                                className="block w-full h-full"
+                                                style={{ backgroundColor: colour.color }}
+                                            />
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+                />
+            </fieldset>
+
+            <label className="block mt-5">
+                <span className="text-sm font-bold">Write your review</span>
+                <textarea
+                    {...register("review")}
+                    rows={5}
+                    maxLength={MAX_REVIEW}
+                    placeholder="What did you like or dislike? What did you use this product for?"
+                    className="mt-1 w-full border border-slate-400 rounded-lg p-3 text-sm outline-none focus:border-[#007185] focus:ring-2 focus:ring-[#007185]/30"
+                />
+            </label>
+
+            <div className="mt-5">
+                <p className="text-sm font-bold">Add photos</p>
+                <p className="text-xs text-slate-600">
+                    Shoppers find images more helpful than text alone. Up to {MAX_PHOTOS}, JPEG, PNG
+                    or WebP, 5 MB each.
+                </p>
+
+                <div className="flex flex-wrap gap-3 mt-2">
+                    {photos.map((photo, i) => (
+                        <div key={photo.preview} className="relative w-24 h-24">
+                            <Image
+                                src={photo.preview}
+                                alt={`Review photo ${i + 1}`}
+                                fill
+                                sizes="96px"
+                                unoptimized={photo.kind === "local"}
+                                className="object-cover rounded-lg border border-slate-300"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => removePhoto(i)}
+                                aria-label={`Remove photo ${i + 1}`}
+                                className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-white border border-slate-400 shadow flex items-center justify-center cursor-pointer hover:bg-slate-100"
+                            >
+                                <XMarkIcon className="w-4 h-4" />
+                            </button>
+                        </div>
+                    ))}
+
+                    {photos.length < MAX_PHOTOS && (
+                        <label className="w-24 h-24 rounded-lg border-2 border-dashed border-slate-400 flex flex-col items-center justify-center text-xs text-slate-600 cursor-pointer hover:bg-slate-50 focus-within:ring-2 focus-within:ring-[#007185]">
+                            <CameraIcon className="w-7 h-7" />
+                            Add photo
+                            <input
+                                type="file"
+                                accept={TYPES.join(",")}
+                                multiple
+                                className="sr-only"
+                                onChange={(event) => {
+                                    addPhotos(event.target.files);
+                                    event.target.value = "";
+                                }}
+                            />
+                        </label>
+                    )}
+                </div>
+            </div>
+
+            <div className="flex flex-wrap gap-3 mt-6">
                 <button
                     type="submit"
-                    disabled={loading}
-                    className={`button-orange px-8 py-1.5 text-sm ${
-                        loading ? "cursor-not-allowed opacity-60" : "cursor-pointer"
-                    }`}
+                    disabled={saving}
+                    className="px-6 h-11 rounded-full bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] text-sm cursor-pointer disabled:opacity-60"
                 >
-                    {existing ? "Update review" : "Submit review"}
+                    {saving ? "Saving…" : mine ? "Update review" : "Submit review"}
                 </button>
-
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="px-6 py-1.5 text-sm bg-white border border-slate-400 rounded-sm shadow-sm hover:bg-slate-100 cursor-pointer"
+                    className="px-6 h-11 rounded-full border border-slate-400 bg-white hover:bg-slate-50 text-sm cursor-pointer"
                 >
                     Cancel
                 </button>
