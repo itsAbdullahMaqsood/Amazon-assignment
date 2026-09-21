@@ -75,7 +75,7 @@ const Page = async ({ params }: any) => {
         <>
             <Header title="Full Amazon Clone React" />
 
-            <main className="max-w-screen-2xl mx-auto bg-gray-100 grid grid-cols-3 md:px-10 pt-5 pb-8 gap-8">
+            <main className="max-w-screen-2xl mx-auto bg-gray-100 grid grid-cols-1 md:grid-cols-3 px-2 md:px-10 pt-5 pb-8 gap-4 md:gap-8">
                 <OrderClient order={order} />
             </main>
 

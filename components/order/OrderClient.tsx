@@ -48,7 +48,7 @@ const OrderClient = ({ order: initialOrder }: any) => {
         <>
             {loading && <DotLoaderSpinner loading={loading} />}
 
-            <section className="col-span-2 bg-white p-2 md:p-5 rounded-xl border border-slate-200">
+            <section className="md:col-span-2 bg-white p-2 md:p-5 rounded-xl border border-slate-200">
                 <OrderInfo order={order} />
 
                 {order.products.map((product: any, i: number) => (

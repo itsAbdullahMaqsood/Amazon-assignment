@@ -26,12 +26,12 @@ const CheckoutClient = ({ user, cart }: any) => {
         <>
             {loading && <DotLoaderSpinner loading={loading} />}
 
-            <section className="col-span-2">
+            <section className="md:col-span-2">
                 <ShippingPage user={user} addresses={addresses} setAddresses={setAddresses} />
                 <Product cart={cart} />
             </section>
 
-            <section className="col-span-1">
+            <section className="md:col-span-1">
                 <Payment paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} />
                 <Summary
                     cart={cart}

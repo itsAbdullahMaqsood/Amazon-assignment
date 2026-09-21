@@ -49,7 +49,7 @@ export const accountCards = [
         title: "Your Amazon Family",
         description: "Manage profiles, sharing, and permissions in one place",
         icon: "UsersIcon",
-        href: placeholder("Your Amazon Family"),
+        href: "/profile/family",
     },
     {
         title: "Digital Services and Device Support",
@@ -100,6 +100,7 @@ const routed: any = {
     "Request your data": "/profile/data",
     "Data Access and Requests": "/profile/data",
     "Close Your Amazon Account": "/profile/data",
+    "Manage Your Amazon Family": "/profile/family",
     "Privacy Notice": "/profile/data",
 };
 

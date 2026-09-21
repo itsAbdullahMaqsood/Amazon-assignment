@@ -33,7 +33,7 @@ const Page = async () => {
         <>
             <Header title="Checkout" />
 
-            <main className="grid grid-cols-3 md:px-10 mb-10 py-4 gap-8">
+            <main className="grid grid-cols-1 md:grid-cols-3 px-2 md:px-10 mb-10 py-4 gap-4 md:gap-8">
                 <CheckoutClient
                     user={JSON.parse(JSON.stringify(user))}
                     cart={JSON.parse(JSON.stringify(cart))}
