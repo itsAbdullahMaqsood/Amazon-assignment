@@ -8,34 +8,37 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import axios from "axios";
+import { InformationCircleIcon } from "@heroicons/react/24/solid";
 
-import LoginInput from "./LoginInput";
-import ButtonInput from "./ButtonInput";
+import ApField from "./ApField";
+import { ApAlert, ApButton, ApCard, ApPage } from "./ApShell";
+import { OAuthRow } from "./AuthShell";
 import DotLoaderSpinner from "@/components/loaders/dotLoader/DotLoaderSpinner";
-import { AuthCard, OAuthRow } from "./AuthShell";
 
 const schema = z
     .object({
         name: z
             .string()
-            .min(1, "What's your name?")
-            .min(2, "First name must be between 2 and 16 characters.")
-            .max(16, "First name must be between 2 and 16 characters.")
-            .regex(/^[a-zA-Z\s]+$/, "Numbers and Special characters are not allowed"),
-        email: z.string().min(1, "Email address is required.").email("Please enter a valid address"),
+            .min(1, "Enter your name")
+            .min(2, "Your name must be between 2 and 50 characters.")
+            .max(50, "Your name must be between 2 and 50 characters."),
+        email: z
+            .string()
+            .min(1, "Enter your email or mobile phone number")
+            .email("Wrong or Invalid email address or mobile phone number. Please correct and try again."),
         password: z
             .string()
-            .min(1, "Please enter a password.")
-            .min(6, "Password must be atleast 6 characters.")
+            .min(1, "Enter your password")
+            .min(6, "Passwords must be at least 6 characters.")
             .max(36, "Password can not be more than 36 characters."),
-        conf_password: z.string().min(1, "Please confirm your password."),
+        conf_password: z.string().min(1, "Type your password again"),
     })
     .refine((values) => values.password === values.conf_password, {
-        message: "Passwords must match.",
+        message: "Passwords must match",
         path: ["conf_password"],
     });
 
-const RegisterPage = () => {
+const RegisterPage = ({ business }: any) => {
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
@@ -76,48 +79,92 @@ const RegisterPage = () => {
     };
 
     return (
-        <AuthCard>
+        <ApPage>
             {loading && <DotLoaderSpinner loading={loading} />}
 
-            <div className="bg-white border border-slate-300 rounded p-5 mt-4">
-                <h1 className="text-xl font-bold">Sign up</h1>
+            <ApCard>
+                <h1 className="text-[28px] leading-9 text-[#0F1111]">
+                    {business ? "Create a Business account" : "Create account"}
+                </h1>
+
+                {error && <ApAlert>{error}</ApAlert>}
+
+                {success && (
+                    <div className="border border-[#067D62] bg-[#f5fbf9] rounded p-3 mt-3">
+                        <p className="text-[13px] text-[#0F1111]">{success}</p>
+                    </div>
+                )}
 
                 <FormProvider {...methods}>
                     <form onSubmit={methods.handleSubmit(submitHandler)}>
-                        <LoginInput name="name" type="text" icon="user" placeholder="Full Name" />
-                        <LoginInput name="email" type="text" icon="email" placeholder="Email address" />
-                        <LoginInput name="password" type="password" icon="password" placeholder="Password" />
-                        <LoginInput
-                            name="conf_password"
-                            type="password"
-                            icon="password"
-                            placeholder="Re-type password"
+                        <ApField name="name" label="Your name" autoComplete="name" />
+                        <ApField
+                            name="email"
+                            label={business ? "Work email" : "Mobile number or email"}
+                            autoComplete="email"
                         />
-                        <ButtonInput text="Sign up" />
+                        <ApField
+                            name="password"
+                            label="Password"
+                            type="password"
+                            autoComplete="new-password"
+                        />
+
+                        <p className="flex items-start gap-1 text-[12px] text-[#0F1111] mt-1">
+                            <InformationCircleIcon className="h-4 w-4 text-[#0F5FA6] shrink-0" />
+                            Passwords must be at least 6 characters.
+                        </p>
+
+                        <ApField
+                            name="conf_password"
+                            label="Re-enter password"
+                            type="password"
+                            autoComplete="new-password"
+                        />
+
+                        <ApButton type="submit" disabled={loading}>
+                            {loading ? "Creating account…" : "Continue"}
+                        </ApButton>
                     </form>
                 </FormProvider>
 
-                {success && <p className="text-green-600 text-sm mt-2">{success}</p>}
-                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-
-                <p className="text-xs mt-4">
-                    By continuing, you agree to Amazon&apos;s Conditions of Use and Privacy Notice.
+                <p className="text-[12px] text-[#0F1111] mt-5">
+                    By creating an account, you agree to Amazon&apos;s{" "}
+                    <Link href="/customer-service/security-privacy" className="text-[#0066c0] hover:underline hover:text-[#c45500]">
+                        Conditions of Use
+                    </Link>{" "}
+                    and{" "}
+                    <Link href="/profile/data" className="text-[#0066c0] hover:underline hover:text-[#c45500]">
+                        Privacy Notice
+                    </Link>
+                    .
                 </p>
 
-                <OAuthRow verb="Sign up" />
-            </div>
+                <div className="h-px bg-[#e7e7e7] my-5" />
 
-            <div className="auth-divider my-6 text-center text-xs text-slate-500">
-                Already have an account?
-            </div>
+                {!business && (
+                    <p className="text-[13px] text-[#0F1111]">
+                        Buying for work?{" "}
+                        <Link href="/business" className="text-[#0066c0] hover:underline hover:text-[#c45500]">
+                            Create a free business account
+                        </Link>
+                    </p>
+                )}
 
-            <Link
-                href="/auth/signin"
-                className="button-orange block text-center w-full py-[0.5rem] text-sm text-gray-900"
-            >
-                Sign in to your account
-            </Link>
-        </AuthCard>
+                <p className="text-[13px] text-[#0F1111] mt-3">
+                    Already have an account?{" "}
+                    <Link href="/auth/signin" className="text-[#0066c0] hover:underline hover:text-[#c45500]">
+                        Sign in ›
+                    </Link>
+                </p>
+
+                {/* Amazon has no social sign-in here; this build does, so it sits
+                    below the divider rather than competing with the form. */}
+                <div className="mt-4">
+                    <OAuthRow verb="Sign up" />
+                </div>
+            </ApCard>
+        </ApPage>
     );
 };
 

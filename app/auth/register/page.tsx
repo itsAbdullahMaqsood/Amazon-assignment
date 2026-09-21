@@ -1,10 +1,9 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer";
-import MenuSideBar from "@/components/Header/MenuSidebar";
 import RegisterPage from "@/components/User/RegisterPage";
+
+export const metadata = { title: "Amazon Sign Up" };
 
 const Page = async ({ searchParams }: any) => {
     const query = await searchParams;
@@ -14,19 +13,9 @@ const Page = async ({ searchParams }: any) => {
         redirect(query?.callbackUrl || "/");
     }
 
-    return (
-        <>
-            <Header title="Sign up" />
-
-            <main className="bg-slate-100">
-                <RegisterPage />
-            </main>
-
-            <Footer />
-
-            <MenuSideBar />
-        </>
-    );
+    // amazon.com/ap/register carries no site header or footer, so the page is
+    // the form alone.
+    return <RegisterPage business={query?.business === "1"} />;
 };
 
 export default Page;
