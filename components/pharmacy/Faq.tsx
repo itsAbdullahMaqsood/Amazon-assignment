@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 const faqs = [
@@ -59,9 +60,9 @@ const Faq = () => {
 
             <p className="mt-8 text-sm">
                 <span className="font-bold">Other questions?</span> Visit our{" "}
-                <a href="/customer-service" className="underline">
+                <Link href="/customer-service" className="underline">
                     Help Center ›
-                </a>
+                </Link>
             </p>
         </section>
     );
