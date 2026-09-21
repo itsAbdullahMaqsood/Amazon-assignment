@@ -35,7 +35,7 @@ const ProductCard = ({ product }: any) => {
     return (
         <div className="relative flex flex-col w-[215px] rounded p-1">
             <Link href={href}>
-                <ProductSwiper images={images} />
+                <ProductSwiper images={images} alt={product.name} />
             </Link>
 
             {discount > 0 && (
@@ -55,7 +55,7 @@ const ProductCard = ({ product }: any) => {
                 </div>
             )}
 
-            <span className="text-red-500 mt-1 flex items-baseline">
+            <span className="text-[#B12704] mt-1 flex items-baseline">
                 <span className="text-xs mr-0.5">USD</span>
                 <span className="text-lg font-medium leading-none">{low.whole}</span>
                 <span className="text-xs">{low.cents}</span>

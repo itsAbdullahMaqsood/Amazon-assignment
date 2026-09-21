@@ -128,14 +128,14 @@ const Infos = ({ product, setActiveImg }: any) => {
             <div className="h-px w-full bg-slate-200 my-3" />
 
             <div className="flex items-center gap-3">
-                <span className="text-4xl font-semibold text-red-500">{product.price}$</span>
+                <span className="text-4xl font-semibold text-[#B12704]">{product.price}$</span>
 
                 {product.discount > 0 && (
                     <>
-                        <span className="text-xl line-through text-slate-400">
+                        <span className="text-xl line-through text-slate-500">
                             {product.priceBefore}$
                         </span>
-                        <span className="text-blue-500">(-{product.discount}%)</span>
+                        <span className="text-[#007185]">(-{product.discount}%)</span>
                     </>
                 )}
             </div>
@@ -174,6 +174,7 @@ const Infos = ({ product, setActiveImg }: any) => {
                                 setActiveImg(product.subProducts[i].images[0].url)
                             }
                             onMouseLeave={() => setActiveImg("")}
+                            aria-label={`Colour option ${i + 1}`}
                             className={`w-11 h-11 rounded-full bg-slate-200 flex items-center justify-center overflow-hidden hover:outline hover:outline-1 hover:outline-slate-400 hover:outline-offset-[3px] ${
                                 product.style === i ? "outline outline-1 outline-slate-600" : ""
                             }`}
@@ -200,6 +201,7 @@ const Infos = ({ product, setActiveImg }: any) => {
             <div className="flex items-center gap-3 mt-5">
                 <button
                     onClick={() => qty > 1 && setQty(qty - 1)}
+                    aria-label="Decrease quantity"
                     className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center cursor-pointer"
                 >
                     <MinusIcon className="w-4 h-4" />
@@ -209,6 +211,7 @@ const Infos = ({ product, setActiveImg }: any) => {
 
                 <button
                     onClick={() => qty < product.quantity && setQty(qty + 1)}
+                    aria-label="Increase quantity"
                     className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center cursor-pointer"
                 >
                     <PlusIcon className="w-4 h-4" />

@@ -7,7 +7,7 @@ import { Autoplay } from "swiper/modules";
 
 import "swiper/css";
 
-const ProductSwiper = ({ images }: any) => {
+const ProductSwiper = ({ images, alt = "" }: any) => {
     const swiperRef = useRef<any>(null);
 
     const startHandler = () => {
@@ -45,7 +45,7 @@ const ProductSwiper = ({ images }: any) => {
                         <div className="relative flex items-center justify-center bg-white w-[220px] h-[300px]">
                             <Image
                                 src={img.url}
-                                alt=""
+                                alt={i === 0 ? alt : ""}
                                 fill
                                 sizes="220px"
                                 className="rounded object-cover"

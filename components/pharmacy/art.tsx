@@ -61,12 +61,12 @@ export const CouponArt = () => (
             </p>
             <p className="font-bold mt-2">Price with coupon</p>
             <p className="mt-1">
-                <span className="line-through text-slate-400 mr-2">$250</span>
+                <span className="line-through text-slate-500 mr-2">$250</span>
                 <span className="text-xl font-bold">$50</span>
                 <span className="text-sm align-top">00</span>
             </p>
             <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
-                <span className="bg-[#e77600] text-white text-[10px] px-1 rounded">Coupon</span>
+                <span className="bg-[#b35400] text-white text-[10px] px-1 rounded">Coupon</span>
                 <CheckCircleIcon className="w-4 h-4 text-[#007a72]" />
                 $200.00 coupon savings
             </p>

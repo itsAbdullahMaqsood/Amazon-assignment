@@ -42,7 +42,8 @@ const MenuSideBar = () => {
 
                 <button
                     onClick={closeMenuHandler}
-                    className="absolute top-3 -right-12 text-white"
+                    aria-label="Close the menu"
+                    className="absolute top-3 -right-12 text-white cursor-pointer"
                 >
                     <XMarkIcon className="h-8" />
                 </button>

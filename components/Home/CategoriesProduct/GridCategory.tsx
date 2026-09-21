@@ -31,7 +31,7 @@ const GridCategory = ({ category, products, gridCols }: any) => {
                 ))}
             </div>
 
-            <Link href="/browse" className="text-xs text-blue-500 hover:underline mt-2">
+            <Link href="/browse" className="text-xs text-[#007185] hover:underline mt-2">
                 {single ? "Shop now" : "See more"}
             </Link>
         </div>

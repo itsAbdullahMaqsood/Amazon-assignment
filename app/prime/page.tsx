@@ -101,7 +101,7 @@ const Page = async () => {
                         Managing an existing membership?{" "}
                         <Link
                             href="/profile/memberships"
-                            className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline"
+                            className="text-[#0F5FA6] underline hover:text-[#C7511F]"
                         >
                             Memberships and subscriptions
                         </Link>{" "}
