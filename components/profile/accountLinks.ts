@@ -107,6 +107,32 @@ const routed: any = {
 
 const link = (label: string) => ({ label, href: routed[label] || placeholder(label) });
 
+// Keyword → the closest real screen, used by /placeholder to suggest somewhere
+// to go instead of being a dead end.
+export const nearestSections = [
+    { match: ["order", "transaction", "invoice", "purchase"], label: "Your Orders", href: "/profile/orders" },
+    { match: ["return", "refund", "replace"], label: "Returns Center", href: "/profile/returns" },
+    { match: ["payment", "card", "credit", "pay"], label: "Your Payments", href: "/profile/payment" },
+    { match: ["address", "delivery", "shipping"], label: "Your Addresses", href: "/profile/address" },
+    { match: ["prime", "membership", "subscription", "subscribe", "save", "kindle", "music", "audible", "video channel"], label: "Memberships & Subscriptions", href: "/profile/memberships" },
+    { match: ["device", "content", "app", "library", "digital", "book"], label: "Devices and Content Library", href: "/profile/devices" },
+    { match: ["message", "communication", "email", "notification", "alert"], label: "Your Messages", href: "/profile/messages" },
+    { match: ["data", "privacy", "close", "security", "login", "password"], label: "Login & security", href: "/profile/security" },
+    { match: ["gift", "voucher", "coupon", "balance", "reward", "point", "coin"], label: "Gift Cards", href: "/gift-cards" },
+    { match: ["business", "seller", "sell", "vat", "tax"], label: "Amazon Business", href: "/business" },
+    { match: ["family", "household", "teen", "kid", "child"], label: "Amazon Household", href: "/profile/family" },
+    { match: ["preference", "language", "interest", "advertis", "shopping"], label: "Your Shopping preferences", href: "/profile/preferences" },
+];
+
+export const suggestionsFor = (title: string) => {
+    const needle = String(title || "").toLowerCase();
+    const hits = nearestSections.filter((section) =>
+        section.match.some((word) => needle.includes(word))
+    );
+
+    return (hits.length > 0 ? hits : nearestSections.slice(0, 3)).slice(0, 3);
+};
+
 export const accountLinkCards = [
     {
         heading: "Ordering and shopping preferences",
@@ -222,7 +248,7 @@ export const accountLinkCards = [
 export const flyoutLists = [
     { label: "Create a List", href: "/lists/create" },
     { label: "Find a List or Registry", href: "/registry/find" },
-    { label: "Your Saved Books", href: placeholder("Your Saved Books") },
+    { label: "Your Saved Books", href: "/profile/devices" },
 ];
 
 export const flyoutAccount = [
@@ -245,7 +271,7 @@ export const flyoutAccount = [
     { label: "Memberships & Subscriptions", href: "/profile/memberships" },
     { label: "Prime Membership", href: "/prime" },
     { label: "Medical Care & Pharmacy", href: "/pharmacy" },
-    { label: "Music Library", href: placeholder("Music Library") },
+    { label: "Music Library", href: "/profile/devices" },
     { label: "Create Your Free Business Account", href: "/business" },
     { label: "Customer Service", href: "/customer-service" },
 ];
