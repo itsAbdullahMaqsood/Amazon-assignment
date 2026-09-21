@@ -8,6 +8,7 @@
         "start": "next start",
         "lint": "eslint",
         "seed": "node scripts/seed.mjs",
+        "seed:demo": "node scripts/seed-demo.mjs",
         "seed:videos": "node scripts/seed-videos.mjs",
         "seed:grocery": "node scripts/seed-grocery.mjs",
         "seed:meds": "node scripts/seed-medications.mjs",

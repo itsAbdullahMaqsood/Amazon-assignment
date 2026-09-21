@@ -48,8 +48,11 @@ Node 20.9+ is required.
 | `npm run seed:meds` | pharmacy medications | openFDA (no key needed) |
 | `npm run seed:furniture` | Amazon Home catalogue | dummyjson |
 | `npm run seed:registries` | gift registries | generated |
+| `npm run seed:demo -- --email=you@example.com` | a lived-in account: orders in every status, a return, verified reviews, wishlist, history, addresses, gift balance | generated from the catalogue |
 
-Pass `-- --reset` to drop what the script owns before inserting.
+Pass `-- --reset` to drop what the script owns before inserting. `seed:demo` is safe to
+re-run (it replaces its own rows and never touches data you created by hand) and takes
+`--remove` to undo itself.
 
 ### Environment
 
