@@ -45,8 +45,13 @@ const responseSchema = {
     required: ["reply", "groups", "followUps"],
 };
 
-// Gemini returns 503 when the model is busy, so a short retry keeps a spike from
-// surfacing as an error in the panel.
+// Gemini's free tier answers 503 (overloaded) or 429 (rate limited) for
+// roughly half of calls under load, and a spike often outlasts a couple of
+// seconds. Four retries with doubling waits (about 15s worst case), honouring
+// Retry-After when Gemini sends one, turn most of those into a slower answer
+// instead of "Alexa is busy".
+const MAX_RETRIES = 4;
+
 const callGemini = async (body: any, attempt = 0): Promise<any> => {
     const model = process.env.GEMINI_MODEL;
     const key = process.env.GEMINI_API_KEY;
@@ -60,8 +65,11 @@ const callGemini = async (body: any, attempt = 0): Promise<any> => {
         }
     );
 
-    if ((res.status === 503 || res.status === 429) && attempt < 2) {
-        await new Promise((resolve) => setTimeout(resolve, 800 * (attempt + 1)));
+    if ((res.status === 503 || res.status === 429) && attempt < MAX_RETRIES) {
+        const hinted = Number(res.headers.get("retry-after")) * 1000;
+        const backoff = 1000 * 2 ** attempt + Math.random() * 400;
+
+        await new Promise((resolve) => setTimeout(resolve, Math.min(hinted || backoff, 8000)));
         return callGemini(body, attempt + 1);
     }
 
