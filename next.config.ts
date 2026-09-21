@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     reactStrictMode: true,
+    // A build run while `next dev` is up would fight over .next; NEXT_DIST_DIR
+    // lets a verification build write somewhere else.
+    distDir: process.env.NEXT_DIST_DIR || ".next",
     // Turbopack externalizes next-auth's ESM by default, and Node then fails to
     // resolve its bare "next/server" import, crashing dev with
     // "Cannot find module '.../node_modules/next/server'". Listing next-auth and

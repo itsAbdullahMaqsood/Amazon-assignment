@@ -4,22 +4,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bars3Icon, ChevronDownIcon, MapPinIcon } from "@heroicons/react/24/outline";
 
-import { placeholder } from "@/components/profile/accountLinks";
 import AlexaLauncher from "@/components/alexa/AlexaLauncher";
 
 // Partner names stay as plain text labels rather than reproduced logos.
 const links = [
-    { label: "Early Prime Deals", href: placeholder("Early Prime Deals") },
+    { label: "Early Prime Deals", href: "/browse?sort=topSelling" },
     { label: "Prime Video", href: "/prime-video" },
     { label: "Buy Again", href: "/buy-again" },
     { label: "Groceries", href: "/groceries" },
     { label: "Coupons", href: "/coupons" },
     { label: "Pharmacy", href: "/pharmacy" },
-    { label: "Automotive", href: placeholder("Automotive") },
+    { label: "Electronics", href: "/browse?category=electronics" },
     { label: "Amazon Home", href: "/furniture", caret: true },
-    { label: "Registry", href: placeholder("Registry") },
-    { label: "Video Games", href: placeholder("Video Games") },
-    { label: "Whole Foods", href: placeholder("Whole Foods") },
+    { label: "Registry", href: "/registry" },
+    { label: "Beauty", href: "/browse?category=beauty" },
+    { label: "Whole Foods", href: "/groceries" },
 ];
 
 const HeaderBottom = ({ handleOpenMenu }: any) => {
@@ -46,7 +45,7 @@ const HeaderBottom = ({ handleOpenMenu }: any) => {
 
                     <li>
                         <Link
-                            href={placeholder("Join Prime")}
+                            href="/prime"
                             className="bg-white text-amazon-blue_dark font-semibold rounded-full px-3 py-1"
                         >
                             Join Prime

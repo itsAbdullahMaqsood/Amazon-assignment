@@ -41,3 +41,7 @@ next-env.d.ts
 
 # Playwright MCP artifacts (console logs, traces, screenshots)
 .playwright-mcp/
+
+# verification builds (see NEXT_DIST_DIR in next.config.ts)
+/.next-build/
+/.next-dev2/

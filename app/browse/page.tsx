@@ -71,9 +71,23 @@ const Page = async ({ searchParams }: any) => {
 
     await connectDb();
 
-    const filters = buildFilters(query);
+    // Department links carry a slug so they survive a reseed; the sidebar still
+    // sends the category id.
+    const categoryId = /^[0-9a-f]{24}$/i.test(query.category || "")
+        ? query.category
+        : query.category
+          ? String(
+                (
+                    (await Category.findOne({ slug: query.category })
+                        .select("_id")
+                        .lean()) as any
+                )?._id || ""
+            )
+          : "";
+
+    const filters = buildFilters({ ...query, category: categoryId });
     // The sidebar only offers values that exist inside the selected category.
-    const categoryScope = query.category ? { category: query.category } : {};
+    const categoryScope = categoryId ? { category: categoryId } : {};
 
     const [products, total, categories, subCategories, colors, brands, sizes, details] =
         await Promise.all([

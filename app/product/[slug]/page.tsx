@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
 import { auth } from "@/auth";
@@ -13,6 +14,7 @@ import Footer from "@/components/Footer";
 import ProductPage from "@/components/ProductPage/ProductPage";
 import { recordProductView } from "@/lib/recommendations";
 import { resolveSizeIndex } from "@/utils/sizes";
+import { HISTORY_COOKIE } from "@/lib/preferences";
 
 const applyDiscount = (price: number, discount: number) =>
     discount > 0 ? price - price / 100 * discount : price;
@@ -136,8 +138,11 @@ const Page = async ({ params, searchParams }: any) => {
     const session = await auth();
 
     // Browsing history is recorded here, so the account page's carousels run on
-    // what the user actually looked at.
-    if (session) {
+    // what the user actually looked at — unless they turned that off in
+    // /profile/preferences, which mirrors the switch into a cookie.
+    const historyOff = (await cookies()).get(HISTORY_COOKIE)?.value === "0";
+
+    if (session && !historyOff) {
         await recordProductView(session.user.id, String(product._id), style);
     }
 

@@ -15,7 +15,14 @@ const Page = async ({ searchParams }: any) => {
 
     // amazon.com/ap/register carries no site header or footer, so the page is
     // the form alone.
-    return <RegisterPage business={query?.business === "1"} />;
+    // /business and /sell hand the address the visitor already typed over.
+    return (
+        <RegisterPage
+            business={query?.business === "1"}
+            seller={query?.seller === "1"}
+            email={query?.email || ""}
+        />
+    );
 };
 
 export default Page;

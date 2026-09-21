@@ -38,7 +38,7 @@ const schema = z
         path: ["conf_password"],
     });
 
-const RegisterPage = ({ business }: any) => {
+const RegisterPage = ({ business, seller, email = "" }: any) => {
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
@@ -46,7 +46,7 @@ const RegisterPage = ({ business }: any) => {
 
     const methods = useForm({
         resolver: zodResolver(schema),
-        defaultValues: { name: "", email: "", password: "", conf_password: "" },
+        defaultValues: { name: "", email, password: "", conf_password: "" },
     });
 
     const submitHandler = async (values: any) => {
@@ -84,7 +84,7 @@ const RegisterPage = ({ business }: any) => {
 
             <ApCard>
                 <h1 className="text-[28px] leading-9 text-[#0F1111]">
-                    {business ? "Create a Business account" : "Create account"}
+                    {business ? "Create a Business account" : seller ? "Create a Selling account" : "Create account"}
                 </h1>
 
                 {error && <ApAlert>{error}</ApAlert>}
