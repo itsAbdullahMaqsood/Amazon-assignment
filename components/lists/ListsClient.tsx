@@ -13,12 +13,12 @@ import ListCard from "./ListCard";
 
 const tabs = ["Your Lists", "Your Friends"];
 
-const ListsClient = ({ initialLists, children }: any) => {
+const ListsClient = ({ initialLists, children, startCreating = false }: any) => {
     const { data: session }: any = useSession();
     const router = useRouter();
     const [tab, setTab] = useState<string>(tabs[0]);
     const [lists, setLists] = useState<any[]>(initialLists || []);
-    const [creating, setCreating] = useState<boolean>(false);
+    const [creating, setCreating] = useState<boolean>(startCreating && !!session);
     const [error, setError] = useState<string>("");
 
     // Signing in is what the real page does before it will create anything, and
