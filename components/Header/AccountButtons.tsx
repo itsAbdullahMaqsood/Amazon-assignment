@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { ChevronDownIcon, ChevronRightIcon, ShoppingCartIcon, UserIcon } from "@heroicons/react/24/outline";
 
@@ -9,7 +8,6 @@ import { useAppSelector } from "@/redux/hooks";
 import AccountFlyout from "./AccountFlyout";
 
 const AccountButtons = () => {
-    const router = useRouter();
     const { data: session }: any = useSession();
     const cart = useAppSelector((state) => state.cart);
 
@@ -23,21 +21,18 @@ const AccountButtons = () => {
 
             <AccountFlyout />
 
-            <div className="hidden md:block link">
+            <Link href="/profile/returns" className="hidden md:block link">
                 <p className="text-xs text-slate-300">Returns</p>
                 <p className="font-bold text-sm">&amp; Orders</p>
-            </div>
+            </Link>
 
-            <div
-                onClick={() => router.push("/cart")}
-                className="flex items-center relative link"
-            >
+            <Link href="/cart" aria-label={`Cart, ${cart.cartItems.length} items`} className="flex items-center relative link">
                 <ShoppingCartIcon className="h-10" />
                 <span className="absolute top-0 left-4 h-5 w-5 bg-amazon-orange text-black font-bold text-xs rounded-full flex items-center justify-center">
                     {cart.cartItems.length}
                 </span>
                 <p className="hidden md:inline font-bold text-sm mt-4">Cart</p>
-            </div>
+            </Link>
         </div>
     );
 };
