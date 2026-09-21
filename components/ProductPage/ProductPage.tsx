@@ -7,6 +7,7 @@ import MainSwiper from "./MainSwiper";
 import Infos from "./Infos";
 import InfosShipping from "./InfosShipping";
 import SimilarSwiper from "./SimilarSwiper";
+import Reviews from "./reviews/Reviews";
 
 const ProductPage = ({ product, similar }: any) => {
     const [activeImg, setActiveImg] = useState<string>("");
@@ -27,7 +28,7 @@ const ProductPage = ({ product, similar }: any) => {
                 <SimilarSwiper products={similar} />
             </div>
 
-            {/* Reviews section slots in here in a later prompt. */}
+            <Reviews product={product} />
         </div>
     );
 };

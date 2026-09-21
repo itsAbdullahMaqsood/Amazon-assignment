@@ -104,7 +104,7 @@ const OrderCard = ({ order, returnable }: any) => {
 
                                     <div className="flex flex-wrap gap-4 mt-2 text-xs">
                                         <Link
-                                            href={`${href}#reviews`}
+                                            href={`${href}#customer-reviews`}
                                             className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline"
                                         >
                                             Write a product review

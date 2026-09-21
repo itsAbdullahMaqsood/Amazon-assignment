@@ -140,6 +140,15 @@ productSchema.index({ brand: 1 });
 productSchema.index({ "subProducts.sold": -1 });
 productSchema.index({ createdAt: -1 });
 
+// Mongoose's model registry outlives a hot reload, so an edit to the schema above
+// would keep losing to the copy compiled when the dev server booted — saves would
+// quietly drop any newly added field until someone restarted it. Re-registering in
+// development keeps the running process in step with this file; production still
+// registers once.
+if (process.env.NODE_ENV !== "production" && mongoose.models.Product) {
+    mongoose.deleteModel("Product");
+}
+
 const Product = mongoose.models.Product || mongoose.model("Product", productSchema);
 
 export default Product;

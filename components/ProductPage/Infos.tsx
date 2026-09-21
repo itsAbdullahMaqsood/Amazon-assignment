@@ -122,7 +122,9 @@ const Infos = ({ product, setActiveImg }: any) => {
                     {product.brand}
                 </span>
                 <StarRating value={product.rating} />
-                <span className="text-slate-500 text-sm">({product.numberReviews} reviews)</span>
+                <span className="text-slate-500 text-sm">
+                    ({product.numberReviews} {product.numberReviews === 1 ? "review" : "reviews"})
+                </span>
             </div>
 
             <div className="h-px w-full bg-slate-200 my-3" />

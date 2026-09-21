@@ -28,7 +28,10 @@ const getProduct = cache(async (slug: string, style: number, sizeParam: any) => 
     const product: any = await Product.findOne({ slug })
         .populate({ path: "category", model: Category })
         .populate({ path: "subCategories", model: SubCategory })
-        .populate({ path: "reviews.reviewBy", model: User })
+        // Selected down to what a review card shows: the whole product document
+        // is serialized to the client, and a reviewer's account has no business
+        // travelling with it.
+        .populate({ path: "reviews.reviewBy", model: User, select: "name image" })
         .lean();
 
     if (!product) {
