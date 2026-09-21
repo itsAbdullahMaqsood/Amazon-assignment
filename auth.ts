@@ -19,7 +19,20 @@ class CredentialsError extends CredentialsSignin {
     }
 }
 
+// The Vercel project carries a stale AUTH_URL/NEXTAUTH_URL of
+// http://localhost:3000, and Auth.js builds every signin and callback URL from
+// it, so Google came back to localhost. A localhost value is always wrong off
+// the local machine: drop it there and let Auth.js read the request host.
+if (process.env.VERCEL) {
+    for (const key of ["AUTH_URL", "NEXTAUTH_URL"]) {
+        if (/localhost|127\.0\.0\.1/.test(process.env[key] || "")) {
+            delete process.env[key];
+        }
+    }
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
+    trustHost: true,
     session: { strategy: "jwt" },
     pages: { signIn: "/auth/signin" },
     providers: [
