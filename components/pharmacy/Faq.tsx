@@ -59,7 +59,7 @@ const Faq = () => {
 
             <p className="mt-8 text-sm">
                 <span className="font-bold">Other questions?</span> Visit our{" "}
-                <a href="/placeholder?title=Amazon%20Pharmacy%20Help%20Center" className="underline">
+                <a href="/customer-service" className="underline">
                     Help Center ›
                 </a>
             </p>

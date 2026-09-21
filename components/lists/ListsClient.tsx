@@ -148,7 +148,7 @@ const ListsClient = ({ initialLists, children, startCreating = false }: any) => 
                         </p>
 
                         <Link
-                            href="/placeholder?title=Find%20a%20List%20or%20Registry"
+                            href="/registry/find"
                             className="inline-block mt-6 text-sm text-[#007185] hover:underline"
                         >
                             Find a list or registry ›
