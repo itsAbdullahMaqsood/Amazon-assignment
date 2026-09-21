@@ -101,6 +101,7 @@ const routed: any = {
     "Data Access and Requests": "/profile/data",
     "Close Your Amazon Account": "/profile/data",
     "Manage Your Amazon Family": "/profile/family",
+    "Recalls and Product Safety Alerts": "/profile/recalls",
     "Privacy Notice": "/profile/data",
 };
 
@@ -234,10 +235,7 @@ export const flyoutAccount = [
     { label: "Your Shopping preferences", href: "/profile/preferences" },
     { label: "Start a Selling Account", href: "/sell" },
     { label: "Amazon Credit Cards", href: "/profile/credit-cards" },
-    {
-        label: "Recalls and Product Safety Alerts",
-        href: placeholder("Recalls and Product Safety Alerts"),
-    },
+    { label: "Recalls and Product Safety Alerts", href: "/profile/recalls" },
     { label: "Watchlist", href: "/watchlist" },
     { label: "Video Purchases & Rentals", href: "/watchlist" },
     { label: "Kindle Unlimited", href: "/profile/memberships" },

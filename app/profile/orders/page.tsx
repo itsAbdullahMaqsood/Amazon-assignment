@@ -16,6 +16,7 @@ import OrderTabs from "@/components/orders/OrderTabs";
 import OrdersSearch from "@/components/orders/OrdersSearch";
 import TimeFilter from "@/components/orders/TimeFilter";
 import OrderCard from "@/components/orders/OrderCard";
+import { isReturnable } from "@/lib/returns";
 import SponsoredOrder from "@/components/orders/SponsoredOrder";
 import RecommendationCarousel from "@/components/profile/RecommendationCarousel";
 
@@ -128,7 +129,11 @@ const Page = async ({ searchParams }: any) => {
                     {orders.length > 0 ? (
                         <div className="space-y-6 mt-6">
                             {orders.map((order: any) => (
-                                <OrderCard key={String(order._id)} order={serialize(order)} />
+                                <OrderCard
+                                    key={String(order._id)}
+                                    order={serialize(order)}
+                                    returnable={isReturnable(order)}
+                                />
                             ))}
                         </div>
                     ) : tab === "digital" ? (

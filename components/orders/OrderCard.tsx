@@ -24,7 +24,9 @@ const yellow =
 const outline =
     "px-4 py-1.5 rounded-full text-sm text-center border border-slate-400 bg-white hover:bg-slate-100 shadow-sm";
 
-const OrderCard = ({ order }: any) => {
+// `returnable` is decided on the server: reading the clock during render is
+// both impure and a hydration risk on the day a return window closes.
+const OrderCard = ({ order, returnable }: any) => {
     const shortId = String(order._id).slice(-12).toUpperCase();
 
     return (
@@ -101,7 +103,10 @@ const OrderCard = ({ order }: any) => {
                                     <p className="text-sm mt-1">${Number(line.price).toFixed(2)}</p>
 
                                     <div className="flex flex-wrap gap-4 mt-2 text-xs">
-                                        <Link href={href} className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline">
+                                        <Link
+                                            href={`${href}#reviews`}
+                                            className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline"
+                                        >
                                             Write a product review
                                         </Link>
                                         <Link
@@ -123,6 +128,11 @@ const OrderCard = ({ order }: any) => {
                                     <Link href={`/order/${order._id}`} className={outline}>
                                         Track package
                                     </Link>
+                                    {returnable && (
+                                        <Link href="/profile/returns" className={outline}>
+                                            Return or replace items
+                                        </Link>
+                                    )}
                                 </div>
                             </div>
                         );
