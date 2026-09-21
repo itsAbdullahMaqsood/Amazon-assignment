@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import connectDb from "@/lib/db";
+import Category from "@/models/Category";
 import Product from "@/models/Product";
 import { escapeRegex } from "@/utils/regex";
 
@@ -9,6 +10,7 @@ export const GET = async (req: Request) => {
     try {
         const { searchParams } = new URL(req.url);
         const q = String(searchParams.get("q") || "").trim();
+        const department = String(searchParams.get("category") || "").trim();
 
         if (q.length < 2) {
             return NextResponse.json({ suggestions: [] });
@@ -16,8 +18,14 @@ export const GET = async (req: Request) => {
 
         await connectDb();
 
+        // Scoped to the department picked in the search bar, when there is one.
+        const category = department
+            ? ((await Category.findOne({ slug: department }).select("_id").lean()) as any)?._id
+            : undefined;
+
         const products: any[] = await Product.find({
             name: { $regex: escapeRegex(q), $options: "i" },
+            ...(category && { category }),
         })
             .select("name slug")
             .limit(10)
