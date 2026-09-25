@@ -109,6 +109,35 @@ const userSchema = new mongoose.Schema(
                 createdAt: Date,
             },
         ],
+        // Markaz Plus. One membership per account; `status` is the only thing
+        // that decides whether checkout waives delivery, and only
+        // /api/user/membership writes it.
+        membership: {
+            plan: String,
+            status: {
+                type: String,
+                enum: ["trial", "active", "cancelled"],
+            },
+            startedAt: Date,
+            trialEndsAt: Date,
+            renewsAt: Date,
+            cancelledAt: Date,
+        },
+        // Auto-reorder: a reminder schedule over things this account has bought.
+        // Markaz never places one of these orders by itself, and the page says so.
+        autoReorder: [
+            {
+                product: {
+                    type: ObjectId,
+                    ref: "Product",
+                },
+                style: Number,
+                size: String,
+                everyWeeks: Number,
+                nextAt: Date,
+                createdAt: Date,
+            },
+        ],
         // Markaz Movies. Saved titles and the library are the account's, not the
         // browser's: the price on a purchase or rental is read from the Video
         // document by the route that writes it, never sent by the client.

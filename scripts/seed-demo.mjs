@@ -424,6 +424,18 @@ const run = async () => {
             .map((id) => ({ _id: new mongoose.Types.ObjectId(), product: id, style: "0", seededBy: DEMO_TAG })),
     ];
 
+    // A Plus membership a few days into its trial, and one repeat, so the
+    // membership page and the delivery waiver can both be seen.
+    const membership = fresh.membership?.startedAt
+        ? fresh.membership
+        : {
+              plan: "annual",
+              status: "trial",
+              startedAt: daysAgo(4),
+              trialEndsAt: new Date(daysAgo(4).getTime() + 30 * 24 * 60 * 60 * 1000),
+              renewsAt: new Date(daysAgo(4).getTime() + 30 * 24 * 60 * 60 * 1000),
+          };
+
     // Two named lists, one shared by link and one public so it can be found by
     // name on /registry, each with products from the catalogue.
     const keptLists = strip(fresh.lists);
@@ -522,6 +534,7 @@ const run = async () => {
             $set: {
                 address: addresses,
                 whishlist: wishlist,
+                membership,
                 lists,
                 recentlyViewed,
                 watchlist,
@@ -545,6 +558,7 @@ const run = async () => {
     console.log(`  wishlist        ${wishlist.length} items`);
     console.log(`  history         ${recentlyViewed.length} products`);
     console.log(`  addresses       ${addresses.length}`);
+    console.log(`  membership      Markaz Plus, ${membership.status}`);
     console.log(`  lists           ${lists.length} (${lists.filter((entry) => entry.privacy !== "private").length} shareable)`);
     console.log(`  movies          ${watchlist.length} on My list, ${library.length} bought or rented`);
     console.log(`  gift balance    $${giftCardBalance.toFixed(2)}`);

@@ -21,7 +21,7 @@ import CartLine from "./CartLine";
 // The cart lives in the browser (redux-persist) so a guest can fill one. Every
 // visit re-prices it against the database first; the totals shown are computed
 // with the same function checkout charges with.
-const CartView = ({ suggestions, suggestionsTitle }: any) => {
+const CartView = ({ suggestions, suggestionsTitle, member = false }: any) => {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const { status } = useSession();
@@ -53,7 +53,8 @@ const CartView = ({ suggestions, suggestionsTitle }: any) => {
     }, []);
 
     const buyable = lines.filter((line: any) => !line.unavailable);
-    const totals = summarize(buyable);
+    // The same membership rule the checkout quote applies, so the two totals agree.
+    const totals = summarize(buyable, { freeDelivery: member });
     const capped = lines.some((line: any) => line.capped);
 
     const setQty = (uid: string, qty: number) =>
@@ -140,7 +141,18 @@ const CartView = ({ suggestions, suggestionsTitle }: any) => {
                 </div>
                 <div className="flex justify-between">
                     <dt className="text-fg-muted">Delivery</dt>
-                    <dd className="tabular">{totals.shipping > 0 ? money(totals.shipping) : "Free"}</dd>
+                    <dd className="tabular">
+                        {totals.deliveryWaived > 0 ? (
+                            <>
+                                <span className="mr-1.5 text-fg-muted line-through">{money(totals.deliveryWaived)}</span>
+                                <span className="text-success">Free with Plus</span>
+                            </>
+                        ) : totals.shipping > 0 ? (
+                            money(totals.shipping)
+                        ) : (
+                            "Free"
+                        )}
+                    </dd>
                 </div>
                 <div className="flex justify-between border-t border-line pt-3 text-base font-semibold">
                     <dt>Total</dt>

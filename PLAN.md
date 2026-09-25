@@ -329,7 +329,7 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 - [x] Phase 0 foundation
 - [x] 1 Header / nav / footer · [x] 2 Home · [x] 3 Browse + search · [x] 4 Product · [x] 5 Cart · [x] 6 Checkout
 - [x] 7 Orders + returns · [x] 8 Auth · [x] 9 Profile · [x] 10 Movies + My List + Shabana
-- [x] 11 Deals · [x] 12 Buy again / Keep shopping · [x] 13 Lists + Registry · [x] 14 Gift cards · [ ] 15 Plus + Memberships
+- [x] 11 Deals · [x] 12 Buy again / Keep shopping · [x] 13 Lists + Registry · [x] 14 Gift cards · [x] 15 Plus + Memberships
 - [ ] 16 Groceries · [ ] 17 Markaz Home · [ ] 18 Pharmacy · [ ] 19 Account sub-pages · [ ] 20 Help
 - [ ] 21 Business + Sell · [ ] 22 System pages · [ ] 23 Admin rebrand · [ ] 24 README + DECISIONS
 
@@ -338,11 +338,10 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 
 ## Handoff notes (for continuing on another machine)
 
-**Done and pushed:** Phase 0 and pages 1–14. **Next up: page 15 (Plus + Memberships).**
+**Done and pushed:** Phase 0 and pages 1–15. **Next up: page 16 (Groceries).**
 
-**Still to do from §5 (backend moves):** items 6, 7, 9, 10 and 11 (membership, auto-reorder,
-household, preferences, sign-ins with `sessionVersion`). They land with the pages that use
-them (15, 19). **Item 8 (saved cards) was dropped** on
+**Still to do from §5 (backend moves):** items 9, 10 and 11 (household, preferences, sign-ins
+with `sessionVersion`). They land with page 19. **Item 8 (saved cards) was dropped** on
 page 9: checkout asks for no card details, so a wallet of cards nothing can charge would be the
 decorative state this redesign removes. `/profile/credit-cards` was cut and redirects to
 `/profile/payment`.
@@ -378,6 +377,15 @@ decorative state this redesign removes. `/profile/credit-cards` was cut and redi
   uses `components/ui`.
 - Pages still on localStorage state: `/plus`, memberships, devices, household, preferences
   (see §5).
+
+**Added on page 15**
+- Markaz Plus is real: `User.membership` decides whether `summarize()` waives the per-item
+  delivery charges, in the cart and in `computeQuote`. `/api/user/membership` is the only writer.
+- Auto-reorder (`User.autoReorder`, `/api/user/auto-reorder`) is a reminder, not a standing
+  order; there is no scheduler in this build and the panel says so.
+- **Gotcha:** after editing `models/*.ts`, restart `next dev`. The mongoose connection survives
+  HMR and `mongoose.models.User` keeps the old schema, so writes to a new path are silently
+  dropped by strict mode and the route still returns 200.
 
 **Added on page 14**
 - Redeeming was broken since the rename: `parseGiftCode` still matched `^AMZN`. Fixed to

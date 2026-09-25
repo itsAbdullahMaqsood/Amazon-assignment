@@ -4,10 +4,11 @@ import Order from "@/models/Order";
 import Product from "@/models/Product";
 import { statusLabel } from "@/lib/orderQueries";
 import { toCardProduct } from "@/lib/recommendations";
+import { membershipState } from "@/lib/membership";
 import { applyDiscount } from "@/lib/price";
 
 const SELECT =
-    "name email image createdAt password address defaultPaymentMethod giftCardBalance whishlist lists recentlyViewed";
+    "name email image createdAt password address defaultPaymentMethod giftCardBalance whishlist lists recentlyViewed membership";
 
 // The shape the overview renders: one read of the user document, the newest
 // order, and two counts. Nothing here is stored twice — every number is counted
@@ -47,6 +48,7 @@ export const getAccountOverview = async (userId: string) => {
             addressCount: addresses.length,
             defaultAddress: addresses.find((entry: any) => entry.active) || addresses[0] || null,
             paymentMethod: user.defaultPaymentMethod || "",
+            membership: membershipState(user.membership),
             giftCardBalance: user.giftCardBalance || 0,
             savedCount: (user.whishlist || []).length,
             listCount: (user.lists || []).length,

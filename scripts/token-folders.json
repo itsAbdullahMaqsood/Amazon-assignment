@@ -60,5 +60,11 @@
 "app/(store)/registry",
 "components/gift",
 "lib/giftcards.ts",
-"app/(store)/gift-cards"
+"app/(store)/gift-cards",
+"components/plus",
+"lib/membership.ts",
+"lib/autoReorder.ts",
+"lib/autoReorderQueries.ts",
+"app/(store)/plus",
+"app/(store)/profile/memberships"
 ]

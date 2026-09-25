@@ -161,7 +161,18 @@ const CheckoutView = ({ addresses: initialAddresses, defaultPayment, initialQuot
                 </div>
                 <div className="flex justify-between">
                     <dt className="text-fg-muted">Delivery</dt>
-                    <dd className="tabular">{quote.shipping > 0 ? money(quote.shipping) : "Free"}</dd>
+                    <dd className="tabular">
+                        {quote.deliveryWaived > 0 ? (
+                            <>
+                                <span className="mr-1.5 text-fg-muted line-through">{money(quote.deliveryWaived)}</span>
+                                <span className="text-success">Free with Plus</span>
+                            </>
+                        ) : quote.shipping > 0 ? (
+                            money(quote.shipping)
+                        ) : (
+                            "Free"
+                        )}
+                    </dd>
                 </div>
                 {quote.coupon && (
                     <div className="flex justify-between text-success">
@@ -353,7 +364,7 @@ const CheckoutView = ({ addresses: initialAddresses, defaultPayment, initialQuot
                                             <p className="text-sm text-fg-muted">
                                                 {line.qty} × {money(line.price)}
                                                 {line.size && !/^one size$/i.test(line.size) && <> · Size {line.size}</>}
-                                                {line.shipping > 0 && <> · +{money(line.shipping)} delivery</>}
+                                                {line.shipping > 0 && (quote.member ? <> · delivery free with Plus</> : <> · +{money(line.shipping)} delivery</>)}
                                             </p>
                                         </div>
                                         <p className="text-sm font-medium tabular">{money(line.price * line.qty)}</p>

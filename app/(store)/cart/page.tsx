@@ -3,6 +3,7 @@ import connectDb from "@/lib/db";
 import Product from "@/models/Product";
 import User from "@/models/User";
 import { toCardProduct } from "@/lib/recommendations";
+import { isMember } from "@/lib/membership";
 import CartView from "@/components/cart/CartView";
 
 export const metadata = { title: "Your cart" };
@@ -17,15 +18,17 @@ const Page = async () => {
 
     let suggestions: any[] = [];
     let suggestionsTitle = "Top rated right now";
+    let member = false;
 
     if (session) {
         const user: any = await User.findById(session.user.id)
-            .select("recentlyViewed")
+            .select("recentlyViewed membership")
             .populate({ path: "recentlyViewed.product", model: Product })
             .lean();
 
         suggestions = (user?.recentlyViewed || []).map((entry: any) => entry.product).filter(Boolean).slice(0, 5).map(toCardProduct);
         suggestionsTitle = "Recently viewed";
+        member = isMember(user?.membership);
     }
 
     if (!suggestions.length) {
@@ -33,7 +36,7 @@ const Page = async () => {
         suggestionsTitle = "Top rated right now";
     }
 
-    return <CartView suggestions={JSON.parse(JSON.stringify(suggestions))} suggestionsTitle={suggestionsTitle} />;
+    return <CartView suggestions={JSON.parse(JSON.stringify(suggestions))} suggestionsTitle={suggestionsTitle} member={member} />;
 };
 
 export default Page;

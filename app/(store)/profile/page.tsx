@@ -136,12 +136,27 @@ const Page = async () => {
                         <span className="font-medium tabular text-fg">{money(account.giftCardBalance)}</span>
                     </p>
 
+                    <p className="mt-1 text-sm">
+                        <span className="text-fg-muted">Markaz Plus </span>
+                        <span className="font-medium text-fg">
+                            {account.membership.active
+                                ? account.membership.inTrial
+                                    ? "free trial"
+                                    : "member"
+                                : "not a member"}
+                        </span>
+                        {account.membership.active && <span className="text-fg-muted"> · delivery is free</span>}
+                    </p>
+
                     <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
                         <Link href="/profile/payment" className="text-link">
                             Payment settings
                         </Link>
                         <Link href="/gift-cards" className="text-link">
                             Redeem a gift card
+                        </Link>
+                        <Link href="/plus" className="text-link">
+                            Markaz Plus
                         </Link>
                     </div>
                 </Card>

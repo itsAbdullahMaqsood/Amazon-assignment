@@ -712,3 +712,47 @@ for, so the balance was worth exactly as much as the visitor felt like giving th
   codes** printed on the page so the balance and checkout can actually be tried. They are labelled
   as what they are rather than dressed as a promotion, and the server refuses a code already on your
   account, so each one works once.
+
+---
+
+## 15. Markaz Plus and memberships
+
+**What Amazon's does badly:** the Prime page sells six benefits. In this store, five of them did not
+exist — there is no reading library, no photo storage, no games, no member-only coupons, and
+delivery was never different for a member. The clone was at least honest about it, in a FAQ answer
+that admitted "Plus membership here is a simulation stored in your browser, so joining does not
+change what checkout charges you". A page whose own FAQ says the product does nothing is a page
+selling nothing.
+
+Underneath: the membership lived in `localStorage`, so it followed a browser rather than an account
+and checkout could never see it. The Memberships page then listed three more invented
+subscriptions — Kindle Unlimited, Markaz Music Unlimited, Audible Premium Plus — with prices,
+blurbs and trial copy for services that do not exist, and a "Subscribe & Save" panel that also wrote
+to `localStorage`.
+
+- **Change, and it is the whole point:** **Plus does something.** Markaz prices delivery per item
+  (`Product.shipping`), so a membership waives those charges — one flag through `summarize()` in
+  `lib/pricing.ts`, applied by the cart and by `computeQuote`, which is what actually charges the
+  order. The membership is read from the account on the server; the browser never asserts it.
+  Checkout shows the waived amount struck through: "$4.99 Free with Plus".
+- **Change:** the membership moves to MongoDB (PLAN §5, item 6) as
+  `membership { plan, status, startedAt, trialEndsAt, renewsAt, cancelledAt }`, written only by
+  `/api/user/membership`. Joining starts the 30-day trial; the renewal date is **computed** from the
+  start date on each read rather than stored, so it cannot go stale while nothing is billing.
+- **Change:** two benefits are claimed because two are true — no delivery charges, and the Plus price
+  on pharmacy medications (`Medication.primePrice`, which the catalogue already carries). The page
+  then says so explicitly: "That is the whole list. There is no music service, no reading library, no
+  photo storage and no games behind it, so this page does not sell you any."
+- **Change:** two plans, not three. Plus Student was cut: it priced itself on "a valid .edu address"
+  that nothing checks, and an eligibility rule a store cannot enforce is not a plan.
+- **Keep:** the free trial, the plan prices and the plan table — with a plain line that no payment is
+  taken at any point, so the dates behave as if you were billed while the delivery waiver is real.
+- **Cut:** the four invented benefits, Kindle Unlimited, Music Unlimited and Audible Premium Plus,
+  and the benefit tiles' art.
+- **Change:** "Subscribe & Save" becomes **auto-reorder**, in MongoDB (PLAN §5, item 7), and it is
+  honest about what it is: a **reminder**, over things this account has actually bought, with the
+  next date worked out on the server. Markaz has no scheduler and places no order by itself, so the
+  panel says that where the dates are rather than in a footnote, and each row offers "Add to cart",
+  "Got it covered" (which moves the date on one interval) and "Stop".
+- **Add:** the account overview now says whether you are a member and that delivery is free, because
+  that is the part of a membership a shopper needs at a glance.

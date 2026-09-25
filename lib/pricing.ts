@@ -6,12 +6,18 @@ import { round2 } from "@/lib/price";
 //
 // Delivery is a flat charge per product line, as stored on the product (the
 // seed charges small items under $20); it does not multiply with quantity.
-export const summarize = (lines: { price: number; qty: number; shipping?: number }[]) => {
+// `freeDelivery` is the one thing a Markaz Plus membership changes, and it is
+// applied here so the cart and the checkout quote cannot disagree about it.
+export const summarize = (
+    lines: { price: number; qty: number; shipping?: number }[],
+    { freeDelivery = false } = {}
+) => {
     const items = lines.reduce((sum, line) => sum + (Number(line.qty) || 0), 0);
     const subtotal = round2(lines.reduce((sum, line) => sum + (Number(line.price) || 0) * (Number(line.qty) || 0), 0));
-    const shipping = round2(lines.reduce((sum, line) => sum + (Number(line.shipping) || 0), 0));
+    const delivery = round2(lines.reduce((sum, line) => sum + (Number(line.shipping) || 0), 0));
+    const shipping = freeDelivery ? 0 : delivery;
 
-    return { items, subtotal, shipping, total: round2(subtotal + shipping) };
+    return { items, subtotal, shipping, deliveryWaived: freeDelivery ? delivery : 0, total: round2(subtotal + shipping) };
 };
 
 // A coupon discounts the goods, never the delivery charge; a gift card balance
