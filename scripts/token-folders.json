@@ -10,5 +10,9 @@
 "lib/home.ts",
 "components/browse",
 "components/ui/Pagination.tsx",
-"app/(store)/browse"
+"app/(store)/browse",
+"components/ProductPage",
+"app/(store)/product",
+"components/shared/StarRating.tsx",
+"components/shared/Lightbox.tsx"
 ]

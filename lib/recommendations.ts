@@ -38,6 +38,8 @@ export const toCardProduct = (product: any) => {
         fromPrice: allPrices.some((value: number) => value > price),
         sold,
         colors: subs.length,
+        // Seeded variants are photos, not named colours.
+        variantLabel: subs.some((entry: any) => entry.color?.color) ? "colours" : "styles",
         hasOptions: subs.length > 1 || (sub.sizes || []).length > 1,
         inStock: inStock(product),
         // Top pick: rated 4.5 or better by at least three reviewers.

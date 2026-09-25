@@ -181,14 +181,7 @@ const run = async () => {
                 { name: "Room", value: entry.room },
                 { name: "Style", value: entry.style },
                 { name: "Category", value: entry.cat },
-                ...(item.dimensions
-                    ? [
-                          {
-                              name: "Dimensions",
-                              value: `${item.dimensions.width} x ${item.dimensions.depth} x ${item.dimensions.height} in`,
-                          },
-                      ]
-                    : []),
+                ...(item.shippingInformation ? [{ name: "Dispatch", value: item.shippingInformation }] : []),
                 ...(item.warrantyInformation
                     ? [{ name: "Warranty", value: item.warrantyInformation }]
                     : []),

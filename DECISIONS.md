@@ -194,3 +194,46 @@ load, and sorted and filtered by list price, ignoring the discount the shopper a
 **Search suggestions** (department-scoped, from the header) are covered under the header section.
 **Seed fix found here:** dummyjson sells an Amazon Echo, which put "Amazon" in the brand filter.
 Amazon-branded items are now skipped by the seed.
+
+---
+
+## 4. Product detail
+
+**What Amazon's does badly:** the price appears twice, once in the description column and again
+in the buy box, and they can disagree. The buy box is dense with legalese ("Ships from / Sold
+by", "No Import Fees Deposit", "Secure transaction"). The delivery promise is a countdown timer.
+Reviews sit below one or more rows of other products. The clone had all of that, plus a hardcoded
+"Delivery Thursday, March 23 · order within 23 hrs 53 mins", a seller called "ATUAT", an empty
+"Questions" accordion, and a stock check that called the last unit "Sold".
+
+- **Keep:** a large gallery beside the decision; colour and size variants in the URL, so an
+  option can be linked to; the review system (half stars, photos, helpful votes, verified
+  purchase earned from real orders).
+- **Change:** one panel, in the order you decide: what it is (brand, name, rating, units sold),
+  what it costs (one price, with the saving), which option, how many, then delivery, returns and
+  warranty in three lines.
+- **Change:** delivery is an **estimate computed from the product's own dispatch time**
+  ("Ships in 2 weeks" moves the estimate out). It says "estimated". Returns come from the
+  product's return policy, and warranty from its specs.
+- **Change:** stock is real and specific: "In stock", "Only 3 left", or "Out of stock in this
+  option". Out-of-stock sizes are struck through, and sizes that cost more say how much.
+- **Change:** variants are shown **by their photo**. The seed used to give each variant a random
+  swatch colour, so a blue iPhone was offered in "Green". dummyjson has no colour data, so the seed
+  no longer invents it. Products with real colours (admin-created) still get named swatches.
+- **Change:** specifications are a table from the product's data. Weights and dimensions were
+  dropped because the source gives them no units and they weren't plausible (an "8 kg" phone).
+- **Change:** saving an item is a heart beside Add to cart that toggles, not a second full-width
+  button.
+- **Cut:** the second price, "Ships from / Sold by", "No Import Fees", "Secure transaction", the
+  countdown, and the empty Questions section.
+- **Cut:** the similar-products carousel between the buy box and the reviews. One row of
+  alternatives now comes last, preferring the same sub-category.
+- **Add:** **Ask Shabana about this product**, where the empty Q&A used to be. Three one-tap
+  questions ("What do reviewers say?", "What are the main downsides?", "Is it worth the price?")
+  or your own. She answers from this product's description, specs and reviews only.
+- **Add:** Add to cart confirms with a toast offering View cart / Check out, instead of a
+  spinner and silence.
+- **Add:** on phones, a swipeable gallery and a sticky bar with the price and Add to cart.
+- **Reviews:** a clickable histogram filters by star. Filters appear only when the reviews vary
+  (size, colour, fit, verified, with photos); "Style 1 / Style 2" became colour names. Five per
+  page, sorted by most helpful.

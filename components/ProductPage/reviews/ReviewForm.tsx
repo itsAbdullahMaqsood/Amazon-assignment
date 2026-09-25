@@ -36,7 +36,7 @@ const schema = z.object({
 const ORDER = ["size", "style", "fit", "rating", "review"];
 
 const select =
-    "w-full h-11 border border-slate-400 rounded-lg px-3 text-sm bg-surface-muted shadow-sm outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent-ink/30";
+    "w-full h-11 border border-line-strong rounded-lg px-3 text-sm bg-surface-muted shadow-sm outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent-ink/30";
 
 const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
     const router = useRouter();
@@ -198,7 +198,7 @@ const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
         <form
             onSubmit={handleSubmit(onValid, onInvalid)}
             noValidate
-            className="border border-slate-300 rounded-lg p-4 md:p-5 bg-white"
+            className="border border-line rounded-lg p-4 md:p-5 bg-surface"
         >
             {saving && <DotLoaderSpinner loading={saving} />}
 
@@ -219,7 +219,7 @@ const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
                                 size="w-8 h-8"
                                 label="Overall rating"
                             />
-                            <span className="text-sm text-slate-600">
+                            <span className="text-sm text-fg-muted">
                                 {field.value ? `${field.value} out of 5` : "Click to rate"}
                             </span>
                         </div>
@@ -272,7 +272,7 @@ const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
                                         aria-label={`Style ${i + 1}`}
                                         onClick={() => field.onChange(colour.color)}
                                         className={`w-11 h-11 rounded-full overflow-hidden border-2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent-ink focus-visible:ring-offset-2 ${
-                                            active ? "border-accent-ink" : "border-slate-300"
+                                            active ? "border-accent-ink" : "border-line"
                                         }`}
                                     >
                                         {colour.image ? (
@@ -304,13 +304,13 @@ const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
                     rows={5}
                     maxLength={MAX_REVIEW}
                     placeholder="What did you like or dislike? What did you use this product for?"
-                    className="mt-1 w-full border border-slate-400 rounded-lg p-3 text-sm outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent-ink/30"
+                    className="mt-1 w-full border border-line-strong rounded-lg p-3 text-sm outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent-ink/30"
                 />
             </label>
 
             <div className="mt-5">
                 <p className="text-sm font-bold">Add photos</p>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-fg-muted">
                     Shoppers find images more helpful than text alone. Up to {MAX_PHOTOS}, JPEG, PNG
                     or WebP, 5 MB each.
                 </p>
@@ -324,13 +324,13 @@ const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
                                 fill
                                 sizes="96px"
                                 unoptimized={photo.kind === "local"}
-                                className="object-cover rounded-lg border border-slate-300"
+                                className="object-cover rounded-lg border border-line"
                             />
                             <button
                                 type="button"
                                 onClick={() => removePhoto(i)}
                                 aria-label={`Remove photo ${i + 1}`}
-                                className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-white border border-slate-400 shadow flex items-center justify-center cursor-pointer hover:bg-slate-100"
+                                className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-surface border border-line-strong shadow flex items-center justify-center cursor-pointer hover:bg-surface-muted"
                             >
                                 <XMarkIcon className="w-4 h-4" />
                             </button>
@@ -338,7 +338,7 @@ const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
                     ))}
 
                     {photos.length < MAX_PHOTOS && (
-                        <label className="w-24 h-24 rounded-lg border-2 border-dashed border-slate-400 flex flex-col items-center justify-center text-xs text-slate-600 cursor-pointer hover:bg-slate-50 focus-within:ring-2 focus-within:ring-accent-ink">
+                        <label className="w-24 h-24 rounded-lg border-2 border-dashed border-line-strong flex flex-col items-center justify-center text-xs text-fg-muted cursor-pointer hover:bg-surface-muted focus-within:ring-2 focus-within:ring-accent-ink">
                             <CameraIcon className="w-7 h-7" />
                             Add photo
                             <input
@@ -367,7 +367,7 @@ const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="px-6 h-11 rounded-full border border-slate-400 bg-white hover:bg-slate-50 text-sm cursor-pointer"
+                    className="px-6 h-11 rounded-full border border-line-strong bg-surface hover:bg-surface-muted text-sm cursor-pointer"
                 >
                     Cancel
                 </button>

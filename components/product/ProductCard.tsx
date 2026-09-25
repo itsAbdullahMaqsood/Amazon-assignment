@@ -81,7 +81,7 @@ const ProductCard = ({ product, priority = false, className = "", sizes = "(max-
                     </div>
                     <p className="text-xs text-fg-muted">
                         {product.shipping > 0 ? `+$${Number(product.shipping).toFixed(2)} delivery` : "Free delivery"}
-                        {product.colors > 1 && <> · {product.colors} colours</>}
+                        {product.colors > 1 && <> · {product.colors} {product.variantLabel || "options"}</>}
                     </p>
                 </div>
             </div>

@@ -82,9 +82,6 @@ const CATALOG = [
     },
 ];
 
-// Colour variants get a swatch from this palette. lib/colors.ts names the same
-// values ("Black", "Sand" ...) so the product page can say which one you picked.
-const COLORS = ["#1f2328", "#f4f4f2", "#b3261e", "#2f5fa7", "#2e7d4f", "#d9c7a3", "#6b4fa0"];
 
 // Items under this price carry a flat delivery charge; everything else ships free.
 const SMALL_ORDER_PRICE = 20;
@@ -132,8 +129,10 @@ const buildSubProducts = (item, sizes) => {
         sku: `${makeSlug(item.title)}-${item.id}-${i}`,
         images: group.map((url) => ({ url, public_url: url })),
         description_images: [],
-        // Deterministic, so a reseed gives each product the same swatches.
-        color: { color: COLORS[(item.id + i * 3) % COLORS.length], image: "" },
+        // dummyjson has no colour data, so a variant is shown by its own photo
+        // rather than a made-up swatch colour. Admin-created products can still
+        // carry a real colour.
+        color: { color: "", image: group[0] || "" },
         sizes: buildSizes(i),
         discount,
         sold: (item.id * 37 + i * 11) % 480,
@@ -144,13 +143,8 @@ const buildDetails = (item) => {
     const details = [];
 
     if (item.brand) details.push({ name: "Brand", value: item.brand });
-    if (item.weight) details.push({ name: "Weight", value: `${item.weight} kg` });
-    if (item.dimensions) {
-        details.push({
-            name: "Dimensions",
-            value: `${item.dimensions.width} × ${item.dimensions.height} × ${item.dimensions.depth} cm`,
-        });
-    }
+    // dummyjson's weight and dimensions carry no units and are not realistic
+    // (an 8-unit phone), so they are left out rather than given invented units.
     if (item.warrantyInformation) details.push({ name: "Warranty", value: item.warrantyInformation });
     if (item.shippingInformation) details.push({ name: "Dispatch", value: item.shippingInformation });
     if (item.sku) details.push({ name: "Model", value: item.sku });
@@ -320,7 +314,7 @@ const run = async () => {
                         rating: Math.min(5, Math.max(1, Number(review.rating) || 5)),
                         review: review.comment,
                         size: sub.sizes[0],
-                        style: { color: subProducts[0].color.color, image: "" },
+                        style: { color: "", image: "" },
                         fit: "",
                         images: [],
                         likes: [],

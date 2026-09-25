@@ -33,12 +33,12 @@ const Lightbox = ({ images, index, onIndex, onClose, label = "Photo" }: any) => 
                 if (event.key === "ArrowRight") go(1);
                 if (event.key === "ArrowLeft") go(-1);
             }}
-            className="fixed inset-0 z-[60] bg-black/85 flex items-center justify-center p-4"
+            className="fixed inset-0 z-[60] bg-ink-950/85 flex items-center justify-center p-4"
         >
             <button
                 onClick={onClose}
                 aria-label="Close photo"
-                className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full text-white hover:bg-white/10 cursor-pointer focus-visible:ring-2 focus-visible:ring-white"
+                className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full text-fg-inverse hover:bg-surface/10 cursor-pointer focus-visible:ring-2 focus-visible:ring-surface"
             >
                 <XMarkIcon className="w-7 h-7" />
             </button>
@@ -50,7 +50,7 @@ const Lightbox = ({ images, index, onIndex, onClose, label = "Photo" }: any) => 
                         go(-1);
                     }}
                     aria-label="Previous photo"
-                    className="absolute left-2 md:left-6 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 cursor-pointer focus-visible:ring-2 focus-visible:ring-white"
+                    className="absolute left-2 md:left-6 w-11 h-11 flex items-center justify-center rounded-full bg-surface/10 text-fg-inverse hover:bg-surface/20 cursor-pointer focus-visible:ring-2 focus-visible:ring-surface"
                 >
                     <ChevronLeftIcon className="w-6 h-6" />
                 </button>
@@ -76,13 +76,13 @@ const Lightbox = ({ images, index, onIndex, onClose, label = "Photo" }: any) => 
                         go(1);
                     }}
                     aria-label="Next photo"
-                    className="absolute right-2 md:right-6 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 cursor-pointer focus-visible:ring-2 focus-visible:ring-white"
+                    className="absolute right-2 md:right-6 w-11 h-11 flex items-center justify-center rounded-full bg-surface/10 text-fg-inverse hover:bg-surface/20 cursor-pointer focus-visible:ring-2 focus-visible:ring-surface"
                 >
                     <ChevronRightIcon className="w-6 h-6" />
                 </button>
             )}
 
-            <p className="absolute bottom-4 text-sm text-white/80">
+            <p className="absolute bottom-4 text-sm text-fg-inverse/80">
                 {index + 1} / {count}
             </p>
         </div>,

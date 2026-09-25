@@ -9,13 +9,14 @@ import { CheckBadgeIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
 import StarRating from "@/components/shared/StarRating";
 import Lightbox from "@/components/shared/Lightbox";
 import { formatDate } from "@/lib/localStore";
+import { colorName } from "@/lib/colors";
 import { initialOf, likeCount, likedBy, splitReview } from "./reviewUtils";
 
 // Long enough that clamping to four lines hides something worth a "Read more".
 const LONG = 280;
 
 const Chip = ({ children }: any) => (
-    <span className="inline-flex items-center gap-1.5 text-xs text-slate-700 bg-surface-muted border border-slate-300 rounded-full px-2.5 py-0.5">
+    <span className="inline-flex items-center gap-1.5 text-xs text-fg-muted bg-surface-muted border border-line rounded-full px-2.5 py-0.5">
         {children}
     </span>
 );
@@ -57,7 +58,7 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
     };
 
     return (
-        <article className="py-5 border-b border-slate-200 last:border-b-0">
+        <article className="py-5">
             <div className="flex items-center gap-2">
                 {review.reviewBy?.image ? (
                     <Image
@@ -68,11 +69,11 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                         className="w-8 h-8 rounded-full object-cover"
                     />
                 ) : (
-                    <span className="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-sm font-semibold">
+                    <span className="w-8 h-8 rounded-full bg-accent-soft text-accent-ink flex items-center justify-center text-sm font-semibold">
                         {initialOf(review.reviewBy?.name)}
                     </span>
                 )}
-                <span className="text-sm">{review.reviewBy?.name || "Markaz Customer"}</span>
+                <span className="text-sm font-medium">{review.reviewBy?.name || "Markaz customer"}</span>
                 {mine && <Chip>Your review</Chip>}
             </div>
 
@@ -81,13 +82,13 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                 {title && <h4 className="font-bold text-sm text-fg">{title}</h4>}
             </div>
 
-            {date && <p className="text-sm text-slate-600 mt-1">Reviewed on {date}</p>}
+            {date && <p className="text-xs text-fg-subtle mt-1">{date}</p>}
 
             <div className="flex flex-wrap items-center gap-2 mt-2">
                 {review.size && <Chip>Size: {review.size}</Chip>}
                 {review.style?.color && (
                     <Chip>
-                        Colour:
+                        {colorName(review.style.color)}
                         {review.style.image ? (
                             <Image
                                 src={review.style.image}
@@ -99,7 +100,7 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                         ) : (
                             <span
                                 aria-hidden="true"
-                                className="w-3.5 h-3.5 rounded-full border border-slate-400"
+                                className="w-3.5 h-3.5 rounded-full border border-line-strong"
                                 style={{ backgroundColor: review.style.color }}
                             />
                         )}
@@ -107,9 +108,9 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                 )}
                 {review.fit && <Chip>Fit: {review.fit}</Chip>}
                 {review.verified && (
-                    <span className="inline-flex items-center gap-1 text-xs font-bold text-accent-deep">
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-success">
                         <CheckBadgeIcon className="w-4 h-4" />
-                        Verified Purchase
+                        Verified purchase
                     </span>
                 )}
             </div>
@@ -141,7 +142,7 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                             key={image.public_url || image.url}
                             onClick={() => setPhoto(i)}
                             aria-label={`Open photo ${i + 1} of ${images.length}`}
-                            className="relative w-20 h-20 rounded-lg overflow-hidden border border-slate-300 cursor-pointer hover:opacity-90 focus-visible:ring-2 focus-visible:ring-accent-ink"
+                            className="relative w-20 h-20 rounded-lg overflow-hidden border border-line cursor-pointer hover:opacity-90 focus-visible:ring-2 focus-visible:ring-accent-ink"
                         >
                             <Image src={image.url} alt="" fill sizes="80px" className="object-cover" />
                         </button>
@@ -151,7 +152,7 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
 
             <div className="flex flex-wrap items-center gap-3 mt-3">
                 {helpful > 0 && (
-                    <span className="text-xs text-slate-600">
+                    <span className="text-xs text-fg-muted">
                         {helpful} {helpful === 1 ? "person" : "people"} found this helpful
                     </span>
                 )}
@@ -171,7 +172,7 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                         className={`inline-flex items-center gap-1.5 h-9 px-4 rounded-full border text-sm shadow-sm cursor-pointer disabled:opacity-60 ${
                             liked
                                 ? "bg-accent-soft border-accent-ink text-accent-ink"
-                                : "bg-white border-slate-400 hover:bg-slate-50"
+                                : "bg-surface border-line-strong hover:bg-surface-muted"
                         }`}
                     >
                         <HandThumbUpIcon className="w-4 h-4" />
@@ -179,7 +180,7 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                     </button>
                 )}
 
-                {error && <span className="text-xs text-red-600">{error}</span>}
+                {error && <span className="text-xs text-danger">{error}</span>}
             </div>
 
             <Lightbox

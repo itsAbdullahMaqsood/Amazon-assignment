@@ -4,7 +4,7 @@ import { cn } from "./cn";
 
 // Read-only stars with the number beside them. Fractions are drawn as a clipped
 // star, so 4.3 looks like 4.3 rather than 4 or 4.5.
-const Rating = ({ value, count, size = "sm", href, className = "" }: any) => {
+const Rating = ({ value, count, size = "sm", href, showValue = true, className = "" }: any) => {
     const rating = Number(value) || 0;
     const star = size === "sm" ? "h-3.5 w-3.5" : "h-5 w-5";
 
@@ -29,7 +29,7 @@ const Rating = ({ value, count, size = "sm", href, className = "" }: any) => {
     const content = (
         <>
             {stars}
-            <span className="font-medium text-fg">{rating.toFixed(1)}</span>
+            {showValue && <span className="font-medium text-fg">{rating.toFixed(1)}</span>}
             {count !== undefined && <span className="text-fg-muted">({count})</span>}
         </>
     );

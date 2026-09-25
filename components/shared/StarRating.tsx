@@ -20,12 +20,12 @@ const Stars = ({ value, precision, size }: any) => {
                 // whole star.
                 return (
                     <span key={index} className="relative inline-flex">
-                        <StarIcon className={`${size} text-slate-300`} />
+                        <StarIcon className={`${size} text-line-strong`} />
                         <span
                             className="absolute top-0 left-0 overflow-hidden"
                             style={{ width: `${filled * 100}%` }}
                         >
-                            <StarIcon className={`${size} text-accent`} />
+                            <StarIcon className={`${size} text-star`} />
                         </span>
                     </span>
                 );

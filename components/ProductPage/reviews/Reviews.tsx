@@ -2,18 +2,28 @@
 
 import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
-import { ChatBubbleLeftRightIcon, PhotoIcon } from "@heroicons/react/24/outline";
+import { ChatBubbleLeftRightIcon, CheckBadgeIcon, PhotoIcon } from "@heroicons/react/24/outline";
 
 import Pagination from "@/components/ui/Pagination";
+import Button from "@/components/ui/Button";
+import { EmptyState } from "@/components/ui/Layout";
+import { cn } from "@/components/ui/cn";
+import { colorName } from "@/lib/colors";
 import RatingSummary from "./RatingSummary";
 import ReviewCard from "./ReviewCard";
 import ReviewForm from "./ReviewForm";
-import { FITS, RATINGS, bucketOf, sortReviews } from "./reviewUtils";
+import { FITS, bucketOf, sortReviews } from "./reviewUtils";
 
-const PER_PAGE = 3;
+const PER_PAGE = 5;
 
 const control =
-    "h-9 border border-slate-400 rounded-lg px-2 text-sm bg-surface-muted shadow-sm cursor-pointer outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent-ink/30";
+    "h-9 cursor-pointer rounded-control border border-line-strong bg-surface pl-2.5 pr-8 text-sm outline-none focus:border-accent-ink";
+
+const toggleClass = (on: boolean) =>
+    cn(
+        "inline-flex h-9 cursor-pointer items-center gap-2 rounded-full border px-3 text-sm",
+        on ? "border-accent-ink bg-accent-soft text-accent-ink" : "border-line-strong bg-surface text-fg hover:border-fg-subtle"
+    );
 
 // Everything the list does — filter, sort, paginate — runs over reviews already
 // on the page; only writing a review or voting goes to the server.
@@ -32,6 +42,7 @@ const Reviews = ({ product }: any) => {
         style: "",
         fit: "",
         photos: false,
+        verified: false,
     });
 
     const mine = reviews.find((review: any) => String(review.reviewBy?._id) === String(userId));
@@ -49,7 +60,8 @@ const Reviews = ({ product }: any) => {
                 (!filters.size || review.size === filters.size) &&
                 (!filters.style || review.style?.color === filters.style) &&
                 (!filters.fit || review.fit === filters.fit) &&
-                (!filters.photos || (review.images || []).length > 0)
+                (!filters.photos || (review.images || []).length > 0) &&
+                (!filters.verified || review.verified)
         ),
         sort
     );
@@ -57,23 +69,18 @@ const Reviews = ({ product }: any) => {
     const pages = Math.max(1, Math.ceil(visible.length / PER_PAGE));
     const current = Math.min(page, pages);
     const shown = visible.slice((current - 1) * PER_PAGE, current * PER_PAGE);
-    const filtering = filters.star || filters.size || filters.style || filters.fit || filters.photos;
+    const filtering = filters.star || filters.size || filters.style || filters.fit || filters.photos || filters.verified;
 
-    // The histogram is computed from the list itself, so it moves the moment a
-    // review is saved instead of waiting for the page to re-render.
-    const ratings = RATINGS.map((star) => ({
-        percentage: reviews.length
-            ? ((reviews.filter((review: any) => bucketOf(review.rating) === star).length * 100) /
-                  reviews.length).toFixed(1)
-            : "0",
-    }));
-
+    // A filter is only offered when the reviews actually vary on it.
     const sizes = [...new Set(reviews.map((review: any) => review.size).filter(Boolean))];
     const styles = [...new Set(reviews.map((review: any) => review.style?.color).filter(Boolean))];
+    const fits = FITS.filter((fit) => reviews.some((review: any) => review.fit === fit));
+    const withPhotos = reviews.some((review: any) => (review.images || []).length > 0);
+    const verifiedCount = reviews.filter((review: any) => review.verified).length;
 
     const writeHandler = () => {
         if (!session) {
-            signIn(undefined, { callbackUrl: `${window.location.pathname}#customer-reviews` });
+            signIn(undefined, { callbackUrl: `${window.location.pathname}#reviews` });
             return;
         }
 
@@ -101,83 +108,101 @@ const Reviews = ({ product }: any) => {
         );
     };
 
+    const clear = () => {
+        setFilters({ star: 0, size: "", style: "", fit: "", photos: false, verified: false });
+        setPage(1);
+    };
+
     return (
-        <section
-            id="customer-reviews"
-            aria-labelledby="customer-reviews-heading"
-            className="mt-4 mx-auto w-full md:w-4/5 p-4 md:p-6 border border-slate-200 rounded-lg scroll-mt-4"
-        >
-            <div className="grid md:grid-cols-[minmax(260px,1fr)_2fr] gap-8">
+        <section id="reviews" aria-labelledby="reviews-heading" className="mt-14 scroll-mt-6 border-t border-line pt-10">
+            <div className="grid gap-10 md:grid-cols-[18rem_1fr]">
                 <div>
-                    <h2 id="customer-reviews-heading" className="text-2xl font-bold mb-3">
+                    <h2 id="reviews-heading" className="font-display text-xl font-semibold tracking-tight">
                         Customer reviews
                     </h2>
 
-                    <RatingSummary
-                        average={average}
-                        reviews={reviews}
-                        ratings={ratings}
-                        filter={filters.star}
-                        onFilter={(star: number) => setFilter("star", star)}
-                    />
+                    <div className="mt-4">
+                        <RatingSummary average={average} reviews={reviews} filter={filters.star} onFilter={(star: number) => setFilter("star", star)} />
+                    </div>
 
-                    <div className="border-t border-slate-200 mt-6 pt-6">
-                        <h3 className="text-lg font-bold">Review this product</h3>
-                        <p className="text-sm text-slate-700 mt-1">
-                            Share your thoughts with other customers
+                    <div className="mt-6 border-t border-line pt-6">
+                        <p className="text-sm text-fg-muted">
+                            {mine ? "You reviewed this product." : "Bought it? Tell other shoppers how it went."}
                         </p>
-                        <button
-                            onClick={writeHandler}
-                            className="w-full h-11 mt-3 rounded-full border border-slate-400 bg-white hover:bg-slate-50 shadow-sm text-sm cursor-pointer"
-                        >
-                            {!session
-                                ? "Sign in to write a review"
-                                : mine
-                                  ? "Update review"
-                                  : "Write a customer review"}
-                        </button>
+                        <Button variant="outline" block onClick={writeHandler} className="mt-3">
+                            {!session ? "Sign in to write a review" : mine ? "Edit your review" : "Write a review"}
+                        </Button>
                     </div>
                 </div>
 
                 <div className="min-w-0">
                     {writing && (
                         <div className="mb-6">
-                            <ReviewForm
-                                product={product}
-                                mine={mine}
-                                onSaved={onSaved}
-                                onCancel={() => setWriting(false)}
-                            />
+                            <ReviewForm product={product} mine={mine} onSaved={onSaved} onCancel={() => setWriting(false)} />
                         </div>
                     )}
 
                     {reviews.length === 0 ? (
-                        <div className="text-center border border-dashed border-slate-300 rounded-lg py-12 px-4">
-                            <ChatBubbleLeftRightIcon className="w-10 h-10 mx-auto text-slate-400" />
-                            <p className="font-bold mt-3">No customer reviews yet</p>
-                            <p className="text-sm text-slate-600 mt-1">
-                                Be the first to tell other shoppers what you think.
-                            </p>
-                            {!writing && (
-                                <button
-                                    onClick={writeHandler}
-                                    className="mt-4 px-6 h-11 rounded-full bg-accent hover:bg-accent-strong border border-accent text-sm cursor-pointer"
-                                >
-                                    {session ? "Write a customer review" : "Sign in to write a review"}
-                                </button>
-                            )}
-                        </div>
+                        !writing && (
+                            <EmptyState
+                                icon={ChatBubbleLeftRightIcon}
+                                title="No reviews yet"
+                                description="Be the first to tell other shoppers what you think."
+                                action={<Button onClick={writeHandler}>{session ? "Write a review" : "Sign in to write a review"}</Button>}
+                            />
+                        )
                     ) : (
                         <>
-                            <div className="flex flex-wrap items-center justify-between gap-3">
-                                <h3 className="text-lg font-bold">
-                                    {filtering
-                                        ? `${visible.length} matching review${visible.length === 1 ? "" : "s"}`
-                                        : "Top reviews from customers"}
-                                </h3>
+                            <div className="flex flex-wrap items-center gap-2" aria-label="Filter reviews">
+                                {verifiedCount > 0 && verifiedCount < reviews.length && (
+                                    <button type="button" aria-pressed={filters.verified} onClick={() => setFilter("verified", !filters.verified)} className={toggleClass(filters.verified)}>
+                                        <CheckBadgeIcon className="h-4 w-4" />
+                                        Verified purchases
+                                    </button>
+                                )}
 
-                                <label className="flex items-center gap-2 text-sm">
-                                    Sort by
+                                {withPhotos && (
+                                    <button type="button" aria-pressed={filters.photos} onClick={() => setFilter("photos", !filters.photos)} className={toggleClass(filters.photos)}>
+                                        <PhotoIcon className="h-4 w-4" />
+                                        With photos
+                                    </button>
+                                )}
+
+                                {sizes.length > 1 && (
+                                    <select aria-label="Filter by size" value={filters.size} onChange={(event) => setFilter("size", event.target.value)} className={control}>
+                                        <option value="">All sizes</option>
+                                        {sizes.map((size: any) => (
+                                            <option key={size} value={size}>
+                                                Size {size}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )}
+
+                                {styles.length > 1 && (
+                                    <select aria-label="Filter by colour" value={filters.style} onChange={(event) => setFilter("style", event.target.value)} className={control}>
+                                        <option value="">All colours</option>
+                                        {styles.map((style: any) => (
+                                            <option key={style} value={style}>
+                                                {colorName(style)}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )}
+
+                                {fits.length > 0 && (
+                                    <select aria-label="Filter by fit" value={filters.fit} onChange={(event) => setFilter("fit", event.target.value)} className={control}>
+                                        <option value="">Any fit</option>
+                                        {fits.map((fit) => (
+                                            <option key={fit} value={fit}>
+                                                {fit}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )}
+
+                                <label className="ml-auto flex items-center gap-2 text-sm">
+                                    <span className="text-fg-muted">Sort</span>
                                     <select
                                         value={sort}
                                         onChange={(event) => {
@@ -186,101 +211,24 @@ const Reviews = ({ product }: any) => {
                                         }}
                                         className={control}
                                     >
-                                        <option value="top">Top reviews</option>
+                                        <option value="top">Most helpful</option>
                                         <option value="recent">Most recent</option>
                                     </select>
                                 </label>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-2 mt-3" aria-label="Filter reviews">
-                                <select
-                                    aria-label="Filter by star rating"
-                                    value={filters.star}
-                                    onChange={(event) => setFilter("star", Number(event.target.value))}
-                                    className={control}
-                                >
-                                    <option value={0}>All stars</option>
-                                    {RATINGS.map((star) => (
-                                        <option key={star} value={star}>
-                                            {star} star only
-                                        </option>
-                                    ))}
-                                </select>
-
-                                {sizes.length > 0 && (
-                                    <select
-                                        aria-label="Filter by size"
-                                        value={filters.size}
-                                        onChange={(event) => setFilter("size", event.target.value)}
-                                        className={control}
-                                    >
-                                        <option value="">All sizes</option>
-                                        {sizes.map((size: any) => (
-                                            <option key={size} value={size}>
-                                                Size: {size}
-                                            </option>
-                                        ))}
-                                    </select>
-                                )}
-
-                                {styles.length > 1 && (
-                                    <select
-                                        aria-label="Filter by style"
-                                        value={filters.style}
-                                        onChange={(event) => setFilter("style", event.target.value)}
-                                        className={control}
-                                    >
-                                        <option value="">All styles</option>
-                                        {styles.map((style: any, i: number) => (
-                                            <option key={style} value={style}>
-                                                Style {i + 1}
-                                            </option>
-                                        ))}
-                                    </select>
-                                )}
-
-                                <select
-                                    aria-label="Filter by fit"
-                                    value={filters.fit}
-                                    onChange={(event) => setFilter("fit", event.target.value)}
-                                    className={control}
-                                >
-                                    <option value="">Any fit</option>
-                                    {FITS.map((fit) => (
-                                        <option key={fit} value={fit}>
-                                            {fit}
-                                        </option>
-                                    ))}
-                                </select>
-
-                                <label className="inline-flex items-center gap-2 h-9 px-3 border border-slate-400 rounded-lg text-sm bg-white cursor-pointer has-checked:bg-accent-soft has-checked:border-accent-ink">
-                                    <input
-                                        type="checkbox"
-                                        checked={filters.photos}
-                                        onChange={(event) => setFilter("photos", event.target.checked)}
-                                    />
-                                    <PhotoIcon className="w-4 h-4" />
-                                    With photos only
-                                </label>
-
-                                {filtering ? (
-                                    <button
-                                        onClick={() => {
-                                            setFilters({ star: 0, size: "", style: "", fit: "", photos: false });
-                                            setPage(1);
-                                        }}
-                                        className="text-sm text-accent-ink hover:text-accent-deep hover:underline cursor-pointer"
-                                    >
+                            {filtering ? (
+                                <p className="mt-3 text-sm text-fg-muted">
+                                    {visible.length} matching review{visible.length === 1 ? "" : "s"} ·{" "}
+                                    <button type="button" onClick={clear} className="text-link">
                                         Clear filters
                                     </button>
-                                ) : null}
-                            </div>
+                                </p>
+                            ) : null}
 
-                            <div className="mt-2">
+                            <div className="mt-2 divide-y divide-line">
                                 {shown.length === 0 ? (
-                                    <p className="text-sm text-slate-600 py-8 text-center">
-                                        No reviews match these filters.
-                                    </p>
+                                    <p className="py-8 text-center text-sm text-fg-muted">No reviews match these filters.</p>
                                 ) : (
                                     shown.map((review: any) => (
                                         <ReviewCard
@@ -295,7 +243,7 @@ const Reviews = ({ product }: any) => {
                                 )}
                             </div>
 
-                            <Pagination page={current} count={pages} onChange={setPage} />
+                            <Pagination page={current} count={pages} onChange={setPage} className="mt-4" />
                         </>
                     )}
                 </div>

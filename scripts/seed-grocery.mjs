@@ -151,7 +151,7 @@ const run = async () => {
                     details: [
                         { name: "Department", value: entry.department },
                         { name: "Aisle", value: entry.aisle },
-                        ...(item.weight ? [{ name: "Weight", value: `${item.weight}` }] : []),
+                        ...(item.shippingInformation ? [{ name: "Dispatch", value: item.shippingInformation }] : []),
                     ],
                     questions: [],
                     reviews: [],

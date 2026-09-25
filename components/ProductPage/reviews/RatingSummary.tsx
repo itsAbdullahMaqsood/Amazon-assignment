@@ -1,62 +1,50 @@
 "use client";
 
-import StarRating from "@/components/shared/StarRating";
+import Rating from "@/components/ui/Rating";
+import { cn } from "@/components/ui/cn";
 import { RATINGS, countFor } from "./reviewUtils";
 
-// `ratings` is the 5→1 histogram the product page already computes; the counts are
-// derived here from the reviews that are on the page anyway.
-const RatingSummary = ({ average, reviews, ratings, filter, onFilter }: any) => {
+// The average, then a bar per star that doubles as a filter: tap "2 star" to
+// read only the two-star reviews.
+const RatingSummary = ({ average, reviews, filter, onFilter }: any) => {
     const total = reviews.length;
 
     return (
         <div>
-            <div className="flex items-center gap-2">
-                <StarRating value={average} />
-                <span className="text-lg">
-                    {total ? `${Number(average).toFixed(1)} out of 5` : "No ratings yet"}
-                </span>
+            <div className="flex items-baseline gap-2">
+                <span className="font-display text-4xl font-semibold tabular">{total ? Number(average).toFixed(1) : "–"}</span>
+                <span className="text-fg-muted">out of 5</span>
             </div>
-
-            <p className="text-sm text-slate-600 mt-1">
-                {total} global rating{total === 1 ? "" : "s"}
+            {total > 0 && <Rating value={average} size="md" showValue={false} className="mt-1" />}
+            <p className="mt-1 text-sm text-fg-muted">
+                {total} review{total === 1 ? "" : "s"}
             </p>
 
-            <div className="mt-4 space-y-1.5">
-                {RATINGS.map((rating, i) => {
-                    const percentage = Math.round(Number(ratings?.[i]?.percentage) || 0);
-                    const active = filter === rating;
+            <div className="mt-4 space-y-1">
+                {RATINGS.map((rating) => {
                     const count = countFor(reviews, rating);
+                    const percentage = total ? Math.round((count * 100) / total) : 0;
+                    const active = filter === rating;
 
                     return (
                         <button
                             key={rating}
                             type="button"
                             onClick={() => onFilter(active ? 0 : rating)}
-                            disabled={!total}
+                            disabled={!count && !active}
                             aria-pressed={active}
-                            aria-label={
-                                active
-                                    ? `Clear the ${rating} star filter`
-                                    : `Show only ${rating} star reviews, ${count} of ${total}`
-                            }
-                            className={`group w-full flex items-center gap-2 text-sm rounded px-1 py-0.5 ${
-                                total ? "cursor-pointer hover:bg-slate-100" : "cursor-default"
-                            } ${active ? "bg-slate-100 font-semibold" : ""}`}
+                            aria-label={active ? `Show all ratings` : `Show only ${rating} star reviews, ${count} of ${total}`}
+                            className={cn(
+                                "flex w-full items-center gap-3 rounded-control px-1.5 py-1 text-sm transition-colors",
+                                count ? "cursor-pointer hover:bg-surface-muted" : "cursor-default opacity-60",
+                                active && "bg-accent-soft"
+                            )}
                         >
-                            <span className="w-14 shrink-0 text-left text-accent-ink group-hover:text-accent-deep group-hover:underline">
-                                {rating} star
+                            <span className="w-12 shrink-0 text-left text-fg-muted">{rating} star</span>
+                            <span className="h-2 grow overflow-hidden rounded-full bg-surface-muted">
+                                <span className="block h-full rounded-full bg-star" style={{ width: `${percentage}%` }} />
                             </span>
-
-                            <span className="grow h-5 rounded-sm bg-surface-muted border border-slate-400 overflow-hidden">
-                                <span
-                                    className="block h-full bg-linear-to-r from-accent to-accent"
-                                    style={{ width: `${percentage}%` }}
-                                />
-                            </span>
-
-                            <span className="w-10 shrink-0 text-right text-accent-ink group-hover:text-accent-deep group-hover:underline">
-                                {percentage}%
-                            </span>
+                            <span className="w-9 shrink-0 text-right text-fg-muted tabular">{percentage}%</span>
                         </button>
                     );
                 })}
