@@ -29,7 +29,7 @@ const blank = {
     shipping: "0",
     sku: "",
     discount: "0",
-    color: "#232f3e",
+    color: "#121a27",
     sizes: [{ ...emptySize }],
     details: [{ ...emptyDetail }],
     questions: [{ ...emptyQuestion }],
@@ -316,12 +316,12 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
                                 onClick={() => switchMode(option.value)}
                                 className={`text-left rounded-xl border p-4 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent-ink ${
                                     variantMode === option.value
-                                        ? "border-accent-ink bg-sky-50/60 ring-1 ring-accent-ink"
-                                        : "border-slate-200 hover:border-slate-300"
+                                        ? "border-accent-ink bg-accent-soft/60 ring-1 ring-accent-ink"
+                                        : "border-line hover:border-line"
                                 }`}
                             >
                                 <p className="font-semibold text-sm">{option.title}</p>
-                                <p className="text-xs text-slate-600 mt-1">{option.text}</p>
+                                <p className="text-xs text-fg-muted mt-1">{option.text}</p>
                             </button>
                         ))}
                     </div>
@@ -367,7 +367,7 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
                 title="Product information"
                 action={
                     locked && (
-                        <span className="inline-flex items-center gap-1 text-xs text-slate-500">
+                        <span className="inline-flex items-center gap-1 text-xs text-fg-subtle">
                             <LockClosedIcon className="w-4 h-4" />
                             From &ldquo;{parent.name}&rdquo;
                         </span>
@@ -430,9 +430,9 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
                     <fieldset>
                         <legend className={label}>Sub-categories</legend>
                         {!category ? (
-                            <p className="text-sm text-slate-500 h-10 flex items-center">Choose a category first.</p>
+                            <p className="text-sm text-fg-subtle h-10 flex items-center">Choose a category first.</p>
                         ) : visibleSubs.length === 0 ? (
-                            <p className="text-sm text-slate-500 h-10 flex items-center">
+                            <p className="text-sm text-fg-subtle h-10 flex items-center">
                                 This category has no sub-categories.
                             </p>
                         ) : (
@@ -444,7 +444,7 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
                                         <label
                                             key={sub._id}
                                             className={`inline-flex items-center gap-2 h-9 px-3 rounded-full border text-sm cursor-pointer ${
-                                                on ? "border-accent-ink bg-sky-50 text-accent-ink" : "border-slate-300"
+                                                on ? "border-accent-ink bg-accent-soft text-accent-ink" : "border-line"
                                             }`}
                                         >
                                             <input
@@ -489,7 +489,7 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
                                 aria-label="Pick the colour"
                                 value={/^#[0-9a-f]{6}$/i.test(color) ? color : "#000000"}
                                 onChange={(event) => setValue("color", event.target.value)}
-                                className="w-12 h-10 rounded-lg border border-slate-300 cursor-pointer p-1 bg-white"
+                                className="w-12 h-10 rounded-lg border border-line cursor-pointer p-1 bg-surface"
                             />
                             <input id="color-hex" {...register("color")} maxLength={7} className={`${field} font-mono`} />
                         </div>
@@ -498,7 +498,7 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
 
                 <div className="mt-5">
                     <p className={label}>Style image</p>
-                    <p className="text-xs text-slate-500">The small swatch shoppers click to choose this colour.</p>
+                    <p className="text-xs text-fg-subtle">The small swatch shoppers click to choose this colour.</p>
                     <div className="flex items-center gap-3 mt-2">
                         {swatch ? (
                             <div className="relative w-16 h-16">
@@ -508,7 +508,7 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
                                     fill
                                     sizes="64px"
                                     unoptimized={swatch.kind === "local"}
-                                    className="rounded-full object-cover border border-slate-300"
+                                    className="rounded-full object-cover border border-line"
                                 />
                                 <button
                                     type="button"
@@ -517,7 +517,7 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
                                         setSwatch(null);
                                     }}
                                     aria-label="Remove style image"
-                                    className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-white border border-slate-300 shadow flex items-center justify-center cursor-pointer"
+                                    className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-surface border border-line shadow flex items-center justify-center cursor-pointer"
                                 >
                                     <XMarkIcon className="w-3.5 h-3.5" />
                                 </button>
@@ -525,10 +525,10 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
                         ) : (
                             <span
                                 aria-hidden="true"
-                                className="w-16 h-16 rounded-full border border-dashed border-slate-300 flex items-center justify-center"
+                                className="w-16 h-16 rounded-full border border-dashed border-line flex items-center justify-center"
                                 style={{ backgroundColor: /^#[0-9a-f]{6}$/i.test(color) ? color : undefined }}
                             >
-                                <SwatchIcon className="w-6 h-6 text-white mix-blend-difference" />
+                                <SwatchIcon className="w-6 h-6 text-fg-inverse mix-blend-difference" />
                             </span>
                         )}
                         <label className={`${btn.secondary} focus-within:ring-2 focus-within:ring-accent-ink`}>
@@ -579,7 +579,7 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
             </Panel>
 
             <Panel title="Sizes, stock and price">
-                <div className="hidden sm:grid grid-cols-[1fr_1fr_1fr_40px] gap-3 text-xs font-medium text-slate-500 mb-1 px-1">
+                <div className="hidden sm:grid grid-cols-[1fr_1fr_1fr_40px] gap-3 text-xs font-medium text-fg-subtle mb-1 px-1">
                     <span>Size</span>
                     <span>Quantity in stock</span>
                     <span>Price ($)</span>
@@ -602,7 +602,7 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
             </Panel>
 
             <fieldset disabled={locked} className="space-y-6 disabled:opacity-70">
-                <Panel title="Details" action={<span className="text-xs text-slate-500">Style and Material power the /browse filters</span>}>
+                <Panel title="Details" action={<span className="text-xs text-fg-subtle">Style and Material power the /browse filters</span>}>
                     <datalist id="detail-names">
                         {DETAIL_NAMES.map((entry) => (
                             <option key={entry} value={entry} />
@@ -642,7 +642,7 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
 
             {/* Sticky rather than fixed, so it stays inside the content column
                 whether the sidebar is open, collapsed or a phone drawer. */}
-            <div className="sticky bottom-0 z-20 -mx-4 md:-mx-8 bg-white/95 backdrop-blur border-t border-slate-200">
+            <div className="sticky bottom-0 z-20 -mx-4 md:-mx-8 bg-surface/95 backdrop-blur border-t border-line">
                 <div className="px-4 md:px-8 py-3 flex flex-wrap items-center justify-end gap-3">
                     {editing && (
                         <Link href={`/product/${initial.slug}?style=${initial.style}`} target="_blank" className={btn.secondary}>

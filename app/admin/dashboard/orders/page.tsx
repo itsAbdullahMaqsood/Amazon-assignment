@@ -103,7 +103,7 @@ const OrdersTable = async ({ q, status, paid, pageParam }: any) => {
 
     return (
         <>
-            <p className="text-sm text-slate-600 mb-3" aria-live="polite">
+            <p className="text-sm text-fg-muted mb-3" aria-live="polite">
                 {total
                     ? `Showing ${from}–${to} of ${total} order${total === 1 ? "" : "s"}`
                     : "No orders to show"}

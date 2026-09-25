@@ -38,7 +38,7 @@ const DeleteProductButton = ({ id, name }: any) => {
 
     return (
         <button onClick={onDelete} disabled={busy} aria-label={`Delete ${name}`} title="Delete" className={btn.icon}>
-            <TrashIcon className="w-5 h-5 text-red-600" />
+            <TrashIcon className="w-5 h-5 text-danger" />
         </button>
     );
 };

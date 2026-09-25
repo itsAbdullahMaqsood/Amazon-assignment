@@ -102,14 +102,14 @@ const Page = async () => {
                     <Link
                         key={stat.label}
                         href={stat.href}
-                        className="bg-white rounded-xl border border-slate-200 p-4 hover:border-slate-300 hover:shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-accent-ink"
+                        className="bg-surface rounded-xl border border-line p-4 hover:border-line hover:shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-accent-ink"
                     >
                         <div className="flex items-center justify-between">
-                            <span className="text-sm text-slate-600">{stat.label}</span>
-                            <stat.icon className={`w-5 h-5 ${stat.warn ? "text-amber-600" : "text-slate-400"}`} />
+                            <span className="text-sm text-fg-muted">{stat.label}</span>
+                            <stat.icon className={`w-5 h-5 ${stat.warn ? "text-warning" : "text-fg-subtle"}`} />
                         </div>
                         <p className="text-2xl font-bold mt-2 text-fg">{stat.value}</p>
-                        <p className="text-xs text-slate-500 mt-0.5">{stat.note}</p>
+                        <p className="text-xs text-fg-subtle mt-0.5">{stat.note}</p>
                     </Link>
                 ))}
             </div>
@@ -117,18 +117,18 @@ const Page = async () => {
             <Panel title={`Revenue, last ${DAYS} days`} action={<span className="text-sm font-semibold">{money(windowTotal)}</span>} className="mb-6">
                 <svg viewBox={`0 0 ${W} ${H + 24}`} className="w-full h-auto" role="img" aria-label={`Daily revenue for the last ${DAYS} days, ${money(windowTotal)} in total`}>
                     {[0.25, 0.5, 0.75, 1].map((f) => (
-                        <line key={f} x1={0} x2={W} y1={H - H * f} y2={H - H * f} stroke="#e2e8f0" strokeDasharray="4 4" />
+                        <line key={f} x1={0} x2={W} y1={H - H * f} y2={H - H * f} className="stroke-line" strokeDasharray="4 4" />
                     ))}
                     {days.map((d, i) => {
                         const h = (d.total / peak) * (H - 8);
 
                         return (
                             <g key={d.key}>
-                                <rect x={i * bar + 3} y={H - h} width={bar - 6} height={Math.max(h, d.total ? 2 : 0)} rx={3} fill="#febd69">
+                                <rect x={i * bar + 3} y={H - h} width={bar - 6} height={Math.max(h, d.total ? 2 : 0)} rx={3} className="fill-accent">
                                     <title>{`${d.key}: ${money(d.total)}`}</title>
                                 </rect>
                                 {i % 5 === 0 && (
-                                    <text x={i * bar + bar / 2} y={H + 16} textAnchor="middle" fontSize="11" fill="#64748b">
+                                    <text x={i * bar + bar / 2} y={H + 16} textAnchor="middle" fontSize="11" className="fill-fg-subtle">
                                         {d.key.slice(5)}
                                     </text>
                                 )}
@@ -143,13 +143,13 @@ const Page = async () => {
                     {latest.length === 0 ? (
                         <EmptyState title="No orders yet" />
                     ) : (
-                        <ul className="divide-y divide-slate-100 -my-2">
+                        <ul className="divide-y divide-line -my-2">
                             {latest.map((order: any) => (
                                 <li key={String(order._id)}>
-                                    <Link href={`/admin/dashboard/orders/${order._id}`} className="flex items-center gap-3 py-3 hover:bg-slate-50 -mx-2 px-2 rounded-lg">
+                                    <Link href={`/admin/dashboard/orders/${order._id}`} className="flex items-center gap-3 py-3 hover:bg-surface-muted -mx-2 px-2 rounded-lg">
                                         <div className="min-w-0 flex-1">
                                             <p className="text-sm font-medium truncate">{order.user?.name || "Deleted account"}</p>
-                                            <p className="text-xs text-slate-500 font-mono">#{String(order._id).slice(-8).toUpperCase()}</p>
+                                            <p className="text-xs text-fg-subtle font-mono">#{String(order._id).slice(-8).toUpperCase()}</p>
                                         </div>
                                         <Badge tone={statusTone[order.status]}>{order.status}</Badge>
                                         <Price value={order.total} size="sm" />
@@ -165,13 +165,13 @@ const Page = async () => {
                         {lowStock.length === 0 ? (
                             <EmptyState title="Nothing is running low" />
                         ) : (
-                            <ul className="divide-y divide-slate-100 -my-2">
+                            <ul className="divide-y divide-line -my-2">
                                 {lowStock.slice(0, 8).map((entry: any) => (
                                     <li key={`${entry.id}-${entry.style}`}>
-                                        <Link href={`/admin/dashboard/product/${entry.id}/edit?style=${entry.style}`} className="flex items-center gap-3 py-3 hover:bg-slate-50 -mx-2 px-2 rounded-lg">
-                                            <span aria-hidden="true" className="w-4 h-4 rounded-full border border-slate-300 shrink-0" style={{ backgroundColor: entry.color }} />
+                                        <Link href={`/admin/dashboard/product/${entry.id}/edit?style=${entry.style}`} className="flex items-center gap-3 py-3 hover:bg-surface-muted -mx-2 px-2 rounded-lg">
+                                            <span aria-hidden="true" className="w-4 h-4 rounded-full border border-line shrink-0" style={{ backgroundColor: entry.color }} />
                                             <p className="text-sm flex-1 min-w-0 truncate">{entry.name}</p>
-                                            <span className="text-xs text-slate-600 whitespace-nowrap">
+                                            <span className="text-xs text-fg-muted whitespace-nowrap">
                                                 {entry.sizes.map((s: any) => `${s.size}: ${s.qty}`).join(" · ")}
                                             </span>
                                         </Link>

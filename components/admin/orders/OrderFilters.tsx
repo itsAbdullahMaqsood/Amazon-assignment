@@ -24,7 +24,7 @@ const OrderFilters = ({ q, status, paid }: any) => {
                     Search
                 </label>
                 <div className="relative">
-                    <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <MagnifyingGlassIcon className="w-4 h-4 text-fg-subtle absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                     <input
                         id="orders-q"
                         name="q"

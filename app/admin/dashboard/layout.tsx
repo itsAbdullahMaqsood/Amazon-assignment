@@ -2,7 +2,7 @@ import AdminShell from "@/components/admin/AdminShell";
 import { requireAdminPage } from "@/lib/guard";
 
 export const metadata = {
-    title: { template: "%s · Admin", default: "Admin" },
+    title: { template: "%s · Markaz admin", default: "Markaz admin" },
     robots: { index: false, follow: false },
 };
 

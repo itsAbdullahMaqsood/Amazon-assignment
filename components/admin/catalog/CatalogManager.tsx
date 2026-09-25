@@ -154,7 +154,7 @@ const CatalogManager = ({ kind, initial, parents = [] }: any) => {
             <form
                 onSubmit={handleSubmit(create)}
                 noValidate
-                className="bg-white rounded-xl border border-slate-200 p-4"
+                className="bg-surface rounded-xl border border-line p-4"
                 aria-label={`Add a ${noun}`}
             >
                 <div className="flex flex-col sm:flex-row sm:items-start gap-3">
@@ -203,20 +203,20 @@ const CatalogManager = ({ kind, initial, parents = [] }: any) => {
                 </div>
 
                 {(errors.name || errors.parent) && (
-                    <p id={`${kind}-new-error`} role="alert" className="text-sm text-red-700 mt-2">
+                    <p id={`${kind}-new-error`} role="alert" className="text-sm text-danger mt-2">
                         {String(errors.name?.message || errors.parent?.message)}
                     </p>
                 )}
             </form>
 
             <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="text-sm text-slate-600" aria-live="polite">
+                <p className="text-sm text-fg-muted" aria-live="polite">
                     {status || `${rows.length} ${rows.length === 1 ? noun : noun.replace(/y$/, "ies")}`}
                 </p>
 
                 {isSub && (
                     <div className="flex items-center gap-2">
-                        <label htmlFor="sub-filter" className="text-sm text-slate-700 whitespace-nowrap">
+                        <label htmlFor="sub-filter" className="text-sm text-fg-muted whitespace-nowrap">
                             Parent
                         </label>
                         <select
@@ -267,7 +267,7 @@ const CatalogManager = ({ kind, initial, parents = [] }: any) => {
                             const inUse = isSub ? row.productCount > 0 : row.subCount + row.productCount > 0;
 
                             return (
-                                <tr key={row._id} className={`${table.row} ${isEditing ? "bg-amber-50/40" : ""}`}>
+                                <tr key={row._id} className={`${table.row} ${isEditing ? "bg-warning-soft/40" : ""}`}>
                                     {isEditing ? (
                                         <>
                                             <td className={`${table.td} min-w-52`} colSpan={isSub ? 2 : 1}>
@@ -309,12 +309,12 @@ const CatalogManager = ({ kind, initial, parents = [] }: any) => {
                                                     )}
                                                 </div>
                                                 {editing.error && (
-                                                    <p id={`edit-error-${row._id}`} role="alert" className="text-xs text-red-700 mt-1">
+                                                    <p id={`edit-error-${row._id}`} role="alert" className="text-xs text-danger mt-1">
                                                         {editing.error}
                                                     </p>
                                                 )}
                                             </td>
-                                            <td className={`${table.td} text-slate-500 font-mono text-xs`}>
+                                            <td className={`${table.td} text-fg-subtle font-mono text-xs`}>
                                                 <span className="sr-only">New slug: </span>
                                                 {slugPreview(editing.name)}
                                             </td>
@@ -329,7 +329,7 @@ const CatalogManager = ({ kind, initial, parents = [] }: any) => {
                                                     {row.parent ? row.parent.name : <Badge tone="red">Missing</Badge>}
                                                 </td>
                                             )}
-                                            <td className={`${table.td} text-slate-500 font-mono text-xs whitespace-nowrap`}>
+                                            <td className={`${table.td} text-fg-subtle font-mono text-xs whitespace-nowrap`}>
                                                 {row.slug}
                                             </td>
                                         </>
@@ -348,7 +348,7 @@ const CatalogManager = ({ kind, initial, parents = [] }: any) => {
                                             row.productCount
                                         )}
                                     </td>
-                                    <td className={`${table.td} whitespace-nowrap text-slate-600`}>{formatDate(row.createdAt)}</td>
+                                    <td className={`${table.td} whitespace-nowrap text-fg-muted`}>{formatDate(row.createdAt)}</td>
 
                                     <td className={`${table.td} text-right whitespace-nowrap`}>
                                         {isEditing ? (
@@ -372,7 +372,7 @@ const CatalogManager = ({ kind, initial, parents = [] }: any) => {
                                             </div>
                                         ) : confirming === row._id ? (
                                             <div className="inline-flex items-center gap-1" role="group" aria-label={`Confirm deleting ${row.name}`}>
-                                                <span className="text-xs text-slate-700 mr-1">Delete {row.name}?</span>
+                                                <span className="text-xs text-fg-muted mr-1">Delete {row.name}?</span>
                                                 <button
                                                     type="button"
                                                     onClick={() => remove(row)}
@@ -407,7 +407,7 @@ const CatalogManager = ({ kind, initial, parents = [] }: any) => {
                                                         setEditing(null);
                                                         setConfirming(row._id);
                                                     }}
-                                                    className={`${btn.icon} hover:text-red-700`}
+                                                    className={`${btn.icon} hover:text-danger`}
                                                     aria-label={`Delete ${row.name}`}
                                                     title={inUse ? "In use — delete will explain what still uses it" : "Delete"}
                                                 >
@@ -423,7 +423,7 @@ const CatalogManager = ({ kind, initial, parents = [] }: any) => {
                 </table>
             </div>
 
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-fg-subtle">
                 Tip: Enter saves an edit, Escape cancels. The slug is regenerated from the name on every rename.
             </p>
         </div>

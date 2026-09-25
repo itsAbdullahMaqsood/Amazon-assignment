@@ -49,7 +49,7 @@ export const generateMetadata = async ({ params }: any) => {
 
 const Row = ({ term, children }: any) => (
     <div className="flex justify-between gap-4 py-1.5">
-        <dt className="text-slate-600">{term}</dt>
+        <dt className="text-fg-muted">{term}</dt>
         <dd className="text-right">{children}</dd>
     </div>
 );
@@ -96,7 +96,7 @@ const Page = async ({ params }: any) => {
                 <h1 className="text-2xl font-bold text-fg">
                     Order <span className="font-mono">{shortId(order._id)}</span>
                 </h1>
-                <p className="text-xs text-slate-500 mt-1 font-mono break-all">{order._id}</p>
+                <p className="text-xs text-fg-subtle mt-1 font-mono break-all">{order._id}</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
@@ -126,7 +126,7 @@ const Page = async ({ params }: any) => {
                                                             alt=""
                                                             width={48}
                                                             height={48}
-                                                            className="w-12 h-12 rounded-md object-cover border border-slate-200 shrink-0"
+                                                            className="w-12 h-12 rounded-md object-cover border border-line shrink-0"
                                                         />
                                                     )}
                                                     {line.product?.slug ? (
@@ -149,15 +149,15 @@ const Page = async ({ params }: any) => {
                                                         alt={line.color?.color || "Colour swatch"}
                                                         width={24}
                                                         height={24}
-                                                        className="w-6 h-6 rounded-full object-cover border border-slate-200"
+                                                        className="w-6 h-6 rounded-full object-cover border border-line"
                                                     />
                                                 ) : line.color?.color ? (
                                                     <span className="inline-flex items-center gap-2">
                                                         <span
-                                                            className="w-5 h-5 rounded-full border border-slate-300"
+                                                            className="w-5 h-5 rounded-full border border-line"
                                                             style={{ backgroundColor: line.color.color }}
                                                         />
-                                                        <span className="font-mono text-xs text-slate-600">{line.color.color}</span>
+                                                        <span className="font-mono text-xs text-fg-muted">{line.color.color}</span>
                                                     </span>
                                                 ) : (
                                                     "—"
@@ -206,7 +206,7 @@ const Page = async ({ params }: any) => {
                                     <Price value={order.taxPrice} size="sm" />
                                 </Row>
                             )}
-                            <div className="flex justify-between gap-4 pt-3 mt-2 border-t border-slate-200 font-semibold">
+                            <div className="flex justify-between gap-4 pt-3 mt-2 border-t border-line font-semibold">
                                 <dt>Order total</dt>
                                 <dd>
                                     <Price value={order.total} size="md" />
@@ -220,12 +220,12 @@ const Page = async ({ params }: any) => {
                     <OrderStatusPanel key={order.updatedAt} order={order} />
 
                     <Panel title="Timeline">
-                        <ol className="relative border-l border-slate-200 ml-1.5 space-y-4">
+                        <ol className="relative border-l border-line ml-1.5 space-y-4">
                             {timeline.map((step) => (
                                 <li key={step.label} className="pl-4">
-                                    <span className="absolute -left-1.5 mt-1.5 w-3 h-3 rounded-full bg-accent-ink ring-4 ring-white" />
+                                    <span className="absolute -left-1.5 mt-1.5 w-3 h-3 rounded-full bg-accent-ink ring-4 ring-surface" />
                                     <p className="text-sm font-medium text-fg">{step.label}</p>
-                                    <p className="text-xs text-slate-600">{formatDate(step.at, true)}</p>
+                                    <p className="text-xs text-fg-muted">{formatDate(step.at, true)}</p>
                                 </li>
                             ))}
                         </ol>
@@ -243,12 +243,12 @@ const Page = async ({ params }: any) => {
                                 </a>
                             </div>
                         ) : (
-                            <p className="text-sm text-slate-500">This account has been deleted.</p>
+                            <p className="text-sm text-fg-subtle">This account has been deleted.</p>
                         )}
                     </Panel>
 
                     <Panel title="Shipping address">
-                        <address className="not-italic text-sm text-slate-700 leading-6">
+                        <address className="not-italic text-sm text-fg-muted leading-6">
                             <span className="font-medium text-fg">
                                 {[address.firstName, address.lastName].filter(Boolean).join(" ")}
                             </span>
@@ -280,7 +280,7 @@ const Page = async ({ params }: any) => {
                                 {order.paymentResult?.id ? (
                                     <span className="font-mono text-xs break-all">{order.paymentResult.id}</span>
                                 ) : (
-                                    <span className="text-slate-500">Not paid</span>
+                                    <span className="text-fg-subtle">Not paid</span>
                                 )}
                             </Row>
                             {order.paymentResult?.status && <Row term="Result">{order.paymentResult.status}</Row>}

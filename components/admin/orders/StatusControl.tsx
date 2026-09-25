@@ -25,7 +25,7 @@ const StatusControl = ({ order, onUpdated, compact = false }: any) => {
     useFocusTrap(dialogRef, confirming, () => setConfirming(false));
 
     if (!options.length) {
-        return <span className="text-xs text-slate-500">Final</span>;
+        return <span className="text-xs text-fg-subtle">Final</span>;
     }
 
     const send = async (status: string) => {
@@ -91,7 +91,7 @@ const StatusControl = ({ order, onUpdated, compact = false }: any) => {
                     value={choice}
                     onChange={(e) => setChoice(e.target.value)}
                     disabled={busy}
-                    className={`h-9 rounded-lg border border-slate-300 bg-white px-2 text-sm outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent-ink/25 ${
+                    className={`h-9 rounded-lg border border-line bg-surface px-2 text-sm outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent-ink/25 ${
                         compact ? "w-36" : "w-44"
                     }`}
                 >
@@ -113,7 +113,7 @@ const StatusControl = ({ order, onUpdated, compact = false }: any) => {
 
             {confirming && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/40 p-4"
                     onClick={() => setConfirming(false)}
                 >
                     <div
@@ -123,15 +123,15 @@ const StatusControl = ({ order, onUpdated, compact = false }: any) => {
                         aria-labelledby={`${selectId}-title`}
                         aria-describedby={`${selectId}-desc`}
                         onClick={(e) => e.stopPropagation()}
-                        className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl text-left whitespace-normal"
+                        className="w-full max-w-md rounded-xl bg-surface p-6 shadow-xl text-left whitespace-normal"
                     >
                         <div className="flex gap-3">
-                            <ExclamationTriangleIcon className="w-6 h-6 shrink-0 text-red-600" />
+                            <ExclamationTriangleIcon className="w-6 h-6 shrink-0 text-danger" />
                             <div>
                                 <h2 id={`${selectId}-title`} className="font-semibold text-fg">
                                     Cancel order {shortId(order._id)}?
                                 </h2>
-                                <div id={`${selectId}-desc`} className="text-sm text-slate-600 mt-2 space-y-2">
+                                <div id={`${selectId}-desc`} className="text-sm text-fg-muted mt-2 space-y-2">
                                     <p>Cancelling is final: the order&apos;s status cannot change afterwards.</p>
                                     <p>
                                         {order.isPaid

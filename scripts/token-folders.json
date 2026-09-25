@@ -93,5 +93,14 @@
 "components/sell",
 "lib/sellerFees.ts",
 "app/(store)/business",
-"app/(store)/sell"
+"app/(store)/sell",
+"app/admin",
+"components/admin/AdminShell.tsx",
+"components/admin/ui.tsx",
+"components/admin/catalog",
+"components/admin/coupons",
+"components/admin/orders",
+"components/admin/users",
+"components/admin/product/DeleteProductButton.tsx",
+"components/admin/product/ImageListField.tsx"
 ]

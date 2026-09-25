@@ -75,7 +75,7 @@ const UsersTable = ({ initial, total, page, pages, q, role, meId }: any) => {
                         Search users by name or email
                     </label>
                     <div className="relative flex-1 min-w-0">
-                        <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <MagnifyingGlassIcon className="w-4 h-4 text-fg-subtle absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                         {/* Keyed on q so the box resets when the URL changes (Back, Clear). */}
                         <input
                             key={q}
@@ -94,7 +94,7 @@ const UsersTable = ({ initial, total, page, pages, q, role, meId }: any) => {
                 </form>
 
                 <div className="flex items-center gap-2">
-                    <label htmlFor="role-filter" className="text-sm text-slate-700 whitespace-nowrap">
+                    <label htmlFor="role-filter" className="text-sm text-fg-muted whitespace-nowrap">
                         Role
                     </label>
                     <select
@@ -111,7 +111,7 @@ const UsersTable = ({ initial, total, page, pages, q, role, meId }: any) => {
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="text-sm text-slate-600" aria-live="polite">
+                <p className="text-sm text-fg-muted" aria-live="polite">
                     {status || `${total} ${total === 1 ? "user" : "users"}${q ? ` matching “${q}”` : ""}`}
                 </p>
                 {(q || role) && (
@@ -160,23 +160,23 @@ const UsersTable = ({ initial, total, page, pages, q, role, meId }: any) => {
                                                     width={32}
                                                     height={32}
                                                     unoptimized
-                                                    className="w-8 h-8 rounded-full object-cover bg-slate-100 shrink-0"
+                                                    className="w-8 h-8 rounded-full object-cover bg-surface-muted shrink-0"
                                                 />
                                             ) : (
                                                 <span
                                                     aria-hidden="true"
-                                                    className="w-8 h-8 rounded-full bg-ink-800 text-white text-xs font-semibold flex items-center justify-center shrink-0"
+                                                    className="w-8 h-8 rounded-full bg-ink-800 text-fg-inverse text-xs font-semibold flex items-center justify-center shrink-0"
                                                 >
                                                     {String(user.name || "?").charAt(0).toUpperCase()}
                                                 </span>
                                             )}
                                             <span className="font-medium text-fg">
                                                 {user.name}
-                                                {isMe && <span className="text-slate-500 font-normal"> (you)</span>}
+                                                {isMe && <span className="text-fg-subtle font-normal"> (you)</span>}
                                             </span>
                                         </div>
                                     </th>
-                                    <td className={`${table.td} text-slate-700 break-all min-w-48`}>{user.email}</td>
+                                    <td className={`${table.td} text-fg-muted break-all min-w-48`}>{user.email}</td>
                                     <td className={`${table.td} whitespace-nowrap`}>
                                         {isMe ? (
                                             <span title="You can't change your own role">
@@ -184,7 +184,7 @@ const UsersTable = ({ initial, total, page, pages, q, role, meId }: any) => {
                                             </span>
                                         ) : asking ? (
                                             <div className="inline-flex items-center gap-1" role="group" aria-label={`Confirm role change for ${user.name}`}>
-                                                <span className="text-xs text-slate-700 mr-1">
+                                                <span className="text-xs text-fg-muted mr-1">
                                                     Make {pending.role === "admin" ? "an admin" : "a user"}?
                                                 </span>
                                                 <button
@@ -212,7 +212,7 @@ const UsersTable = ({ initial, total, page, pages, q, role, meId }: any) => {
                                                     id={`role-${user._id}`}
                                                     value={user.role === "admin" ? "admin" : "user"}
                                                     onChange={(e) => setPending({ id: user._id, role: e.target.value })}
-                                                    className={`${field} h-9 w-28 ${user.role === "admin" ? "font-semibold text-violet-700" : ""}`}
+                                                    className={`${field} h-9 w-28 ${user.role === "admin" ? "font-semibold text-accent-ink" : ""}`}
                                                 >
                                                     <option value="user">User</option>
                                                     <option value="admin">Admin</option>
@@ -230,7 +230,7 @@ const UsersTable = ({ initial, total, page, pages, q, role, meId }: any) => {
                                             <Badge tone="amber">Unverified</Badge>
                                         )}
                                     </td>
-                                    <td className={`${table.td} whitespace-nowrap text-slate-600`}>{formatDate(user.createdAt)}</td>
+                                    <td className={`${table.td} whitespace-nowrap text-fg-muted`}>{formatDate(user.createdAt)}</td>
                                 </tr>
                             );
                         })}
@@ -240,7 +240,7 @@ const UsersTable = ({ initial, total, page, pages, q, role, meId }: any) => {
 
             {pages > 1 && (
                 <nav aria-label="Users pages" className="flex items-center justify-between gap-3 text-sm">
-                    <span className="text-slate-600">
+                    <span className="text-fg-muted">
                         Page {page} of {pages}
                     </span>
                     <div className="flex gap-2">

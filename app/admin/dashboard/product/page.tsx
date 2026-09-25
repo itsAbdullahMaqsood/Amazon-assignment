@@ -60,7 +60,7 @@ const Page = async ({ searchParams }: any) => {
             />
 
             {query?.created && (
-                <div role="status" className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                <div role="status" className="mb-4 rounded-xl border border-success/40 bg-success-soft px-4 py-3 text-sm text-success">
                     Published. It is now on the{" "}
                     <Link href="/" className="underline">home page</Link>, in{" "}
                     <Link href="/browse" className="underline">browse</Link> and at{" "}
@@ -116,7 +116,7 @@ const Page = async ({ searchParams }: any) => {
                                     <tr key={String(p._id)} className={table.row}>
                                         <td className={table.td}>
                                             <div className="flex items-center gap-3 min-w-[220px]">
-                                                <div className="relative w-12 h-12 shrink-0 rounded-lg bg-slate-50 border border-slate-200 overflow-hidden">
+                                                <div className="relative w-12 h-12 shrink-0 rounded-lg bg-surface-muted border border-line overflow-hidden">
                                                     {cover && <Image src={cover} alt="" fill sizes="48px" className="object-contain" />}
                                                 </div>
                                                 <Link href={`/product/${p.slug}`} target="_blank" className="font-medium text-fg hover:text-accent-deep hover:underline line-clamp-2">
@@ -128,7 +128,7 @@ const Page = async ({ searchParams }: any) => {
                                         <td className={table.td}>
                                             <div className="flex -space-x-1">
                                                 {p.subProducts.map((sub: any, i: number) => (
-                                                    <span key={i} title={sub.color?.color} className="w-5 h-5 rounded-full border-2 border-white ring-1 ring-slate-200" style={{ backgroundColor: sub.color?.color }} />
+                                                    <span key={i} title={sub.color?.color} className="w-5 h-5 rounded-full border-2 border-surface ring-1 ring-line" style={{ backgroundColor: sub.color?.color }} />
                                                 ))}
                                             </div>
                                         </td>
@@ -165,7 +165,7 @@ const Page = async ({ searchParams }: any) => {
                 <nav aria-label="Pagination" className="flex justify-end gap-1 mt-4">
                     {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
                         <Link key={n} href={link(n)} aria-current={n === page ? "page" : undefined}
-                            className={`w-10 h-10 flex items-center justify-center rounded-lg border text-sm ${n === page ? "bg-ink-800 text-white border-ink-800" : "bg-white border-slate-300 hover:bg-slate-50"}`}>
+                            className={`w-10 h-10 flex items-center justify-center rounded-lg border text-sm ${n === page ? "bg-ink-800 text-fg-inverse border-ink-800" : "bg-surface border-line hover:bg-surface-muted"}`}>
                             {n}
                         </Link>
                     ))}

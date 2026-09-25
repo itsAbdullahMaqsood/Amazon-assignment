@@ -26,15 +26,15 @@ const OrderRow = ({ order: initial }: any) => {
                     {shortId(order._id)}
                 </Link>
             </td>
-            <td className={`${table.td} whitespace-nowrap text-slate-700`}>{order.placed}</td>
+            <td className={`${table.td} whitespace-nowrap text-fg-muted`}>{order.placed}</td>
             <td className={`${table.td} max-w-56`}>
                 {order.user ? (
                     <>
                         <p className="font-medium text-fg truncate">{order.user.name}</p>
-                        <p className="text-xs text-slate-500 truncate">{order.user.email}</p>
+                        <p className="text-xs text-fg-subtle truncate">{order.user.email}</p>
                     </>
                 ) : (
-                    <span className="text-xs text-slate-500">Deleted account</span>
+                    <span className="text-xs text-fg-subtle">Deleted account</span>
                 )}
             </td>
             <td className={`${table.td} text-right tabular-nums`}>{itemCount(order)}</td>

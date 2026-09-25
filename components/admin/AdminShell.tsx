@@ -56,8 +56,8 @@ const NavLinks = ({ pathname, collapsed, onNavigate }: any) => (
                             collapsed ? "justify-center" : ""
                         } ${
                             active
-                                ? "bg-white/10 text-white font-semibold"
-                                : "text-slate-300 hover:bg-white/5 hover:text-white"
+                                ? "bg-surface/10 text-fg-inverse font-semibold"
+                                : "text-fg-inverse-muted hover:bg-surface/5 hover:text-fg-inverse"
                         }`}
                     >
                         <Icon className={`w-5 h-5 shrink-0 ${active ? "text-accent" : ""}`} />
@@ -81,24 +81,24 @@ const AdminShell = ({ user, children }: any) => {
     useFocusTrap(drawerRef, drawer, () => setDrawer(false));
 
     return (
-        <div className="min-h-screen bg-gray-100 md:flex">
+        <div className="min-h-screen bg-surface-muted md:flex">
             {/* Tablet and desktop: a fixed-height rail that collapses to icons. */}
             <aside
-                className={`hidden md:flex flex-col shrink-0 sticky top-0 h-screen bg-ink-900 text-white transition-[width] duration-200 ${
+                className={`hidden md:flex flex-col shrink-0 sticky top-0 h-screen bg-ink-900 text-fg-inverse transition-[width] duration-200 ${
                     collapsed ? "w-[76px]" : "w-64"
                 }`}
             >
                 <div className={`flex items-center h-16 px-4 ${collapsed ? "justify-center" : "justify-between"}`}>
                     {!collapsed && (
-                        <Link href="/admin/dashboard" className="font-bold tracking-tight">
-                            markaz <span className="text-accent font-normal">admin</span>
+                        <Link href="/admin/dashboard" className="font-display text-lg font-semibold tracking-tight">
+                            markaz<span className="text-accent">.</span> <span className="font-sans text-sm font-normal text-fg-inverse-muted">admin</span>
                         </Link>
                     )}
                     <button
                         onClick={() => dispatch(toggleSidebar())}
                         aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
                         aria-expanded={!collapsed}
-                        className="w-10 h-10 rounded-lg flex items-center justify-center text-slate-300 hover:bg-white/10 hover:text-white cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                        className="w-10 h-10 rounded-lg flex items-center justify-center text-fg-inverse-muted hover:bg-surface/10 hover:text-fg-inverse cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent"
                     >
                         {collapsed ? (
                             <ChevronDoubleRightIcon className="w-5 h-5" />
@@ -112,11 +112,11 @@ const AdminShell = ({ user, children }: any) => {
                     <NavLinks pathname={pathname} collapsed={collapsed} />
                 </nav>
 
-                <div className="px-3 py-4 border-t border-white/10">
+                <div className="px-3 py-4 border-t border-surface/10">
                     <Link
                         href="/"
                         title={collapsed ? "Back to store" : undefined}
-                        className={`flex items-center gap-3 h-11 rounded-lg px-3 text-sm text-slate-300 hover:bg-white/5 hover:text-white outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                        className={`flex items-center gap-3 h-11 rounded-lg px-3 text-sm text-fg-inverse-muted hover:bg-surface/5 hover:text-fg-inverse outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                             collapsed ? "justify-center" : ""
                         }`}
                     >
@@ -124,7 +124,7 @@ const AdminShell = ({ user, children }: any) => {
                         {collapsed ? <span className="sr-only">Back to store</span> : "Back to store"}
                     </Link>
                     {!collapsed && (
-                        <p className="px-3 mt-3 text-xs text-slate-400 truncate">
+                        <p className="px-3 mt-3 text-xs text-fg-subtle truncate">
                             Signed in as {user?.name}
                         </p>
                     )}
@@ -132,41 +132,41 @@ const AdminShell = ({ user, children }: any) => {
             </aside>
 
             {/* Phones: a top bar and a drawer. */}
-            <div className="md:hidden sticky top-0 z-30 flex items-center justify-between h-14 px-3 bg-ink-900 text-white">
+            <div className="md:hidden sticky top-0 z-30 flex items-center justify-between h-14 px-3 bg-ink-900 text-fg-inverse">
                 <button
                     onClick={() => setDrawer(true)}
                     aria-label="Open admin menu"
                     aria-expanded={drawer}
-                    className="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-white/10 cursor-pointer"
+                    className="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-surface/10 cursor-pointer"
                 >
                     <Bars3Icon className="w-6 h-6" />
                 </button>
-                <Link href="/admin/dashboard" className="font-bold">
-                    markaz <span className="text-accent font-normal">admin</span>
+                <Link href="/admin/dashboard" className="font-display text-lg font-semibold tracking-tight">
+                    markaz<span className="text-accent">.</span> <span className="font-sans text-sm font-normal text-fg-inverse-muted">admin</span>
                 </Link>
-                <Link href="/" aria-label="Back to store" className="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-white/10">
+                <Link href="/" aria-label="Back to store" className="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-surface/10">
                     <ArrowLeftOnRectangleIcon className="w-6 h-6" />
                 </Link>
             </div>
 
             {drawer && (
                 <div className="md:hidden fixed inset-0 z-40">
-                    <div className="absolute inset-0 bg-black/50" onClick={() => setDrawer(false)} />
+                    <div className="absolute inset-0 bg-ink-950/50" onClick={() => setDrawer(false)} />
                     <div
                         ref={drawerRef}
                         role="dialog"
                         aria-modal="true"
                         aria-label="Admin menu"
-                        className="absolute inset-y-0 left-0 w-72 max-w-[85%] bg-ink-900 text-white flex flex-col"
+                        className="absolute inset-y-0 left-0 w-72 max-w-[85%] bg-ink-900 text-fg-inverse flex flex-col"
                     >
                         <div className="flex items-center justify-between h-14 px-4">
-                            <span className="font-bold">
-                                markaz <span className="text-accent font-normal">admin</span>
+                            <span className="font-display text-lg font-semibold tracking-tight">
+                                markaz<span className="text-accent">.</span> <span className="font-sans text-sm font-normal text-fg-inverse-muted">admin</span>
                             </span>
                             <button
                                 onClick={() => setDrawer(false)}
                                 aria-label="Close admin menu"
-                                className="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-white/10 cursor-pointer"
+                                className="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-surface/10 cursor-pointer"
                             >
                                 <XMarkIcon className="w-6 h-6" />
                             </button>
@@ -176,7 +176,7 @@ const AdminShell = ({ user, children }: any) => {
                         </nav>
                         <Link
                             href="/"
-                            className="flex items-center gap-3 h-12 px-6 border-t border-white/10 text-sm text-slate-300"
+                            className="flex items-center gap-3 h-12 px-6 border-t border-surface/10 text-sm text-fg-inverse-muted"
                         >
                             <ArrowLeftOnRectangleIcon className="w-5 h-5" />
                             Back to store

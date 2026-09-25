@@ -1035,3 +1035,25 @@ that *cannot* import the stylesheet and so was the last place the old brand surv
 `accountLinks` (the placeholder link table), `RecommendationCarousel`, `components/Home/productCard`,
 `shared/Accordion`, `shared/AddToCartButton` and `lib/localStore`, the per-browser store that four
 pages used to keep their state in.
+
+---
+
+## 23. The admin dashboard
+
+The admin area was rebuilt earlier in the project and its layout is good: a collapsing rail, a
+drawer on phones, tables that scroll rather than squash, and every figure read live from the
+database. **Nothing about its structure was changed here** — this was a rebrand, as planned.
+
+- **Change:** the colours. Every raw Tailwind palette class across `app/admin` and
+  `components/admin` became a Markaz token, so the dashboard shares one palette with the store: the
+  revenue chart's bars are the accent purple rather than Amazon's `#febd69`, its gridlines and axis
+  labels are `line` and `fg-subtle`, the tables are `surface` on `line`, and the rail is the same
+  navy as the storefront header.
+- **Change:** the wordmark matches the store's — "markaz" with its purple dot, in the display face,
+  with "admin" beside it in the UI face so the two are not confused for one name.
+- **Change:** headings take the display face, and the browser tab says "… · Markaz admin".
+- **Change:** a new product's default colour swatch was `#232f3e`, Amazon's navy. It is the store's
+  own ink now.
+- **Note:** `components/admin/product/ProductForm.tsx` is the one file left out of `check:tokens`.
+  It holds two hex literals that are *values*, not styling — the default swatch and the fallback for
+  an `<input type="color">` — and a colour picker has to speak hex.

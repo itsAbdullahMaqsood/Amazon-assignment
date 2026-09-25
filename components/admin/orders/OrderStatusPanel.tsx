@@ -21,7 +21,7 @@ const OrderStatusPanel = ({ order: initial }: any) => {
                 onUpdated={(updated: any) => setOrder({ ...order, status: updated.status, isPaid: updated.isPaid })}
             />
             {!order.isPaid && !["Cancelled", "Completed"].includes(order.status) && (
-                <p className="text-xs text-slate-500 mt-3">
+                <p className="text-xs text-fg-subtle mt-3">
                     Unpaid orders can only be cancelled: stock is taken at payment, so there is nothing to ship yet.
                 </p>
             )}

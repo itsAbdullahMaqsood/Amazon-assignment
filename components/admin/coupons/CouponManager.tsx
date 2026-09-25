@@ -16,7 +16,7 @@ const statusTone: any = { Active: "green", Scheduled: "blue", Expired: "slate" }
 
 const FieldError = ({ id, error }: any) =>
     error ? (
-        <p id={id} role="alert" className="text-xs text-red-700 mt-1">
+        <p id={id} role="alert" className="text-xs text-danger mt-1">
             {String(error.message)}
         </p>
     ) : null;
@@ -140,7 +140,7 @@ const CouponManager = ({ initial, today, defaults }: any) => {
                             {errors.coupon ? (
                                 <FieldError id="coupon-coupon-error" error={errors.coupon} />
                             ) : (
-                                <p id="coupon-code-hint" className="text-xs text-slate-500 mt-1">
+                                <p id="coupon-code-hint" className="text-xs text-fg-subtle mt-1">
                                     4–10 letters or numbers. Saved in capitals.
                                 </p>
                             )}
@@ -205,7 +205,7 @@ const CouponManager = ({ initial, today, defaults }: any) => {
                 </form>
             </Panel>
 
-            <p className="text-sm text-slate-600" aria-live="polite">
+            <p className="text-sm text-fg-muted" aria-live="polite">
                 {status || `${coupons.length} coupon${coupons.length === 1 ? "" : "s"} · today is ${formatDate(now)} (UTC)`}
             </p>
 
@@ -237,7 +237,7 @@ const CouponManager = ({ initial, today, defaults }: any) => {
                             const isEditing = editing?._id === coupon._id;
 
                             return (
-                                <tr key={coupon._id} className={`${table.row} ${isEditing ? "bg-amber-50/40" : ""}`}>
+                                <tr key={coupon._id} className={`${table.row} ${isEditing ? "bg-warning-soft/40" : ""}`}>
                                     <th scope="row" className={`${table.td} font-mono font-semibold text-fg whitespace-nowrap`}>
                                         {coupon.coupon}
                                     </th>
@@ -254,7 +254,7 @@ const CouponManager = ({ initial, today, defaults }: any) => {
                                     <td className={`${table.td} text-right whitespace-nowrap`}>
                                         {confirming === coupon._id ? (
                                             <div className="inline-flex items-center gap-1" role="group" aria-label={`Confirm deleting ${coupon.coupon}`}>
-                                                <span className="text-xs text-slate-700 mr-1">Delete {coupon.coupon}?</span>
+                                                <span className="text-xs text-fg-muted mr-1">Delete {coupon.coupon}?</span>
                                                 <button
                                                     type="button"
                                                     onClick={() => remove(coupon)}
@@ -286,7 +286,7 @@ const CouponManager = ({ initial, today, defaults }: any) => {
                                                 <button
                                                     type="button"
                                                     onClick={() => setConfirming(coupon._id)}
-                                                    className={`${btn.icon} hover:text-red-700`}
+                                                    className={`${btn.icon} hover:text-danger`}
                                                     aria-label={`Delete ${coupon.coupon}`}
                                                     title="Delete"
                                                 >
