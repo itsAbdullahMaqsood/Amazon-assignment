@@ -72,5 +72,8 @@
 "app/(store)/groceries",
 "components/furniture",
 "lib/furniture.ts",
-"app/(store)/furniture"
+"app/(store)/furniture",
+"components/pharmacy",
+"lib/pharmacy.ts",
+"app/(store)/pharmacy"
 ]

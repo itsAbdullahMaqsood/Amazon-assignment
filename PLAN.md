@@ -330,7 +330,7 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 - [x] 1 Header / nav / footer · [x] 2 Home · [x] 3 Browse + search · [x] 4 Product · [x] 5 Cart · [x] 6 Checkout
 - [x] 7 Orders + returns · [x] 8 Auth · [x] 9 Profile · [x] 10 Movies + My List + Shabana
 - [x] 11 Deals · [x] 12 Buy again / Keep shopping · [x] 13 Lists + Registry · [x] 14 Gift cards · [x] 15 Plus + Memberships
-- [x] 16 Groceries · [x] 17 Markaz Home · [ ] 18 Pharmacy · [ ] 19 Account sub-pages · [ ] 20 Help
+- [x] 16 Groceries · [x] 17 Markaz Home · [x] 18 Pharmacy · [ ] 19 Account sub-pages · [ ] 20 Help
 - [ ] 21 Business + Sell · [ ] 22 System pages · [ ] 23 Admin rebrand · [ ] 24 README + DECISIONS
 
 
@@ -338,7 +338,7 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 
 ## Handoff notes (for continuing on another machine)
 
-**Done and pushed:** Phase 0 and pages 1–17. **Next up: page 18 (Pharmacy).**
+**Done and pushed:** Phase 0 and pages 1–18. **Next up: page 19 (account sub-pages).**
 
 **Still to do from §5 (backend moves):** items 9, 10 and 11 (household, preferences, sign-ins
 with `sessionVersion`). They land with page 19. **Item 8 (saved cards) was dropped** on

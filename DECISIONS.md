@@ -818,3 +818,42 @@ suppliers this store does not have.
 - **Add:** a link to `/browse?category=furniture` for anyone who wants price, brand, colour and
   rating filters. This page is the room-and-style way in; browse is the everything-else way, and
   neither duplicates the other.
+
+---
+
+## 18. Markaz Pharmacy
+
+**What Amazon's does badly:** it is fifteen sections of marketing for a service this store does not
+run. A promo banner, a hero, a benefits strip, "spend less", insurance, caregivers, delivery,
+"here for you", how it works, testimonials, more to explore, an FAQ, a call-to-action band and a
+second footer — all in Amazon Pharmacy's green, under the store's own header. The four testimonials
+were written for the assignment and signed with invented names ("Anita F", "Louis D"), each one
+describing a prescription service that does not exist: refills chased with a doctor's office,
+deliveries to the door, no queue.
+
+Underneath it, the thing this page can actually do is small and useful: Markaz holds 800 drug
+labels from the public openFDA database, and it can look one up.
+
+- **Keep:** the search, which matches brand name, generic name and active ingredient — because
+  people are told a medication by whichever of the three someone happened to use.
+- **Keep:** the two prices. The Plus price is now real: membership lives on the account
+  (see §15), so the page marks **which of the two you would actually be quoted** instead of
+  showing a member price as bait.
+- **Change:** one short page. What it is, the search, the results. `/pharmacy/search` was the same
+  search box on a second URL and now redirects here.
+- **Change, and this is the important one:** the page says plainly what it is not. Markaz does not
+  dispense medication; there is no prescription to upload, nothing to deliver and no pharmacist
+  behind the page. And since openFDA publishes labels rather than prices, it says that the two
+  figures are generated from the label's own id — stable, so a medication always quotes the same
+  price, and illustrative.
+- **Change:** each result shows what the label really carries — generic name, dosage form, route,
+  the labelling company and the purpose text — rather than a stock photo and a "Add to cart" that
+  could not work.
+- **Cut:** the fourteen marketing sections, the invented testimonials, the pharmacy-only nav and
+  footer, the green chrome, and the composed art.
+- **Cut, against the plan:** Rx Saver. It was to be explained rather than removed, but there is
+  nothing to explain: it would be a monthly subscription that charges nothing, covering a
+  dispensing service that does not exist. The flag behind it (`rxPassEligible`) only recorded
+  whether the cash price was under $20, which the price already says.
+- **Add:** a few real medication names to start from, so an empty search is not a dead end, and a
+  link to the openFDA API the data comes from.

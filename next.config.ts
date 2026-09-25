@@ -32,6 +32,7 @@ const nextConfig: NextConfig = {
         { source: "/keep-shopping", destination: "/profile/recent", permanent: true },
         { source: "/lists/create", destination: "/lists?new=1", permanent: true },
         { source: "/registry/find", destination: "/registry", permanent: true },
+        { source: "/pharmacy/search", destination: "/pharmacy", permanent: true },
     ],
     typescript: {
         ignoreBuildErrors: true,
