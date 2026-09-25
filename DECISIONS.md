@@ -963,3 +963,40 @@ had gone stale as the store was rebuilt.
   opens Shabana with the question already framed.
 - **Cut:** the chat and call-back options, each of which opened a dialog explaining it did nothing.
   One honest panel says there is nobody to call, and offers the one thing that does answer.
+
+---
+
+## 21. Markaz Business and Sell on Markaz
+
+**What Amazon's does badly:** both are marketing pages for products this store does not have, and
+the clone reproduced them feature by feature.
+
+Business promised business-only pricing, multi-user accounts with groups and permissions, approval
+workflows, spend dashboards with CSV export, tax exemption with certificates on file, shared company
+cards and lines of credit, and VAT-ready invoices. **None of it exists.** There was a comparison
+table contrasting a personal account with all of it, an FAQ answering questions about approval rules
+and credit terms, three testimonials signed "Priya N., Operations lead", "Tom H., Finance manager"
+and "Dana R., Practice manager", and a button that created an ordinary shopper account.
+
+Sell promised a seller programme, with registration steps, seller tools and an FAQ — on a store
+whose catalogue is seeded from public data and managed in one admin area by one person.
+
+- **Change:** `/business` says there is no business programme, and then does something more useful
+  than a feature list: it sets out what a business buyer **can** do with Markaz as it is — buy in
+  whatever quantity is stocked, keep an address per site, have every order kept with its totals and
+  return window, and take the whole account out as JSON — each with the link to where it happens.
+- **Add:** the matching list of what is not here, one line each, saying *why*: every account sees
+  the same price, an account is one person, nothing can be routed to an approver, Markaz adds no tax
+  so there is nothing to be exempt from, and no payment details exist to share.
+- **Cut:** the six invented benefits, the comparison table, the six-question FAQ, the three
+  testimonials and the business-account sign-up button.
+- **Keep, on `/sell`:** the **fee calculator**, which is the one thing on either page with real
+  work in it. It implements both shapes of referral fee — marginal, where each band of the price is
+  charged at its own rate, and threshold, where one rate is chosen for the whole price — plus the
+  closing fee on media, the per-item fee, and the subscription spread across the units you expect to
+  sell. It also computes where the two plans cross over.
+- **Change:** the page says up front that Markaz has no sellers, and that the schedule is Amazon's
+  published one, linked, used as a worked example rather than quoted as Markaz's own terms.
+- **Cut:** the seller hero, the registration steps, the seller tools, the FAQ and the "Start a
+  Selling Account" button that only registered a shopper. A link to the admin area replaces it,
+  because that is how something really gets into this catalogue.

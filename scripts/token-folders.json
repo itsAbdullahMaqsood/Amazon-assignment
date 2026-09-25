@@ -89,5 +89,9 @@
 "app/(store)/profile/data",
 "components/customerService",
 "lib/customerService.ts",
-"app/(store)/customer-service"
+"app/(store)/customer-service",
+"components/sell",
+"lib/sellerFees.ts",
+"app/(store)/business",
+"app/(store)/sell"
 ]

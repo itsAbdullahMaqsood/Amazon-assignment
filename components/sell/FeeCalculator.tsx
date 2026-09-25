@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 
+import { Notice } from "@/components/ui/Layout";
+import { Input, Select } from "@/components/ui/Field";
+import { RadioCard } from "@/components/ui/Choice";
 import {
     INDIVIDUAL_PER_ITEM,
     PROFESSIONAL_MONTHLY,
@@ -13,14 +16,19 @@ import {
 } from "@/lib/sellerFees";
 
 const Row = ({ label, value, hint, strong }: any) => (
-    <div className="flex items-baseline justify-between gap-4 py-2 border-b border-slate-200 last:border-b-0">
-        <span className={strong ? "font-bold" : "text-slate-600"}>
+    <div className="flex items-baseline justify-between gap-4 border-b border-line py-2 last:border-b-0">
+        <span className={strong ? "font-semibold text-fg" : "text-fg-muted"}>
             {label}
-            {hint && <span className="block text-xs text-slate-500">{hint}</span>}
+            {hint && <span className="block text-xs text-fg-subtle">{hint}</span>}
         </span>
-        <span className={strong ? "font-bold text-lg" : "font-medium"}>{value}</span>
+        <span className={strong ? "font-display text-lg font-semibold tabular text-fg" : "font-medium tabular text-fg"}>{value}</span>
     </div>
 );
+
+const plans = [
+    { value: "professional", label: "Professional", hint: `${money(PROFESSIONAL_MONTHLY)} a month, no per-item fee` },
+    { value: "individual", label: "Individual", hint: `${money(INDIVIDUAL_PER_ITEM)} for every item sold, no subscription` },
+];
 
 // Everything is derived during render, so the figures move with the inputs
 // without an effect anywhere.
@@ -36,24 +44,24 @@ const FeeCalculator = () => {
 
     return (
         <div className="grid gap-6 lg:grid-cols-2">
-            <div className="bg-white border border-slate-300 rounded-lg p-5">
+            <div className="rounded-card border border-line bg-surface p-5">
                 <div className="mb-4">
-                    <label htmlFor="fee-category" className="block text-sm font-semibold mb-1">
+                    <label htmlFor="fee-category" className="mb-1.5 block text-sm font-medium text-fg">
                         Product category
                     </label>
-                    <select
+                    <Select
                         id="fee-category"
                         value={categoryId}
                         onChange={(e) => setCategoryId(e.target.value)}
-                        className="w-full text-sm p-2.5 rounded border border-slate-300 bg-white outline-none"
+                        className=""
                     >
                         {categories.map((entry) => (
                             <option key={entry.id} value={entry.id}>
                                 {entry.label}
                             </option>
                         ))}
-                    </select>
-                    <p className="text-xs text-slate-500 mt-1">
+                    </Select>
+                    <p className="mt-1.5 text-xs text-fg-muted">
                         {category.tiers.length === 1
                             ? `Flat ${category.tiers[0].percent}% referral fee.`
                             : category.mode === "threshold"
@@ -66,70 +74,42 @@ const FeeCalculator = () => {
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="fee-price" className="block text-sm font-semibold mb-1">
+                    <label htmlFor="fee-price" className="mb-1.5 block text-sm font-medium text-fg">
                         Item price
                     </label>
-                    <div className="flex items-center rounded border border-slate-300 px-2.5">
-                        <span className="text-slate-500 text-sm">$</span>
-                        <input
-                            id="fee-price"
-                            type="number"
-                            min="0"
-                            step="0.01"
-                            inputMode="decimal"
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                            className="w-full text-sm p-2.5 outline-none"
-                        />
-                    </div>
+                    <Input
+                        id="fee-price"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        inputMode="decimal"
+                        value={price}
+                        onChange={(e: any) => setPrice(e.target.value)}
+                    />
                 </div>
 
                 <fieldset className="mb-4">
-                    <legend className="text-sm font-semibold mb-1">Selling plan</legend>
-
-                    <div className="grid gap-2 sm:grid-cols-2">
-                        {[
-                            {
-                                value: "individual",
-                                label: "Individual",
-                                hint: `${money(INDIVIDUAL_PER_ITEM)} per item sold`,
-                            },
-                            {
-                                value: "professional",
-                                label: "Professional",
-                                hint: `${money(PROFESSIONAL_MONTHLY)} per month`,
-                            },
-                        ].map((option) => (
-                            <label
+                    <legend className="mb-1.5 text-sm font-medium text-fg">Selling plan</legend>
+                    <div className="grid gap-2">
+                        {plans.map((option: any) => (
+                            <RadioCard
                                 key={option.value}
-                                className={`flex items-start gap-2 p-3 rounded border cursor-pointer ${
-                                    plan === option.value
-                                        ? "border-ink-800 bg-slate-50"
-                                        : "border-slate-300"
-                                }`}
-                            >
-                                <input
-                                    type="radio"
-                                    name="plan"
-                                    value={option.value}
-                                    checked={plan === option.value}
-                                    onChange={(e) => setPlan(e.target.value)}
-                                    className="mt-1"
-                                />
-                                <span className="text-sm">
-                                    <span className="font-semibold block">{option.label}</span>
-                                    <span className="text-slate-500 text-xs">{option.hint}</span>
-                                </span>
-                            </label>
+                                name="plan"
+                                value={option.value}
+                                checked={plan === option.value}
+                                onChange={(e: any) => setPlan(e.target.value)}
+                                label={option.label}
+                                description={option.hint}
+                            />
                         ))}
                     </div>
                 </fieldset>
 
                 <div>
-                    <label htmlFor="fee-units" className="block text-sm font-semibold mb-1">
+                    <label htmlFor="fee-units" className="mb-1.5 block text-sm font-medium text-fg">
                         Units you expect to sell each month
                     </label>
-                    <input
+                    <Input
                         id="fee-units"
                         type="number"
                         min="1"
@@ -137,9 +117,9 @@ const FeeCalculator = () => {
                         inputMode="numeric"
                         value={unitsPerMonth}
                         onChange={(e) => setUnitsPerMonth(e.target.value)}
-                        className="w-full text-sm p-2.5 rounded border border-slate-300 outline-none"
+                        className=""
                     />
-                    <p className="text-xs text-slate-500 mt-1">
+                    <p className="mt-1.5 text-xs text-fg-muted">
                         Used to spread the Professional subscription across your sales. Above{" "}
                         {planBreakEvenUnits} units a month the Professional plan costs less than the
                         per-item fee.
@@ -147,9 +127,9 @@ const FeeCalculator = () => {
                 </div>
             </div>
 
-            <div className="bg-slate-50 border border-slate-300 rounded-lg p-5">
-                <h3 className="font-bold text-lg">Estimated payout</h3>
-                <p className="text-sm text-slate-600 mb-3">
+            <div className="rounded-card border border-line bg-surface-muted p-5">
+                <h3 className="font-display text-lg font-semibold text-fg">Estimated payout</h3>
+                <p className="mb-3 text-sm text-fg-muted">
                     Per unit, before the cost of your product, shipping and any advertising.
                 </p>
 
@@ -182,18 +162,18 @@ const FeeCalculator = () => {
 
                 <p className="text-sm mt-4">
                     At {result.units} units a month that is{" "}
-                    <span className="font-bold">{money(result.monthlyPayout)}</span> before product
+                    <span className="font-semibold tabular">{money(result.monthlyPayout)}</span> before product
                     costs.
                 </p>
 
                 {loss && (
-                    <p className="text-sm text-red-600 mt-3">
+                    <p className="mt-3 text-sm text-danger">
                         Fees are larger than the item price at this figure — raise the price or pick
                         the plan with no monthly charge.
                     </p>
                 )}
 
-                <p className="text-xs text-slate-500 mt-4">
+                <p className="mt-4 text-xs text-fg-muted">
                     Estimates only. Fulfilment, storage and advertising are not included.
                 </p>
             </div>
