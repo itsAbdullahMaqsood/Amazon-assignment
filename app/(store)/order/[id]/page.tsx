@@ -1,83 +1,32 @@
-import { cache } from "react";
 import { notFound, redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import connectDb from "@/lib/db";
-import Order from "@/models/Order";
-import User from "@/models/User";
-import Product from "@/models/Product";
-import OrderClient from "@/components/order/OrderClient";
-
-// Cached so generateMetadata and the page share one query; resolving it in
-// generateMetadata means a miss returns a real 404 status instead of a streamed 200.
-const getOrder = cache(async (id: string, userId: string, role: string) => {
-    await connectDb();
-
-    let order: any = null;
-
-    try {
-        order = await Order.findById(id)
-            .populate({ path: "user", model: User })
-            .populate({ path: "products.product", model: Product, select: "slug" })
-            .lean();
-    } catch {
-        return null;
-    }
-
-    if (!order) {
-        return null;
-    }
-
-    // An order id is not a capability: only the owner or an admin may read it.
-    const isOwner = String(order.user?._id) === String(userId);
-
-    if (!isOwner && role !== "admin") {
-        return null;
-    }
-
-    return JSON.parse(JSON.stringify(order));
-});
+import { getOrderDetail } from "@/lib/orderQueries";
+import { orderNumber } from "@/lib/returns";
+import OrderDetail from "@/components/orders/OrderDetail";
 
 export const generateMetadata = async ({ params }: any) => {
     const { id } = await params;
-    const session = await auth();
 
-    if (!session) {
-        return { title: "Order" };
-    }
-
-    const order = await getOrder(id, session.user.id, session.user.role);
-
-    if (!order) {
-        notFound();
-    }
-
-    return { title: `Order ${id}` };
+    return { title: `Order #${orderNumber(id)}` };
 };
 
-const Page = async ({ params }: any) => {
+const Page = async ({ params, searchParams }: any) => {
     const { id } = await params;
+    const query = await searchParams;
     const session = await auth();
 
     if (!session) {
         redirect(`/auth/signin?callbackUrl=/order/${id}`);
     }
 
-    const order = await getOrder(id, session.user.id, session.user.role);
+    const order = await getOrderDetail(id, session.user.id, session.user.role);
 
     if (!order) {
         notFound();
     }
 
-    return (
-        <>
-
-            <main className="max-w-screen-2xl mx-auto bg-gray-100 grid grid-cols-1 md:grid-cols-3 px-2 md:px-10 pt-5 pb-8 gap-4 md:gap-8">
-                <OrderClient order={order} />
-            </main>
-
-        </>
-    );
+    return <OrderDetail order={order} placed={query?.placed === "1"} />;
 };
 
 export default Page;

@@ -3,6 +3,51 @@
 
 export const RETURN_WINDOW_DAYS = 30;
 
+// A product's own return policy, as its page states it: "30 days return
+// policy" -> 30, "No return policy" / "No returns" -> 0. Unknown wording keeps
+// the store default.
+export const returnWindowDays = (policy: any) => {
+    const text = String(policy || "");
+
+    if (/no return/i.test(text)) return 0;
+
+    const days = text.match(/(\d+)\s*day/i);
+
+    return days ? Number(days[1]) : RETURN_WINDOW_DAYS;
+};
+
+// Everything about returning one order line: the window its product promised,
+// the deadline, and how many are left to send back. `policy` is the product's
+// refundPolicy, looked up by the caller (order lines don't store it).
+export const lineReturnInfo = (order: any, index: number, policy: any) => {
+    const windowDays = returnWindowDays(policy);
+    const start = returnClockStart(order);
+    const deadline = new Date(start.getTime() + windowDays * 24 * 60 * 60 * 1000);
+    const daysLeft = Math.ceil((deadline.getTime() - Date.now()) / (24 * 60 * 60 * 1000));
+    const remaining = qtyReturnable(order, index);
+    // Something can go back once it has arrived, and not after a cancellation.
+    const eligible = order.status === "Completed";
+
+    return {
+        windowDays,
+        deadline: deadline.toISOString(),
+        daysLeft,
+        remaining,
+        returnable: eligible && windowDays > 0 && daysLeft > 0 && remaining > 0,
+        reason: !eligible
+            ? order.status === "Cancelled"
+                ? "Order cancelled"
+                : "Returns open once it's delivered"
+            : windowDays === 0
+              ? "This item can't be returned"
+              : remaining < 1
+                ? "Return requested"
+                : daysLeft <= 0
+                  ? "Return window closed"
+                  : "",
+    };
+};
+
 export const returnReasons = [
     "Wrong item sent",
     "Item defective or doesn't work",

@@ -4,7 +4,8 @@ import mongoose from "mongoose";
 import { auth } from "@/auth";
 import connectDb from "@/lib/db";
 import Order from "@/models/Order";
-import { isReturnable, qtyReturnable, refundMethods, returnReasons } from "@/lib/returns";
+import Product from "@/models/Product";
+import { lineReturnInfo, refundMethods, returnReasons } from "@/lib/returns";
 
 // Every field that ends up on the request is either derived from the order
 // document or checked against the lists in lib/returns: the client only picks a
@@ -48,21 +49,23 @@ export const POST = async (req: Request) => {
             return NextResponse.json({ message: "That item is not on this order." }, { status: 400 });
         }
 
-        if (!isReturnable(order)) {
+        // The window is the one the product's page promised, not a store-wide number.
+        const productDoc: any = await Product.findById(product.product).select("refundPolicy").lean();
+        const info = lineReturnInfo(order, index, productDoc?.refundPolicy);
+
+        if (!info.returnable) {
             return NextResponse.json(
-                { message: "This order is outside the 30-day return window." },
-                { status: 400 }
+                {
+                    message:
+                        info.remaining < 1
+                            ? "A return has already been requested for every one of these."
+                            : info.reason || "This item can't be returned.",
+                },
+                { status: info.remaining < 1 ? 409 : 400 }
             );
         }
 
-        const remaining = qtyReturnable(order, index);
-
-        if (remaining < 1) {
-            return NextResponse.json(
-                { message: "A return has already been requested for this item." },
-                { status: 409 }
-            );
-        }
+        const remaining = info.remaining;
 
         const requested = Math.min(Math.max(Number(qty) || 1, 1), remaining);
 

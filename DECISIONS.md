@@ -307,3 +307,42 @@ disagree. The coupon was its own form with its own button styled like the main a
   instead of a fake card form.
 - **Cut:** the separate payment page, the "Apply" gradient button, and "please choose a
   payment method." errors that appeared only after pressing the main button.
+
+---
+
+## 7. Orders and returns
+
+**What Amazon's does badly:** the orders page is also an advertising surface (a sponsored product
+and a "customers also viewed" carousel under your own orders). It has tabs that don't apply here
+("Digital Orders", "Amazon Pay"). It defaults to the last three months, so an older order looks
+like it vanished. Every item gets four stacked buttons. Returns live in a separate "Returns
+Center" with three tabs of their own. In the clone, every product was returnable for 30 days,
+even when its product page said "7-day returns" or "No return policy".
+
+- **Keep:** search by product name, a time filter, per-line returns with reason and refund
+  destination, and duplicate-return protection on the server.
+- **Change:** tabs by what the shopper cares about (All, In progress, Delivered, Cancelled,
+  Returns), each with a count. **All time** is the default.
+- **Change:** status in plain words: "Preparing", "On its way", "Delivered", "Pay on
+  delivery". The date line says what happened and when.
+- **Change:** an order card shows its state, thumbnails, item count and total, with three
+  actions: View order, Return items (only when something can go back), Buy again.
+- **Change:** **the return window is the one the product page promised**, read from the
+  product's own policy per line (7 / 30 / 60 / 90 days, or none). Returns open once an order is
+  delivered, not before, so the clock starts when you have the item.
+- **Change:** returns are a tab of Orders, not a separate centre. It shows each request's
+  progress (Requested → Approved → Refunded) and every item still inside its window, with its
+  deadline.
+- **Add:** a real **order timeline** built from what the order stores (placed, paid with
+  timestamps, dispatched, delivered). Dispatch has no stored timestamp, so it shows as done
+  without inventing one.
+- **Add:** a confirmation banner after checkout ("Thanks, your order is placed · Paid with
+  PayPal"). The line breakdown (items, delivery, coupon, gift card, total) now matches what was
+  charged.
+- **Add:** **Buy again** puts each line back in the cart in the variant and size it was bought
+  in. Lines whose product or option has gone are skipped.
+- **Add:** returns are requested from a side sheet on the order itself, showing the deadline
+  and the window, with quantity when you bought more than one.
+- **Cut:** the sponsored product, the recommendation carousel, the "Digital Orders" and "Amazon
+  Pay" tabs, "View transactions", the invoice link (it pointed at the same page), and the per-item
+  "Get product support" / "Track package" buttons (all the same page).

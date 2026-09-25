@@ -58,3 +58,7 @@ export const tabs = [
     { label: "Digital Orders", value: "digital" },
     { label: "Markaz Pay", value: "amazon-pay" },
 ];
+
+// ---------------------------------------------------------------------------
+// The queries for the orders pages live in lib/orderQueries.ts, so client
+// components can keep importing these helpers without pulling in mongoose.

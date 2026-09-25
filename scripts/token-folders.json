@@ -22,5 +22,11 @@
 "app/(checkout)",
 "lib/checkout.ts",
 "lib/address.ts",
-"lib/payments.ts"
+"lib/payments.ts",
+"components/orders",
+"components/returns",
+"app/(store)/order",
+"app/(store)/profile/orders",
+"app/(store)/profile/returns",
+"lib/orderQueries.ts"
 ]
