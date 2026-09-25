@@ -331,14 +331,14 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 - [x] 7 Orders + returns · [x] 8 Auth · [x] 9 Profile · [x] 10 Movies + My List + Shabana
 - [x] 11 Deals · [x] 12 Buy again / Keep shopping · [x] 13 Lists + Registry · [x] 14 Gift cards · [x] 15 Plus + Memberships
 - [x] 16 Groceries · [x] 17 Markaz Home · [x] 18 Pharmacy · [x] 19 Account sub-pages · [x] 20 Help
-- [x] 21 Business + Sell · [x] 22 System pages · [x] 23 Admin rebrand · [ ] 24 README + DECISIONS
+- [x] 21 Business + Sell · [x] 22 System pages · [x] 23 Admin rebrand · [x] 24 README + DECISIONS
 
 
 ---
 
 ## Handoff notes (for continuing on another machine)
 
-**Done and pushed:** Phase 0 and pages 1–23. **Next up: page 24 (README + DECISIONS).**
+**Done and pushed:** Phase 0 and all 24 pages. The redesign is complete.
 
 **§5 backend moves: all done.** Items 5–11 are in MongoDB. **Item 8 (saved cards) was dropped** on
 page 9: checkout asks for no card details, so a wallet of cards nothing can charge would be the

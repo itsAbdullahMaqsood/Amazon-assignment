@@ -1,11 +1,45 @@
-# Amazon clone
+# Markaz
 
-A full-stack Amazon storefront built with the Next.js App Router, MongoDB and Auth.js.
-Everything on the site is backed by real data: products, orders, carts, reviews, videos and
-medications all live in MongoDB, and every price a customer sees at checkout is recomputed on
-the server from those documents.
+A general store, built on the bones of an Amazon clone and then rebuilt page by page.
 
 **Live:** https://amazon-assignment.vercel.app
+
+Markaz sells clothes, electronics, home and kitchen, beauty, sports, accessories and
+groceries; it has a pharmacy price look-up, a film catalogue called **Markaz Movies**, a
+membership called **Markaz Plus**, and an assistant called **Shabana**. Everything on screen —
+every price, count, date and status — comes from MongoDB or is computed from it on the server.
+
+---
+
+## The design direction
+
+Amazon was the reference, not the blueprint. For every page the question was what Amazon's
+version does *badly* for the shopper; then what to **keep**, **change**, **cut** and **add**.
+The answers, page by page with the reasoning, are in **[DECISIONS.md](DECISIONS.md)**.
+
+Three rules held throughout:
+
+1. **Real data only.** If a number is on screen, it came out of the database or was computed
+   from it, and an estimate is labelled as one. Prices are always recomputed on the server —
+   the cart, the checkout preview and the order are the same function.
+2. **Nothing is claimed that the store cannot do.** Pages that sold features this build does
+   not have now say so plainly, and the features that *are* real were made real end to end:
+   a Plus membership actually waives delivery at checkout; a registry's "bought" count is a
+   record of someone saying they bought it; a help article describes this code, not a policy.
+3. **No page was cut.** Every page from the clone survives and was redesigned. What got cut
+   were sections inside pages that did not earn their place — sponsored strips, carousels,
+   invented testimonials, fourteen preference switches where one did something.
+
+**The look.** Navy chrome over white surfaces, because it reads as "shop" instantly and keeps
+the product photographs the brightest thing on screen. The orange accent became a light purple
+(`accent #c4b5fd`), with a deeper `accent-ink #5c3fb8` wherever purple has to be read as text.
+Bricolage Grotesque for the wordmark, headings and big prices; Inter for everything else;
+tabular figures wherever numbers line up. One money format, `$1,234.50`, from a single
+`Intl.NumberFormat`.
+
+Every colour, size, radius and shadow is a token in `styles/globals.css`, and
+`npm run check:tokens` fails the build if a redesigned folder contains a hex value or a raw
+Tailwind palette class. Components are built from the primitives in `components/ui/`.
 
 ---
 
@@ -14,15 +48,15 @@ the server from those documents.
 | Layer | Choice |
 | --- | --- |
 | Framework | Next.js 16.3 (App Router, Turbopack, `proxy.ts` middleware) |
-| UI | React 19, Tailwind CSS 4.3 (`@theme` tokens in `styles/globals.css`), heroicons v2 |
-| State | Redux Toolkit 2 + redux-persist (cart, dialogs) |
+| UI | React 19, Tailwind CSS 4.3 (`@theme` tokens), heroicons v2 |
+| State | Redux Toolkit 2 + redux-persist (cart, toasts, assistant) |
 | Data | MongoDB via mongoose 9, cached connection in `lib/db.ts` |
 | Auth | Auth.js (NextAuth) v5 — Credentials, Google, GitHub; JWT sessions |
 | Forms | react-hook-form + zod |
 | Mail | nodemailer over SMTP (activation, password reset) |
-| AI | Gemini, for the "alexa for shopping" panel |
+| AI | Gemini, behind Shabana |
 
-TypeScript runs loose on purpose (`strict: false`, `ignoreBuildErrors: true`) — the codebase
+TypeScript runs loose on purpose (`strict: false`, `ignoreBuildErrors: true`): the codebase
 uses `any` at route boundaries the way the original tutorial code did.
 
 ---
@@ -43,16 +77,20 @@ Node 20.9+ is required.
 | Command | What it loads | Source |
 | --- | --- | --- |
 | `npm run seed` | products, categories, sub-categories, coupons, admin user | dummyjson |
-| `npm run seed:videos` | Prime Video catalogue | TMDB |
+| `npm run seed:videos` | the Markaz Movies catalogue | TMDB |
 | `npm run seed:grocery` | grocery aisles and products | dummyjson |
-| `npm run seed:meds` | pharmacy medications | openFDA (no key needed) |
-| `npm run seed:furniture` | Amazon Home catalogue | dummyjson |
-| `npm run seed:registries` | gift registries | generated |
-| `npm run seed:demo -- --email=you@example.com` | a lived-in account: orders in every status, a return, verified reviews, wishlist, history, addresses, gift balance | generated from the catalogue |
+| `npm run seed:meds` | pharmacy drug labels | openFDA (no key needed) |
+| `npm run seed:furniture` | the Markaz Home catalogue | dummyjson |
+| `npm run seed:registries` | public gift lists to search for | generated |
+| `npm run seed:demo -- --email=you@example.com` | a lived-in account: orders in every status, a return, reviews, saved items, lists, a Plus trial, My list and a rental, history, addresses, gift balance | generated from the catalogue |
 
-Pass `-- --reset` to drop what the script owns before inserting. `seed:demo` is safe to
-re-run (it replaces its own rows and never touches data you created by hand) and takes
-`--remove` to undo itself.
+Pass `-- --reset` to drop what a script owns before inserting. `seed:demo` is safe to re-run —
+it replaces its own rows and never touches data you created by hand — and takes `--remove` to
+undo itself.
+
+**One gotcha:** after editing a file in `models/`, restart `next dev`. The mongoose connection
+survives hot reload and `mongoose.models.User` keeps the old schema, so writes to a new field
+are silently dropped by strict mode while the route still returns 200.
 
 ### Environment
 
@@ -61,47 +99,54 @@ rest unlock individual features:
 
 | Variable | Needed for |
 | --- | --- |
-| `MONGODB_URI` | everything (include the database name, e.g. `…/amazonclone`) |
+| `MONGODB_URI` | everything (include the database name) |
 | `AUTH_SECRET` | session signing |
 | `BASE_URL` | links inside activation and password-reset emails |
-| `AUTH_URL` / `NEXTAUTH_URL` | **local development only** — never set these on a hosted deployment, or Auth.js will build its callbacks from the stale value instead of the request host |
+| `AUTH_URL` / `NEXTAUTH_URL` | **local development only** — never set these on a hosted deployment, or Auth.js builds its callbacks from the stale value instead of the request host |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google sign-in |
 | `GITHUB_ID` / `GITHUB_SECRET` | GitHub sign-in |
 | `SMTP_*`, `MAIL_FROM` | activation and reset email |
 | `TMDB_API_KEY` | `npm run seed:videos` |
-| `GEMINI_API_KEY`, `GEMINI_MODEL` | the Alexa panel |
-| `CLOUDINARY_*` | image uploads (not used by any current screen) |
+| `GEMINI_API_KEY`, `GEMINI_MODEL` | Shabana |
+| `CLOUDINARY_*` | image uploads from the admin product form |
 
 ---
 
-## What is built
+## What's in scope
+
+Everything below is built, works against the database, and has a section in
+[DECISIONS.md](DECISIONS.md) explaining what was kept, changed, cut and added.
 
 ### Shopping
-- **Home** — hero carousel, category cards, product swipers built from the catalogue.
-- **`/browse`** — filter sidebar (category, brand, size, colour, style, material, price,
-  rating, shipping), sorting, pagination and search. Category links accept a slug so they
-  survive a reseed.
-- **`/product/[slug]`** — gallery, buy box, colour and size variants, reviews, accordions,
-  similar products from the same category. A variant with one size row has no picker and adds
-  straight to the cart; multi-size variants preselect the smallest row.
-- **`/cart`** — every line is re-priced against the database before it is shown, so a tampered
-  client price or stock number cannot survive.
-- **`/checkout`** — saved addresses, payment method, coupon, gift-card balance.
-- **`/order/[id]`** — order detail, simulated payment, stock bookkeeping.
+- **Home** — a still hero, department cards with real counts, and rows built from your own
+  history and the catalogue's own discounts.
+- **`/browse`** — server-side filtering on department, sub-category, price, rating, brand,
+  colour and size, with removable chips, facet counts and a bottom sheet on phones. Price
+  sorting runs on the discounted price.
+- **`/product/[slug]`** — gallery, one decision panel, real stock, a delivery estimate computed
+  from today, reviews with filters, and "Ask Shabana about this product".
+- **`/cart`** — open to guests, re-priced from the database on every visit, with save-for-later
+  and a price-change notice.
+- **`/checkout`** — one page, three steps, and a single "Pay $x" that places *and* pays. The
+  preview is the charge.
+- **`/profile/orders`** — tabs by state, a real timeline, buy again, and returns as a tab with
+  each line's own return window.
+- **`/coupons`** — Deals: the browse grid scoped to discounts, with the coupon codes checkout
+  will actually accept.
 
 ### Departments
-`/prime-video` (TMDB-seeded), `/groceries`, `/furniture`, `/pharmacy` (openFDA-seeded with
-search), `/buy-again`, `/coupons`, `/registry`, `/keep-shopping`, `/lists`.
+`/movies` and `/movies/my-list`, `/groceries`, `/furniture` (Markaz Home), `/pharmacy`,
+`/buy-again`, `/lists` and `/lists/[id]`, `/registry`, `/gift-cards`, `/plus`.
 
 ### Account
-`/profile` and its sections: orders, returns, addresses, payments, credit cards, security,
-wishlist, browsing history, messages, memberships, devices, shopping preferences and data
-controls (export, history clear, account closure).
+`/profile` with a shared shell: overview, orders, returns, product recalls, saved items,
+lists, browsing history, addresses, payment, login & security, shopping preferences, Markaz
+Plus and auto-reorder, household, sign-in activity, messages, and privacy & data.
 
 ### Everything else
-`/customer-service` with per-topic help articles, `/gift-cards` with a real claim-code scheme,
-`/prime`, `/watchlist`, `/business`, `/sell`, plus the Amazon-style `ap/*` auth screens:
-sign-in (two-step), register, password assistance and reset.
+`/customer-service` with per-topic articles written against this code, `/business`, `/sell`
+with a working marketplace fee calculator, and the auth screens: one-step sign in, register,
+forgot, reset and activate.
 
 ---
 
@@ -109,42 +154,65 @@ sign-in (two-step), register, password assistance and reset.
 
 Client code never decides a price.
 
-- `POST /api/user/updatecart` re-prices each persisted cart line from the product document.
+- `lib/pricing.ts` holds the arithmetic. The cart, `POST /api/checkout/quote` and
+  `POST /api/order/create` all call it, so the three totals cannot disagree.
+- `computeQuote` re-reads every line from its product document as it is *now* — price,
+  discount, stock and delivery charge — and blocks the order if something sold out.
+- A coupon is re-checked against its own start and end dates on the server; it discounts the
+  goods, never the delivery. The gift-card balance is spent only when the order is placed,
+  with a guard so two tabs cannot spend it twice.
+- A Markaz Plus membership is read from the account at quote time, never from the request, and
+  it waives the delivery charges — including for anyone in that member's household.
 - `POST /api/user/savecart` rebuilds the Cart document from the database; nothing the client
   sent about price, name or image is stored.
-- `POST /api/order/create` reads the products and totals from that Cart document only. The
-  request body contributes the address, the payment method, a coupon code that is re-checked
-  against its own start and end dates, and a flag saying whether to spend the gift-card
-  balance — the amount spent is `min(balance, total)`, computed on the server.
-- `POST /api/user/returns` re-fetches the order scoped to the session user and copies the
-  line's own name, image and price rather than trusting the request.
+- Returns re-fetch the order scoped to the session user and copy the line's own name, image and
+  price rather than trusting the request.
 - Search terms are escaped before they reach a Mongo `$regex` (`utils/regex.ts`).
-
-## Admin
-
-The dashboard lives at `/admin/dashboard` (orders, products, categories, sub-categories,
-coupons, users). `npm run seed` creates an admin account and prints its password once. To
-make any existing account an admin, change its `role` to `"admin"` from the Users screen
-(or in the database). Every admin page and route re-reads the role from the database, so a
-demoted admin loses access immediately.
 
 ## Auth notes
 
 - Sessions are JWTs; there is no database adapter. OAuth users get a Mongo document on first
-  sign-in so every route can resolve a user by `token.sub`.
+  sign-in so every route can resolve a user by `token.sub`, and they are stored with **no**
+  password, which is what lets "Login & security" say honestly how an account signs in.
+- Every token carries the account's `sessionVersion`. "Sign out everywhere" raises it, so every
+  token issued before that moment is refused on its next request. It costs one small read per
+  `auth()` call.
 - `authorize()` throws a `CredentialsSignin` subclass because Auth.js v5 swallows plain
   `Error`s — the message travels in `code` and the sign-in form reads it back.
-- `proxy.ts` (Next 16's renamed middleware) guards `/cart`, `/checkout`, `/order/*`,
-  `/profile/*` and `/admin/*`.
+- `proxy.ts` (Next 16's renamed middleware) guards `/checkout`, `/order/*`, `/profile/*`,
+  `/lists/*`, `/gift-cards`, `/movies/my-list` and `/admin/*`. The cart is deliberately not on
+  that list: anyone can fill one, and signing in happens at checkout.
+
+## Admin
+
+The dashboard lives at `/admin/dashboard` (orders, products, categories, sub-categories,
+coupons, users), in the store's own palette. `npm run seed` creates an admin account and prints
+its password once. To make an existing account an admin, change its `role` to `"admin"` from the
+Users screen. Every admin page and route re-reads the role from the database, so a demoted admin
+loses access immediately.
 
 ---
 
 ## Known limits
 
-- Payment is simulated; no processor is contacted.
-- Prime membership, device registration, watchlists and shopping preferences are per-browser
-  simulations stored in `localStorage`.
-- Closing an account deletes the user and their cart but leaves their orders in place, because
-  `Order.user` is required by the schema. The confirmation dialog says so.
-- Gift-card claim codes are validated per account, not against a global ledger.
-- `/placeholder` still backs a handful of account links that have no screen in this build.
+These are the things the store cannot do, and every page that touches one says so in its own
+words rather than leaving you to find out.
+
+- **Payment is simulated.** No card details are ever collected and no processor is contacted.
+  Card and PayPal orders are marked paid the moment they are placed; cash on delivery is not.
+- **Markaz Plus is never billed.** The membership, its plan and its dates are real and stored,
+  and the delivery waiver is real; no money moves at any point.
+- **Nothing streams.** Markaz Movies records a purchase or a rental against your account, with
+  its price and expiry, and no film plays.
+- **The pharmacy dispenses nothing.** It is a look-up over openFDA drug labels. openFDA
+  publishes labels, not prices, so the two prices shown are generated from the label's id —
+  stable per medication, and illustrative.
+- **There is no support desk, no marketplace and no business programme.** `/customer-service`,
+  `/sell` and `/business` say so and then offer what does exist.
+- **Auto-reorder is a reminder.** There is no scheduler; Markaz never places an order by itself.
+- **A registry's "bought" count is what a guest said**, not what Markaz observed — the cart
+  carries no list with it, so anything else would be a guess.
+- **Closing an account** deletes the user, their cart and their lists but leaves their orders,
+  because `Order.user` is required by the schema. The confirmation dialog says so.
+- **Gift-card claim codes** are validated arithmetically and per account, not against a global
+  ledger, so the same code can be redeemed once by each account.

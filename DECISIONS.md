@@ -60,8 +60,20 @@ as a bitmap.
 | Alexa | Shabana |
 | Amazon Household, `/profile/family` | Household, `/profile/household` |
 
+Five more redirects came out of the redesign itself, each because two URLs were showing the
+same thing:
+
+| Was | Now | Why |
+| --- | --- | --- |
+| `/profile/credit-cards` | `/profile/payment` | the card page offered three invented cards; payment holds what is real (§9) |
+| `/keep-shopping` | `/profile/recent` | both were built from the same `recentlyViewed` list (§12) |
+| `/lists/create` | `/lists?new=1` | a URL whose only job is to open a dialog is a dialog (§13) |
+| `/registry/find` | `/registry` | the same search box on two pages (§13) |
+| `/pharmacy/search` | `/pharmacy` | likewise (§18) |
+
 Old URLs redirect permanently. Pages share one shell through route groups (`app/(store)`,
-`app/(auth)`) instead of each page importing its own header and footer.
+`app/(auth)`) instead of each page importing its own header and footer, and every `/profile`
+page sits inside one account shell.
 
 ---
 
@@ -1057,3 +1069,55 @@ database. **Nothing about its structure was changed here** — this was a rebran
 - **Note:** `components/admin/product/ProductForm.tsx` is the one file left out of `check:tokens`.
   It holds two hex literals that are *values*, not styling — the default swatch and the fallback for
   an `<input type="color">` — and a colour picker has to speak hex.
+
+
+---
+
+## What it came to
+
+Twenty-three pages, and the same question at each one: what does Amazon's version do badly for
+the person using it?
+
+The answer was usually one of three things.
+
+**It sold what it did not have.** Prime's six benefits, five of which did not exist here.
+Business pricing, approval workflows and tax exemption on a store with one kind of account.
+A pharmacy with fifteen sections of marketing for a dispensary. A seller programme with no
+sellers. Four customer testimonials signed with invented names, and three more on the business
+page. The answer, every time, was to say what is really there — and where something *could* be
+made real, to make it real instead: Markaz Plus now waives delivery at checkout, lists can hold
+products, a registry's "bought" count is a record someone left, and a claim code can be redeemed
+because the parser finally matches the codes the store prints.
+
+**It filled the space between you and what you came for.** A sponsored product inside your own
+orders. Two recommendation carousels under Buy Again. A "featured deals" carousel above the
+deals. A second storefront under a grocery page. The furniture of a shop that sells attention
+as well as goods. Markaz sells no advertising, so none of it had a reason to be there.
+
+**It recorded things that were not true.** A membership in `localStorage`. Three devices nobody
+owned. "50+ bought in past month" for a period the database does not keep. A deal countdown to
+a deadline no deal has. Fourteen preference switches where one did anything. A queue of data
+requests that were never queued. Those became either real data or an empty space with a sentence
+explaining it.
+
+**What was kept, and why.** Amazon gets plenty right, and copying it there was the correct
+answer: the navy chrome, department-scoped search, the fee arithmetic on the seller page, the
+claim-code scheme, the privacy model on lists, and the idea that a help centre should be a set
+of short articles. Those were restyled and left alone.
+
+### Two places the plan was not followed
+
+- **Saved cards** (`PLAN.md` §5, item 8) were to move into MongoDB as `last4` records. They were
+  cut instead. Checkout collects no card details, so a wallet of cards nothing can charge is
+  exactly the decorative state the rest of this work removes, and it would have contradicted
+  checkout's own copy. §9.
+- **Rx Saver** was to be explained rather than removed. There is nothing to explain: it would be
+  a monthly subscription that charges nothing, covering a dispensing service that does not exist.
+  §18.
+
+### The one thing every page shares
+
+If a number is on the screen, it came out of the database. If it was worked out, it was worked
+out on the server, once, by a function that something else also calls — so the cart, the checkout
+preview and the order cannot disagree. And if the store cannot do a thing, the page that would
+have advertised it says so instead.
