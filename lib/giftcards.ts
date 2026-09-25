@@ -2,7 +2,7 @@
 // it. Pure arithmetic, no database: the route is still the only thing that may
 // move money.
 //
-//   AMZN-<amount>-<check>
+//   MRKZ-<amount>-<check>
 //     amount  four digits, the face value in whole dollars (0025 -> $25)
 //     check   four digits, (amount * 7919) mod 10000, zero padded
 //
@@ -33,7 +33,7 @@ export const parseGiftCode = (raw: string) => {
         return { error: "Enter a claim code." };
     }
 
-    const match = normalized.match(/^AMZN(\d{4})(\d{4})$/);
+    const match = normalized.match(/^MRKZ(\d{4})(\d{4})$/);
 
     if (!match) {
         return { error: "That claim code isn't in the MRKZ-0000-0000 format." };
@@ -52,6 +52,9 @@ export const parseGiftCode = (raw: string) => {
     return { code: giftCardCode(amount), amount };
 };
 
-export const AMOUNT_PRESETS = [10, 25, 50, 100, 200];
+// Markaz does not sell gift cards in this build, so no code is ever issued to
+// anyone. These three exist so the balance, the ledger and checkout can be tried,
+// and the page says exactly that rather than calling them a promotion.
+export const DEMO_AMOUNTS = [10, 25, 50];
 
-export const SAMPLE_CODES = AMOUNT_PRESETS.slice(0, 3).map((amount) => giftCardCode(amount));
+export const DEMO_CODES = DEMO_AMOUNTS.map((amount) => ({ amount, code: giftCardCode(amount) }));

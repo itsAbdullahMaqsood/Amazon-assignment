@@ -678,3 +678,37 @@ named list — so every list was permanently empty.
   the recommendation carousel, and the hand-drawn art files behind them.
 - **Note:** a list and a registry are the same object, and the pages say so rather than implying a
   second product with its own rules.
+
+---
+
+## 14. Gift cards
+
+**What Amazon's does badly:** the gift card page is a shop for gift cards — designs, amounts,
+delivery by email or post, a personal message, corporate gifting — and your own balance, the one
+thing that affects what you pay, is a small box in the corner.
+
+The clone's version had four tabs, and two of them printed money. **"Buy a gift card" issued a
+working claim code for free**: pick an amount, press the button, and a code you could immediately
+redeem appeared on screen. "Reload your balance" did the same thing again. Nothing was ever paid
+for, so the balance was worth exactly as much as the visitor felt like giving themselves.
+
+- **Keep:** the claim-code scheme, which is a genuinely nice piece of design — a code carries its
+  own face value and a check digit, so it is validated by arithmetic on the server and a mistyped
+  amount fails instead of redeeming a different card. Also kept: the balance, the ledger, and the
+  rule that only the redeem route may move money.
+- **Fix:** **redeeming was broken.** The Phase 0 rename changed the codes the store prints from
+  `AMZN-` to `MRKZ-`, but the parser still matched `^AMZN(\d{4})(\d{4})$`, so every code the page
+  showed was rejected as "not in the MRKZ-0000-0000 format". The parser now reads the prefix the
+  store issues.
+- **Change:** one page, no tabs. The balance first, in big type, with what it actually does —
+  spent before your payment method on the next order that uses it, and you can turn it off at
+  checkout for one order. Then the code box. Then the ledger.
+- **Change:** the ledger is every movement, newest first, with the code money came in on and the
+  date it went out on an order. It is the same `giftCardHistory` checkout writes to.
+- **Cut:** "Buy a gift card" and "Reload your balance". A store that takes no payment cannot sell a
+  gift card, and a button that issues one for nothing is not a feature, it is a hole in the till.
+  Also cut: the card designs and their drawn art, and the delivery options.
+- **Add:** a plain statement that Markaz does not sell gift cards in this build, and **three demo
+  codes** printed on the page so the balance and checkout can actually be tried. They are labelled
+  as what they are rather than dressed as a promotion, and the server refuses a code already on your
+  account, so each one works once.

@@ -3,11 +3,11 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import connectDb from "@/lib/db";
 import User from "@/models/User";
-import GiftCardsClient from "@/components/giftcards/GiftCardsClient";
+import { DEMO_CODES } from "@/lib/giftcards";
+import { Container, PageHeader } from "@/components/ui/Layout";
+import GiftCardsView from "@/components/gift/GiftCardsView";
 
-export const metadata = {
-    title: "Gift Cards",
-};
+export const metadata = { title: "Gift cards" };
 
 const Page = async () => {
     const session = await auth();
@@ -18,30 +18,22 @@ const Page = async () => {
 
     await connectDb();
 
-    const user: any = await User.findById(session.user.id)
-        .select("name giftCardBalance giftCardHistory")
-        .lean();
+    const user: any = await User.findById(session.user.id).select("giftCardBalance giftCardHistory").lean();
 
     return (
-        <>
-
-            <main className="bg-white min-h-[60vh]">
-                <div className="max-w-5xl mx-auto px-4 py-8">
-                    <h1 className="text-3xl font-bold mb-2">Gift Cards</h1>
-                    <p className="text-slate-600 mb-6">
-                        Check a balance, redeem a claim code, or send a card to someone else.
-                    </p>
-
-                    <GiftCardsClient
-                        name={user?.name || ""}
-                        balance={user?.giftCardBalance || 0}
-                        history={JSON.parse(JSON.stringify(user?.giftCardHistory || []))}
-                    />
-                </div>
-            </main>
-
-
-        </>
+        <main className="pb-14">
+            <Container className="max-w-5xl">
+                <PageHeader
+                    title="Gift cards"
+                    description="Your Markaz balance, where it came from and where it went."
+                />
+                <GiftCardsView
+                    balance={user?.giftCardBalance || 0}
+                    history={JSON.parse(JSON.stringify(user?.giftCardHistory || []))}
+                    demoCodes={DEMO_CODES}
+                />
+            </Container>
+        </main>
     );
 };
 

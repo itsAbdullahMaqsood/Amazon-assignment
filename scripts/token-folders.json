@@ -57,5 +57,8 @@
 "lib/lists.ts",
 "lib/listQueries.ts",
 "app/(store)/lists",
-"app/(store)/registry"
+"app/(store)/registry",
+"components/gift",
+"lib/giftcards.ts",
+"app/(store)/gift-cards"
 ]
