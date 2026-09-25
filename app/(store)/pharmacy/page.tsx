@@ -4,7 +4,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { auth } from "@/auth";
 import connectDb from "@/lib/db";
 import User from "@/models/User";
-import { isMember } from "@/lib/membership";
+import { hasPlusDelivery } from "@/lib/plusAccess";
 import { PLUS_DISCOUNT, commonMedications, medicationCount, searchMedications } from "@/lib/pharmacy";
 import { Container, EmptyState, Notice, PageHeader } from "@/components/ui/Layout";
 import MedicationSearch from "@/components/pharmacy/MedicationSearch";
@@ -20,8 +20,8 @@ const Page = async ({ searchParams }: any) => {
 
     if (session) {
         await connectDb();
-        const user: any = await User.findById(session.user.id).select("membership").lean();
-        member = isMember(user?.membership);
+        const user: any = await User.findById(session.user.id).select("membership email").lean();
+        member = (await hasPlusDelivery(user)).plus;
     }
 
     const [results, common, total] = await Promise.all([

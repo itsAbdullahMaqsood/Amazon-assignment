@@ -3,7 +3,7 @@ import connectDb from "@/lib/db";
 import Product from "@/models/Product";
 import User from "@/models/User";
 import { toCardProduct } from "@/lib/recommendations";
-import { isMember } from "@/lib/membership";
+import { hasPlusDelivery } from "@/lib/plusAccess";
 import CartView from "@/components/cart/CartView";
 
 export const metadata = { title: "Your cart" };
@@ -22,13 +22,13 @@ const Page = async () => {
 
     if (session) {
         const user: any = await User.findById(session.user.id)
-            .select("recentlyViewed membership")
+            .select("recentlyViewed membership email")
             .populate({ path: "recentlyViewed.product", model: Product })
             .lean();
 
         suggestions = (user?.recentlyViewed || []).map((entry: any) => entry.product).filter(Boolean).slice(0, 5).map(toCardProduct);
         suggestionsTitle = "Recently viewed";
-        member = isMember(user?.membership);
+        member = (await hasPlusDelivery(user)).plus;
     }
 
     if (!suggestions.length) {

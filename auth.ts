@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
@@ -31,6 +32,30 @@ if (process.env.VERCEL) {
     }
 }
 
+// One row per browser, keyed by its user-agent string: signing in again from
+// the same browser moves `lastSeen` rather than adding another line. Nothing
+// else about the request is stored.
+const recordSignIn = async (userId: string) => {
+    try {
+        const userAgent = (await headers()).get("user-agent") || "Unknown browser";
+        const now = new Date();
+        const updated = await User.updateOne(
+            { _id: userId, "signIns.userAgent": userAgent },
+            { $set: { "signIns.$.lastSeen": now } }
+        );
+
+        if (!updated.matchedCount) {
+            await User.updateOne(
+                { _id: userId },
+                { $push: { signIns: { $each: [{ userAgent, firstSeen: now, lastSeen: now }], $slice: -20 } } }
+            );
+        }
+    } catch {
+        // Headers are not always reachable from this context; a missing record
+        // must never stop someone signing in.
+    }
+};
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
     trustHost: true,
     session: { strategy: "jwt" },
@@ -62,6 +87,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     email: user.email,
                     image: user.image,
                     role: user.role,
+                    sessionVersion: user.sessionVersion || 1,
                 };
             },
         }),
@@ -112,6 +138,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 if (account?.provider === "credentials") {
                     token.sub = user.id;
                     token.role = user.role;
+                    token.sv = user.sessionVersion || 1;
                 } else {
                     // The provider's own id must never survive here: every API route
                     // resolves the user by token.sub.
@@ -121,7 +148,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     if (dbUser) {
                         token.sub = String(dbUser._id);
                         token.role = dbUser.role;
+                        token.sv = dbUser.sessionVersion || 1;
                     }
+                }
+
+                if (token.sub) {
+                    await recordSignIn(token.sub);
+                }
+
+                return token;
+            }
+
+            // Every later call checks the token against the account's session
+            // version. "Sign out everywhere" bumps that number, which is what
+            // makes tokens issued before it stop working. One small read per
+            // auth() call is the price.
+            if (token.sub) {
+                await connectDb();
+
+                const current: any = await User.findById(token.sub).select("sessionVersion").lean();
+
+                if (!current || (current.sessionVersion || 1) !== (token.sv || 1)) {
+                    return null;
                 }
             }
 

@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { getViewed } from "@/lib/buyAgain";
-import { HISTORY_COOKIE } from "@/lib/preferences";
+import { PREFERENCE_COOKIE, decodePreferences } from "@/lib/preferences";
 import { PageHeader } from "@/components/ui/Layout";
 import ViewedView from "@/components/shopping/ViewedView";
 
@@ -18,7 +18,7 @@ const Page = async () => {
     }
 
     const [items, jar] = await Promise.all([getViewed(session.user.id), cookies()]);
-    const historyOff = jar.get(HISTORY_COOKIE)?.value === "0";
+    const historyOff = !decodePreferences(jar.get(PREFERENCE_COOKIE)?.value).useBrowsingHistory;
 
     return (
         <>

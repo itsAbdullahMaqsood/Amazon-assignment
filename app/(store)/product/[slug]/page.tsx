@@ -11,7 +11,7 @@ import User from "@/models/User";
 import ProductPage from "@/components/ProductPage/ProductPage";
 import { recordProductView, toCardProduct } from "@/lib/recommendations";
 import { resolveSizeIndex } from "@/utils/sizes";
-import { HISTORY_COOKIE } from "@/lib/preferences";
+import { PREFERENCE_COOKIE, decodePreferences } from "@/lib/preferences";
 import { applyDiscount } from "@/lib/price";
 import { colorName } from "@/lib/colors";
 import { departmentHref } from "@/components/Header/navigation";
@@ -147,7 +147,7 @@ const Page = async ({ params, searchParams }: any) => {
     if (session) {
         // Browsing history feeds the account page and the home page, unless the
         // shopper turned it off in their preferences.
-        const historyOff = (await cookies()).get(HISTORY_COOKIE)?.value === "0";
+        const historyOff = !decodePreferences((await cookies()).get(PREFERENCE_COOKIE)?.value).useBrowsingHistory;
 
         const [user]: any = await Promise.all([
             User.findById(session.user.id).select("whishlist").lean(),

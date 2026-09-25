@@ -120,6 +120,22 @@
             scroll-behavior: auto !important;
         }
     }
+
+    /* The same thing, asked for in shopping preferences rather than by the
+       operating system. */
+    html[data-motion="reduced"] *,
+    html[data-motion="reduced"] *::before,
+    html[data-motion="reduced"] *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Everything is sized in rem from the root, so one number moves the whole
+       store up a size, spacing included. */
+    html[data-text="large"] {
+        font-size: 112.5%;
+    }
 }
 
 @utility tabular {

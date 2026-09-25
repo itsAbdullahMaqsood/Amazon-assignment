@@ -75,5 +75,16 @@
 "app/(store)/furniture",
 "components/pharmacy",
 "lib/pharmacy.ts",
-"app/(store)/pharmacy"
+"app/(store)/pharmacy",
+"lib/household.ts",
+"lib/preferences.ts",
+"lib/devices.ts",
+"lib/messages.ts",
+"lib/plusAccess.ts",
+"app/(store)/profile/household",
+"app/(store)/profile/devices",
+"app/(store)/profile/preferences",
+"app/(store)/profile/messages",
+"app/(store)/profile/recalls",
+"app/(store)/profile/data"
 ]

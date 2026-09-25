@@ -857,3 +857,77 @@ labels from the public openFDA database, and it can look one up.
   whether the cash price was under $20, which the price already says.
 - **Add:** a few real medication names to start from, so an empty search is not a dead end, and a
   link to the openFDA API the data comes from.
+
+---
+
+## 19. The rest of the account: household, sign-ins, messages, recalls, preferences, data
+
+Six small pages, and between them they held most of what was left of the clone's invented state.
+
+**Household.** Amazon's version offers seats — one adult, four teens, four children — with rules it
+describes and this store does not enforce ("every order asks you to approve it first", "child
+profiles cannot buy anything"), and sharing switches for Markaz Photos and Plus Reading, which do
+not exist. The whole thing lived in `localStorage`, so it belonged to a browser.
+
+- **Change:** a household is now **the people you share Plus delivery with**, stored on the account
+  (PLAN §5, item 9). One benefit, because one is what this store has.
+- **Change, and this is what makes it real:** `computeQuote` looks for a member who has your email
+  in their household with sharing on, and waives your delivery charges too. The benefit is enforced
+  where the money is, not printed on a page.
+- **Cut:** seats and roles, the approval and spending-limit claims, and sharing for services that do
+  not exist. The page states what is *not* shared — payment methods, orders, lists, addresses — and
+  that adding an email does not reveal whether that person has an account.
+
+**Devices → Where you're signed in.** The page listed a Fire TV Stick, a Kindle Paperwhite and an
+Echo Dot with registration dates, none of which existed, and "deregister" only hid a row in the
+current browser.
+
+- **Change:** it lists **the browsers this account has actually signed in from** (PLAN §5, item 11),
+  one row per user-agent with the first and last time it was used, and marks the one you are
+  reading in.
+- **Add:** **"Sign out everywhere" that works.** Every token carries the account's `sessionVersion`;
+  the button raises it, so every token issued before that moment is refused on its next request,
+  this browser included. The cost is one small read per `auth()` call, which is the price of the
+  feature being real rather than a button that clears local state.
+- **Cut:** the invented hardware, and per-row deregistration — a row is a note that a sign-in
+  happened, not the session itself, so removing one would mean nothing.
+
+**Messages.** Every notice was already derived from orders, which was right, but it was dressed as
+an email client: four folders (two of which could never fill — you cannot send Markaz a message and
+there are no sellers), sender addresses like `ship-confirm@markaz`, a marketplace dispatch note
+inviting you to "reply to this thread", and a Sent folder containing a cancellation letter the
+customer never wrote. Read and archive state sat in `localStorage`.
+
+- **Change:** one list, newest first. Each notice is built from a timestamp the order really carries
+  — placed, paid, delivered, return requested, refunded. **Dispatch produces no message**, because
+  the order records no time for it and a notice needs a date.
+- **Change:** "new" is anything since `messagesReadAt` on the account, so it follows you between
+  devices; "Mark all as read" writes one timestamp.
+- **Cut:** the folders, the fake sender addresses, the seller thread, the Sent letter, and
+  archiving — a notice derived from an order cannot be deleted, it would come back.
+
+**Recalls.** The page said "No safety alerts for anything you have ordered" and "if a notice is ever
+issued, it shows up here and we email you". Both were untrue: Markaz subscribes to no recall feed
+and sends no such email.
+
+- **Change:** it says nothing has been checked, because nothing has. It lists what it *would* check
+  — everything you have ordered — and points at the CPSC and FDA, who publish the real notices.
+
+**Shopping preferences.** Fourteen switches across five sections: language, currency, marketing
+email, marketing SMS, price-drop alerts, seller messages, reduced motion, larger text, captions,
+personalised adverts, third-party advertising data, interest-based email. **One of them did
+anything.**
+
+- **Change:** three switches, each of which changes something you can see — remember what I look at
+  (already honoured by the product page), reduce motion, and larger text. The last two are applied
+  by the server on the first paint, through a cookie that mirrors the account (PLAN §5, item 10),
+  so they are right before React runs rather than flickering afterwards.
+- **Add:** a "what isn't here" section that says why the rest is gone: Markaz is English and in US
+  dollars; it emails you only about things you did; and there are no adverts in this store at all,
+  so there is nothing to set a preference about.
+
+**Privacy & data.** Kept its export, which was already real, and lost the queue of "data requests"
+it recorded in `localStorage` — the file is built and downloaded in the same request, so there is
+nothing to wait for. What Markaz holds is written from the schema, line by line, including the
+sign-in records added on this page, and closing the account still needs the checkbox and your email
+typed out.

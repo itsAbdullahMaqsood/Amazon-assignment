@@ -5,7 +5,7 @@ import Product from "@/models/Product";
 import User from "@/models/User";
 import { applyDiscount } from "@/lib/price";
 import { applyAdjustments, summarize } from "@/lib/pricing";
-import { isMember } from "@/lib/membership";
+import { hasPlusDelivery } from "@/lib/plusAccess";
 import { findVariant } from "@/lib/stock";
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -33,7 +33,7 @@ export const computeQuote = async (userId: string, { coupon = "", useGiftCard = 
     await connectDb();
 
     const [user, cart]: any = await Promise.all([
-        User.findById(userId).select("giftCardBalance membership").lean(),
+        User.findById(userId).select("giftCardBalance membership email").lean(),
         Cart.findOne({ user: userId }).lean(),
     ]);
 
@@ -79,9 +79,10 @@ export const computeQuote = async (userId: string, { coupon = "", useGiftCard = 
     });
 
     const buyable = lines.filter((line: any) => !line.unavailable);
-    // A Plus membership waives the delivery charges, and it is read from the
-    // account here rather than trusted from the request.
-    const member = isMember(user?.membership);
+    // A Plus membership waives the delivery charges — the account's own, or one
+    // shared with it through a household. Read here, never trusted from the
+    // request.
+    const { plus: member, through } = await hasPlusDelivery(user);
     const base = summarize(buyable, { freeDelivery: member });
     const { coupon: validCoupon, error: couponError } = await checkCoupon(coupon);
     const balance = useGiftCard ? Number(user?.giftCardBalance || 0) : 0;
@@ -95,6 +96,7 @@ export const computeQuote = async (userId: string, { coupon = "", useGiftCard = 
             shipping: base.shipping,
             deliveryWaived: base.deliveryWaived,
             member,
+            plusThrough: through,
             discount: adjusted.discount,
             giftCard: adjusted.giftCard,
             giftCardBalance: Number(user?.giftCardBalance || 0),

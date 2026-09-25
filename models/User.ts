@@ -109,6 +109,44 @@ const userSchema = new mongoose.Schema(
                 createdAt: Date,
             },
         ],
+        // Who this account shares its Plus delivery with. `sharing.delivery` is
+        // read by the checkout quote, so a member's household really does pay no
+        // delivery charge.
+        household: {
+            members: [
+                {
+                    name: String,
+                    email: String,
+                    addedAt: Date,
+                },
+            ],
+            sharing: {
+                delivery: { type: Boolean, default: true },
+            },
+        },
+        // The browsers this account has signed in from, and the version every
+        // issued token carries. Bumping the version is what makes "sign out
+        // everywhere" real: an older token stops being accepted.
+        signIns: [
+            {
+                userAgent: String,
+                firstSeen: Date,
+                lastSeen: Date,
+            },
+        ],
+        sessionVersion: {
+            type: Number,
+            default: 1,
+        },
+        // The three preferences this store can actually honour.
+        preferences: {
+            useBrowsingHistory: { type: Boolean, default: true },
+            reduceMotion: { type: Boolean, default: false },
+            largerText: { type: Boolean, default: false },
+        },
+        // When the messages page was last opened, which is what makes a message
+        // new or not.
+        messagesReadAt: Date,
         // Markaz Plus. One membership per account; `status` is the only thing
         // that decides whether checkout waives delivery, and only
         // /api/user/membership writes it.

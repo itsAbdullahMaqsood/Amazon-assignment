@@ -32,7 +32,7 @@ export const accountSections = [
         links: [
             { label: "Markaz Plus", href: "/profile/memberships", description: "Membership and subscriptions" },
             { label: "Household", href: "/profile/household", description: "People you share with" },
-            { label: "Devices", href: "/profile/devices", description: "Where you are signed in" },
+            { label: "Sign-in activity", href: "/profile/devices", description: "Browsers signed in to this account" },
         ],
     },
     {
