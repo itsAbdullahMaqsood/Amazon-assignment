@@ -44,5 +44,8 @@
 "components/movies",
 "lib/movies.ts",
 "lib/movieQueries.ts",
-"app/(store)/movies"
+"app/(store)/movies",
+"components/deals",
+"lib/deals.ts",
+"app/(store)/coupons"
 ]

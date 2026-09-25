@@ -5,9 +5,9 @@ import SubCategory from "@/models/SubCategory";
 import { toCardProduct } from "@/lib/recommendations";
 import { colorName } from "@/lib/colors";
 import { escapeRegex } from "@/utils/regex";
-import { sortOptions } from "@/lib/browseOptions";
+import { discountTiers, sortOptions } from "@/lib/browseOptions";
 
-export { sortOptions };
+export { sortOptions, discountTiers };
 
 export const PAGE_SIZE = 24;
 
@@ -45,18 +45,23 @@ const effectivePrice = {
     },
 };
 
+const maxDiscount = { $max: { $map: { input: "$subProducts", as: "s", in: { $ifNull: ["$$s.discount", 0] } } } };
 const totalStock = { $sum: { $map: { input: "$subProducts", as: "s", in: { $sum: "$$s.sizes.qty" } } } };
 const totalSold = { $sum: "$subProducts.sold" };
 
-export const parseBrowseQuery = (query: any) => {
+export const parseBrowseQuery = (query: any, dealsOnly = false) => {
     const [min, max] = String(query.price || "").split("_");
     const search = String(query.search || "").trim().slice(0, 80);
     const requestedSort = legacySorts[query.sort] || query.sort || "";
-    const sort = sortOptions.some((option) => option.value === requestedSort && (!option.searchOnly || search))
+    const allowed = (option: any) => (!option.searchOnly || search) && (!option.dealsOnly || dealsOnly);
+    const sort = sortOptions.some((option) => option.value === requestedSort && allowed(option))
         ? requestedSort
-        : search
-          ? "relevance"
-          : "popular";
+        // Deals open on the deepest cut; everywhere else opens on what sells.
+        : dealsOnly
+          ? "discount"
+          : search
+            ? "relevance"
+            : "popular";
 
     return {
         search,
@@ -68,14 +73,19 @@ export const parseBrowseQuery = (query: any) => {
         min: min ? Math.max(0, Number(min)) || 0 : null,
         max: max ? Number(max) || null : null,
         rating: Number(query.rating) || 0,
+        discount: Math.min(100, Math.max(0, Number(query.discount) || 0)),
         inStock: query.stock === "1",
         sort,
         page: Math.max(1, Number(query.page) || 1),
     };
 };
 
-export const getBrowseData = async (rawQuery: any) => {
-    const q = parseBrowseQuery(rawQuery);
+// `dealsOnly` narrows the whole page to listings that carry a discount. It is a
+// scope, not a filter, so the facet counts beside it count discounted products
+// too and a department chip never offers an empty aisle of deals.
+export const getBrowseData = async (rawQuery: any, { dealsOnly = false }: any = {}) => {
+    const q = parseBrowseQuery(rawQuery, dealsOnly);
+    const discounted = { "subProducts.discount": { $gt: 0 } };
 
     await connectDb();
 
@@ -113,9 +123,10 @@ export const getBrowseData = async (rawQuery: any) => {
 
     // The scope is what you are looking in; filters narrow within it. Facet
     // counts are taken over the scope so a filter never hides its own options.
-    const departmentScope = { ...searchMatch };
+    const departmentScope = { ...searchMatch, ...(dealsOnly && discounted) };
     const scope: any = {
         ...searchMatch,
+        ...(dealsOnly && discounted),
         ...(category && { category: category._id }),
         ...(sub && { subCategories: sub._id }),
     };
@@ -130,10 +141,11 @@ export const getBrowseData = async (rawQuery: any) => {
         ...(q.colors.length && { "subProducts.color.color": { $in: hexesFor(q.colors) } }),
         ...(q.sizes.length && { "subProducts.sizes.size": { $in: q.sizes } }),
         ...(q.rating && { rating: { $gte: q.rating } }),
+        ...(q.discount && { "subProducts.discount": { $gte: q.discount } }),
     };
 
     const derived = [
-        { $addFields: { effectivePrice, totalStock, totalSold } },
+        { $addFields: { effectivePrice, maxDiscount, totalStock, totalSold } },
         {
             $match: {
                 ...(q.min !== null && { effectivePrice: { $gte: q.min } }),
@@ -161,6 +173,7 @@ export const getBrowseData = async (rawQuery: any) => {
 
     const sortStage: Record<string, any> = {
         relevance: { relevance: -1, rating: -1, _id: 1 },
+        discount: { maxDiscount: -1, totalSold: -1, _id: 1 },
         popular: { totalSold: -1, rating: -1, _id: 1 },
         rating: { rating: -1, numberReviews: -1, _id: 1 },
         newest: { createdAt: -1, _id: 1 },
@@ -168,7 +181,7 @@ export const getBrowseData = async (rawQuery: any) => {
         "price-desc": { effectivePrice: -1, _id: 1 },
     };
 
-    const [result, brandFacet, colorFacet, sizeFacet, subFacet, departmentFacet, priceBounds] = await Promise.all([
+    const [result, brandFacet, colorFacet, sizeFacet, subFacet, departmentFacet, priceBounds, discountFacet] = await Promise.all([
         Product.aggregate([
             { $match: { ...scope, ...filterMatch } },
             ...derived,
@@ -214,6 +227,13 @@ export const getBrowseData = async (rawQuery: any) => {
             { $addFields: { effectivePrice } },
             { $group: { _id: null, min: { $min: "$effectivePrice" }, max: { $max: "$effectivePrice" } } },
         ]),
+        dealsOnly
+            ? Product.aggregate([
+                  { $match: scope },
+                  { $addFields: { maxDiscount } },
+                  { $group: { _id: "$maxDiscount", count: { $sum: 1 } } },
+              ])
+            : Promise.resolve([]),
     ]);
 
     const items = result[0]?.items || [];
@@ -230,6 +250,16 @@ export const getBrowseData = async (rawQuery: any) => {
         colorCounts.set(name, set);
     }
 
+    // "25% off or more" only appears when something in this scope is cut that
+    // deeply, and disappears when every deal here already qualifies.
+    const scopeDeals = (discountFacet as any[]).reduce((sum, entry) => sum + entry.count, 0);
+    const discounts = discountTiers
+        .map((tier) => ({
+            value: tier,
+            count: (discountFacet as any[]).filter((entry) => Number(entry._id) >= tier).reduce((sum, entry) => sum + entry.count, 0),
+        }))
+        .filter((tier) => tier.count > 0 && tier.count < scopeDeals);
+
     const subCount = new Map((subFacet as any[]).map((entry) => [String(entry._id), entry.count]));
     const departmentCount = new Map((departmentFacet as any[]).map((entry) => [String(entry._id), entry.count]));
 
@@ -240,6 +270,7 @@ export const getBrowseData = async (rawQuery: any) => {
     return JSON.parse(
         JSON.stringify({
             query: q,
+            dealsOnly,
             products: items.map(toCardProduct),
             total,
             pageCount: Math.max(1, Math.ceil(total / PAGE_SIZE)),
@@ -267,6 +298,7 @@ export const getBrowseData = async (rawQuery: any) => {
                     min: Math.floor(priceBounds[0]?.min || 0),
                     max: Math.ceil(priceBounds[0]?.max || 0),
                 },
+                discounts,
             },
         })
     );

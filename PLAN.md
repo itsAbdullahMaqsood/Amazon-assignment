@@ -329,7 +329,7 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 - [x] Phase 0 foundation
 - [x] 1 Header / nav / footer · [x] 2 Home · [x] 3 Browse + search · [x] 4 Product · [x] 5 Cart · [x] 6 Checkout
 - [x] 7 Orders + returns · [x] 8 Auth · [x] 9 Profile · [x] 10 Movies + My List + Shabana
-- [ ] 11 Deals · [ ] 12 Buy again / Keep shopping · [ ] 13 Lists + Registry · [ ] 14 Gift cards · [ ] 15 Plus + Memberships
+- [x] 11 Deals · [ ] 12 Buy again / Keep shopping · [ ] 13 Lists + Registry · [ ] 14 Gift cards · [ ] 15 Plus + Memberships
 - [ ] 16 Groceries · [ ] 17 Markaz Home · [ ] 18 Pharmacy · [ ] 19 Account sub-pages · [ ] 20 Help
 - [ ] 21 Business + Sell · [ ] 22 System pages · [ ] 23 Admin rebrand · [ ] 24 README + DECISIONS
 
@@ -338,7 +338,7 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 
 ## Handoff notes (for continuing on another machine)
 
-**Done and pushed:** Phase 0 and pages 1–10. **Next up: page 11 (Deals).**
+**Done and pushed:** Phase 0 and pages 1–11. **Next up: page 12 (Buy again / Keep shopping).**
 
 **Still to do from §5 (backend moves):** items 6, 7, 9, 10 and 11 (membership, auto-reorder,
 household, preferences, sign-ins with `sessionVersion`). They land with the pages that use
@@ -378,6 +378,11 @@ decorative state this redesign removes. `/profile/credit-cards` was cut and redi
   uses `components/ui`.
 - Pages still on localStorage state: `/plus`, memberships, devices, household, preferences
   (see §5).
+
+**Added on page 11**
+- `getBrowseData(query, { dealsOnly: true })` powers `/coupons`: same grid, scope narrowed to
+  listings with a discount. `BrowseView` takes `children` (rendered under the heading) and reads
+  `data.dealsOnly` for its copy, base path and sort options.
 
 **Added on page 10**
 - `lib/movies.ts` holds the rules (rental price, row labels, badge labels) and is safe to

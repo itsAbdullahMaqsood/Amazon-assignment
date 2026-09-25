@@ -24,6 +24,8 @@ const useAppliedFilters = () => {
     const chips: { key: string; label: string; remove: () => void }[] = [];
     const [min, max] = get("price").split("_");
 
+    if (get("discount")) chips.push({ key: "discount", label: `${get("discount")}% off or more`, remove: () => set({ discount: "" }) });
+
     if (min || max) {
         chips.push({
             key: "price",
@@ -43,28 +45,37 @@ const useAppliedFilters = () => {
     );
     if (get("stock") === "1") chips.push({ key: "stock", label: "In stock", remove: () => set({ stock: "" }) });
 
-    const clearAll = () => set({ price: "", rating: "", brand: "", color: "", size: "", stock: "" });
+    const clearAll = () => set({ price: "", rating: "", brand: "", color: "", size: "", stock: "", discount: "" });
 
     return { chips, clearAll };
 };
 
-const BrowseView = ({ data }: any) => {
+// One grid, two scopes. /browse is the whole catalogue; /coupons is the same
+// grid narrowed to listings that carry a discount, so the filters, the chips and
+// the pagination behave identically in both and a shopper only learns them once.
+const BrowseView = ({ data, children }: any) => {
     const dispatch = useAppDispatch();
     const { set, pending } = useBrowseQuery();
     const { chips, clearAll } = useAppliedFilters();
     const [sheetOpen, setSheetOpen] = useState(false);
-    const { query, category, sub, total, products, facets, page, pageCount } = { ...data, page: data.query.page };
+    const { query, category, sub, total, products, facets, page, pageCount, dealsOnly } = { ...data, page: data.query.page };
 
+    const base = dealsOnly ? "/coupons" : "/browse";
+    const noun = dealsOnly ? "deal" : "result";
     const scopeName = sub?.name || category?.name;
-    const title = query.search ? `“${query.search}”` : scopeName || "All departments";
+    const title = query.search
+        ? `“${query.search}”`
+        : dealsOnly
+          ? scopeName ? `${scopeName} deals` : "Deals"
+          : scopeName || "All departments";
     const first = total ? (page - 1) * 24 + 1 : 0;
     const last = Math.min(page * 24, total);
 
     const crumbs = [
         { label: "Home", href: "/" },
-        { label: "All departments", href: "/browse" },
-        ...(category ? [{ label: category.name, href: `/browse?category=${category.slug}` }] : []),
-        ...(sub ? [{ label: sub.name, href: `/browse?category=${category.slug}&sub=${sub.slug}` }] : []),
+        { label: dealsOnly ? "Deals" : "All departments", href: base },
+        ...(category ? [{ label: category.name, href: `${base}?category=${category.slug}` }] : []),
+        ...(sub ? [{ label: sub.name, href: `${base}?category=${category.slug}&sub=${sub.slug}` }] : []),
         ...(query.search ? [{ label: `Search: ${query.search}` }] : []),
     ];
 
@@ -78,7 +89,7 @@ const BrowseView = ({ data }: any) => {
                 className="h-9 cursor-pointer rounded-control border border-line-strong bg-surface pl-2.5 pr-8 text-sm outline-none focus:border-accent-ink"
             >
                 {sortOptions
-                    .filter((option) => !option.searchOnly || query.search)
+                    .filter((option) => (!option.searchOnly || query.search) && (!option.dealsOnly || dealsOnly))
                     .map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
@@ -99,12 +110,14 @@ const BrowseView = ({ data }: any) => {
                             {query.search ? <>Results for {title}</> : title}
                         </h1>
                         <p className="mt-1 text-sm text-fg-muted" aria-live="polite">
-                            {total === 0 ? "No results" : `${total} result${total === 1 ? "" : "s"}`}
+                            {total === 0 ? `No ${noun}s` : `${total} ${noun}${total === 1 ? "" : "s"}`}
                             {query.search && scopeName && <> in {scopeName}</>}
                             {pageCount > 1 && total > 0 && <> · showing {first}–{last}</>}
                         </p>
                     </div>
                 </div>
+
+                {children}
 
                 {/* Sub-categories as chips: the quickest way to narrow a department on a phone. */}
                 {category && facets.subs.length > 1 && (
@@ -112,7 +125,7 @@ const BrowseView = ({ data }: any) => {
                         {facets.subs.map((entry: any) => (
                             <Link
                                 key={entry.slug}
-                                href={`/browse?category=${category.slug}${sub?.slug === entry.slug ? "" : `&sub=${entry.slug}`}${query.search ? `&search=${encodeURIComponent(query.search)}` : ""}`}
+                                href={`${base}?category=${category.slug}${sub?.slug === entry.slug ? "" : `&sub=${entry.slug}`}${query.search ? `&search=${encodeURIComponent(query.search)}` : ""}`}
                                 className={cn(
                                     "rounded-full border px-3 py-1.5 text-sm whitespace-nowrap",
                                     sub?.slug === entry.slug ? "border-accent-ink bg-accent-soft text-accent-ink" : "border-line-strong bg-surface text-fg"
@@ -127,7 +140,7 @@ const BrowseView = ({ data }: any) => {
                 <div className="mt-6 grid gap-8 lg:grid-cols-[15rem_1fr]">
                     <aside aria-label="Filters" className="hidden lg:block">
                         <div className="sticky top-4 max-h-[calc(100dvh-2rem)] overflow-y-auto pr-2">
-                            <Filters facets={facets} category={category} sub={sub} search={query.search} />
+                            <Filters facets={facets} category={category} sub={sub} search={query.search} basePath={base} dealsOnly={dealsOnly} />
                         </div>
                     </aside>
 
@@ -190,19 +203,21 @@ const BrowseView = ({ data }: any) => {
                                 <EmptyState
                                     className="mt-6"
                                     icon={MagnifyingGlassIcon}
-                                    title={query.search ? `Nothing matched “${query.search}”` : "Nothing matches these filters"}
+                                    title={query.search ? `Nothing matched “${query.search}”` : dealsOnly ? "No deals match these filters" : "Nothing matches these filters"}
                                     description={
                                         chips.length
                                             ? "Your filters left no products. Remove one to widen the search."
-                                            : scopeName
-                                              ? `Nothing in ${scopeName} matched. Try every department, or describe what you need to Shabana.`
-                                              : "Check the spelling, try a more general word, or describe what you need to Shabana."
+                                            : dealsOnly
+                                              ? `Nothing in ${scopeName || "the store"} is discounted right now. Deals come and go with the catalogue.`
+                                              : scopeName
+                                                ? `Nothing in ${scopeName} matched. Try every department, or describe what you need to Shabana.`
+                                                : "Check the spelling, try a more general word, or describe what you need to Shabana."
                                     }
                                     action={
                                         <>
                                             {chips.length > 0 && <Button onClick={clearAll}>Clear filters</Button>}
                                             {query.search && category && (
-                                                <Button variant="outline" href={`/browse?search=${encodeURIComponent(query.search)}`}>
+                                                <Button variant="outline" href={`${base}?search=${encodeURIComponent(query.search)}`}>
                                                     Search all departments
                                                 </Button>
                                             )}
@@ -238,12 +253,12 @@ const BrowseView = ({ data }: any) => {
                             </Button>
                         )}
                         <Button onClick={() => setSheetOpen(false)} block>
-                            Show {total} result{total === 1 ? "" : "s"}
+                            Show {total} {noun}{total === 1 ? "" : "s"}
                         </Button>
                     </div>
                 }
             >
-                <Filters facets={facets} category={category} sub={sub} search={query.search} />
+                <Filters facets={facets} category={category} sub={sub} search={query.search} basePath={base} dealsOnly={dealsOnly} />
             </Sheet>
         </main>
     );

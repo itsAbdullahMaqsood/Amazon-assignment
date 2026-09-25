@@ -546,3 +546,42 @@ library".
 **Signed out:** the catalogue browses normally and the prices are shown, because "how much is it"
 is the question a signed-out visitor is asking. The buttons go to sign-in rather than failing there.
 My list needs an account, and the proxy sends you to sign in with the page you asked for.
+
+---
+
+## 11. Deals
+
+**What Amazon's does badly:** the deals page is five pages stacked on top of each other — a Prime
+banner, a sponsored product, a "featured deals" carousel, a tab strip and, eventually, a grid — and
+the deals themselves are dressed up rather than described. Timers count down to nothing in
+particular, badges say "Limited time deal" and "Early Prime Big Deal" on everything, and the page
+tells you a coupon exists without telling you a code you can use.
+
+The clone made those up in code. `dealLabel()` handed out "Deal selling fast" above 500 sold and
+"Early Plus Big Deal" above 30% off; `dealEnds()` started a countdown on anything cut by a quarter
+or more, to a deadline the database does not hold. Meanwhile the real `Coupon` collection — the two
+codes checkout actually accepts — was never shown on the page named after coupons.
+
+- **Keep:** the URL (`/coupons`) and the idea of a place to see what is cut in price.
+- **Change:** **Deals is the browse grid with one thing changed — its scope.** Instead of every
+  listing, it shows every listing that carries a discount. It is the same `getBrowseData`, so the
+  filters, the removable chips, the facet counts, the pagination, the empty state and the phone
+  filter sheet are identical to `/browse`. A shopper learns the grid once.
+- **Change:** the default order is **Biggest saving**, computed in the aggregation from the deepest
+  discount on any of a product's variants, and it joins the ordinary sort menu rather than replacing
+  it. Price sorting here, as everywhere, runs on the discounted price.
+- **Change:** the discount filter's tiers come from the catalogue. It offers 10 / 15 / 20% off or
+  more with a count against each, because that is what the store actually discounts today; a tier
+  nothing reaches is never shown, and neither is one that every deal already meets. Amazon's fixed
+  "50% off or more" that returns nothing is the failure being avoided.
+- **Change:** the department list is scoped to deals, so "Electronics 34" means 34 discounted
+  electronics, not 34 electronics.
+- **Add:** **the coupon codes, at the top, in full.** They are read from the `Coupon` collection and
+  filtered by the same start/end date test `checkCoupon` applies at checkout, so a code shown here
+  is a code that will be accepted. Each one can be tapped to copy, with what it takes off, what it
+  applies to (goods, not delivery, one per order) and the date it runs until.
+- **Cut:** the Prime banner, the sponsored product rail, the "featured deals" carousel, the tab
+  strip, the invented deal labels, the countdowns to a deadline no deal has, and the separate
+  Amazon-style filter column that duplicated the browse one.
+- **Note:** the saving on each card is the product's own discount, shown as "−20%" with the list
+  price struck through — the same card, and the same arithmetic, as everywhere else in the store.

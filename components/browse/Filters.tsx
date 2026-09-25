@@ -159,11 +159,14 @@ const BrandFilter = ({ brands }: any) => {
 };
 
 // The whole filter column. On phones the same panel lives in a bottom sheet.
-const Filters = ({ facets, category, sub, search }: any) => {
+// `basePath` is /browse or /coupons: the deals page is the same grid scoped to
+// listings that carry a discount, so it uses the same column.
+const Filters = ({ facets, category, sub, search, basePath = "/browse", dealsOnly = false }: any) => {
     const { get, getList, set, toggle } = useBrowseQuery();
     const rating = Number(get("rating")) || 0;
     const colors = getList("color");
     const sizes = getList("size");
+    const discount = Number(get("discount")) || 0;
     const searchParam = search ? `&search=${encodeURIComponent(search)}` : "";
 
     return (
@@ -173,13 +176,13 @@ const Filters = ({ facets, category, sub, search }: any) => {
                     {category ? (
                         <>
                             <li>
-                                <Link href={`/browse?${search ? `search=${encodeURIComponent(search)}` : ""}`} className="block py-1 text-fg-muted hover:text-fg">
+                                <Link href={`${basePath}?${search ? `search=${encodeURIComponent(search)}` : ""}`} className="block py-1 text-fg-muted hover:text-fg">
                                     ‹ All departments
                                 </Link>
                             </li>
                             <li>
                                 <Link
-                                    href={`/browse?category=${category.slug}${searchParam}`}
+                                    href={`${basePath}?category=${category.slug}${searchParam}`}
                                     className={cn("flex justify-between py-1", !sub ? "font-semibold text-fg" : "text-fg-muted hover:text-fg")}
                                 >
                                     All {category.name}
@@ -188,7 +191,7 @@ const Filters = ({ facets, category, sub, search }: any) => {
                             {facets.subs.map((entry: any) => (
                                 <li key={entry.slug}>
                                     <Link
-                                        href={`/browse?category=${category.slug}&sub=${entry.slug}${searchParam}`}
+                                        href={`${basePath}?category=${category.slug}&sub=${entry.slug}${searchParam}`}
                                         aria-current={sub?.slug === entry.slug ? "page" : undefined}
                                         className={cn(
                                             "flex justify-between gap-2 py-1 pl-3",
@@ -204,7 +207,7 @@ const Filters = ({ facets, category, sub, search }: any) => {
                     ) : (
                         facets.departments.map((entry: any) => (
                             <li key={entry.slug}>
-                                <Link href={`/browse?category=${entry.slug}${searchParam}`} className="flex justify-between gap-2 py-1 text-fg-muted hover:text-fg">
+                                <Link href={`${basePath}?category=${entry.slug}${searchParam}`} className="flex justify-between gap-2 py-1 text-fg-muted hover:text-fg">
                                     <span>{entry.name}</span>
                                     <span className="text-xs text-fg-subtle tabular">{entry.count}</span>
                                 </Link>
@@ -213,6 +216,28 @@ const Filters = ({ facets, category, sub, search }: any) => {
                     )}
                 </ul>
             </Section>
+
+            {dealsOnly && facets.discounts.length > 0 && (
+                <Section title="Discount">
+                    <div className="flex flex-wrap gap-1.5">
+                        {facets.discounts.map((tier: any) => (
+                            <button
+                                key={tier.value}
+                                type="button"
+                                onClick={() => set({ discount: discount === tier.value ? "" : tier.value })}
+                                aria-pressed={discount === tier.value}
+                                className={cn(
+                                    "rounded-full border px-3 py-1 text-sm cursor-pointer",
+                                    discount === tier.value ? "border-accent-ink bg-accent-soft text-accent-ink" : "border-line-strong text-fg hover:border-fg-subtle"
+                                )}
+                            >
+                                {tier.value}% or more
+                                <span className="ml-1.5 text-xs text-fg-subtle tabular">{tier.count}</span>
+                            </button>
+                        ))}
+                    </div>
+                </Section>
+            )}
 
             {facets.price.max > 0 && (
                 <Section title="Price">
