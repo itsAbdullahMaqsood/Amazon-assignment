@@ -69,5 +69,8 @@
 "app/(store)/profile/memberships",
 "components/grocery",
 "lib/grocery.ts",
-"app/(store)/groceries"
+"app/(store)/groceries",
+"components/furniture",
+"lib/furniture.ts",
+"app/(store)/furniture"
 ]

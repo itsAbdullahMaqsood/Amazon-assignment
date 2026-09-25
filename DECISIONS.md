@@ -787,3 +787,34 @@ twenty aisles between them, so most "aisles" held one product.
 - **Cut:** the green chrome, the Prime delivery claims, the department tiles, the per-department
   carousels, and the "For You" / "Buy Again" / "See All" tiles that duplicated pages the header
   already links to.
+
+---
+
+## 17. Markaz Home
+
+**What Amazon's does badly:** the Home storefront is a wall of tiles with nothing behind most of
+them. The clone carried Amazon's tile list verbatim — a department strip (Shop all Home, Decor,
+Bedding & bath, Storage & organization, Home Improvement, Arts & crafts) where six of the ten links
+went to `/placeholder`, and twenty-four "category" tiles (Sectionals, Headboards, Mattresses,
+Barstools, Ottomans, Bean bags, Hammocks, Vanities…) for a department that stocks nine
+sub-categories. Each of those tiles ran a **keyword search** that mostly missed: "Sectionals"
+searched for "sofa", "Headboards" for "bed", "Outdoor dining" for "tray". Every tile was illustrated
+by hand-composed art, and where a real photo was fetched it was found by matching the tile's word
+against any product name in the catalogue, so a tile could be illustrated by something that was not
+in it. Under all that sat a row of partner brand wordmarks — Safavieh, Zinus, Nathan James — naming
+suppliers this store does not have.
+
+- **Keep:** the two facets that are real and that a search box cannot ask for — the **room** a piece
+  goes in and the **style** it is, both written by the seeder onto every product.
+- **Change:** **every tile is built from the catalogue.** A room becomes a tile only if something is
+  in it, the count on it is the number of pieces, and the photo is one of those pieces. A tile can
+  no longer lead nowhere or show something it does not contain.
+- **Change:** styles are counted **inside the room** you are looking at, so picking Living room and
+  then a style never lands on an empty grid — the combinations that have nothing are not offered.
+- **Change:** the grid is the store's own product card, the same one as browse and groceries.
+- **Cut:** the department strip and its six placeholder links, the twenty-four keyword tiles, the
+  composed art file, the partner brand wordmarks, and the "Featured deals" carousel (on sale is a
+  chip with a real count now).
+- **Add:** a link to `/browse?category=furniture` for anyone who wants price, brand, colour and
+  rating filters. This page is the room-and-style way in; browse is the everything-else way, and
+  neither duplicates the other.
