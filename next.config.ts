@@ -29,6 +29,7 @@ const nextConfig: NextConfig = {
         { source: "/prime", destination: "/plus", permanent: true },
         { source: "/profile/family", destination: "/profile/household", permanent: true },
         { source: "/profile/credit-cards", destination: "/profile/payment", permanent: true },
+        { source: "/keep-shopping", destination: "/profile/recent", permanent: true },
     ],
     typescript: {
         ignoreBuildErrors: true,

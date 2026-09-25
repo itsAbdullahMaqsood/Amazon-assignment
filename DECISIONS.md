@@ -585,3 +585,46 @@ codes checkout actually accepts — was never shown on the page named after coup
   Amazon-style filter column that duplicated the browse one.
 - **Note:** the saving on each card is the product's own discount, shown as "−20%" with the list
   price struck through — the same card, and the same arithmetic, as everywhere else in the store.
+
+---
+
+## 12. Buy again and browsing history
+
+**What Amazon's does badly:** "Buy Again" is barely about buying again. One row of your own
+purchases sits at the top, then the page turns into a second storefront: an aisle rail, a "Top
+sellers in …" row for every department, and two recommendation carousels. The clone added a search
+box and a time filter borrowed from the orders page that filtered nothing on this one.
+
+"Keep shopping for" is worse: it guesses what you are shopping for from the single most recent
+product you looked at, then fills the page with products you have **not** looked at, a sponsored
+slot, and proof-of-popularity lines rounded into milestones — `boughtLabel()` turned any figure over
+50 into "50+ bought in past month", over 100 into "100+", and so on, for a period the database does
+not record. Its four tabs (For you / Deals / Best sellers / Bought together) were four sort orders
+wearing different names.
+
+- **Buy again — change:** the page is only what you have bought. Items come from **paid** orders,
+  one card per product *and option* rather than one per order line, so buying the same shirt twice
+  is one card that says "2 bought in all", not two.
+- **Buy again — change:** each card is priced from the catalogue today, in the colour and size you
+  chose, and "Add to cart" puts that exact variant back. When the colour or size has gone the card
+  says so and points at the product page; when the product has left the catalogue it says that
+  instead of showing a stale price.
+- **Buy again — change:** grouped by department, in the order you last bought from each, so the
+  most recent thing leads the page. The search box searches **what you have bought**, which is what
+  a search box on this page should do.
+- **Buy again — cut:** the aisle rail, the per-department top-seller rows, both recommendation
+  carousels and the borrowed orders toolbar. A page called Buy again that is four fifths discovery
+  is a page with the wrong name.
+- **Browsing history — change:** "Keep shopping for" and "Your Browsing History" were two pages
+  built from the same `recentlyViewed` list. They are now one, at `/profile/recent`, inside the
+  account where it belongs; `/keep-shopping` redirects to it.
+- **Browsing history — change:** it shows what you actually looked at, newest first, with when, at
+  today's price — not a grid of things you haven't looked at.
+- **Browsing history — add:** a **clear-history control**, behind a confirmation that says what it
+  does and does not touch, using the existing `DELETE /api/user/history`. It also says plainly that
+  clearing is not the same as switching recording off, and links to the preference that does.
+- **Cut:** the sponsored slot, the four tabs, the "50+ bought in past month" milestones, and the
+  "previously viewed" hero that repeated the first card underneath it.
+- **Add:** one card (`components/shopping/ShoppingCard`) shared by both pages: image, name, one line
+  saying why it is here, the price as it is today, and a single action. The pages differ in their
+  note and their button, not in how a row reads.

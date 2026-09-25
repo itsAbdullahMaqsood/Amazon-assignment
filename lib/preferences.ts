@@ -53,7 +53,7 @@ export const sections = [
             {
                 id: "showRecentlyViewed",
                 label: "Show recently viewed",
-                hint: "Controls the Keep shopping for and Browsing history rails.",
+                hint: "Controls your browsing history and the rows built from it.",
             },
             {
                 id: "purchaseRecommendations",

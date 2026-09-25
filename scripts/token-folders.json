@@ -47,5 +47,9 @@
 "app/(store)/movies",
 "components/deals",
 "lib/deals.ts",
-"app/(store)/coupons"
+"app/(store)/coupons",
+"components/shopping",
+"lib/buyAgain.ts",
+"app/(store)/buy-again",
+"app/(store)/profile/recent"
 ]
