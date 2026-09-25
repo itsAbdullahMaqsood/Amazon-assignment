@@ -14,5 +14,8 @@
 "components/ProductPage",
 "app/(store)/product",
 "components/shared/StarRating.tsx",
-"components/shared/Lightbox.tsx"
+"components/shared/Lightbox.tsx",
+"app/(store)/cart",
+"components/system",
+"lib/pricing.ts"
 ]

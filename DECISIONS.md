@@ -237,3 +237,34 @@ Reviews sit below one or more rows of other products. The clone had all of that,
 - **Reviews:** a clickable histogram filters by star. Filters appear only when the reviews vary
   (size, colour, fit, verified, with photos); "Style 1 / Style 2" became colour names. Five per
   page, sorted by most helpful.
+
+---
+
+## 5. Cart
+
+**What Amazon's does badly:** the cart is a checklist you have to tick before you can pay. Every
+line starts unticked, so "Proceed" is greyed out until you work out why. Around it: payment
+logos, a buyer-protection promo and sponsored products. In the clone you also couldn't see your
+cart at all without signing in, and prices printed as "USD37.37$".
+
+- **Keep:** the cart persists in the browser, and every visit **re-prices it against the
+  database** before showing a total.
+- **Change:** every line counts. There are no tick boxes; to leave something out, save it for
+  later or remove it.
+- **Change:** the summary is computed with the same function (`lib/pricing.ts`) that checkout and
+  order creation use: items, delivery (the product's own charge, once per line), total. The cart
+  never shows a number the order won't charge.
+- **Change:** quantities are capped at what's in stock. If a saved quantity is now too high, it's
+  lowered and a notice says so. Low stock ("Only 3 left") is shown per line.
+- **Add:** a **guest cart**. Anyone can fill one; signing in happens at checkout ("Sign in to
+  check out · your cart stays as it is").
+- **Add:** "Price dropped / went up from $X" when the price has changed since you added it.
+  Lines whose product has left the catalogue say "No longer available" instead of keeping an old
+  price.
+- **Add:** "Save for later" moves a line to saved items (the wishlist API), and the minus button
+  becomes a bin at quantity 1, so there's no dead state.
+- **Add:** on phones, a sticky total with the checkout button. An empty cart offers a way back
+  in, and the row below it shows what you viewed recently (or the store's best-rated products
+  for a guest).
+- **Cut:** the tick boxes and "select all", the payment-methods image, and the buyer-protection
+  panel.

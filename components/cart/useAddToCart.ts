@@ -37,7 +37,7 @@ const useAddToCart = () => {
             if (existing) {
                 dispatch(updateCart(cartItems.map((item: any) => (item._uid === _uid ? { ...item, qty: finalQty } : item))));
             } else {
-                dispatch(addToCart({ ...data, qty: finalQty, size: data.size, _uid }));
+                dispatch(addToCart({ ...data, qty: finalQty, size: data.size, _uid, addedPrice: data.price }));
             }
 
             if (!silent) {

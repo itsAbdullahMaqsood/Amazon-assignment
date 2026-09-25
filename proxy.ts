@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 // Next 16 renamed middleware.ts to proxy.ts. Signed-out visitors are bounced to
-// the project's own sign-in page, carrying the path they asked for.
+// the project's own sign-in page, carrying the path they asked for. The cart is
+// deliberately not listed: anyone can fill one, and signing in happens at
+// checkout.
 const proxy = async (req: any) => {
     const token = await getToken({
         req,
@@ -32,5 +34,5 @@ const proxy = async (req: any) => {
 export default proxy;
 
 export const config = {
-    matcher: ["/cart", "/checkout", "/order/:path*", "/profile/:path*", "/admin/:path*"],
+    matcher: ["/checkout", "/order/:path*", "/profile/:path*", "/admin/:path*"],
 };
