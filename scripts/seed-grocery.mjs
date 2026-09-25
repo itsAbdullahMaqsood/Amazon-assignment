@@ -144,7 +144,7 @@ const run = async () => {
                 return {
                     name: item.title,
                     description: item.description,
-                    brand: item.brand || "Amazon Grocery",
+                    brand: item.brand || "Markaz Pantry",
                     slug: makeSlug(`${item.title} grocery`),
                     category: categoryDoc._id,
                     subCategories: [subDoc._id],

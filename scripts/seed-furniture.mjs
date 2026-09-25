@@ -172,7 +172,7 @@ const run = async () => {
         return {
             name: item.title,
             description: item.description,
-            brand: item.brand || "Amazon Home",
+            brand: item.brand || "Markaz Home",
             slug: makeSlug(`${item.title} furniture`),
             category: categoryDoc._id,
             subCategories: [subIds.get(entry.cat)],

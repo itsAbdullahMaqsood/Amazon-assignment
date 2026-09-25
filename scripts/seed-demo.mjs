@@ -25,7 +25,7 @@ const arg = (name) => {
 };
 
 const DEMO_TAG = "demo-seed";
-const DEMO_CODE = "AMZN-0050-5950";
+const DEMO_CODE = "MRKZ-0050-5950";
 const REMOVE = process.argv.includes("--remove");
 
 const ADDRESSES = [

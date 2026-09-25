@@ -5,8 +5,9 @@ nextEnv.loadEnvConfig(process.cwd());
 
 // /registry/find searches the public lists shoppers created, and nothing in the
 // build creates one yet, so the search has nothing to find on a fresh database.
-// This hangs a few public registries off the accounts that already exist, each
-// filled with products from the catalog.
+// This hangs a few public registries off the reviewer accounts `npm run seed`
+// creates (never off a real shopper's account), each filled with products from
+// the catalogue.
 const REGISTRIES = [
     { name: "Our Wedding Registry", size: 8 },
     { name: "Baby Shower Registry", size: 6 },
@@ -23,10 +24,22 @@ const run = async () => {
     await mongoose.connect(process.env.MONGODB_URI);
 
     const db = mongoose.connection.db;
-    const users = await db.collection("users").find({}).project({ _id: 1, lists: 1 }).toArray();
+    // Earlier versions of this script wrote into every account; take those out.
+    await db.collection("users").updateMany(
+        { email: { $not: /@x\.dummyjson\.com$/ } },
+        { $pull: { lists: { name: { $in: REGISTRIES.map((entry) => entry.name) } } } }
+    );
+
+    const users = await db
+        .collection("users")
+        .find({ email: /@x\.dummyjson\.com$/ })
+        .sort({ name: 1 })
+        .project({ _id: 1, lists: 1 })
+        .limit(REGISTRIES.length * 2)
+        .toArray();
 
     if (!users.length) {
-        throw new Error("No users to attach registries to. Register an account first.");
+        throw new Error("No reviewer accounts to attach registries to. Run npm run seed first.");
     }
 
     const products = await db

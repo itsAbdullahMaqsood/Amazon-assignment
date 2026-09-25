@@ -87,7 +87,7 @@ const run = async () => {
                 purpose: first(label.purpose).slice(0, 220),
                 substance: titleCase(first(openfda.substance_name)),
                 price,
-                // Prime members see a lower cash price; RxPass covers cheap generics.
+                // Markaz Plus members see a lower cash price; Rx Saver covers cheap generics.
                 primePrice: Number((price * 0.8).toFixed(2)),
                 rxPassEligible: price < 20,
                 createdAt: new Date(),

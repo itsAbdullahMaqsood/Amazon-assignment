@@ -1,15 +1,22 @@
-// Seeds the Prime Video catalog from TMDB.
+// Seeds the Markaz Movies catalogue from TMDB.
 //   npm run seed:videos            seed only when the collection is empty
 //   npm run seed:videos -- --reset wipe and reseed
-// Needs TMDB_API_KEY in .env.local (a free v3 key from themoviedb.org).
+// Needs a TMDB credential in .env.local: TMDB_API_KEY and/or
+// TMDB_READ_ACCESS_TOKEN. Either may hold the v3 key (32 characters, sent as
+// ?api_key=) or the v4 read token (a long JWT, sent as a Bearer header); the
+// script works out which is which, so swapped values still work.
 import mongoose from "mongoose";
 import slugify from "slugify";
 import nextEnv from "@next/env";
 
 nextEnv.loadEnvConfig(process.cwd());
 
-const KEY = process.env.TMDB_API_KEY;
+const CREDENTIALS = [process.env.TMDB_API_KEY, process.env.TMDB_READ_ACCESS_TOKEN].filter(Boolean);
+const KEY = CREDENTIALS[0];
 const BASE = "https://api.themoviedb.org/3";
+
+const isBearer = (value) => String(value).length > 40;
+let credential = KEY;
 
 // Each row maps to a TMDB query; nothing here is a hardcoded title list.
 const ROWS = [
@@ -28,13 +35,12 @@ const ROWS = [
     },
     {
         row: "featured-originals",
-        label: "Featured Originals and Exclusives",
+        label: "Acclaimed series",
         path: "/discover/tv",
-        // TMDB network 1024 is Prime Video.
         params: {
-            with_networks: "1024",
             with_original_language: "en",
-            "vote_count.gte": "200",
+            "vote_count.gte": "800",
+            "vote_average.gte": "7.8",
             sort_by: "popularity.desc",
         },
         original: true,
@@ -54,7 +60,7 @@ const ROWS = [
     },
     {
         row: "under-10-price-drops",
-        label: "Under $10: New movie price drops",
+        label: "New releases under $10",
         path: "/discover/movie",
         params: { sort_by: "primary_release_date.desc", "vote_count.gte": "50" },
         priceBand: [5.99, 9.99],
@@ -63,12 +69,12 @@ const ROWS = [
 
 const get = async (path, params = {}) => {
     const url = new URL(BASE + path);
-    url.searchParams.set("api_key", KEY);
+    if (!isBearer(credential)) url.searchParams.set("api_key", credential);
     url.searchParams.set("language", "en-US");
     url.searchParams.set("include_adult", "false");
     Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
 
-    const res = await fetch(url);
+    const res = await fetch(url, isBearer(credential) ? { headers: { Authorization: `Bearer ${credential}` } } : {});
 
     if (!res.ok) {
         throw new Error(`TMDB ${res.status} for ${path}`);
@@ -115,14 +121,24 @@ const run = async () => {
     const db = mongoose.connection.db;
     console.log(`connected to database "${db.databaseName}"`);
 
-    if (reset) {
-        await db.collection("videos").deleteMany({});
-        console.log("reset: videos cleared");
+    // Find a credential TMDB accepts before touching the collection.
+    for (const candidate of CREDENTIALS) {
+        credential = candidate;
+        try {
+            await get("/configuration");
+            break;
+        } catch {
+            credential = null;
+        }
+    }
+
+    if (!credential) {
+        throw new Error("TMDB rejected every credential in .env.local; the catalogue was left as it was.");
     }
 
     const existing = await db.collection("videos").countDocuments();
 
-    if (existing > 0) {
+    if (existing > 0 && !reset) {
         console.log(`videos collection already has ${existing} documents; nothing seeded.`);
         console.log("run `npm run seed:videos -- --reset` to wipe and reseed.");
         await mongoose.disconnect();
@@ -181,7 +197,8 @@ const run = async () => {
                 popularity: item.popularity || 0,
                 voteCount: item.vote_count || 0,
                 releaseDate: item.release_date || item.first_air_date || "",
-                maturity: mediaType === "tv" ? "TV-MA" : "PG-13",
+                // TMDB's certification needs a call per title; better blank than invented.
+                maturity: "",
                 badge: badgeFor(item, mediaType, Boolean(config.priceBand)),
                 price,
                 isOriginal: Boolean(config.original),
@@ -195,6 +212,13 @@ const run = async () => {
     }
 
     const docs = [...byKey.values()];
+
+    // Everything was fetched, so replacing the catalogue now cannot leave it empty.
+    if (reset) {
+        await db.collection("videos").deleteMany({});
+        console.log("reset: previous catalogue replaced");
+    }
+
     await db.collection("videos").insertMany(docs);
 
     console.log(`\ntotal titles: ${docs.length}`);

@@ -1,8 +1,11 @@
-@import "tailwindcss";
+/* Sources are listed explicitly: automatic detection would also scan build
+   output folders such as .next-verify and choke on their binaries. */
+@import "tailwindcss" source(none);
 @plugin "tailwind-scrollbar-hide";
 
 @source "../app";
 @source "../components";
+@source "../lib";
 
 /*
  * Markaz design tokens. Components use these names only (bg-surface, text-fg-muted,
