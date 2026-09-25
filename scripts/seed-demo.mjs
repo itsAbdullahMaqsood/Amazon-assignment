@@ -257,17 +257,33 @@ const run = async () => {
 
     const pick = (index) => catalogue[index % catalogue.length];
 
+    // A couple of groceries among the orders, so the Restock row on /groceries
+    // has something real behind it.
+    const groceryCategory = await db.collection("categories").findOne({ slug: "grocery" });
+    const groceries = groceryCategory
+        ? await products
+              .find({ category: groceryCategory._id, "subProducts.0.sizes.0": { $exists: true } })
+              .project({ name: 1, slug: 1, subProducts: 1 })
+              .limit(3)
+              .toArray()
+        : [];
+
     // --- Orders: one per status, so every tab and filter has something in it.
     const [home, work] = ADDRESSES;
 
-    const delivered = orderFrom(user._id, home, [lineFrom(pick(0), 0, 0, 1), lineFrom(pick(1), 0, 0, 2)], {
-        isPaid: true,
-        paidAt: daysAgo(24),
-        deliveredAt: daysAgo(19),
-        status: "Completed",
-        createdAt: daysAgo(25),
-        updatedAt: daysAgo(19),
-    });
+    const delivered = orderFrom(
+        user._id,
+        home,
+        [lineFrom(pick(0), 0, 0, 1), lineFrom(pick(1), 0, 0, 2), ...groceries.map((item) => lineFrom(item, 0, 0, 1))],
+        {
+            isPaid: true,
+            paidAt: daysAgo(24),
+            deliveredAt: daysAgo(19),
+            status: "Completed",
+            createdAt: daysAgo(25),
+            updatedAt: daysAgo(19),
+        }
+    );
 
     // Delivered long enough ago to be outside the 30-day window, and carrying a
     // finished return so the Return status tab shows more than one state.

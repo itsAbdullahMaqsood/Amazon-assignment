@@ -1,111 +1,91 @@
 import Link from "next/link";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
-import GroceryNav from "@/components/grocery/GroceryNav";
-import AisleTabs from "@/components/grocery/AisleTabs";
-import GroceryRow from "@/components/grocery/GroceryRow";
-import GroceryGrid from "@/components/grocery/GroceryGrid";
-import { getGroceryStorefront } from "@/lib/grocery";
-import { deliveryLabel } from "@/lib/recommendations";
+import { auth } from "@/auth";
+import { getGrocery } from "@/lib/grocery";
+import ProductCard from "@/components/product/ProductCard";
+import { Container, EmptyState, PageHeader } from "@/components/ui/Layout";
+import Button from "@/components/ui/Button";
+import AisleChips from "@/components/grocery/AisleChips";
+import RestockRow from "@/components/grocery/RestockRow";
 
-export const metadata = {
-    title: "Groceries",
-};
-
-// The green rule Amazon runs between the site header and the grocery storefront.
-const GreenRule = () => <div className="h-[6px] bg-success" />;
-
-const Restocking = () => (
-    <div className="max-w-2xl mx-auto my-24 px-6 text-center">
-        <p className="text-lg">
-            Our shelves are restocking.{" "}
-            <Link href="/groceries" className="underline hover:text-accent-deep">
-                Reload the page
-            </Link>{" "}
-            or check back shortly.
-        </p>
-        <p className="mt-4 text-sm text-slate-600">
-            The grocery catalog is seeded separately: run <code>npm run seed:grocery</code>.
-        </p>
-    </div>
-);
+export const metadata = { title: "Groceries" };
 
 const Page = async ({ searchParams }: any) => {
-    const query = (await searchParams) || {};
-    const storefront = await getGroceryStorefront();
-    const delivery = deliveryLabel();
+    const [session, query] = await Promise.all([auth(), searchParams]);
+    const data = await getGrocery(session?.user?.id || "", {
+        aisle: String((query || {}).aisle || ""),
+        deals: (query || {}).deals === "1",
+    });
 
-    if (!storefront || storefront.total === 0) {
+    if (!data || data.total === 0) {
         return (
-            <>
-                <GreenRule />
-
-                <main className="bg-white min-h-screen">
-                    <Restocking />
-                </main>
-
-            </>
+            <main className="pb-14">
+                <Container className="max-w-3xl">
+                    <PageHeader title="Groceries" />
+                    <EmptyState
+                        icon={ShoppingCartIcon}
+                        title="The shelves are empty"
+                        description="The grocery catalogue is seeded separately: run npm run seed:grocery."
+                        action={<Button href="/browse">Browse the rest of the store</Button>}
+                    />
+                </Container>
+            </main>
         );
     }
 
-    const { departments, deals, categoryId } = storefront;
-
-    const department = departments.find((entry: any) => entry.slug === query.dept);
-    const aisle = department?.aisles.find((entry: any) => entry.slug === query.aisle);
+    const { aisles, aisle, deals, dealCount, products, total, restock } = data;
 
     return (
-        <>
-
-            <GreenRule />
-
-            <main className="bg-white min-h-screen pb-16">
-                <GroceryNav
-                    departments={departments}
-                    active={department?.slug || "for-you"}
-                    categoryId={categoryId}
+        <main className="pb-14">
+            <Container>
+                <PageHeader
+                    title="Groceries"
+                    description="Food and household things, by the aisle. Everything is priced by the pack it comes in."
                 />
 
-                {department && (
-                    <AisleTabs
-                        aisles={department.aisles}
-                        department={department}
-                        active={aisle?.slug}
-                    />
-                )}
+                <RestockRow items={restock} />
 
-                <div className="max-w-[1500px] mx-auto px-4">
-                    {!department && (
-                        <>
-                            <GroceryRow
-                                title="Deals in Grocery"
-                                products={deals}
-                                delivery={delivery}
-                                href={`/browse?category=${categoryId}`}
-                            />
+                <AisleChips aisles={aisles} active={aisle} deals={deals} dealCount={dealCount} total={total} />
 
-                            {departments.map((entry: any) => (
-                                <GroceryRow
-                                    key={entry.slug}
-                                    title={`Shop ${entry.name}`}
-                                    products={entry.products}
-                                    delivery={delivery}
-                                    href={`/groceries?dept=${entry.slug}`}
-                                />
-                            ))}
-                        </>
-                    )}
-
-                    {department && (
-                        <GroceryGrid
-                            title={aisle ? aisle.name : department.name}
-                            products={aisle ? aisle.products : department.products}
-                            delivery={delivery}
-                        />
-                    )}
+                <div className="mt-6">
+                    <h2 className="font-display text-xl font-semibold tracking-tight text-fg">
+                        {deals ? "On sale" : aisle ? aisle.name : "Everything in the shop"}
+                    </h2>
+                    <p className="mt-0.5 text-sm text-fg-muted">
+                        {products.length} item{products.length === 1 ? "" : "s"}
+                        {aisle && (
+                            <>
+                                {" "}
+                                ·{" "}
+                                <Link href="/groceries" className="text-link">
+                                    show every aisle
+                                </Link>
+                            </>
+                        )}
+                    </p>
                 </div>
-            </main>
 
-
-        </>
+                {products.length === 0 ? (
+                    <EmptyState
+                        className="mt-6"
+                        icon={ShoppingCartIcon}
+                        title="Nothing on this shelf right now"
+                        description="Try another aisle."
+                        action={<Button href="/groceries">Show every aisle</Button>}
+                    />
+                ) : (
+                    <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
+                        {products.map((product: any, i: number) => (
+                            <li key={product._id}>
+                                <ProductCard product={product} priority={i < 5} />
+                                {product.unit && <p className="mt-0.5 text-xs text-fg-subtle">{product.unit}</p>}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </Container>
+        </main>
     );
 };
 

@@ -756,3 +756,34 @@ to `localStorage`.
   "Got it covered" (which moves the date on one interval) and "Stop".
 - **Add:** the account overview now says whether you are a member and that delivery is free, because
   that is the part of a membership a shopper needs at a glance.
+
+---
+
+## 16. Groceries
+
+**What Amazon's does badly:** the grocery storefront is a shop inside the shop. A green rule, a
+green "grocery" wordmark and circular department tiles illustrated with a random product photo — a
+second brand with its own furniture, sitting under the store header you just used. Beside the
+wordmark: "Join Prime for FREE delivery on $25+ or $12.99 for Same-day delivery", two claims this
+store could not honour, since there was no delivery threshold and no same-day option. The landing
+page was then a stack of "Shop Produce", "Shop Beverages" carousels — the whole aisle in a row you
+scroll sideways — with the real grid two clicks in.
+
+The taxonomy was also two levels deep for a shop of 27 items: seven departments, each holding
+twenty aisles between them, so most "aisles" held one product.
+
+- **Keep:** aisles. Groceries are the one part of this store people browse by shelf rather than by
+  searching, and the department each product carries is real data from the seeder.
+- **Change:** one row of aisle chips with a count on each, then the store's own product card in a
+  grid. The chips are links, so an aisle can be shared and reloaded, and an aisle the shop does not
+  stock is never offered.
+- **Change:** the second level goes. Twenty aisles over 27 products is a filing system, not a shop;
+  the seven departments are the level that has something behind each label.
+- **Change:** Markaz's own colours. No green rule, no second wordmark, no circular tiles.
+- **Add:** **Restock** at the top — the groceries this account has actually bought, from paid
+  orders, with when and today's price, and one tap to put one back in the cart. It is the reason
+  anyone opens a grocery shop a second time, and it was the one thing the old page did not have.
+- **Add:** "On sale" as a chip with its real count, replacing the "Deals in Grocery" carousel.
+- **Cut:** the green chrome, the Prime delivery claims, the department tiles, the per-department
+  carousels, and the "For You" / "Buy Again" / "See All" tiles that duplicated pages the header
+  already links to.

@@ -66,5 +66,8 @@
 "lib/autoReorder.ts",
 "lib/autoReorderQueries.ts",
 "app/(store)/plus",
-"app/(store)/profile/memberships"
+"app/(store)/profile/memberships",
+"components/grocery",
+"lib/grocery.ts",
+"app/(store)/groceries"
 ]
