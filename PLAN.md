@@ -332,3 +332,48 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 - [ ] 11 Deals · [ ] 12 Buy again / Keep shopping · [ ] 13 Lists + Registry · [ ] 14 Gift cards · [ ] 15 Plus + Memberships
 - [ ] 16 Groceries · [ ] 17 Markaz Home · [ ] 18 Pharmacy · [ ] 19 Account sub-pages · [ ] 20 Help
 - [ ] 21 Business + Sell · [ ] 22 System pages · [ ] 23 Admin rebrand · [ ] 24 README + DECISIONS
+
+
+---
+
+## Handoff notes (for continuing on another machine)
+
+**Done and pushed:** Phase 0 and pages 1–8. Shabana's panel, persona, product grounding
+and budget filtering are also done (part of page 10). **Next up: page 9 (Profile).**
+
+**Still to do from §5 (backend moves):** items 5–11 (movie watchlist and library, membership,
+auto-reorder, saved cards, household, preferences, sign-ins with `sessionVersion`). They land
+with the pages that use them (9, 10, 15, 19).
+
+**Conventions used so far**
+- Every redesigned page: tokens and `components/ui` primitives only; its folder is added to
+  `scripts/token-folders.json`; `npm run check:tokens`, `npm run lint` (1 existing warning in the
+  admin product form is expected) and a build must pass; a `DECISIONS.md` section is added and
+  the tracker above ticked; one commit per page, pushed to `main`.
+- Verification build: `NEXT_DIST_DIR=.next-verify npm run build`, then
+  `rm -rf .next-verify && git checkout tsconfig.json` (the build adds its dist dir to tsconfig).
+- `scripts/dev/map-palette.py <files>` maps raw Tailwind palette classes to tokens as a first
+  pass on a legacy screen. `scripts/dev/shot.mjs` takes screenshots through a headless Chrome.
+- A demo account with orders in every state is made with
+  `npm run seed:demo -- --email=<email> --password=<password>`.
+
+**Gotchas**
+- macOS is case-insensitive: `components/Home` (legacy) and a new `components/home` would be the
+  same folder, and Linux (Vercel) would break. New home sections live in `components/landing`.
+- Tailwind scans only `app/`, `components/` and `lib/` (`source(none)` in `globals.css`).
+- `.env.local` holds the TMDB v4 token in `TMDB_API_KEY` and the v3 key in
+  `TMDB_READ_ACCESS_TOKEN` (swapped); `seed-videos` copes with either.
+- `seed -- --reset` rebuilds the live DB (products, grocery, furniture, meds, movies,
+  registries) and prunes dangling refs; re-run `seed:demo` afterwards.
+
+**Legacy code still in use (delete when its last user is redesigned)**
+- `components/User/LoginInput`, `ButtonInput` → `components/profile/SecurityClient` (page 9).
+- `components/checkoutPage/{ShippingPage,ListShipping,AddShipping,ShippingInput,SingularSelect,
+  payment/Payment,countries}` → profile address and payment (page 9). `countries` is also
+  used by `components/checkout/AddressForm`.
+- `components/Home/productCard/*` and `components/profile/RecommendationCarousel` → older
+  satellite pages. `toCardProduct().amazonChoice` is an alias of `topPick` for them.
+- `components/shared/{Accordion,Price,DialogModal,AddToCartButton}`: legacy primitives; new code
+  uses `components/ui`.
+- Pages still on localStorage state: `/plus`, memberships, devices, household, watchlist,
+  saved cards, preferences (see §5).
