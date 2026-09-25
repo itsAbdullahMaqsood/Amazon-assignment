@@ -931,3 +931,35 @@ it recorded in `localStorage` — the file is built and downloaded in the same r
 nothing to wait for. What Markaz holds is written from the schema, line by line, including the
 sign-in records added on this page, and closing the account still needs the checkbox and your email
 typed out.
+
+---
+
+## 20. Help
+
+**What Amazon's does badly:** the help centre opens with a navy band, "Hello. What can we help you
+with?", a search box over a "help library", and a grid of tiles. Then it offers a chat and a
+call-back. The clone's help *content* was already written honestly — checked against this build's
+code rather than against Amazon's policies — but the furniture around it was Amazon's, and the copy
+had gone stale as the store was rebuilt.
+
+- **Keep:** the eight topics and their articles, which are the genuinely useful part: they describe
+  what this build does, in its own words.
+- **Fix, because the store moved underneath them:** returns said "within 30 days" when the window is
+  now the one the product page promised, per line. Shipping said the charge was "a single flat charge
+  applied once per order … currently zero, so every order ships free" when delivery is priced per
+  product and a Plus membership waives it. Plus said "not a paid membership in this build. There is
+  no subscription to start, pause or cancel" when it is now a real membership that changes the
+  total. Shabana was described as answering "from a fixed set of intents" when she is a language
+  model grounded in the catalogue.
+- **Change:** **your latest order is pinned at the top**, with its status and the three things you
+  can do to it. Most visits to a help centre are about one particular order, and the answer is
+  usually "open it".
+- **Change:** the search narrows the eight topics as you type instead of pretending to query a
+  library. Eight topics is a list you read.
+- **Change:** the articles get the store's own typography — a lead paragraph, headed sections, a
+  related-topics rail — instead of 14px grey text in a 1000px column.
+- **Change:** "Was this information helpful?" no longer thanks you for feedback nobody receives. It
+  says the answer is not recorded, because there is no support desk to read it, and on a "no" it
+  opens Shabana with the question already framed.
+- **Cut:** the chat and call-back options, each of which opened a dialog explaining it did nothing.
+  One honest panel says there is nobody to call, and offers the one thing that does answer.

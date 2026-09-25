@@ -2,43 +2,50 @@
 
 import { useState } from "react";
 
-// The vote is not recorded anywhere; it acknowledges the answer and, on a no,
-// points at the topics most likely to hold what the reader was after.
-const HelpfulVote = ({ topic }: any) => {
-    const [vote, setVote] = useState<string>("");
+import Button from "@/components/ui/Button";
+import { useAppDispatch } from "@/redux/hooks";
+import { openAssistant } from "@/redux/slices/AssistantSlice";
 
-    if (vote) {
-        return (
-            <div className="border-t border-slate-200 pt-4 mt-8">
-                <p className="text-sm font-bold">Thanks for your feedback.</p>
-                {vote === "no" && (
-                    <p className="text-sm text-slate-600 mt-1">
-                        Sorry this didn&apos;t answer your question about {topic.toLowerCase()}. The
-                        related topics in the sidebar are the closest ones we have.
-                    </p>
-                )}
-            </div>
-        );
-    }
+// The answer is not recorded anywhere, and the page says so: there is no one at
+// the other end to read it. What it does instead is useful — on a no, it opens
+// Shabana with the question already framed.
+const HelpfulVote = ({ topic }: any) => {
+    const dispatch = useAppDispatch();
+    const [vote, setVote] = useState("");
 
     return (
-        <div className="border-t border-slate-200 pt-4 mt-8">
-            <p className="text-sm font-bold">Was this information helpful?</p>
-
-            <div className="flex gap-3 mt-2">
-                <button
-                    onClick={() => setVote("yes")}
-                    className="px-8 py-1 rounded-full text-sm border border-slate-400 bg-white hover:bg-slate-100 shadow-sm cursor-pointer"
-                >
-                    Yes
-                </button>
-                <button
-                    onClick={() => setVote("no")}
-                    className="px-8 py-1 rounded-full text-sm border border-slate-400 bg-white hover:bg-slate-100 shadow-sm cursor-pointer"
-                >
-                    No
-                </button>
-            </div>
+        <div className="mt-10 border-t border-line pt-5">
+            {vote === "" ? (
+                <>
+                    <p className="text-sm font-medium text-fg">Did this answer it?</p>
+                    <div className="mt-2 flex gap-2">
+                        <Button variant="outline" size="sm" onClick={() => setVote("yes")}>
+                            Yes
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => setVote("no")}>
+                            No
+                        </Button>
+                    </div>
+                </>
+            ) : vote === "yes" ? (
+                <p className="text-sm text-fg-muted">
+                    Good. Nothing was recorded — there is no support desk behind this store to read it.
+                </p>
+            ) : (
+                <>
+                    <p className="text-sm text-fg-muted">
+                        Nothing was recorded, because there is no one here to read it. Shabana knows the catalogue and
+                        can look at your question directly.
+                    </p>
+                    <Button
+                        size="sm"
+                        className="mt-3"
+                        onClick={() => dispatch(openAssistant({ prompt: `I need help with ${String(topic).toLowerCase()}` }))}
+                    >
+                        Ask Shabana
+                    </Button>
+                </>
+            )}
         </div>
     );
 };

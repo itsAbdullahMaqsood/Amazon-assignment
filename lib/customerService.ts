@@ -41,12 +41,12 @@ export const helpTopics: any = {
         title: "Returns & Refunds",
         icon: "returns",
         blurb: "Send something back, pick a refund method and follow the request.",
-        intro: "Items can be returned within 30 days. The clock starts the day an order is delivered; if an order was never marked as delivered, it starts from the payment date, and failing that from the day the order was placed.",
+        intro: "The return window is the one the product page promised — 7, 30, 60 or 90 days, or none at all — and it is read from that product, line by line. The clock starts when the order is marked delivered, not when it was placed, so it begins when you actually have the thing.",
         sections: [
             {
                 heading: "Starting a return",
                 body: [
-                    "The Returns Center lists every order still inside its 30-day window, item by item. Choose Return or replace items next to the one you want to send back, pick a reason and, if it helps, leave a comment.",
+                    "Returns are a tab of Your Orders. It lists every line still inside its own window with the date it closes, and a return is started from a side sheet on the order itself: pick a reason, a quantity if you bought more than one, and leave a comment if it helps.",
                     "Reasons cover the usual cases: wrong item sent, defective or not working, bought by mistake, a better price available, damaged product in an undamaged box, missing parts, arrived too late, no longer needed, and a purchase you did not approve.",
                 ],
             },
@@ -54,7 +54,7 @@ export const helpTopics: any = {
                 heading: "How your refund is issued",
                 body: [
                     "You choose between your original payment method and your gift card balance when you submit the request. Gift card balance is normally the quicker of the two.",
-                    "A request moves through three states: Return requested while we look at it, Return approved once the item can be sent back, and Refunded when the money has gone out. The Return status tab groups your requests by that state.",
+                    "A request moves through three states: Requested while it is looked at, Approved once the item can be sent back, and Refunded when the money has gone out. The Returns tab shows each request at the state it has reached.",
                 ],
             },
             {
@@ -65,20 +65,20 @@ export const helpTopics: any = {
             },
         ],
         related: ["your-orders", "shipping-delivery", "payments-gift-cards"],
-        links: [{ label: "Open the Returns Center", href: "/profile/returns" }],
+        links: [{ label: "Your returns", href: "/profile/returns" }],
     },
 
     "shipping-delivery": {
         title: "Shipping & Delivery",
         icon: "shipping",
         blurb: "Delivery charges, addresses and where your package is.",
-        intro: "Shipping in this build is a single flat charge applied once per order rather than per item, and that charge is currently zero — so every order ships free, however many items are in it.",
+        intro: "Delivery is priced per product, not per order: each listing carries its own charge, the cart adds them up, and a listing with no charge ships free for everybody. A Markaz Plus membership waives all of them.",
         sections: [
             {
                 heading: "What you are charged",
                 body: [
-                    "Your order total is the cart total, less any coupon you applied at checkout, plus the flat shipping charge. Because that charge is zero and no tax is added, the total you see on the order is the total you agreed to in the cart.",
-                    "A coupon is re-checked on the server when the order is created, so an expired code simply falls away instead of quietly discounting the order.",
+                    "Your total is the goods, less any coupon, plus the delivery charges on the lines that carry one, less whatever your gift card balance covers. Every part of it is recomputed on the server from the products as they are now — the checkout preview and the order are the same calculation, so the two cannot disagree.",
+                    "A coupon discounts the goods and never the delivery, and it is re-checked when the order is created, so an expired code falls away rather than quietly discounting the order.",
                 ],
             },
             {
@@ -91,7 +91,7 @@ export const helpTopics: any = {
             {
                 heading: "Tracking",
                 body: [
-                    "Progress is shown as the order status rather than as carrier tracking: Processing, then Dispatched, then delivered. Open the order to see where it currently stands.",
+                    "There is no carrier and no tracking number. An order shows a timeline built from what it records — placed, paid, dispatched, delivered — and dispatch has no stored time, so it is shown as done without a date attached to it.",
                 ],
             },
         ],
@@ -169,27 +169,28 @@ export const helpTopics: any = {
     },
 
     "digital-services-devices": {
-        title: "Digital Services & Devices",
+        title: "Movies, pharmacy and Shabana",
         icon: "devices",
-        blurb: "Markaz Movies, the pharmacy, groceries and the voice panel.",
+        blurb: "Markaz Movies, the pharmacy, groceries and Shabana.",
         intro: "Alongside the catalogue, this build has a few storefronts of its own. None of them ships a physical device, and none of them talks to a real service.",
         sections: [
             {
                 heading: "Markaz Movies",
                 body: [
-                    "The Markaz Movies area lists titles from our own database with their artwork and detail pages. Nothing streams: selecting a title opens its page rather than a player.",
+                    "Markaz Movies lists titles seeded from TMDB. Nothing streams: a title can be bought or rented, which records it in your library against your account, and no film plays.",
                 ],
             },
             {
                 heading: "Pharmacy and groceries",
                 body: [
-                    "The pharmacy lists medications with search, and the grocery storefront lists everyday items. Both read from the same database as the rest of the site and neither dispenses anything.",
+                    "The pharmacy is a price look-up over drug labels from openFDA; it dispenses nothing and takes no prescription. Groceries is an ordinary part of the catalogue, arranged by aisle, and those you can buy.",
                 ],
             },
             {
-                heading: "The voice panel",
+                heading: "Shabana",
                 body: [
-                    "The assistant panel in the header answers from a fixed set of intents and can navigate the site for you. It does not record audio and does not send anything anywhere.",
+                    "Shabana is the assistant in the header. She is a language model with the catalogue behind her: she picks a department that exists, and every product she shows comes from the database rather than from her own text. Opened from a product page she is handed that product's description, specs and reviews, and answers only from them.",
+                    "There is no microphone. Nothing is recorded, and she cannot place an order for you.",
                 ],
             },
         ],
@@ -205,31 +206,38 @@ export const helpTopics: any = {
         title: "Plus",
         icon: "prime",
         blurb: "What membership does, and does not, mean here.",
-        intro: "Plus is not a paid membership in this build. There is no subscription to start, pause or cancel, and no card on file that could be billed for one.",
+        intro: "Markaz Plus is a real membership on your account, and it does two things: it waives every delivery charge, and it shows you the Plus price in the pharmacy. No payment is ever taken for it.",
         sections: [
             {
                 heading: "Delivery",
                 body: [
-                    "The benefit members would normally pay for — free delivery — applies to everyone here, because the flat shipping charge on every order is zero.",
+                    "While a membership is active, the delivery charges on your order are waived — the checkout total is recomputed on the server, so it is the price you pay rather than a badge. The cart shows the same, struck through.",
                 ],
             },
             {
-                heading: "Deals",
+                heading: "The trial, and what is charged",
                 body: [
-                    "Plus-branded deals on the Coupons page are ordinary catalogue discounts with a label attached; the deepest discounts are the ones shown as Plus deals. Anyone signed in can clip them.",
+                    "Joining starts a 30-day free trial on the plan you pick, monthly or annual. After it, the plan would renew on its own cadence — but nothing is charged at any point in this build, so the dates behave as if you were billed while the delivery waiver is the only thing that is real.",
+                    "Cancelling takes effect immediately and delivery is charged per item again from your next order.",
                 ],
             },
             {
-                heading: "Video",
+                heading: "Sharing it",
                 body: [
-                    "The Markaz Movies area is open to everyone. Nothing behind it is gated on a membership.",
+                    "Your household — up to four people, added by email under Your Account — gets the delivery waiver too, for as long as your membership runs and sharing is switched on.",
+                ],
+            },
+            {
+                heading: "What it does not include",
+                body: [
+                    "There is no reading library, no music, no photo storage and no games. Markaz Movies is open to everyone and nothing behind it is gated on a membership: films are bought or rented individually.",
                 ],
             },
         ],
         related: ["digital-services-devices", "shipping-delivery", "payments-gift-cards"],
         links: [
-            { label: "Markaz Movies", href: "/movies" },
-            { label: "Today's deals", href: "/coupons" },
+            { label: "Markaz Plus", href: "/plus" },
+            { label: "Your household", href: "/profile/household" },
         ],
     },
 
@@ -288,7 +296,7 @@ export const topicList = () =>
 export const quickLinks = [
     { label: "Track or view an order", href: "/profile/orders" },
     { label: "Return or replace an item", href: "/profile/returns" },
-    { label: "Check the status of a return", href: "/profile/returns?tab=status" },
+    { label: "Check the status of a return", href: "/profile/returns" },
     { label: "Change your delivery address", href: "/profile/address" },
     { label: "Change your password", href: "/profile/security" },
     { label: "Buy something you bought before", href: "/buy-again" },

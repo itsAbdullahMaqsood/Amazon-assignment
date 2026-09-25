@@ -86,5 +86,8 @@
 "app/(store)/profile/preferences",
 "app/(store)/profile/messages",
 "app/(store)/profile/recalls",
-"app/(store)/profile/data"
+"app/(store)/profile/data",
+"components/customerService",
+"lib/customerService.ts",
+"app/(store)/customer-service"
 ]

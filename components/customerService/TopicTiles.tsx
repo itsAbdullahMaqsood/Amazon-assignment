@@ -2,7 +2,7 @@ import Link from "next/link";
 import {
     ArrowUturnLeftIcon,
     CreditCardIcon,
-    DevicePhoneMobileIcon,
+    FilmIcon,
     LockClosedIcon,
     ShoppingBagIcon,
     SparklesIcon,
@@ -16,32 +16,32 @@ const icons: any = {
     shipping: TruckIcon,
     account: UserCircleIcon,
     payments: CreditCardIcon,
-    devices: DevicePhoneMobileIcon,
+    devices: FilmIcon,
     prime: SparklesIcon,
     security: LockClosedIcon,
 };
 
-const TopicTiles = ({ topics }: any) => {
-    return (
-        <ul className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {topics.map((topic: any) => {
-                const Icon = icons[topic.icon] || ShoppingBagIcon;
+const TopicTiles = ({ topics }: any) => (
+    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {topics.map((topic: any) => {
+            const Icon = icons[topic.icon] || ShoppingBagIcon;
 
-                return (
-                    <li key={topic.slug}>
-                        <Link
-                            href={`/customer-service/${topic.slug}`}
-                            className="h-full flex flex-col items-center text-center gap-2 border border-slate-300 rounded-lg bg-white p-5 hover:shadow-md hover:border-slate-400 transition"
-                        >
-                            <Icon className="h-10 w-10 text-ink-800" />
-                            <span className="font-bold text-sm">{topic.title}</span>
-                            <span className="text-xs text-slate-600">{topic.blurb}</span>
-                        </Link>
-                    </li>
-                );
-            })}
-        </ul>
-    );
-};
+            return (
+                <li key={topic.slug}>
+                    <Link
+                        href={`/customer-service/${topic.slug}`}
+                        className="flex h-full flex-col rounded-card border border-line bg-surface p-4 hover:border-line-strong"
+                    >
+                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent-soft text-accent-ink">
+                            <Icon className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                        <span className="mt-3 block text-sm font-medium text-fg">{topic.title}</span>
+                        <span className="mt-0.5 block text-sm text-fg-muted">{topic.blurb}</span>
+                    </Link>
+                </li>
+            );
+        })}
+    </ul>
+);
 
 export default TopicTiles;
