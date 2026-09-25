@@ -57,3 +57,6 @@ export const colorName = (value: any) => {
 
     return best[1];
 };
+
+// A representative swatch for a colour name, for filters that list names.
+export const swatchFor = (name: string) => named.find((entry) => entry[1] === name)?.[0] || "";

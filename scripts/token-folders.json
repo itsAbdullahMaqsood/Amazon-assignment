@@ -1,1 +1,14 @@
-["components/ui", "components/layout", "components/Header", "components/Footer.tsx", "components/shabana", "components/cart", "components/landing", "components/product", "lib/home.ts"]
+[
+"components/ui",
+"components/layout",
+"components/Header",
+"components/Footer.tsx",
+"components/shabana",
+"components/cart",
+"components/landing",
+"components/product",
+"lib/home.ts",
+"components/browse",
+"components/ui/Pagination.tsx",
+"app/(store)/browse"
+]

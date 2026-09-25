@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { ChatBubbleLeftRightIcon, PhotoIcon } from "@heroicons/react/24/outline";
 
-import Pagination from "@/components/browse/Pagination";
+import Pagination from "@/components/ui/Pagination";
 import RatingSummary from "./RatingSummary";
 import ReviewCard from "./ReviewCard";
 import ReviewForm from "./ReviewForm";

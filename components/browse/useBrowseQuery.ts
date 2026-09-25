@@ -1,65 +1,50 @@
 "use client";
 
-import { useRef } from "react";
+import { useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-// Every filter lives in the query string. Multi-value params are underscore
-// joined, e.g. ?size=S_M_L&color=%23000000_%232980b9.
-export const useBrowseQuery = () => {
+// Every filter lives in the query string, so a filtered page can be shared,
+// bookmarked and reloaded. Multi-value params are underscore joined
+// (?brand=Apple_Samsung). Any change other than the page number goes back to
+// page 1.
+const useBrowseQuery = () => {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const debounceRef = useRef<any>(null);
+    const [pending, startTransition] = useTransition();
 
-    const current = Object.fromEntries(searchParams.entries());
+    const get = (name: string) => searchParams.get(name) || "";
+    const getList = (name: string) => get(name).split("_").filter(Boolean);
 
-    const filter = (partial: any) => {
-        const next: any = { ...current, ...partial };
+    const set = (partial: Record<string, any>) => {
+        const params = new URLSearchParams(searchParams.toString());
 
-        // Changing any filter puts the user back on the first page.
-        if (!("page" in partial)) {
-            delete next.page;
-        }
-
-        const params = new URLSearchParams();
-
-        Object.entries(next).forEach(([key, value]) => {
-            if (value !== undefined && value !== null && value !== "") {
-                params.set(key, String(value));
+        Object.entries(partial).forEach(([key, value]) => {
+            if (value === undefined || value === null || value === "" || (Array.isArray(value) && !value.length)) {
+                params.delete(key);
+            } else {
+                params.set(key, Array.isArray(value) ? value.join("_") : String(value));
             }
         });
 
-        router.push(`${pathname}?${params.toString()}`);
-    };
-
-    const filterDebounced = (partial: any, delay = 500) => {
-        clearTimeout(debounceRef.current);
-        debounceRef.current = setTimeout(() => filter(partial), delay);
-    };
-
-    // Toggles one entry inside an underscore-joined param, leaving no stray
-    // underscores behind whether the entry is first, middle or last.
-    const replaceQuery = (queryName: string, value: string) => {
-        const existing = current[queryName] || "";
-        const parts = existing ? existing.split("_") : [];
-        const active = parts.includes(value);
-
-        let result: any;
-
-        if (!existing) {
-            result = value;
-        } else if (existing === value) {
-            result = "";
-        } else if (active) {
-            result = parts.filter((part) => part !== value).join("_");
-        } else {
-            result = `${existing}_${value}`;
+        if (!("page" in partial)) {
+            params.delete("page");
         }
 
-        return { active, result };
+        startTransition(() => {
+            router.push(`${pathname}?${params.toString()}`, { scroll: "page" in partial });
+        });
     };
 
-    return { router, pathname, searchParams, current, filter, filterDebounced, replaceQuery };
+    const toggle = (name: string, value: string) => {
+        const current = getList(name);
+        set({ [name]: current.includes(value) ? current.filter((entry) => entry !== value) : [...current, value] });
+    };
+
+    // `current` and `filter` are the names older screens (deals, keep shopping) use.
+    const current = Object.fromEntries(searchParams.entries());
+
+    return { get, getList, set, toggle, pending, searchParams, current, filter: set };
 };
 
 export default useBrowseQuery;

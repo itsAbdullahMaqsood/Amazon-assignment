@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import Pagination from "@/components/browse/Pagination";
+import Pagination from "@/components/ui/Pagination";
 
 // The storefront Pagination is controlled; here the page lives in the URL so the
 // server renders it, and every other filter in the query is kept.

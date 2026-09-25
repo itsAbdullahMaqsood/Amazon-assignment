@@ -290,7 +290,11 @@ const run = async () => {
             };
             await db.collection("subcategories").insertOne(subDoc);
 
-            const items = await fetchCategory(sub.source);
+            // dummyjson carries a couple of Amazon-branded devices; a store that
+            // is not Amazon does not sell them.
+            const items = (await fetchCategory(sub.source)).filter(
+                (item) => !/amazon|alexa/i.test(`${item.brand || ""} ${item.title || ""}`)
+            );
             const docs = [];
 
             for (const item of items) {

@@ -1,7 +1,7 @@
 "use client";
 
 import useBrowseQuery from "@/components/browse/useBrowseQuery";
-import Pagination from "@/components/browse/Pagination";
+import Pagination from "@/components/ui/Pagination";
 import ChipRow from "./ChipRow";
 import CouponFilters from "./CouponFilters";
 import CouponCard from "./CouponCard";

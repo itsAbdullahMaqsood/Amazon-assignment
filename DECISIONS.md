@@ -153,3 +153,44 @@ has a quick-add button that confirms with a toast.
 kitchen and décor products, so items like the "Boxed Blender" existed twice. Home & Kitchen is now
 one department (the Markaz Home storefront's). Grocery and Home & Kitchen appear in the
 department row like any other department, and link to their richer storefronts.
+
+---
+
+## 3. Browse and search
+
+**What Amazon's does badly:** results arrive with sponsored listings mixed in. The filter sidebar
+lists every facet whether or not it applies (our clone offered Style, Material and Gender filters
+that were always empty). There's no single place showing which filters are on, and on a phone
+the filters push the results a screen down. The clone also shuffled unsorted results on every
+load, and sorted and filtered by list price, ignoring the discount the shopper actually pays.
+
+- **Keep:** filters live in the URL, so a filtered page can be shared, bookmarked and reloaded.
+  Filtering and paging happen on the server.
+- **Change:** price sorting and the price filter use the **price you pay** (cheapest option after
+  its discount), computed in the aggregation, never the list price.
+- **Change:** a fixed order. Searches default to "Best match" (name starts with the query, then
+  contains it, then brand), everything else to "Most popular" (units sold). No shuffle, so page 2
+  never repeats page 1.
+- **Change:** search also matches sub-categories ("laptop" finds every laptop) and brands.
+- **Change:** filters only appear when they have something to say. Colour and size show only when
+  the scope has more than one; "One Size" is not a choice; price presets come from the
+  department's own price range.
+- **Change:** counts sit beside every department, sub-category, brand and colour, taken over the
+  current scope, so a filter never hides its own options.
+- **Change:** sub-categories actually filter. In the clone, clicking one did nothing.
+- **Change:** colours are filtered by name ("Black"), and a name covers every swatch that reads
+  as it, instead of listing raw hex values.
+- **Change:** 24 results a page (was 10) in a 2 / 3 / 4-column grid.
+- **Cut:** the row of department buttons above the results (it duplicated the sidebar), the
+  empty Style / Material / Gender filters, "Free shipping" (a filter that removed nothing), and
+  the shuffle.
+- **Add:** applied filters as removable chips above the results, with "Clear all".
+- **Add:** on phones, a bottom sheet with the same filters and a "Show 37 results" button, and
+  sub-category chips under the title for one-tap narrowing.
+- **Add:** a no-results state that says why and offers a way out: clear the filters, search all
+  departments instead of one, or describe it to Shabana.
+- **Add:** a loading skeleton in the page's own shape.
+
+**Search suggestions** (department-scoped, from the header) are covered under the header section.
+**Seed fix found here:** dummyjson sells an Amazon Echo, which put "Amazon" in the brand filter.
+Amazon-branded items are now skipped by the seed.
