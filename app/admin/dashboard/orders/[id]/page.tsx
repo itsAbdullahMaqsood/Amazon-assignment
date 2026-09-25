@@ -14,7 +14,7 @@ import Product from "@/models/Product";
 import Price from "@/components/shared/Price";
 import { Panel, table } from "@/components/admin/ui";
 import OrderStatusPanel from "@/components/admin/orders/OrderStatusPanel";
-import { paymentMethods } from "@/components/checkoutPage/payment/paymentMethods";
+import { paymentMethods } from "@/lib/payments";
 
 // Shared by generateMetadata and the page, so the order is read once and an
 // unknown id is known before anything streams.

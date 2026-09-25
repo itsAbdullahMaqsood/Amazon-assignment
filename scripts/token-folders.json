@@ -17,5 +17,10 @@
 "components/shared/Lightbox.tsx",
 "app/(store)/cart",
 "components/system",
-"lib/pricing.ts"
+"lib/pricing.ts",
+"components/checkout",
+"app/(checkout)",
+"lib/checkout.ts",
+"lib/address.ts",
+"lib/payments.ts"
 ]

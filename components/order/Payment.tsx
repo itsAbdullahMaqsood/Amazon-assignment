@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { paymentMethods } from "@/components/checkoutPage/payment/paymentMethods";
+import { paymentMethods } from "@/lib/payments";
 
 // Simulated payment: no gateway, no card fields, no real charge. The method was
 // chosen at checkout, so it is shown locked rather than selectable.

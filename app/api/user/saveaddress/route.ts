@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import connectDb from "@/lib/db";
 import User from "@/models/User";
+import { addressSchema } from "@/lib/address";
 
 export const POST = async (req: Request) => {
     try {
@@ -13,6 +14,11 @@ export const POST = async (req: Request) => {
         }
 
         const { address } = await req.json();
+        const parsed = addressSchema.safeParse(address || {});
+
+        if (!parsed.success) {
+            return NextResponse.json({ message: parsed.error.issues[0]?.message || "Check the address." }, { status: 400 });
+        }
 
         await connectDb();
 
@@ -22,8 +28,11 @@ export const POST = async (req: Request) => {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
-        // The first address a user saves becomes the active one.
-        user.address.push({ ...address, active: user.address.length === 0 });
+        // A new address becomes the one in use: it was just typed for a reason.
+        user.address.forEach((entry: any) => {
+            entry.active = false;
+        });
+        user.address.push({ ...parsed.data, active: true });
         await user.save();
 
         return NextResponse.json({ addresses: user.address });

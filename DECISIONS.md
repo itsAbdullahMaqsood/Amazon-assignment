@@ -268,3 +268,42 @@ cart at all without signing in, and prices printed as "USD37.37$".
   for a guest).
 - **Cut:** the tick boxes and "select all", the payment-methods image, and the buyer-protection
   panel.
+
+---
+
+## 6. Checkout
+
+**What Amazon's does badly:** checkout keeps selling. Upsells, "add a gift receipt", delivery
+speed choices and a membership trial sit between you and the button. The clone had a structural
+problem too: "Place order" created an *unpaid* order and sent you to a second page to pay, and
+the gift-card balance was spent at the first step even if you never paid. Shipping appeared in
+the cart total but was left out of the order (`shippingPrice: 0`), so the two totals could
+disagree. The coupon was its own form with its own button styled like the main action.
+
+- **Keep:** saved addresses, coupon codes, the gift-card balance, and every amount recomputed on
+  the server.
+- **Change:** **one step to place and pay.** Card and PayPal are simulated and paid in the same
+  request that creates the order, which also takes the stock. Cash on delivery is placed unpaid,
+  and the page says what happens next.
+- **Change:** the summary is the server's quote (`/api/checkout/quote`), computed by the same
+  `computeQuote` that order creation uses. Each line is re-priced from its product as it is
+  *now*; the delivery charge is included; a coupon discounts goods, not delivery; the gift card
+  covers what's left. **The preview is the charge.**
+- **Change:** the gift card is spent only when the order is actually placed, with a guard on the
+  stored balance so two tabs can't spend it twice.
+- **Change:** if an item sold out or changed since the cart, checkout lists what and blocks the
+  button, instead of failing after you pay.
+- **Change:** the address is chosen by id from your saved addresses. The server no longer accepts
+  an address body at order time. New addresses are validated on the server with the same schema
+  as the form.
+- **Change:** one page, three numbered steps (address, payment, review). A settled step
+  collapses to one line with "Change".
+- **Change:** the coupon is a "Have a coupon code?" link. Its errors are specific ("expired on
+  2026-01-31"), and an applied code shows as a line in the summary with "remove".
+- **Change:** the button says what it does: "Pay $993.36", or "Place order" for cash on delivery.
+- **Add:** a quiet checkout shell: wordmark, "Checkout", "Back to cart", and no store navigation
+  to wander off into mid-payment.
+- **Add:** a plain statement that payments are simulated and no card details are asked for,
+  instead of a fake card form.
+- **Cut:** the separate payment page, the "Apply" gradient button, and "please choose a
+  payment method." errors that appeared only after pressing the main button.

@@ -1,15 +1,26 @@
 import { NextResponse } from "next/server";
+import crypto from "crypto";
 
 import { auth } from "@/auth";
 import connectDb from "@/lib/db";
 import User from "@/models/User";
 import Cart from "@/models/Cart";
-import Coupon from "@/models/Coupon";
 import Order from "@/models/Order";
+import Product from "@/models/Product";
+import { computeQuote } from "@/lib/checkout";
+import { PAYMENT_IDS, paidOnPlacement } from "@/lib/payments";
+import { adjustStock } from "@/lib/stock";
 
-// Products and totals come from the user's Cart document only; the request body
-// contributes the shipping address, the payment method and a coupon code that is
-// re-checked here.
+// Places an order in one step. Lines, prices, delivery, the coupon and the
+// gift card all come from computeQuote, the same function behind the checkout
+// summary, so what the shopper saw is what is charged. The request only chooses
+// a saved address, a payment method, a coupon code and whether to spend the
+// gift card balance.
+//
+// Card and PayPal are simulated and paid on placement: the order is marked
+// paid, stock is taken and the gift card spent in this request. Cash on
+// delivery is placed unpaid; it still spends the gift card, because that part
+// of the order is settled now.
 export const POST = async (req: Request) => {
     try {
         const session = await auth();
@@ -18,65 +29,86 @@ export const POST = async (req: Request) => {
             return NextResponse.json({ message: "Not signed in" }, { status: 401 });
         }
 
-        const { shippingAddress, paymentMethod, couponApplied, useGiftCard } = await req.json();
+        const { addressId, paymentMethod, coupon, useGiftCard } = await req.json();
+
+        if (!PAYMENT_IDS.includes(paymentMethod)) {
+            return NextResponse.json({ message: "Choose a payment method." }, { status: 400 });
+        }
 
         await connectDb();
 
-        const user = await User.findById(session.user.id);
+        const user: any = await User.findById(session.user.id).select("email address").lean();
+        const address = (user?.address || []).find((entry: any) => String(entry._id) === String(addressId));
 
-        if (!user) {
-            return NextResponse.json({ message: "User not found" }, { status: 404 });
+        if (!address) {
+            return NextResponse.json({ message: "Choose a delivery address." }, { status: 400 });
         }
 
-        const cart: any = await Cart.findOne({ user: user._id });
+        const quote = await computeQuote(session.user.id, { coupon, useGiftCard: useGiftCard !== false });
 
-        if (!cart || !cart.products.length) {
-            return NextResponse.json({ message: "Cart not found" }, { status: 404 });
+        if (!quote) {
+            return NextResponse.json({ message: "Your cart is empty." }, { status: 404 });
         }
 
-        let total = cart.cartTotal;
-        let validCoupon = "";
+        if (quote.problems.length) {
+            return NextResponse.json({ message: quote.problems.join(" "), problems: quote.problems }, { status: 409 });
+        }
 
-        if (couponApplied) {
-            const checkCoupon: any = await Coupon.findOne({
-                coupon: String(couponApplied).toUpperCase(),
-            }).lean();
+        if (coupon && !quote.coupon) {
+            return NextResponse.json({ message: quote.couponError || "That code can't be used." }, { status: 400 });
+        }
 
-            const today = new Date().toISOString().slice(0, 10);
+        // The balance is spent with a guard on the stored value, so two tabs
+        // placing orders at once cannot spend the same money twice.
+        if (quote.giftCard > 0) {
+            const spent = await User.updateOne(
+                { _id: session.user.id, giftCardBalance: { $gte: quote.giftCard } },
+                {
+                    $inc: { giftCardBalance: -quote.giftCard },
+                    $push: { giftCardHistory: { code: "", amount: quote.giftCard, type: "used", at: new Date() } },
+                }
+            );
 
-            if (checkCoupon && today >= checkCoupon.startDate && today <= checkCoupon.endDate) {
-                total = Number((cart.cartTotal - cart.cartTotal * checkCoupon.discount / 100).toFixed(2));
-                validCoupon = checkCoupon.coupon;
+            if (!spent.modifiedCount) {
+                return NextResponse.json({ message: "Your gift card balance changed. Review the total and try again." }, { status: 409 });
             }
         }
 
-        // The balance is spent here, never on the client: the request only says
-        // whether to use it.
-        let giftCardApplied = 0;
-
-        if (useGiftCard && user.giftCardBalance > 0) {
-            giftCardApplied = Number(Math.min(user.giftCardBalance, total).toFixed(2));
-            total = Number((total - giftCardApplied).toFixed(2));
-
-            user.giftCardBalance = Number((user.giftCardBalance - giftCardApplied).toFixed(2));
-            user.giftCardHistory.push({ code: "", amount: giftCardApplied, type: "used", at: new Date() });
-            await user.save();
-        }
+        const paid = paidOnPlacement(paymentMethod);
+        const { _id, active, ...shippingAddress } = address;
 
         const order = await new Order({
-            user: user._id,
-            products: cart.products,
+            user: session.user.id,
+            products: quote.lines.map((line: any) => ({
+                product: line.product,
+                name: line.name,
+                image: line.image,
+                size: line.size,
+                qty: line.qty,
+                color: line.color,
+                price: line.price,
+            })),
             shippingAddress,
             paymentMethod,
-            total,
-            totalBeforeDiscount: cart.cartTotal,
-            couponApplied: validCoupon,
-            giftCardApplied,
-            shippingPrice: 0,
+            total: quote.total,
+            shippingPrice: quote.shipping,
+            totalBeforeDiscount: quote.subtotal,
+            couponApplied: quote.coupon?.code || "",
+            giftCardApplied: quote.giftCard,
             taxPrice: 0,
-            isPaid: false,
-            status: "Not Processed",
+            isPaid: paid,
+            paidAt: paid ? new Date() : undefined,
+            status: paid ? "Processing" : "Not Processed",
+            paymentResult: paid
+                ? { id: `sim_${crypto.randomBytes(12).toString("hex")}`, status: "COMPLETED", email: user.email }
+                : undefined,
         }).save();
+
+        if (paid) {
+            await adjustStock(Product, order, -1);
+        }
+
+        await Cart.deleteOne({ user: session.user.id });
 
         return NextResponse.json({ order_id: order._id });
     } catch (error: any) {
