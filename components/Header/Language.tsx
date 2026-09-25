@@ -35,7 +35,7 @@ const Language = () => {
                                     name="language"
                                     value={language.value}
                                     defaultChecked={i === 0}
-                                    className="mr-2 accent-amazon-orange"
+                                    className="mr-2 accent-accent"
                                 />
                                 {language.label}
                             </label>

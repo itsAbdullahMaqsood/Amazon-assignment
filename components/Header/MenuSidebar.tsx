@@ -37,7 +37,7 @@ const MenuSideBar = () => {
                     <Link
                         href="/profile"
                         onClick={closeMenuHandler}
-                        className="bg-amazon-blue_light text-white flex items-center px-8 py-3"
+                        className="bg-ink-800 text-white flex items-center px-8 py-3"
                     >
                         <UserCircleIcon className="h-8 mr-2" />
                         <span className="font-bold text-lg truncate">Hello, {firstName}</span>
@@ -46,7 +46,7 @@ const MenuSideBar = () => {
                     <Link
                         href="/auth/signin"
                         onClick={closeMenuHandler}
-                        className="bg-amazon-blue_light text-white flex items-center px-8 py-3"
+                        className="bg-ink-800 text-white flex items-center px-8 py-3"
                     >
                         <UserCircleIcon className="h-8 mr-2" />
                         <span className="font-bold text-lg">Hello, sign in</span>

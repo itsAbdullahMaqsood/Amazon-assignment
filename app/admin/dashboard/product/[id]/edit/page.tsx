@@ -77,7 +77,7 @@ const Page = async ({ params, searchParams }: any) => {
                                     href={`/admin/dashboard/product/${id}/edit?style=${i}`}
                                     aria-current={i === style ? "page" : undefined}
                                     className={`inline-flex items-center gap-2 h-10 px-3 rounded-lg border text-sm ${
-                                        i === style ? "border-[#007185] bg-sky-50" : "border-slate-300 bg-white"
+                                        i === style ? "border-accent-ink bg-sky-50" : "border-slate-300 bg-white"
                                     }`}
                                 >
                                     <span

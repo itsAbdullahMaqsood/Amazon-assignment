@@ -24,7 +24,7 @@ const ReturnableOrderCard = ({ order, daysLeft }: any) => {
 
     return (
         <article className="border border-slate-300 rounded-lg overflow-hidden bg-white">
-            <div className="bg-[#F0F2F2] border-b border-slate-300 px-4 py-3 flex flex-wrap gap-8 text-xs text-slate-700">
+            <div className="bg-surface-muted border-b border-slate-300 px-4 py-3 flex flex-wrap gap-8 text-xs text-slate-700">
                 <div>
                     <p className="uppercase">Order placed</p>
                     <p className="text-sm text-black">{formatDate(order.createdAt)}</p>
@@ -37,7 +37,7 @@ const ReturnableOrderCard = ({ order, daysLeft }: any) => {
 
                 <div>
                     <p className="uppercase">Ship to</p>
-                    <p className="text-sm text-[#0F5FA6]">
+                    <p className="text-sm text-accent-ink">
                         {order.shippingAddress?.firstName} {order.shippingAddress?.lastName}
                     </p>
                 </div>
@@ -47,7 +47,7 @@ const ReturnableOrderCard = ({ order, daysLeft }: any) => {
                     <p className="text-sm">
                         <Link
                             href={`/order/${order._id}`}
-                            className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline"
+                            className="text-accent-ink hover:text-accent-deep hover:underline"
                         >
                             View order details
                         </Link>
@@ -68,7 +68,7 @@ const ReturnableOrderCard = ({ order, daysLeft }: any) => {
                 </p>
 
                 {message && (
-                    <p role="status" className="text-sm text-[#0F6B3A] mt-2">
+                    <p role="status" className="text-sm text-success mt-2">
                         {message}
                     </p>
                 )}
@@ -93,7 +93,7 @@ const ReturnableOrderCard = ({ order, daysLeft }: any) => {
                                 <div className="grow min-w-0">
                                     <Link
                                         href={href}
-                                        className="text-sm text-[#0F5FA6] hover:text-[#C7511F] hover:underline line-clamp-2"
+                                        className="text-sm text-accent-ink hover:text-accent-deep hover:underline line-clamp-2"
                                     >
                                         {item.name}
                                     </Link>

@@ -1,14 +1,10 @@
 import Link from "next/link";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer";
-import MenuSideBar from "@/components/Header/MenuSidebar";
 
 const ProfileShell = ({ title, children }: any) => {
     return (
         <>
-            <Header title={title} />
 
             <main className="bg-white min-h-[60vh]">
                 <div className="max-w-5xl mx-auto px-4 py-8">
@@ -26,9 +22,7 @@ const ProfileShell = ({ title, children }: any) => {
                 </div>
             </main>
 
-            <Footer />
 
-            <MenuSideBar />
         </>
     );
 };

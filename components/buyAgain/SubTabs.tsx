@@ -18,8 +18,8 @@ const SubTabs = ({ active }: any) => {
                             aria-current={active === tab.label ? "page" : undefined}
                             className={`block py-4 border-b-2 ${
                                 active === tab.label
-                                    ? "border-[#007185] text-[#007185] font-semibold"
-                                    : "border-transparent hover:text-[#007185]"
+                                    ? "border-accent-ink text-accent-ink font-semibold"
+                                    : "border-transparent hover:text-accent-ink"
                             }`}
                         >
                             {tab.label}

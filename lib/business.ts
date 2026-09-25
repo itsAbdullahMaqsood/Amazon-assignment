@@ -84,9 +84,9 @@ export const quotes = [
 
 export const faqs = [
     {
-        title: "How much does an Amazon Business account cost?",
+        title: "How much does an Markaz Business account cost?",
         content:
-            "Opening and using a business account is free. Optional Business Prime plans add shared delivery benefits and deeper analytics, and are billed yearly per user tier.",
+            "Opening and using a business account is free. Optional Business Plus plans add shared delivery benefits and deeper analytics, and are billed yearly per user tier.",
     },
     {
         title: "Can I use the same email as my personal account?",

@@ -10,11 +10,11 @@ import { join, membershipStore, plans } from "@/lib/prime";
 // plans too: the rows differ only in price, billing period and who may join.
 const rows = [
     "Fast, free delivery",
-    "Prime Video",
+    "Markaz Movies",
     "Exclusive deals",
-    "Prime Reading",
-    "Amazon Photos",
-    "Prime Gaming",
+    "Plus Reading",
+    "Markaz Photos",
+    "Plus Gaming",
 ];
 
 const PlanTable = ({ signedIn }: any) => {
@@ -27,7 +27,7 @@ const PlanTable = ({ signedIn }: any) => {
     return (
         <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] border border-slate-300 rounded-lg bg-white text-sm">
-                <caption className="sr-only">Prime plan comparison</caption>
+                <caption className="sr-only">Plus plan comparison</caption>
                 <thead>
                     <tr className="border-b border-slate-300">
                         <th scope="col" className="text-left p-4 w-1/4">
@@ -36,7 +36,7 @@ const PlanTable = ({ signedIn }: any) => {
                         {plans.map((plan) => (
                             <th key={plan.id} scope="col" className="p-4 text-left align-top">
                                 <span className="block text-lg font-bold">{plan.name}</span>
-                                <span className="block mt-1 text-xl font-bold text-[#0f6fa8]">
+                                <span className="block mt-1 text-xl font-bold text-accent-ink">
                                     ${plan.price.toFixed(2)}
                                     <span className="text-sm font-normal text-slate-600">
                                         {" "}
@@ -104,18 +104,18 @@ const PlanTable = ({ signedIn }: any) => {
                                         <button
                                             type="button"
                                             onClick={() => join(plan.id)}
-                                            className="px-5 py-2 rounded-full font-semibold bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                                            className="px-5 py-2 rounded-full font-semibold bg-accent text-ink-900 cursor-pointer"
                                         >
                                             {membership.member
                                                 ? `Switch to ${plan.name}`
-                                                : "Try Prime free for 30 days"}
+                                                : "Try Plus free for 30 days"}
                                         </button>
                                     ) : (
                                         <Link
-                                            href="/auth/signin?callbackUrl=/prime"
-                                            className="inline-block px-5 py-2 rounded-full font-semibold bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark"
+                                            href="/auth/signin?callbackUrl=/plus"
+                                            className="inline-block px-5 py-2 rounded-full font-semibold bg-accent text-ink-900"
                                         >
-                                            Try Prime free for 30 days
+                                            Try Plus free for 30 days
                                         </Link>
                                     )}
                                 </td>

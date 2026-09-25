@@ -20,13 +20,13 @@ const BenefitTiles = () => {
 
                 const tile = (
                     <>
-                        <span className="flex items-center justify-center w-12 h-12 rounded-full bg-[#e7f4fb] text-[#0f6fa8]">
+                        <span className="flex items-center justify-center w-12 h-12 rounded-full bg-accent-soft text-accent-ink">
                             <Icon className="w-7 h-7" />
                         </span>
                         <h3 className="mt-4 text-lg font-bold">{benefit.title}</h3>
                         <p className="mt-2 text-sm text-slate-600">{benefit.copy}</p>
                         {benefit.href && (
-                            <span className="mt-3 inline-block text-sm text-[#0F5FA6] group-hover:text-[#C7511F] group-hover:underline">
+                            <span className="mt-3 inline-block text-sm text-accent-ink group-hover:text-accent-deep group-hover:underline">
                                 Take a look
                             </span>
                         )}

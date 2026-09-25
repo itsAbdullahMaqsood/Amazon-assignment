@@ -3,16 +3,16 @@
 
 export const btn = {
     primary:
-        "inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] text-sm font-medium text-[#0F1111] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[#007185] focus-visible:ring-offset-2 outline-none",
+        "inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-accent hover:bg-accent-strong border border-accent text-sm font-medium text-fg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-accent-ink focus-visible:ring-offset-2 outline-none",
     secondary:
-        "inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 text-sm text-[#0F1111] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[#007185] focus-visible:ring-offset-2 outline-none",
+        "inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 text-sm text-fg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-accent-ink focus-visible:ring-offset-2 outline-none",
     danger:
         "inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-white hover:bg-red-50 border border-red-300 text-sm text-red-700 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 outline-none",
-    icon: "inline-flex items-center justify-center w-10 h-10 rounded-lg hover:bg-slate-100 text-slate-600 cursor-pointer disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-[#007185] outline-none",
+    icon: "inline-flex items-center justify-center w-10 h-10 rounded-lg hover:bg-slate-100 text-slate-600 cursor-pointer disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-accent-ink outline-none",
 };
 
 export const field =
-    "w-full h-10 px-3 rounded-lg border border-slate-300 bg-white text-sm outline-none focus:border-[#007185] focus:ring-2 focus:ring-[#007185]/25";
+    "w-full h-10 px-3 rounded-lg border border-slate-300 bg-white text-sm outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent-ink/25";
 
 export const label = "block text-sm font-medium text-slate-700 mb-1";
 
@@ -28,7 +28,7 @@ export const table = {
 export const PageHeader = ({ title, description, actions }: any) => (
     <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
-            <h1 className="text-2xl font-bold text-[#0F1111]">{title}</h1>
+            <h1 className="text-2xl font-bold text-fg">{title}</h1>
             {description && <p className="text-sm text-slate-600 mt-1">{description}</p>}
         </div>
         {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
@@ -39,7 +39,7 @@ export const Panel = ({ title, action, children, className = "" }: any) => (
     <section className={`bg-white rounded-xl border border-slate-200 ${className}`}>
         {title && (
             <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-slate-100">
-                <h2 className="font-semibold text-[#0F1111]">{title}</h2>
+                <h2 className="font-semibold text-fg">{title}</h2>
                 {action}
             </div>
         )}
@@ -75,7 +75,7 @@ export const statusTone: any = {
 
 export const EmptyState = ({ title, children }: any) => (
     <div className="text-center py-12 px-4">
-        <p className="font-semibold text-[#0F1111]">{title}</p>
+        <p className="font-semibold text-fg">{title}</p>
         {children && <div className="text-sm text-slate-600 mt-1">{children}</div>}
     </div>
 );

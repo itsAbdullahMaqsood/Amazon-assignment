@@ -7,7 +7,7 @@ const tabs = [
     { label: "Coupons", href: "/coupons" },
     { label: "Renewed Deals", href: placeholder("Renewed Deals") },
     { label: "Outlet", href: placeholder("Outlet") },
-    { label: "Amazon Resale", href: placeholder("Amazon Resale") },
+    { label: "Markaz Resale", href: placeholder("Markaz Resale") },
 ];
 
 const DealsTabs = ({ active }: any) => {

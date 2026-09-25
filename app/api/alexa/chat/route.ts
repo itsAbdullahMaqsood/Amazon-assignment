@@ -7,7 +7,7 @@ import SubCategory from "@/models/SubCategory";
 import { escapeRegex } from "@/utils/regex";
 import { toCardProduct } from "@/lib/recommendations";
 
-const systemPrompt = (departments: string[]) => `You are Alexa, a shopping assistant inside an Amazon-style store.
+const systemPrompt = (departments: string[]) => `You are Shabana, a shopping assistant inside an Markaz-style store.
 Answer in two or three short sentences, the way a helpful shop assistant would.
 
 This store only sells the following departments:
@@ -95,7 +95,7 @@ const askGemini = async (messages: any[], departments: string[]) => {
     });
 
     if (res.status === 503 || res.status === 429) {
-        throw new Error("Alexa is busy right now. Please try again in a moment.");
+        throw new Error("Shabana is busy right now. Please try again in a moment.");
     }
 
     if (!res.ok) {

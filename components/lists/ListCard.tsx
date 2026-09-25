@@ -32,7 +32,7 @@ const ListCard = ({ list, onDelete }: any) => {
 
             <Link
                 href="/browse"
-                className="text-sm text-[#007185] hover:underline mt-auto pt-3"
+                className="text-sm text-accent-ink hover:underline mt-auto pt-3"
             >
                 Add items to this list ›
             </Link>

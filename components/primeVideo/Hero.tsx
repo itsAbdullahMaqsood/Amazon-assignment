@@ -26,15 +26,15 @@ const Hero = ({ slides }: any) => {
                 />
             )}
 
-            <div className="absolute inset-0 bg-linear-to-r from-[#0f171e] via-[#0f171e]/80 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-[#0f171e] to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-r from-ink-950 via-ink-950/80 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-ink-950 to-transparent" />
 
             <div className="relative h-full max-w-[1500px] mx-auto px-6 flex flex-col justify-center">
                 {slide.isOriginal && (
                     <p className="text-sm tracking-wide text-white/80 lowercase">prime original</p>
                 )}
 
-                <h1 className="mt-3 text-5xl md:text-7xl font-extrabold uppercase text-[#f5c518] max-w-3xl leading-[0.95]">
+                <h1 className="mt-3 text-5xl md:text-7xl font-extrabold uppercase text-accent max-w-3xl leading-[0.95]">
                     {slide.title}
                 </h1>
 
@@ -45,7 +45,7 @@ const Hero = ({ slides }: any) => {
 
                 <div className="flex items-center gap-4 mt-6">
                     <button className="bg-white/25 hover:bg-white/35 transition px-6 py-3 rounded text-left cursor-pointer">
-                        <span className="block text-xl font-bold">Watch with Prime</span>
+                        <span className="block text-xl font-bold">Watch with Plus</span>
                         <span className="block text-lg">Start your 30-day free trial</span>
                     </button>
 
@@ -64,7 +64,7 @@ const Hero = ({ slides }: any) => {
                     </button>
                 </div>
 
-                <p className="mt-4 text-sm text-white/80">Join Prime</p>
+                <p className="mt-4 text-sm text-white/80">Join Plus</p>
 
                 <div className="absolute bottom-10 right-6 text-right">
                     <p className="text-sm text-white/80">Terms apply</p>

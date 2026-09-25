@@ -104,7 +104,7 @@ const ReturnModal = ({ order, line, onClose, onSubmitted }: any) => {
                                 setReason(e.target.value);
                                 setError("");
                             }}
-                            className="w-full border border-slate-400 rounded px-3 py-2 text-sm bg-[#F0F2F2] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#e77600]"
+                            className="w-full border border-slate-400 rounded px-3 py-2 text-sm bg-surface-muted cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent-deep"
                         >
                             <option value="">Choose a reason</option>
                             {returnReasons.map((option) => (
@@ -127,7 +127,7 @@ const ReturnModal = ({ order, line, onClose, onSubmitted }: any) => {
                             rows={3}
                             maxLength={500}
                             placeholder="Tell us more so we can sort it out faster."
-                            className="w-full border border-slate-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#e77600]"
+                            className="w-full border border-slate-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-deep"
                         />
                     </div>
 
@@ -160,7 +160,7 @@ const ReturnModal = ({ order, line, onClose, onSubmitted }: any) => {
                     </fieldset>
 
                     {error && (
-                        <p role="alert" className="text-sm text-[#C40000]">
+                        <p role="alert" className="text-sm text-danger">
                             {error}
                         </p>
                     )}
@@ -169,7 +169,7 @@ const ReturnModal = ({ order, line, onClose, onSubmitted }: any) => {
                         <button
                             type="button"
                             onClick={onClose}
-                            className="text-sm text-[#007185] hover:underline cursor-pointer"
+                            className="text-sm text-accent-ink hover:underline cursor-pointer"
                         >
                             Cancel
                         </button>

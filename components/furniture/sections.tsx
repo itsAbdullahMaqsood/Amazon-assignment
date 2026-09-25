@@ -13,9 +13,9 @@ export const FeaturedDeals = ({ products, href }: any) => {
     return (
         <section className="mt-10">
             <div className="flex items-baseline gap-3">
-                <h3 className="text-2xl font-bold text-[#0f1111]">Featured deals</h3>
+                <h3 className="text-2xl font-bold text-fg">Featured deals</h3>
 
-                <Link href={href} className="text-sm text-[#007185] hover:underline">
+                <Link href={href} className="text-sm text-accent-ink hover:underline">
                     Shop all
                 </Link>
             </div>
@@ -38,14 +38,14 @@ export const FeaturedDeals = ({ products, href }: any) => {
 // Partner names stay as plain text wordmarks rather than reproduced logos.
 export const BrandStrip = () => (
     <section className="mt-12">
-        <h2 className="text-2xl font-bold text-[#0f1111]">Shop popular brands</h2>
+        <h2 className="text-2xl font-bold text-fg">Shop popular brands</h2>
 
         <ul className="mt-4 flex items-center gap-10 overflow-x-auto scrollbar-hide pb-2">
             {brands.map((brand) => (
                 <li key={brand} className="shrink-0">
                     <Link
                         href={`/browse?brand=${encodeURIComponent(brand)}`}
-                        className="text-xl md:text-2xl font-semibold tracking-tight text-[#0f1111] hover:text-[#C7511F] whitespace-nowrap"
+                        className="text-xl md:text-2xl font-semibold tracking-tight text-fg hover:text-accent-deep whitespace-nowrap"
                     >
                         {brand}
                     </Link>
@@ -58,14 +58,14 @@ export const BrandStrip = () => (
 // What a room or style tile opens: the same store, filtered, with a crumb back.
 export const ResultsGrid = ({ title, products }: any) => (
     <section className="mt-6">
-        <nav className="text-sm text-[#007185]">
-            <Link href="/furniture" className="hover:underline hover:text-[#C7511F]">
+        <nav className="text-sm text-accent-ink">
+            <Link href="/furniture" className="hover:underline hover:text-accent-deep">
                 Furniture
             </Link>
-            <span className="text-[#0f1111]"> › {title}</span>
+            <span className="text-fg"> › {title}</span>
         </nav>
 
-        <h1 className="mt-2 text-2xl font-bold text-[#0f1111]">{title}</h1>
+        <h1 className="mt-2 text-2xl font-bold text-fg">{title}</h1>
         <p className="text-sm text-slate-600 mt-1">
             {products.length} {products.length === 1 ? "result" : "results"}
         </p>
@@ -73,7 +73,7 @@ export const ResultsGrid = ({ title, products }: any) => (
         {products.length === 0 && (
             <p className="mt-6 text-sm">
                 Nothing in this store carries that tag yet.{" "}
-                <Link href="/furniture" className="text-[#007185] hover:underline">
+                <Link href="/furniture" className="text-accent-ink hover:underline">
                     Back to Furniture
                 </Link>
             </p>

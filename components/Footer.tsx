@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
 
-import amazonLogo from "@/public/assets/images/amazon-logo.png";
+import Wordmark from "@/components/ui/Wordmark";
 import enFlag from "@/public/assets/images/en-flag.png";
 
 const linkColumns = [
@@ -11,44 +11,44 @@ const linkColumns = [
         title: "Get to Know Us",
         links: [
             "Careers",
-            "Amazon Newsletter",
-            "About Amazon",
+            "Markaz Newsletter",
+            "About Markaz",
             "Accessibility",
             "Sustainability",
             "Press Center",
             "Investor Relations",
-            "Amazon Devices",
-            "Amazon Science",
+            "Markaz Devices",
+            "Markaz Science",
         ],
     },
     {
         title: "Make Money with Us",
         links: [
-            "Sell on Amazon",
-            "Sell apps on Amazon",
-            "Supply to Amazon",
+            "Sell on Markaz",
+            "Sell apps on Markaz",
+            "Supply to Markaz",
             "Protect & Build Your Brand",
             "Become an Affiliate",
             "Become a Delivery Driver",
             "Start a Package Delivery Business",
             "Advertise Your Products",
             "Self-Publish with Us",
-            "Become an Amazon Hub Partner",
+            "Become an Markaz Hub Partner",
             "› See More Ways to Make Money",
         ],
     },
     {
-        title: "Amazon Payment Products",
+        title: "Markaz Payment Products",
         links: [
-            "Amazon Visa",
-            "Amazon Store Card",
-            "Amazon Secured Card",
-            "Amazon Business Card",
+            "Markaz Visa",
+            "Markaz Store Card",
+            "Markaz Secured Card",
+            "Markaz Business Card",
             "Shop with Points",
             "Credit Card Marketplace",
             "Reload Your Balance",
             "Gift Cards",
-            "Amazon Currency Converter",
+            "Markaz Currency Converter",
         ],
     },
     {
@@ -57,7 +57,7 @@ const linkColumns = [
             "Your Account",
             "Your Orders",
             "Shipping Rates & Policies",
-            "Amazon Prime",
+            "Markaz Plus",
             "Returns & Replacements",
             "Manage Your Content and Devices",
             "Recalls and Product Safety Alerts",
@@ -68,18 +68,17 @@ const linkColumns = [
 ];
 
 const services = [
-    { title: "Amazon Music", desc: "Stream millions of songs" },
-    { title: "Amazon Global", desc: "Ship Orders Internationally" },
+    { title: "Markaz Music", desc: "Stream millions of songs" },
+    { title: "Markaz Global", desc: "Ship Orders Internationally" },
     { title: "Home Services", desc: "Experienced Pros Happiness Guarantee" },
     { title: "PillPack", desc: "Pharmacy Simplified" },
-    { title: "Amazon Advertising", desc: "Find, attract and engage customers" },
+    { title: "Markaz Advertising", desc: "Find, attract and engage customers" },
     { title: "6pm", desc: "Score deals on fashion brands" },
     { title: "AbeBooks", desc: "Books, art & collectibles" },
     { title: "ACX", desc: "Audiobook Publishing Made Easy" },
-    { title: "Sell on Amazon", desc: "Start a Selling Account" },
-    { title: "Amazon Business", desc: "Everything For Your Business" },
-    { title: "AmazonGlobal", desc: "Ship Orders Internationally" },
-    { title: "Amazon Web Services", desc: "Scalable Cloud Computing Services" },
+    { title: "Sell on Markaz", desc: "Start a Selling Account" },
+    { title: "Markaz Business", desc: "Everything For Your Business" },
+        { title: "Markaz Web Services", desc: "Scalable Cloud Computing Services" },
     { title: "Audible", desc: "Listen to Books & Original Audio" },
     { title: "Box Office Mojo", desc: "Find Movie Box Office Data" },
 ];
@@ -93,12 +92,12 @@ const Footer = () => {
         <footer className="w-full flex flex-col">
             <div
                 onClick={backToTopHandler}
-                className="bg-[#37475a] hover:bg-[#485769] text-white text-xs text-center py-4 cursor-pointer"
+                className="bg-ink-800 hover:bg-ink-800 text-white text-xs text-center py-4 cursor-pointer"
             >
                 Back to top
             </div>
 
-            <div className="bg-amazon-blue_light grid grid-cols-2 lg:grid-cols-4 gap-8 px-8 md:px-32 py-10 border-b border-slate-600">
+            <div className="bg-ink-800 grid grid-cols-2 lg:grid-cols-4 gap-8 px-8 md:px-32 py-10 border-b border-slate-600">
                 {linkColumns.map((column) => (
                     <div key={column.title} className="link-footer">
                         <h5>{column.title}</h5>
@@ -111,14 +110,8 @@ const Footer = () => {
                 ))}
             </div>
 
-            <div className="bg-amazon-blue_light flex flex-wrap items-center justify-center gap-4 py-8">
-                <Image
-                    src={amazonLogo}
-                    alt="amazon logo"
-                    width={100}
-                    height={30}
-                    className="object-contain w-20"
-                />
+            <div className="bg-ink-800 flex flex-wrap items-center justify-center gap-4 py-8">
+                <Wordmark size="sm" />
 
                 <div className="flex items-center border border-slate-500 rounded-sm text-white text-xs px-3 py-1.5 link">
                     <GlobeAltIcon className="h-4 mr-1" />
@@ -137,7 +130,7 @@ const Footer = () => {
                 </div>
             </div>
 
-            <div className="bg-[#131A22] py-10 px-8 md:px-32">
+            <div className="bg-fg py-10 px-8 md:px-32">
                 <ul className="footer-link-services grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-y-5 justify-items-center">
                     {services.map((service) => (
                         <li key={service.title}>
@@ -154,7 +147,7 @@ const Footer = () => {
                         <li className="link">Your Ads Privacy Choices</li>
                     </ul>
                     <p className="text-slate-300 text-xs">
-                        &copy; 1996-2023, Amazon.com, Inc. or its affiliates
+                        &copy; 1996-2023, Markaz.com, Inc. or its affiliates
                     </p>
                 </div>
             </div>

@@ -35,14 +35,14 @@ const GroceryCard = ({ product, delivery, priority }: any) => {
                 />
             </div>
 
-            <Link href={href} className="mt-1 text-sm hover:text-[#C7511F] hover:underline line-clamp-2">
+            <Link href={href} className="mt-1 text-sm hover:text-accent-deep hover:underline line-clamp-2">
                 {product.name}
             </Link>
 
             {product.unit && <p className="text-xs text-slate-600 mt-1">{product.unit}</p>}
 
             {product.limitedDeal && (
-                <p className="text-xs text-[#CC0C39] font-semibold mt-1">Limited time deal</p>
+                <p className="text-xs text-danger font-semibold mt-1">Limited time deal</p>
             )}
 
             <p className="text-xs mt-1">

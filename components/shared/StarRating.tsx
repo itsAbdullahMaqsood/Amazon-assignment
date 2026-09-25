@@ -25,7 +25,7 @@ const Stars = ({ value, precision, size }: any) => {
                             className="absolute top-0 left-0 overflow-hidden"
                             style={{ width: `${filled * 100}%` }}
                         >
-                            <StarIcon className={`${size} text-[#FFA41C]`} />
+                            <StarIcon className={`${size} text-accent`} />
                         </span>
                     </span>
                 );
@@ -90,7 +90,7 @@ const StarRating = ({ value, precision = 0.5, size = "w-5 h-5", onChange, label 
             onMouseMove={(event) => setHover(valueAt(event))}
             onMouseLeave={() => setHover(0)}
             onKeyDown={onKeyDown}
-            className="inline-flex items-center cursor-pointer rounded outline-none focus-visible:ring-2 focus-visible:ring-[#007185] focus-visible:ring-offset-2"
+            className="inline-flex items-center cursor-pointer rounded outline-none focus-visible:ring-2 focus-visible:ring-accent-ink focus-visible:ring-offset-2"
         >
             <Stars value={hover || current} precision={precision} size={size} />
         </span>

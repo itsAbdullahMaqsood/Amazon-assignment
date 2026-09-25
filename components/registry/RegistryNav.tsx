@@ -11,7 +11,7 @@ export const registryLinks = [
 const RegistryNav = ({ active = "" }: any) => (
     <nav aria-label="Registry and gifting" className="bg-white border-b border-slate-200">
         <div className="max-w-[1500px] mx-auto px-6 h-14 flex items-center gap-8 overflow-x-auto scrollbar-hide">
-            <Link href="/registry" className="text-xl font-bold text-[#007185] whitespace-nowrap">
+            <Link href="/registry" className="text-xl font-bold text-accent-ink whitespace-nowrap">
                 registry &amp; gifting
             </Link>
 

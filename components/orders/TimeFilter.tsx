@@ -26,7 +26,7 @@ const TimeFilter = ({ value, params }: any) => {
                 id="order-range"
                 value={value}
                 onChange={changeHandler}
-                className="border border-slate-400 rounded-lg bg-[#F0F2F2] px-3 py-1.5 shadow-sm outline-none focus:border-[#007185] cursor-pointer"
+                className="border border-slate-400 rounded-lg bg-surface-muted px-3 py-1.5 shadow-sm outline-none focus:border-accent-ink cursor-pointer"
             >
                 {timeRanges().map((range) => (
                     <option key={range.value} value={range.value}>

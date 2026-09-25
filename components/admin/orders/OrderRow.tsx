@@ -21,7 +21,7 @@ const OrderRow = ({ order: initial }: any) => {
                 <Link
                     href={`/admin/dashboard/orders/${order._id}`}
                     title={order._id}
-                    className="font-mono text-[13px] text-[#007185] hover:text-[#C7511F] hover:underline rounded outline-none focus-visible:ring-2 focus-visible:ring-[#007185]"
+                    className="font-mono text-[13px] text-accent-ink hover:text-accent-deep hover:underline rounded outline-none focus-visible:ring-2 focus-visible:ring-accent-ink"
                 >
                     {shortId(order._id)}
                 </Link>
@@ -30,7 +30,7 @@ const OrderRow = ({ order: initial }: any) => {
             <td className={`${table.td} max-w-56`}>
                 {order.user ? (
                     <>
-                        <p className="font-medium text-[#0F1111] truncate">{order.user.name}</p>
+                        <p className="font-medium text-fg truncate">{order.user.name}</p>
                         <p className="text-xs text-slate-500 truncate">{order.user.email}</p>
                     </>
                 ) : (

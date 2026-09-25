@@ -24,7 +24,7 @@ const AislesRow = ({ aisles }: any) => {
         <section className="mt-6">
             <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold">Shop Aisles</h2>
-                <Link href="/browse" className="text-sm text-[#007185] hover:underline">
+                <Link href="/browse" className="text-sm text-accent-ink hover:underline">
                     See more Aisles ›
                 </Link>
             </div>

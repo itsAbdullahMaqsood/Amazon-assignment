@@ -29,7 +29,7 @@ const SubscribeSave = ({ items }: any) => {
                 </p>
                 <Link
                     href="/browse"
-                    className="inline-block mt-5 px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark"
+                    className="inline-block mt-5 px-6 py-2 rounded-full bg-accent text-ink-900"
                 >
                     Start shopping
                 </Link>
@@ -70,7 +70,7 @@ const SubscribeSave = ({ items }: any) => {
                             {item.slug ? (
                                 <Link
                                     href={`/product/${item.slug}`}
-                                    className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline font-medium line-clamp-2"
+                                    className="text-accent-ink hover:text-accent-deep hover:underline font-medium line-clamp-2"
                                 >
                                     {item.name}
                                 </Link>
@@ -114,7 +114,7 @@ const SubscribeSave = ({ items }: any) => {
                                     <button
                                         type="button"
                                         onClick={() => scheduleItem(item.id, value)}
-                                        className="px-5 py-2 rounded-full text-sm font-semibold bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                                        className="px-5 py-2 rounded-full text-sm font-semibold bg-accent text-ink-900 cursor-pointer"
                                     >
                                         Set up subscription
                                     </button>
@@ -122,7 +122,7 @@ const SubscribeSave = ({ items }: any) => {
                             </div>
 
                             {active && (
-                                <p className="mt-2 text-sm text-[#1b6b2a] font-semibold">
+                                <p className="mt-2 text-sm text-success font-semibold">
                                     Subscribed —{" "}
                                     {frequencies
                                         .find((frequency) => frequency.value === active)

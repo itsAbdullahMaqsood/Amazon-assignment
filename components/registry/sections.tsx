@@ -28,7 +28,7 @@ export const Hero = () => (
 
                     <Link
                         href={placeholder("Create a registry or gift list")}
-                        className="block text-center rounded-full py-2 bg-[#FFD814] hover:bg-[#F7CA00]"
+                        className="block text-center rounded-full py-2 bg-accent hover:bg-accent-strong"
                     >
                         Create
                     </Link>
@@ -55,7 +55,7 @@ export const Hero = () => (
 
 export const Reasons = () => (
     <section className="max-w-[1500px] mx-auto px-6 py-12">
-        <h2 className="text-2xl font-bold">Reasons to register with Amazon</h2>
+        <h2 className="text-2xl font-bold">Reasons to register with Markaz</h2>
 
         <div className="mt-5 grid gap-5 md:grid-cols-3">
             {reasons.map((reason) => (

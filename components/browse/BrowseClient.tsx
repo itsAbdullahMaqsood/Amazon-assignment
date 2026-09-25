@@ -79,9 +79,9 @@ const BrowseClient = ({
                                 filter({ category: activeCategory === category._id ? "" : category._id })
                             }
                             aria-pressed={activeCategory === category._id}
-                            className={`w-40 md:w-56 h-10 border border-slate-300 rounded flex items-center justify-center cursor-pointer transition-all duration-300 hover:bg-amazon-blue_light hover:text-white hover:scale-95 hover:border-amazon-blue_dark ${
+                            className={`w-40 md:w-56 h-10 border border-slate-300 rounded flex items-center justify-center cursor-pointer transition-all duration-300 hover:bg-ink-800 hover:text-white hover:scale-95 hover:border-ink-900 ${
                                 activeCategory === category._id
-                                    ? "bg-amazon-blue_light text-white"
+                                    ? "bg-ink-800 text-white"
                                     : "bg-white"
                             }`}
                         >
@@ -102,7 +102,7 @@ const BrowseClient = ({
                 >
                     <button
                         onClick={() => filter({})}
-                        className="w-full py-2 rounded bg-amazon-blue_light text-white hover:scale-95 transition duration-300 cursor-pointer"
+                        className="w-full py-2 rounded bg-ink-800 text-white hover:scale-95 transition duration-300 cursor-pointer"
                     >
                         Clear All ({activeFilterCount})
                     </button>
@@ -201,7 +201,7 @@ const BrowseClient = ({
                         {current.search && (
                             <>
                                 {" for "}
-                                <span className="text-[#c45500] font-semibold">
+                                <span className="text-accent-deep font-semibold">
                                     &quot;{current.search}&quot;
                                 </span>
                             </>
@@ -222,7 +222,7 @@ const BrowseClient = ({
                             </p>
                             <button
                                 onClick={() => filter({})}
-                                className="px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                                className="px-6 py-2 rounded-full bg-accent text-ink-900 cursor-pointer"
                             >
                                 Clear all filters
                             </button>

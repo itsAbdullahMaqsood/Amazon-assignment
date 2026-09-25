@@ -238,7 +238,7 @@ const CouponManager = ({ initial, today, defaults }: any) => {
 
                             return (
                                 <tr key={coupon._id} className={`${table.row} ${isEditing ? "bg-amber-50/40" : ""}`}>
-                                    <th scope="row" className={`${table.td} font-mono font-semibold text-[#0F1111] whitespace-nowrap`}>
+                                    <th scope="row" className={`${table.td} font-mono font-semibold text-fg whitespace-nowrap`}>
                                         {coupon.coupon}
                                     </th>
                                     <td className={`${table.td} text-right tabular-nums`}>{coupon.discount}%</td>

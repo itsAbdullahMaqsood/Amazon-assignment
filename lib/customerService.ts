@@ -171,13 +171,13 @@ export const helpTopics: any = {
     "digital-services-devices": {
         title: "Digital Services & Devices",
         icon: "devices",
-        blurb: "Prime Video, the pharmacy, groceries and the voice panel.",
+        blurb: "Markaz Movies, the pharmacy, groceries and the voice panel.",
         intro: "Alongside the catalogue, this build has a few storefronts of its own. None of them ships a physical device, and none of them talks to a real service.",
         sections: [
             {
-                heading: "Prime Video",
+                heading: "Markaz Movies",
                 body: [
-                    "The Prime Video area lists titles from our own database with their artwork and detail pages. Nothing streams: selecting a title opens its page rather than a player.",
+                    "The Markaz Movies area lists titles from our own database with their artwork and detail pages. Nothing streams: selecting a title opens its page rather than a player.",
                 ],
             },
             {
@@ -195,17 +195,17 @@ export const helpTopics: any = {
         ],
         related: ["prime", "managing-your-account", "security-privacy"],
         links: [
-            { label: "Prime Video", href: "/prime-video" },
+            { label: "Markaz Movies", href: "/movies" },
             { label: "Pharmacy", href: "/pharmacy" },
             { label: "Groceries", href: "/groceries" },
         ],
     },
 
     prime: {
-        title: "Prime",
+        title: "Plus",
         icon: "prime",
         blurb: "What membership does, and does not, mean here.",
-        intro: "Prime is not a paid membership in this build. There is no subscription to start, pause or cancel, and no card on file that could be billed for one.",
+        intro: "Plus is not a paid membership in this build. There is no subscription to start, pause or cancel, and no card on file that could be billed for one.",
         sections: [
             {
                 heading: "Delivery",
@@ -216,19 +216,19 @@ export const helpTopics: any = {
             {
                 heading: "Deals",
                 body: [
-                    "Prime-branded deals on the Coupons page are ordinary catalogue discounts with a label attached; the deepest discounts are the ones shown as Prime deals. Anyone signed in can clip them.",
+                    "Plus-branded deals on the Coupons page are ordinary catalogue discounts with a label attached; the deepest discounts are the ones shown as Plus deals. Anyone signed in can clip them.",
                 ],
             },
             {
                 heading: "Video",
                 body: [
-                    "The Prime Video area is open to everyone. Nothing behind it is gated on a membership.",
+                    "The Markaz Movies area is open to everyone. Nothing behind it is gated on a membership.",
                 ],
             },
         ],
         related: ["digital-services-devices", "shipping-delivery", "payments-gift-cards"],
         links: [
-            { label: "Prime Video", href: "/prime-video" },
+            { label: "Markaz Movies", href: "/movies" },
             { label: "Today's deals", href: "/coupons" },
         ],
     },

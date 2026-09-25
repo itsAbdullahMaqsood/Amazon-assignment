@@ -29,7 +29,7 @@ const MembershipsClient = ({ items }: any) => {
                                 aria-current={section === entry.id ? "page" : undefined}
                                 className={`w-full text-left px-4 py-3 text-sm cursor-pointer ${
                                     section === entry.id
-                                        ? "bg-[#f0f7fb] font-bold border-l-4 border-l-[#0f6fa8]"
+                                        ? "bg-accent-soft font-bold border-l-4 border-l-accent-ink"
                                         : "hover:bg-slate-50"
                                 }`}
                             >
@@ -48,7 +48,7 @@ const MembershipsClient = ({ items }: any) => {
                 {section === "memberships" && (
                     <div className="space-y-6">
                         <section>
-                            <h2 className="text-xl font-bold mb-3">Amazon Prime</h2>
+                            <h2 className="text-xl font-bold mb-3">Markaz Plus</h2>
                             <MembershipPanel signedIn tone="light" className="w-full" />
                         </section>
 
@@ -70,12 +70,12 @@ const MembershipsClient = ({ items }: any) => {
                         </section>
 
                         <p className="text-sm text-slate-600">
-                            Looking for what Prime includes?{" "}
+                            Looking for what Plus includes?{" "}
                             <Link
-                                href="/prime"
-                                className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline"
+                                href="/plus"
+                                className="text-accent-ink hover:text-accent-deep hover:underline"
                             >
-                                Prime benefits and plans
+                                Plus benefits and plans
                             </Link>
                         </p>
                     </div>

@@ -15,7 +15,7 @@ const AlexaLauncher = () => {
                 aria-expanded={open}
                 className="flex items-center bg-white rounded-full px-3 py-1 cursor-pointer"
             >
-                <span className="text-[#00758f] italic font-semibold mr-1">alexa</span>
+                <span className="text-accent-ink italic font-semibold mr-1">alexa</span>
                 <span className="text-slate-800 text-sm">for shopping</span>
             </button>
 

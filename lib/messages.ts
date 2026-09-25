@@ -42,13 +42,13 @@ export const formatDate = (value: string) => {
 const welcomeMessage = (user: any) => ({
     id: "account-welcome",
     folder: "inbox",
-    from: "Amazon.com",
-    subject: "Welcome to Amazon.com",
-    snippet: `Hello ${user?.name || "there"}, your Amazon account is ready.`,
+    from: "Markaz.com",
+    subject: "Welcome to Markaz.com",
+    snippet: `Hello ${user?.name || "there"}, your Markaz account is ready.`,
     date: iso(user?.createdAt || Date.now()),
     body: [
         `Hello ${user?.name || "there"},`,
-        "Thanks for creating an Amazon account. This message centre keeps every notice about your orders in one place — order confirmations, shipping updates and review requests all arrive here.",
+        "Thanks for creating an Markaz account. This message centre keeps every notice about your orders in one place — order confirmations, shipping updates and review requests all arrive here.",
         "You can archive anything you have finished with; archived messages move to the Archived / Deleted Messages folder and can be restored from there.",
     ],
     href: "/profile",
@@ -66,8 +66,8 @@ const orderMessages = (order: any) => {
         {
             id: `${order._id}-confirmation`,
             folder: "inbox",
-            from: "auto-confirm@amazon.com",
-            subject: `Your Amazon.com order of ${label}`,
+            from: "auto-confirm@markaz",
+            subject: `Your Markaz.com order of ${label}`,
             snippet: `Order #${id} · ${count} item${count === 1 ? "" : "s"} · $${Number(order.total || 0).toFixed(2)}`,
             date: iso(order.createdAt),
             body: [
@@ -83,8 +83,8 @@ const orderMessages = (order: any) => {
         messages.push({
             id: `${order._id}-shipped`,
             folder: "inbox",
-            from: "ship-confirm@amazon.com",
-            subject: `Your Amazon.com order of ${label} has shipped`,
+            from: "ship-confirm@markaz",
+            subject: `Your Markaz.com order of ${label} has shipped`,
             snippet: `Order #${id} is on its way${order.shippingAddress?.city ? ` to ${order.shippingAddress.city}` : ""}.`,
             date: iso(order.paidAt || order.createdAt),
             body: [
@@ -100,7 +100,7 @@ const orderMessages = (order: any) => {
         messages.push({
             id: `${order._id}-seller`,
             folder: "buyer-seller",
-            from: "Amazon.com Marketplace",
+            from: "Markaz.com Marketplace",
             subject: `Dispatch note for ${label}`,
             snippet: "The seller has confirmed dispatch and answered any open questions.",
             date: iso(order.paidAt || order.createdAt),
@@ -117,8 +117,8 @@ const orderMessages = (order: any) => {
         messages.push({
             id: `${order._id}-delivered`,
             folder: "inbox",
-            from: "shipment-tracking@amazon.com",
-            subject: `Delivered: your Amazon.com order of ${label}`,
+            from: "shipment-tracking@markaz",
+            subject: `Delivered: your Markaz.com order of ${label}`,
             snippet: "Your package was handed over at the delivery address.",
             date: iso(order.deliveredAt),
             body: [
@@ -131,7 +131,7 @@ const orderMessages = (order: any) => {
         messages.push({
             id: `${order._id}-review`,
             folder: "inbox",
-            from: "Amazon Customer Reviews",
+            from: "Markaz Customer Reviews",
             subject: `How did you like ${label}?`,
             snippet: "Share a rating so other shoppers know what to expect.",
             date: iso(order.deliveredAt),

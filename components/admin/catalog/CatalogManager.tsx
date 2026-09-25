@@ -321,7 +321,7 @@ const CatalogManager = ({ kind, initial, parents = [] }: any) => {
                                         </>
                                     ) : (
                                         <>
-                                            <th scope="row" className={`${table.td} font-medium text-[#0F1111] whitespace-nowrap`}>
+                                            <th scope="row" className={`${table.td} font-medium text-fg whitespace-nowrap`}>
                                                 {row.name}
                                             </th>
                                             {isSub && (
@@ -340,7 +340,7 @@ const CatalogManager = ({ kind, initial, parents = [] }: any) => {
                                         {row.productCount > 0 && !isSub ? (
                                             <Link
                                                 href={`/browse?category=${row.slug}`}
-                                                className="text-[#007185] hover:underline outline-none focus-visible:ring-2 focus-visible:ring-[#007185] rounded"
+                                                className="text-accent-ink hover:underline outline-none focus-visible:ring-2 focus-visible:ring-accent-ink rounded"
                                             >
                                                 {row.productCount}
                                             </Link>

@@ -16,7 +16,7 @@ const Radio = ({ name, checked, onChange, children }: any) => (
             name={name}
             checked={checked}
             onChange={onChange}
-            className="w-4 h-4 cursor-pointer accent-[#0F5FA6]"
+            className="w-4 h-4 cursor-pointer accent-accent-ink"
         />
         {children}
     </label>
@@ -68,7 +68,7 @@ const CouponFilters = ({ categories, subCategories, current, ceiling, filter, on
                 {activeChips.map((chip: any) => (
                     <span
                         key={chip.label}
-                        className="inline-flex items-center gap-1 border-2 border-[#0F5FA6] rounded-lg px-3 py-1.5 font-bold"
+                        className="inline-flex items-center gap-1 border-2 border-accent-ink rounded-lg px-3 py-1.5 font-bold"
                     >
                         {chip.label}
                         {!chip.fixed && (
@@ -86,7 +86,7 @@ const CouponFilters = ({ categories, subCategories, current, ceiling, filter, on
 
             <button
                 onClick={onClear}
-                className="block mt-3 text-[#0F5FA6] hover:underline cursor-pointer"
+                className="block mt-3 text-accent-ink hover:underline cursor-pointer"
             >
                 Clear Filters
             </button>
@@ -116,7 +116,7 @@ const CouponFilters = ({ categories, subCategories, current, ceiling, filter, on
                 {categories.length > VISIBLE_DEPARTMENTS && (
                     <button
                         onClick={() => setExpanded(!expanded)}
-                        className="flex items-center gap-1 mt-1 text-[#0F5FA6] hover:underline cursor-pointer"
+                        className="flex items-center gap-1 mt-1 text-accent-ink hover:underline cursor-pointer"
                     >
                         {expanded ? (
                             <ChevronUpIcon className="w-4 h-4" />
@@ -147,7 +147,7 @@ const CouponFilters = ({ categories, subCategories, current, ceiling, filter, on
                     <span className="flex items-center gap-1">
                         <span className="flex">
                             {[0, 1, 2, 3].map((i) => (
-                                <StarIcon key={i} className="w-4 h-4 text-[#FF9900]" />
+                                <StarIcon key={i} className="w-4 h-4 text-accent" />
                             ))}
                             <StarIcon className="w-4 h-4 text-slate-300" />
                         </span>

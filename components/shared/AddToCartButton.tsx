@@ -55,7 +55,7 @@ const AddToCartButton = ({ productId, style = 0, size }: any) => {
             <button
                 onClick={clickHandler}
                 disabled={loading}
-                className="w-full mt-3 bg-[#FFD814] hover:bg-[#F7CA00] text-black text-sm rounded-full py-2 font-medium disabled:opacity-60 cursor-pointer"
+                className="w-full mt-3 bg-accent hover:bg-accent-strong text-black text-sm rounded-full py-2 font-medium disabled:opacity-60 cursor-pointer"
             >
                 {loading ? "Adding…" : "Add to cart"}
             </button>

@@ -168,11 +168,11 @@ const Search = ({ searchHandler }: any) => {
             <form
                 onSubmit={submitHandler}
                 role="search"
-                className="flex items-stretch h-10 grow rounded-md overflow-hidden bg-white focus-within:ring-[3px] focus-within:ring-[#f90]"
+                className="flex items-stretch h-10 grow rounded-md overflow-hidden bg-white focus-within:ring-[3px] focus-within:ring-accent"
             >
                 {/* The native select sits invisibly over its label, so the control
-                    sizes to the picked department the way Amazon's does. */}
-                <div className="relative hidden md:flex items-center shrink-0 max-w-48 gap-1 pl-3 pr-2 bg-[#e6e6e6] hover:bg-[#d4d4d4] text-xs text-[#555] hover:text-black border-r border-[#cdcdcd] cursor-pointer">
+                    sizes to the picked department the way Markaz's does. */}
+                <div className="relative hidden md:flex items-center shrink-0 max-w-48 gap-1 pl-3 pr-2 bg-surface-muted hover:bg-line text-xs text-fg-muted hover:text-black border-r border-line cursor-pointer">
                     <span className="truncate" aria-hidden="true">
                         {selected?.name || "All"}
                     </span>
@@ -196,7 +196,7 @@ const Search = ({ searchHandler }: any) => {
                 </div>
 
                 <label htmlFor={`${uid}-input`} className="sr-only">
-                    Search Amazon
+                    Search Markaz
                 </label>
                 <input
                     id={`${uid}-input`}
@@ -209,22 +209,22 @@ const Search = ({ searchHandler }: any) => {
                     }}
                     onFocus={() => setOpen(true)}
                     onKeyDown={keyHandler}
-                    placeholder="Search Amazon"
+                    placeholder="Search Markaz"
                     autoComplete="off"
                     role="combobox"
                     aria-expanded={open && visible.length > 0}
                     aria-controls={`${uid}-suggestions`}
                     aria-autocomplete="list"
                     aria-activedescendant={highlighted >= 0 ? `${uid}-suggestion-${highlighted}` : undefined}
-                    className="grow shrink w-full min-w-0 px-3 text-[15px] outline-none text-black placeholder:text-[#6f7373]"
+                    className="grow shrink w-full min-w-0 px-3 text-[15px] outline-none text-black placeholder:text-fg-muted"
                 />
 
                 <button
                     type="submit"
                     aria-label="Search"
-                    className="flex items-center justify-center w-11 shrink-0 bg-amazon-orange hover:bg-[#f3a847] cursor-pointer"
+                    className="flex items-center justify-center w-11 shrink-0 bg-accent hover:bg-accent cursor-pointer"
                 >
-                    <MagnifyingGlassIcon className="h-6 w-6 text-amazon-blue_dark stroke-2" />
+                    <MagnifyingGlassIcon className="h-6 w-6 text-ink-900 stroke-2" />
                 </button>
             </form>
 

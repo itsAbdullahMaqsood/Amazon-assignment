@@ -33,7 +33,7 @@ const TopicTiles = ({ topics }: any) => {
                             href={`/customer-service/${topic.slug}`}
                             className="h-full flex flex-col items-center text-center gap-2 border border-slate-300 rounded-lg bg-white p-5 hover:shadow-md hover:border-slate-400 transition"
                         >
-                            <Icon className="h-10 w-10 text-[#232f3e]" />
+                            <Icon className="h-10 w-10 text-ink-800" />
                             <span className="font-bold text-sm">{topic.title}</span>
                             <span className="text-xs text-slate-600">{topic.blurb}</span>
                         </Link>

@@ -2,7 +2,7 @@ import { createLocalStore } from "@/lib/localStore";
 
 // Deregistering a device only hides it for this browser; there is no device
 // registry in the database to write to.
-export const DEVICES_KEY = "amazon-clone:devices";
+export const DEVICES_KEY = "markaz:devices";
 
 export const deviceStore = createLocalStore<string[]>(DEVICES_KEY, []);
 
@@ -25,7 +25,7 @@ export const seededDevices = [
         type: "Streaming media player",
         icon: "TvIcon",
         registeredOn: "2024-11-02",
-        detail: "Prime Video, app downloads and Alexa voice search",
+        detail: "Markaz Movies, app downloads and Shabana voice search",
     },
     {
         id: "kindle-paperwhite",
@@ -33,7 +33,7 @@ export const seededDevices = [
         type: "E-reader",
         icon: "BookOpenIcon",
         registeredOn: "2023-06-18",
-        detail: "Kindle books, Prime Reading and Whispersync",
+        detail: "Kindle books, Plus Reading and Whispersync",
     },
     {
         id: "echo-dot-5",
@@ -41,7 +41,7 @@ export const seededDevices = [
         type: "Smart speaker",
         icon: "SpeakerWaveIcon",
         registeredOn: "2025-01-09",
-        detail: "Alexa, shopping lists and music playback",
+        detail: "Shabana, shopping lists and music playback",
     },
 ];
 

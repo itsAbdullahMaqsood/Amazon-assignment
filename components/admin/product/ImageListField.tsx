@@ -133,7 +133,7 @@ const ImageListField = ({ id, label, hint, items, onChange, onRejected, max = 10
                         }}
                         className={`group relative w-28 rounded-xl border bg-white p-1.5 cursor-grab active:cursor-grabbing ${
                             dragOver === index && dragFrom !== index
-                                ? "border-[#007185] ring-2 ring-[#007185]/30"
+                                ? "border-accent-ink ring-2 ring-accent-ink/30"
                                 : "border-slate-200"
                         } ${dragFrom === index ? "opacity-50" : ""}`}
                     >
@@ -149,7 +149,7 @@ const ImageListField = ({ id, label, hint, items, onChange, onRejected, max = 10
                         </div>
 
                         {cover && index === 0 && (
-                            <span className="absolute top-2 left-2 inline-flex items-center gap-0.5 rounded-full bg-amazon-blue_dark text-white text-[10px] font-semibold px-1.5 py-0.5">
+                            <span className="absolute top-2 left-2 inline-flex items-center gap-0.5 rounded-full bg-ink-900 text-white text-[10px] font-semibold px-1.5 py-0.5">
                                 <StarIcon className="w-3 h-3" />
                                 Cover
                             </span>
@@ -159,7 +159,7 @@ const ImageListField = ({ id, label, hint, items, onChange, onRejected, max = 10
                             type="button"
                             onClick={() => remove(index)}
                             aria-label={`Remove ${label.toLowerCase()} ${index + 1}`}
-                            className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-white border border-slate-300 shadow flex items-center justify-center hover:bg-red-50 hover:border-red-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#007185] outline-none"
+                            className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-white border border-slate-300 shadow flex items-center justify-center hover:bg-red-50 hover:border-red-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-accent-ink outline-none"
                         >
                             <XMarkIcon className="w-4 h-4" />
                         </button>
@@ -172,7 +172,7 @@ const ImageListField = ({ id, label, hint, items, onChange, onRejected, max = 10
                                 onClick={() => move(index, index - 1)}
                                 disabled={index === 0}
                                 aria-label={`Move ${label.toLowerCase()} ${index + 1} earlier`}
-                                className="w-8 h-8 rounded-md flex items-center justify-center text-slate-500 hover:bg-slate-100 disabled:opacity-30 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#007185] outline-none"
+                                className="w-8 h-8 rounded-md flex items-center justify-center text-slate-500 hover:bg-slate-100 disabled:opacity-30 cursor-pointer focus-visible:ring-2 focus-visible:ring-accent-ink outline-none"
                             >
                                 <ArrowLeftIcon className="w-4 h-4" />
                             </button>
@@ -180,7 +180,7 @@ const ImageListField = ({ id, label, hint, items, onChange, onRejected, max = 10
                                 <button
                                     type="button"
                                     onClick={() => move(index, 0)}
-                                    className="text-[11px] text-[#007185] hover:underline cursor-pointer"
+                                    className="text-[11px] text-accent-ink hover:underline cursor-pointer"
                                 >
                                     Make cover
                                 </button>
@@ -190,7 +190,7 @@ const ImageListField = ({ id, label, hint, items, onChange, onRejected, max = 10
                                 onClick={() => move(index, index + 1)}
                                 disabled={index === items.length - 1}
                                 aria-label={`Move ${label.toLowerCase()} ${index + 1} later`}
-                                className="w-8 h-8 rounded-md flex items-center justify-center text-slate-500 hover:bg-slate-100 disabled:opacity-30 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#007185] outline-none"
+                                className="w-8 h-8 rounded-md flex items-center justify-center text-slate-500 hover:bg-slate-100 disabled:opacity-30 cursor-pointer focus-visible:ring-2 focus-visible:ring-accent-ink outline-none"
                             >
                                 <ArrowRightIcon className="w-4 h-4" />
                             </button>
@@ -200,7 +200,7 @@ const ImageListField = ({ id, label, hint, items, onChange, onRejected, max = 10
 
                 {items.length < max && (
                     <li>
-                        <label className="w-28 h-[146px] rounded-xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center gap-1 text-xs text-slate-600 cursor-pointer hover:border-[#007185] hover:bg-sky-50/40 focus-within:ring-2 focus-within:ring-[#007185]">
+                        <label className="w-28 h-[146px] rounded-xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center gap-1 text-xs text-slate-600 cursor-pointer hover:border-accent-ink hover:bg-sky-50/40 focus-within:ring-2 focus-within:ring-accent-ink">
                             <PhotoIcon className="w-7 h-7 text-slate-400" />
                             Add images
                             <input

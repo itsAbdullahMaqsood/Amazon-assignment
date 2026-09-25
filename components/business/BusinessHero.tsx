@@ -29,14 +29,14 @@ const BusinessHero = () => {
     };
 
     return (
-        <section className="bg-amazon-blue_light text-white">
+        <section className="bg-ink-800 text-white">
             <div className="max-w-[1500px] mx-auto px-4 py-10 md:py-16 grid gap-10 lg:grid-cols-[1.1fr_1fr] items-center">
                 <div>
-                    <p className="text-amazon-orange font-semibold tracking-wide text-sm">
-                        AMAZON BUSINESS
+                    <p className="text-accent font-semibold tracking-wide text-sm">
+                        MARKAZ BUSINESS
                     </p>
                     <h1 className="text-3xl md:text-5xl font-bold mt-2 leading-tight">
-                        Everything you love about Amazon. For work.
+                        Everything you love about Markaz. For work.
                     </h1>
                     <p className="mt-4 text-white/85 md:text-lg max-w-xl">
                         Business pricing, multi-user accounts, approvals and spend reporting — on an
@@ -61,7 +61,7 @@ const BusinessHero = () => {
                                 type="submit"
                                 className="button-orange px-5 py-2.5 text-sm font-medium text-gray-900 cursor-pointer whitespace-nowrap"
                             >
-                                Create a free Amazon Business account
+                                Create a free Markaz Business account
                             </button>
                         </div>
 

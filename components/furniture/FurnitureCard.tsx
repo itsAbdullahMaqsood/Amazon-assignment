@@ -28,10 +28,10 @@ const FurnitureCard = ({ product, priority }: any) => {
 
             {product.discount > 0 && (
                 <p className="mt-2 flex items-center gap-2 text-xs">
-                    <span className="bg-[#CC0C39] text-white font-bold rounded-sm px-1.5 py-0.5">
+                    <span className="bg-danger text-white font-bold rounded-sm px-1.5 py-0.5">
                         {product.discount}% off
                     </span>
-                    <span className="text-[#CC0C39] font-semibold">Limited time deal</span>
+                    <span className="text-danger font-semibold">Limited time deal</span>
                 </p>
             )}
 
@@ -46,7 +46,7 @@ const FurnitureCard = ({ product, priority }: any) => {
 
             <Link
                 href={href}
-                className="mt-1 text-sm leading-5 hover:text-[#C7511F] hover:underline line-clamp-2"
+                className="mt-1 text-sm leading-5 hover:text-accent-deep hover:underline line-clamp-2"
             >
                 {product.name}
             </Link>

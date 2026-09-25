@@ -12,7 +12,7 @@ const InfosShipping = ({ product }: any) => {
 
             <span className="text-sm mt-2">No Import Fees Deposit</span>
 
-            <div className="flex items-center text-[#007185] text-sm mt-1">
+            <div className="flex items-center text-accent-ink text-sm mt-1">
                 <span>
                     {product.shipping ? `+${product.shipping}$ Shipping Fee` : "Free Shipping"}
                 </span>
@@ -38,7 +38,7 @@ const InfosShipping = ({ product }: any) => {
                 <span className="text-green-700">23 hrs 53 mins</span>
             </p>
 
-            <div className="flex items-center text-[#007185] text-sm mt-2">
+            <div className="flex items-center text-accent-ink text-sm mt-2">
                 <MapPinIcon className="h-4 mr-1" />
                 <span>Deliver to Germany</span>
             </div>
@@ -59,7 +59,7 @@ const InfosShipping = ({ product }: any) => {
             <div className="text-xs mt-3 space-y-1">
                 <div className="grid grid-cols-3 gap-1">
                     <span className="text-slate-500">Ships from</span>
-                    <span className="col-span-2">Amazon</span>
+                    <span className="col-span-2">Markaz</span>
                 </div>
                 <div className="grid grid-cols-3 gap-1">
                     <span className="text-slate-500">Sold by</span>

@@ -130,14 +130,14 @@ const Infos = ({ product, setActiveImg }: any) => {
             <div className="h-px w-full bg-slate-200 my-3" />
 
             <div className="flex items-center gap-3">
-                <span className="text-4xl font-semibold text-[#B12704]">{product.price}$</span>
+                <span className="text-4xl font-semibold text-danger">{product.price}$</span>
 
                 {product.discount > 0 && (
                     <>
                         <span className="text-xl line-through text-slate-500">
                             {product.priceBefore}$
                         </span>
-                        <span className="text-[#007185]">(-{product.discount}%)</span>
+                        <span className="text-accent-ink">(-{product.discount}%)</span>
                     </>
                 )}
             </div>
@@ -155,7 +155,7 @@ const Infos = ({ product, setActiveImg }: any) => {
                             href={`/product/${product.slug}?style=${product.style}&size=${i}`}
                             className={`w-11 h-11 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center hover:outline hover:outline-1 hover:outline-slate-400 hover:outline-offset-[3px] ${
                                 sizeIndex === i
-                                    ? "font-semibold bg-linear-to-r from-amazon-orange to-slate-100"
+                                    ? "font-semibold bg-linear-to-r from-accent to-slate-100"
                                     : ""
                             }`}
                         >
@@ -224,7 +224,7 @@ const Infos = ({ product, setActiveImg }: any) => {
                 <button
                     onClick={addToCartHandler}
                     disabled={product.quantity < 1}
-                    className={`grow flex items-center justify-center gap-2 rounded-full p-2 bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark hover:from-amazon-blue_light hover:to-slate-500 hover:text-slate-100 hover:shadow-lg transition duration-300 ${
+                    className={`grow flex items-center justify-center gap-2 rounded-full p-2 bg-accent text-ink-900 hover:bg-accent-strong hover:text-slate-100 hover:shadow-lg transition duration-300 ${
                         product.quantity < 1 ? "cursor-not-allowed" : "cursor-pointer"
                     }`}
                 >
@@ -243,7 +243,7 @@ const Infos = ({ product, setActiveImg }: any) => {
 
                 <button
                     onClick={addToWishListHandler}
-                    className="flex items-center gap-1 rounded bg-slate-200 text-amazon-blue_light p-2 hover:bg-amazon-blue_light hover:text-slate-100 transition duration-300 cursor-pointer"
+                    className="flex items-center gap-1 rounded bg-slate-200 text-ink-800 p-2 hover:bg-ink-800 hover:text-slate-100 transition duration-300 cursor-pointer"
                 >
                     <HeartIcon className="w-8 h-8" />
                     <span>WishList</span>

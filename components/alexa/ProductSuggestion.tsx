@@ -59,7 +59,7 @@ const ProductSuggestion = ({ product, delivery }: any) => {
 
                 <p className="text-sm mt-1">
                     FREE delivery <span className="font-bold">{delivery}</span> on $35.00 of items
-                    shipped by Amazon
+                    shipped by Markaz
                 </p>
 
                 <AddToCartButton productId={product._id} />

@@ -25,22 +25,22 @@ const MembershipPanel = ({ signedIn, tone = "dark", className = "max-w-md" }: an
         : "bg-white border border-slate-300 text-black";
     const muted = dark ? "text-white/70" : "text-slate-600";
     const field = dark
-        ? "bg-amazon-blue_dark border border-white/30 text-white"
+        ? "bg-ink-900 border border-white/30 text-white"
         : "bg-white border border-slate-400 text-black";
 
     if (!signedIn) {
         return (
             <div className={`rounded-lg p-6 ${className} ${box}`}>
-                <p className="text-lg font-bold">Try Prime free for 30 days</p>
+                <p className="text-lg font-bold">Try Plus free for 30 days</p>
                 <p className={`mt-2 text-sm ${muted}`}>
                     Sign in to start a membership. After the trial your plan renews automatically
                     until you cancel.
                 </p>
                 <Link
-                    href="/auth/signin?callbackUrl=/prime"
-                    className="inline-block mt-5 px-8 py-2.5 rounded-full font-semibold bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark"
+                    href="/auth/signin?callbackUrl=/plus"
+                    className="inline-block mt-5 px-8 py-2.5 rounded-full font-semibold bg-accent text-ink-900"
                 >
-                    Sign in to join Prime
+                    Sign in to join Plus
                 </Link>
             </div>
         );
@@ -49,13 +49,13 @@ const MembershipPanel = ({ signedIn, tone = "dark", className = "max-w-md" }: an
     if (!membership.member) {
         return (
             <div className={`rounded-lg p-6 ${className} ${box}`}>
-                <p className="text-lg font-bold">You are not a Prime member</p>
+                <p className="text-lg font-bold">You are not a Plus member</p>
                 <p className={`mt-2 text-sm ${muted}`}>
                     Pick a plan and your 30-day free trial starts today.
                 </p>
 
                 <label htmlFor="prime-plan" className="sr-only">
-                    Prime plan
+                    Plus plan
                 </label>
                 <select
                     id="prime-plan"
@@ -73,9 +73,9 @@ const MembershipPanel = ({ signedIn, tone = "dark", className = "max-w-md" }: an
                 <button
                     type="button"
                     onClick={() => join(choice)}
-                    className="w-full mt-4 px-8 py-2.5 rounded-full font-semibold bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                    className="w-full mt-4 px-8 py-2.5 rounded-full font-semibold bg-accent text-ink-900 cursor-pointer"
                 >
-                    Try Prime free for 30 days
+                    Try Plus free for 30 days
                 </button>
             </div>
         );
@@ -86,7 +86,7 @@ const MembershipPanel = ({ signedIn, tone = "dark", className = "max-w-md" }: an
     return (
         <div className={`rounded-lg p-6 ${className} ${box}`}>
             <p className="flex items-center gap-2 text-lg font-bold">
-                <CheckBadgeIcon className="w-6 h-6 text-[#00A8E1]" />
+                <CheckBadgeIcon className="w-6 h-6 text-accent" />
                 Manage your membership
             </p>
 
@@ -120,7 +120,7 @@ const MembershipPanel = ({ signedIn, tone = "dark", className = "max-w-md" }: an
             <div className="flex flex-wrap gap-3 mt-5">
                 <Link
                     href="/profile/memberships"
-                    className="px-6 py-2 rounded-full font-semibold bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark"
+                    className="px-6 py-2 rounded-full font-semibold bg-accent text-ink-900"
                 >
                     Membership settings
                 </Link>

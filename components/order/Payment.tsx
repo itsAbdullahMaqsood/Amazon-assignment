@@ -36,7 +36,7 @@ const Payment = ({ order, onPay }: any) => {
 
             <button
                 onClick={onPay}
-                className="w-full mt-2 rounded-xl bg-amazon-blue_light text-white p-4 font-semibold text-2xl hover:bg-amazon-blue_dark hover:scale-95 transition duration-300 cursor-pointer"
+                className="w-full mt-2 rounded-xl bg-ink-800 text-white p-4 font-semibold text-2xl hover:bg-ink-900 hover:scale-95 transition duration-300 cursor-pointer"
             >
                 Pay
             </button>

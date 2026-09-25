@@ -15,12 +15,12 @@ export const menuSections = [
     {
         title: "Digital Content & Devices",
         links: [
-            { label: "Prime Video", href: "/prime-video" },
-            { label: "Your Watchlist", href: "/watchlist" },
+            { label: "Markaz Movies", href: "/movies" },
+            { label: "Your Watchlist", href: "/movies/my-list" },
             { label: "Content Library", href: "/profile/devices" },
             { label: "Devices", href: "/profile/devices" },
             { label: "Memberships & Subscriptions", href: "/profile/memberships" },
-            { label: "Prime", href: "/prime" },
+            { label: "Plus", href: "/plus" },
         ],
     },
     {
@@ -43,8 +43,8 @@ export const menuSections = [
             { label: "Medical Care & Pharmacy", href: "/pharmacy" },
             { label: "Coupons", href: "/coupons" },
             { label: "Gift Cards", href: "/gift-cards" },
-            { label: "Amazon Business", href: "/business", more: true },
-            { label: "Sell on Amazon", href: "/sell", more: true },
+            { label: "Markaz Business", href: "/business", more: true },
+            { label: "Sell on Markaz", href: "/sell", more: true },
             { label: "Lists & Registry", href: "/lists", more: true },
             { label: "Find a Registry", href: "/registry/find", more: true },
         ],

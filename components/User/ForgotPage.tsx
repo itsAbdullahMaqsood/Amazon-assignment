@@ -44,17 +44,17 @@ const ForgotPage = () => {
             {loading && <DotLoaderSpinner loading={loading} />}
 
             <ApCard>
-                <h1 className="text-[28px] leading-9 text-[#0F1111]">Password assistance</h1>
+                <h1 className="text-[28px] leading-9 text-fg">Password assistance</h1>
 
-                <p className="text-[13px] text-[#0F1111] mt-2">
-                    Enter the email address associated with your Amazon account.
+                <p className="text-[13px] text-fg mt-2">
+                    Enter the email address associated with your Markaz account.
                 </p>
 
                 {error && <ApAlert>{error}</ApAlert>}
 
                 {success ? (
-                    <div className="border border-[#067D62] bg-[#f5fbf9] rounded p-3 mt-4">
-                        <p className="text-[13px] text-[#0F1111]">{success}</p>
+                    <div className="border border-success bg-success-soft rounded p-3 mt-4">
+                        <p className="text-[13px] text-fg">{success}</p>
                     </div>
                 ) : (
                     <FormProvider {...methods}>
@@ -68,7 +68,7 @@ const ForgotPage = () => {
                     </FormProvider>
                 )}
 
-                <p className="text-[12px] text-[#0F1111] mt-5">
+                <p className="text-[12px] text-fg mt-5">
                     Has your email address changed? If you no longer use the address on your
                     account, sign in with it and update it under Login &amp; security.
                 </p>

@@ -15,7 +15,7 @@ const Empty = () => {
 
             <Link
                 href="/browse"
-                className="w-52 text-center rounded-full p-2 font-semibold text-amazon-blue_dark bg-linear-to-r from-amazon-orange to-yellow-300 hover:text-slate-100 hover:from-amazon-blue_light hover:to-slate-300 transition duration-300"
+                className="w-52 text-center rounded-full p-2 font-semibold text-ink-900 bg-accent hover:text-slate-100 hover:bg-accent-strong transition duration-300"
             >
                 SHOP NOW
             </Link>
@@ -23,7 +23,7 @@ const Empty = () => {
             {!session && (
                 <Link
                     href="/auth/signin?callbackUrl=/cart"
-                    className="w-52 text-center rounded-full p-2 bg-amazon-blue_light text-slate-100"
+                    className="w-52 text-center rounded-full p-2 bg-ink-800 text-slate-100"
                 >
                     Sign In / Register
                 </Link>

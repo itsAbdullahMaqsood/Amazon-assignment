@@ -33,14 +33,14 @@ export const furnitureSlug = (value: string) =>
 export const departments: Tile[] = [
     { label: "Furniture", art: "furniture", href: "/furniture" },
     { label: "Shop all Home", art: "home", href: placeholder("Shop all Home") },
-    { label: "Decor", art: "decor", href: placeholder("Amazon Home Decor") },
+    { label: "Decor", art: "decor", href: placeholder("Markaz Home Decor") },
     { label: "Kitchen & dining", art: "kitchen", room: "Kitchen & dining" },
     { label: "Bedding & bath", art: "bedding", href: placeholder("Bedding & bath") },
     { label: "Storage & organization", art: "storage", href: placeholder("Storage & organization") },
     { label: "Garden & outdoor", art: "garden", room: "Outdoors" },
     { label: "Home Improvement", art: "tools", href: placeholder("Home Improvement") },
     { label: "Arts & crafts", art: "crafts", href: placeholder("Arts & crafts") },
-    { label: "Amazon Home Kids", art: "kids", room: "Baby & kids" },
+    { label: "Markaz Home Kids", art: "kids", room: "Baby & kids" },
 ];
 
 export const categories: Tile[] = [

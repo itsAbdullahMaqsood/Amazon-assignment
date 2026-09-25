@@ -48,14 +48,14 @@ const PreviouslyViewed = ({ product, delivery }: any) => {
                         <p className="uppercase font-bold mt-4">{product.brand}</p>
                     )}
 
-                    <Link href={href} className="block text-xl mt-1 hover:text-[#C7511F] hover:underline">
+                    <Link href={href} className="block text-xl mt-1 hover:text-accent-deep hover:underline">
                         {product.name}
                     </Link>
 
                     {product.numberReviews > 0 && (
                         <div className="flex items-center gap-1 mt-2">
                             <StarRating value={product.rating} size="w-4 h-4" />
-                            <span className="text-sm text-[#0F5FA6]">
+                            <span className="text-sm text-accent-ink">
                                 {product.numberReviews.toLocaleString()}
                             </span>
                         </div>
@@ -66,7 +66,7 @@ const PreviouslyViewed = ({ product, delivery }: any) => {
                     )}
 
                     {variant.discount > 0 && (
-                        <span className="inline-block bg-[#CC0C39] text-white text-xs font-semibold px-2 py-1 rounded-sm mt-3">
+                        <span className="inline-block bg-danger text-white text-xs font-semibold px-2 py-1 rounded-sm mt-3">
                             Limited time deal
                         </span>
                     )}
@@ -86,7 +86,7 @@ const PreviouslyViewed = ({ product, delivery }: any) => {
 
                     <p className="text-sm mt-2">
                         FREE delivery <span className="font-bold">{delivery}</span> on $35 of items
-                        shipped by Amazon
+                        shipped by Markaz
                     </p>
 
                     <Link

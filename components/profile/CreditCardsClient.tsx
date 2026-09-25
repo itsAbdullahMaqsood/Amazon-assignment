@@ -9,7 +9,7 @@ import { CheckIcon, CreditCardIcon, XMarkIcon } from "@heroicons/react/24/outlin
 const offers = [
     {
         id: "store-card",
-        name: "Amazon Store Card",
+        name: "Markaz Store Card",
         art: { from: "#232f3e", to: "#3c4b61", ink: "#febd69" },
         headline: "5% back for members",
         benefits: [
@@ -20,7 +20,7 @@ const offers = [
     },
     {
         id: "rewards-visa",
-        name: "Amazon Rewards Card",
+        name: "Markaz Rewards Card",
         art: { from: "#0b4f6c", to: "#1b7f9e", ink: "#e8f6fb" },
         headline: "3% back everywhere you shop",
         benefits: [
@@ -31,7 +31,7 @@ const offers = [
     },
     {
         id: "business-card",
-        name: "Amazon Business Card",
+        name: "Markaz Business Card",
         art: { from: "#5c3b18", to: "#a5772f", ink: "#fbe9c6" },
         headline: "Choose rewards or 60-day terms",
         benefits: [
@@ -53,7 +53,7 @@ const CardArt = ({ art, label, tail }: any) => (
             style={{ background: art.ink }}
         />
 
-        <p className="font-bold tracking-wide">amazon</p>
+        <p className="font-bold tracking-wide">markaz</p>
 
         <div>
             <span
@@ -75,7 +75,7 @@ const CreditCardsClient = ({ savedCards = [] }: any) => {
     return (
         <div>
             <section>
-                <h2 className="text-xl font-bold">Amazon credit cards</h2>
+                <h2 className="text-xl font-bold">Markaz credit cards</h2>
                 <p className="text-sm text-slate-600 mt-1">
                     Compare the store cards available on this account.
                 </p>
@@ -89,7 +89,7 @@ const CreditCardsClient = ({ savedCards = [] }: any) => {
                             <CardArt art={offer.art} label={offer.name} tail="0000" />
 
                             <h3 className="font-bold mt-4">{offer.name}</h3>
-                            <p className="text-sm text-[#C7511F] font-semibold">{offer.headline}</p>
+                            <p className="text-sm text-accent-deep font-semibold">{offer.headline}</p>
 
                             <ul className="mt-3 space-y-1.5 text-sm grow">
                                 {offer.benefits.map((benefit) => (
@@ -102,7 +102,7 @@ const CreditCardsClient = ({ savedCards = [] }: any) => {
 
                             <button
                                 onClick={() => setApplying(offer)}
-                                className="mt-4 w-full px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                                className="mt-4 w-full px-6 py-2 rounded-full bg-accent text-ink-900 cursor-pointer"
                             >
                                 Apply now
                             </button>
@@ -125,7 +125,7 @@ const CreditCardsClient = ({ savedCards = [] }: any) => {
                         </p>
                         <Link
                             href="/profile/payment"
-                            className="inline-block mt-5 px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark"
+                            className="inline-block mt-5 px-6 py-2 rounded-full bg-accent text-ink-900"
                         >
                             Manage payment methods
                         </Link>
@@ -143,7 +143,7 @@ const CreditCardsClient = ({ savedCards = [] }: any) => {
                                 <p className="text-sm text-slate-600">{card.description}</p>
                                 <Link
                                     href="/profile/payment"
-                                    className="text-sm text-[#007185] hover:underline mt-2 inline-block"
+                                    className="text-sm text-accent-ink hover:underline mt-2 inline-block"
                                 >
                                     Edit payment methods
                                 </Link>
@@ -165,7 +165,7 @@ const CreditCardsClient = ({ savedCards = [] }: any) => {
                         aria-label={`${applying.name} application`}
                         className="w-full max-w-sm mx-3 bg-white rounded shadow-lg overflow-hidden"
                     >
-                        <div className="flex items-center bg-amazon-blue_light text-white px-4 py-2">
+                        <div className="flex items-center bg-ink-800 text-white px-4 py-2">
                             <span className="font-semibold grow">{applying.name}</span>
                             <button
                                 onClick={() => setApplying(null)}

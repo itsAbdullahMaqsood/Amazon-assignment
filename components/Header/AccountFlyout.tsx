@@ -86,7 +86,7 @@ const AccountFlyout = () => {
 
                         <div className="w-[560px] max-h-[75vh] overflow-y-auto bg-white text-black rounded shadow-2xl p-4">
                             {session ? (
-                                <div className="flex items-center gap-3 bg-[#e7f2f3] rounded-lg p-3">
+                                <div className="flex items-center gap-3 bg-accent-soft rounded-lg p-3">
                                     <Image
                                         src={session.user.image || "/assets/images/user-image-default.jpg"}
                                         alt=""
@@ -102,7 +102,7 @@ const AccountFlyout = () => {
                                         </p>
                                     </div>
 
-                                    <div className="ml-auto flex items-center gap-4 text-[#007185] text-sm">
+                                    <div className="ml-auto flex items-center gap-4 text-accent-ink text-sm">
                                         <button
                                             onClick={() => signOut({ callbackUrl: "/auth/signin" })}
                                             className="hover:underline cursor-pointer"
@@ -118,7 +118,7 @@ const AccountFlyout = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="flex flex-col items-center gap-2 bg-[#e7f2f3] rounded-lg p-4">
+                                <div className="flex flex-col items-center gap-2 bg-accent-soft rounded-lg p-4">
                                     <Link
                                         href={signInHref}
                                         className="button-orange px-10 py-1.5 text-sm text-center"
@@ -127,7 +127,7 @@ const AccountFlyout = () => {
                                     </Link>
                                     <p className="text-xs">
                                         New customer?{" "}
-                                        <Link href="/auth/register" className="text-[#007185] hover:underline">
+                                        <Link href="/auth/register" className="text-accent-ink hover:underline">
                                             Start here
                                         </Link>
                                     </p>

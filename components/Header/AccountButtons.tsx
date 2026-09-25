@@ -28,7 +28,7 @@ const AccountButtons = () => {
 
             <Link href="/cart" aria-label={`Cart, ${cart.cartItems.length} items`} className="flex items-center relative link">
                 <ShoppingCartIcon className="h-10" />
-                <span className="absolute top-0 left-4 h-5 w-5 bg-amazon-orange text-black font-bold text-xs rounded-full flex items-center justify-center">
+                <span className="absolute top-0 left-4 h-5 w-5 bg-accent text-black font-bold text-xs rounded-full flex items-center justify-center">
                     {cart.cartItems.length}
                 </span>
                 <p className="hidden md:inline font-bold text-sm mt-4">Cart</p>

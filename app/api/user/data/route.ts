@@ -174,7 +174,7 @@ export const GET = async (req: Request) => {
             payload.lists = await listsSection(session.user.id);
         }
 
-        const filename = `amazon-data-${category}-${new Date().toISOString().slice(0, 10)}.json`;
+        const filename = `markaz-data-${category}-${new Date().toISOString().slice(0, 10)}.json`;
 
         return new NextResponse(JSON.stringify(JSON.parse(JSON.stringify(payload)), null, 4), {
             headers: {

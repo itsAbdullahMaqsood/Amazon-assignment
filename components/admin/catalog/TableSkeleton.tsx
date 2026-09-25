@@ -1,7 +1,7 @@
 // Shown by the loading.tsx files while the server fetches the list.
 const TableSkeleton = ({ title, rows = 6 }: any) => (
     <div aria-busy="true" aria-live="polite">
-        <h1 className="text-2xl font-bold text-[#0F1111] mb-6">{title}</h1>
+        <h1 className="text-2xl font-bold text-fg mb-6">{title}</h1>
         <span className="sr-only">Loading {title}…</span>
         <div className="h-18 rounded-xl border border-slate-200 bg-white mb-4 animate-pulse" />
         <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">

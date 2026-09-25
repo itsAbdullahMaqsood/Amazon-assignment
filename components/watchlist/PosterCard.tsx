@@ -72,7 +72,7 @@ const PosterCard = ({ video, entry, mode, onRemove, onAdd, onAcquire, saved }: a
 
                 {mode === "purchased" && (
                     <Link
-                        href="/prime-video"
+                        href="/movies"
                         className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-1 py-2 text-xs font-semibold bg-black/80 text-white opacity-0 group-hover:opacity-100 focus:opacity-100 transition"
                     >
                         <PlayIcon className="w-4 h-4" />

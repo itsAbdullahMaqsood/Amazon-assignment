@@ -8,7 +8,7 @@ const tabs = [
     { label: "Baby Registry", href: placeholder("Baby Registry") },
     { label: "Birthday Gift List", href: placeholder("Birthday Gift List") },
     { label: "Wedding Registry", href: placeholder("Wedding Registry") },
-    { label: "Amazon Gift Cards", href: placeholder("Amazon Gift Cards") },
+    { label: "Markaz Gift Cards", href: placeholder("Markaz Gift Cards") },
     { label: "Custom Gift List", href: placeholder("Custom Gift List") },
     { label: "Lists Help", href: placeholder("Lists Help") },
 ];

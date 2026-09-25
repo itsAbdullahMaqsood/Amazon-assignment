@@ -57,13 +57,13 @@ const HouseholdClient = ({ owner }: any) => {
             <div className="bg-white border border-slate-300 rounded-lg p-5">
                 <h2 className="font-bold text-lg">Your household</h2>
                 <p className="text-sm text-slate-600 mt-1">
-                    Share Prime benefits with one other adult, up to four teens and up to four
+                    Share Plus benefits with one other adult, up to four teens and up to four
                     children. Everyone keeps their own login, their own recommendations and
                     their own watchlist.
                 </p>
 
                 <div className="flex items-center gap-3 mt-4 border border-slate-200 rounded-lg p-3">
-                    <div className="w-10 h-10 rounded-full bg-amazon-blue_light text-white flex items-center justify-center font-bold">
+                    <div className="w-10 h-10 rounded-full bg-ink-800 text-white flex items-center justify-center font-bold">
                         {(owner?.name || "?").slice(0, 1).toUpperCase()}
                     </div>
                     <div>
@@ -109,7 +109,7 @@ const HouseholdClient = ({ owner }: any) => {
                                         </div>
                                         <button
                                             onClick={() => removeMember(member.id)}
-                                            className="ml-auto flex items-center gap-1 text-xs text-[#007185] hover:underline cursor-pointer"
+                                            className="ml-auto flex items-center gap-1 text-xs text-accent-ink hover:underline cursor-pointer"
                                         >
                                             <TrashIcon className="h-4" />
                                             Remove
@@ -126,7 +126,7 @@ const HouseholdClient = ({ owner }: any) => {
                                     <input
                                         value={form.name}
                                         onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                        className="mt-1 w-full border border-slate-300 rounded p-2 text-sm outline-none focus:border-[#e77600]"
+                                        className="mt-1 w-full border border-slate-300 rounded p-2 text-sm outline-none focus:border-accent-deep"
                                     />
                                 </label>
 
@@ -139,7 +139,7 @@ const HouseholdClient = ({ owner }: any) => {
                                             max={17}
                                             value={form.age}
                                             onChange={(e) => setForm({ ...form, age: e.target.value })}
-                                            className="mt-1 w-full border border-slate-300 rounded p-2 text-sm outline-none focus:border-[#e77600]"
+                                            className="mt-1 w-full border border-slate-300 rounded p-2 text-sm outline-none focus:border-accent-deep"
                                         />
                                     </label>
                                 ) : (
@@ -148,7 +148,7 @@ const HouseholdClient = ({ owner }: any) => {
                                         <input
                                             value={form.email}
                                             onChange={(e) => setForm({ ...form, email: e.target.value })}
-                                            className="mt-1 w-full border border-slate-300 rounded p-2 text-sm outline-none focus:border-[#e77600]"
+                                            className="mt-1 w-full border border-slate-300 rounded p-2 text-sm outline-none focus:border-accent-deep"
                                         />
                                     </label>
                                 )}
@@ -158,7 +158,7 @@ const HouseholdClient = ({ owner }: any) => {
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => submit(seat.role)}
-                                        className="px-5 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark text-sm cursor-pointer"
+                                        className="px-5 py-2 rounded-full bg-accent text-ink-900 text-sm cursor-pointer"
                                     >
                                         {seat.role === "child" ? "Add profile" : "Send invitation"}
                                     </button>
@@ -187,7 +187,7 @@ const HouseholdClient = ({ owner }: any) => {
                                     setOpen(seat.role);
                                     setError("");
                                 }}
-                                className="mt-4 flex items-center gap-2 text-sm text-[#007185] hover:underline disabled:text-slate-400 disabled:no-underline cursor-pointer disabled:cursor-default"
+                                className="mt-4 flex items-center gap-2 text-sm text-accent-ink hover:underline disabled:text-slate-400 disabled:no-underline cursor-pointer disabled:cursor-default"
                             >
                                 <UserPlusIcon className="h-4" />
                                 {full ? `${seat.title} are full` : seat.cta}

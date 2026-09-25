@@ -27,7 +27,7 @@ const CouponCard = ({ product }: any) => {
 
             {product.coupon > 0 && (
                 <p className="mt-3 text-sm">
-                    <span className="text-[#CC0C39] font-bold">
+                    <span className="text-danger font-bold">
                         You pay ${product.youPay.toFixed(2)}
                     </span>{" "}
                     <span className="text-slate-800">with coupon</span>
@@ -49,14 +49,14 @@ const CouponCard = ({ product }: any) => {
                     <span className="text-sm">{product.rating.toFixed(1)}</span>
                     <StarRating value={product.rating} size="w-4 h-4" />
                     <ChevronDownIcon className="w-3 h-3" />
-                    <span className="text-sm text-[#0F5FA6]">
+                    <span className="text-sm text-accent-ink">
                         ({compactCount(product.numberReviews)})
                     </span>
                 </div>
             )}
 
             {product.colors > 1 && (
-                <Link href={href} className="mt-1 text-sm text-[#0F5FA6] hover:underline">
+                <Link href={href} className="mt-1 text-sm text-accent-ink hover:underline">
                     +{product.colors - 1} colors/patterns
                 </Link>
             )}

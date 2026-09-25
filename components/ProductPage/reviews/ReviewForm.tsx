@@ -36,7 +36,7 @@ const schema = z.object({
 const ORDER = ["size", "style", "fit", "rating", "review"];
 
 const select =
-    "w-full h-11 border border-slate-400 rounded-lg px-3 text-sm bg-[#F0F2F2] shadow-sm outline-none focus:border-[#007185] focus:ring-2 focus:ring-[#007185]/30";
+    "w-full h-11 border border-slate-400 rounded-lg px-3 text-sm bg-surface-muted shadow-sm outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent-ink/30";
 
 const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
     const router = useRouter();
@@ -271,8 +271,8 @@ const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
                                         aria-checked={active}
                                         aria-label={`Style ${i + 1}`}
                                         onClick={() => field.onChange(colour.color)}
-                                        className={`w-11 h-11 rounded-full overflow-hidden border-2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#007185] focus-visible:ring-offset-2 ${
-                                            active ? "border-[#007185]" : "border-slate-300"
+                                        className={`w-11 h-11 rounded-full overflow-hidden border-2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent-ink focus-visible:ring-offset-2 ${
+                                            active ? "border-accent-ink" : "border-slate-300"
                                         }`}
                                     >
                                         {colour.image ? (
@@ -304,7 +304,7 @@ const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
                     rows={5}
                     maxLength={MAX_REVIEW}
                     placeholder="What did you like or dislike? What did you use this product for?"
-                    className="mt-1 w-full border border-slate-400 rounded-lg p-3 text-sm outline-none focus:border-[#007185] focus:ring-2 focus:ring-[#007185]/30"
+                    className="mt-1 w-full border border-slate-400 rounded-lg p-3 text-sm outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent-ink/30"
                 />
             </label>
 
@@ -338,7 +338,7 @@ const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
                     ))}
 
                     {photos.length < MAX_PHOTOS && (
-                        <label className="w-24 h-24 rounded-lg border-2 border-dashed border-slate-400 flex flex-col items-center justify-center text-xs text-slate-600 cursor-pointer hover:bg-slate-50 focus-within:ring-2 focus-within:ring-[#007185]">
+                        <label className="w-24 h-24 rounded-lg border-2 border-dashed border-slate-400 flex flex-col items-center justify-center text-xs text-slate-600 cursor-pointer hover:bg-slate-50 focus-within:ring-2 focus-within:ring-accent-ink">
                             <CameraIcon className="w-7 h-7" />
                             Add photo
                             <input
@@ -360,7 +360,7 @@ const ReviewForm = ({ product, mine, onSaved, onCancel }: any) => {
                 <button
                     type="submit"
                     disabled={saving}
-                    className="px-6 h-11 rounded-full bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] text-sm cursor-pointer disabled:opacity-60"
+                    className="px-6 h-11 rounded-full bg-accent hover:bg-accent-strong border border-accent text-sm cursor-pointer disabled:opacity-60"
                 >
                     {saving ? "Saving…" : mine ? "Update review" : "Submit review"}
                 </button>

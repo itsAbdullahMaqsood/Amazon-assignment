@@ -14,7 +14,7 @@ const Arrow = ({ side, onPage, className }: any) => (
         type="button"
         aria-label={side === "left" ? "Previous page" : "Next page"}
         onClick={() => onPage(side === "left" ? -1 : 1)}
-        className={`hidden md:flex absolute z-10 h-[72px] w-[36px] items-center justify-center rounded bg-white shadow-[0_2px_8px_rgba(0,0,0,0.25)] border border-[#d5d9d9] cursor-pointer ${
+        className={`hidden md:flex absolute z-10 h-[72px] w-[36px] items-center justify-center rounded bg-white shadow-[0_2px_8px_rgba(0,0,0,0.25)] border border-line cursor-pointer ${
             side === "left" ? "left-0" : "right-0"
         } ${className}`}
     >
@@ -68,7 +68,7 @@ const DepartmentStrip = ({ title, tiles, active }: any) => {
 
     return (
         <section className="pt-4">
-            <h2 className="text-2xl font-bold text-[#0f1111]">{title}</h2>
+            <h2 className="text-2xl font-bold text-fg">{title}</h2>
 
             <div className="relative mt-3">
                 {edges.left && <Arrow side="left" onPage={page} className="top-1/2 -translate-y-1/2" />}
@@ -89,12 +89,12 @@ const DepartmentStrip = ({ title, tiles, active }: any) => {
                                     aria-current={current ? "page" : undefined}
                                     className={`block rounded-lg overflow-hidden border-2 p-1 ${
                                         current
-                                            ? "border-[#007185]"
-                                            : "border-transparent hover:border-[#d5d9d9]"
+                                            ? "border-accent-ink"
+                                            : "border-transparent hover:border-line"
                                     }`}
                                 >
                                     {tile.image ? (
-                                        <div className="relative h-[112px] w-full rounded-lg overflow-hidden bg-[#f7f7f7]">
+                                        <div className="relative h-[112px] w-full rounded-lg overflow-hidden bg-surface-muted">
                                             <Image
                                                 src={tile.image}
                                                 alt=""
@@ -107,7 +107,7 @@ const DepartmentStrip = ({ title, tiles, active }: any) => {
                                         <FurnitureArt art={tile.art} className="h-[112px] w-full" />
                                     )}
 
-                                    <p className="py-2 px-1 text-center text-sm text-[#0f1111] truncate">
+                                    <p className="py-2 px-1 text-center text-sm text-fg truncate">
                                         {tile.label}
                                     </p>
                                 </Link>

@@ -119,7 +119,7 @@ const Page = async ({ searchParams }: any) => {
                                                 <div className="relative w-12 h-12 shrink-0 rounded-lg bg-slate-50 border border-slate-200 overflow-hidden">
                                                     {cover && <Image src={cover} alt="" fill sizes="48px" className="object-contain" />}
                                                 </div>
-                                                <Link href={`/product/${p.slug}`} target="_blank" className="font-medium text-[#0F1111] hover:text-[#C7511F] hover:underline line-clamp-2">
+                                                <Link href={`/product/${p.slug}`} target="_blank" className="font-medium text-fg hover:text-accent-deep hover:underline line-clamp-2">
                                                     {p.name}
                                                 </Link>
                                             </div>
@@ -165,7 +165,7 @@ const Page = async ({ searchParams }: any) => {
                 <nav aria-label="Pagination" className="flex justify-end gap-1 mt-4">
                     {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
                         <Link key={n} href={link(n)} aria-current={n === page ? "page" : undefined}
-                            className={`w-10 h-10 flex items-center justify-center rounded-lg border text-sm ${n === page ? "bg-amazon-blue_light text-white border-amazon-blue_light" : "bg-white border-slate-300 hover:bg-slate-50"}`}>
+                            className={`w-10 h-10 flex items-center justify-center rounded-lg border text-sm ${n === page ? "bg-ink-800 text-white border-ink-800" : "bg-white border-slate-300 hover:bg-slate-50"}`}>
                             {n}
                         </Link>
                     ))}

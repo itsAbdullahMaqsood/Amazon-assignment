@@ -81,7 +81,7 @@ const CreateListModal = ({ existing, onClose, onCreated }: any) => {
                             maxLength={MAX_NAME}
                             autoFocus
                             placeholder="Birthday ideas"
-                            className="w-full border border-slate-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#e77600]"
+                            className="w-full border border-slate-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-deep"
                         />
 
                         <p className="text-xs text-slate-500 mt-1">
@@ -118,7 +118,7 @@ const CreateListModal = ({ existing, onClose, onCreated }: any) => {
                     </fieldset>
 
                     {error && (
-                        <p role="alert" className="text-sm text-[#C40000]">
+                        <p role="alert" className="text-sm text-danger">
                             {error}
                         </p>
                     )}
@@ -127,7 +127,7 @@ const CreateListModal = ({ existing, onClose, onCreated }: any) => {
                         <button
                             type="button"
                             onClick={onClose}
-                            className="text-sm text-[#007185] hover:underline cursor-pointer"
+                            className="text-sm text-accent-ink hover:underline cursor-pointer"
                         >
                             Cancel
                         </button>

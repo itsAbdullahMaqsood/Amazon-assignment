@@ -21,6 +21,14 @@ const nextConfig: NextConfig = {
             { protocol: "https", hostname: "avatars.githubusercontent.com" },
         ],
     },
+    // Routes renamed with the Markaz rebrand. Permanent, so old links and
+    // bookmarks land on the new page.
+    redirects: async () => [
+        { source: "/prime-video", destination: "/movies", permanent: true },
+        { source: "/watchlist", destination: "/movies/my-list", permanent: true },
+        { source: "/prime", destination: "/plus", permanent: true },
+        { source: "/profile/family", destination: "/profile/household", permanent: true },
+    ],
     typescript: {
         ignoreBuildErrors: true,
     },

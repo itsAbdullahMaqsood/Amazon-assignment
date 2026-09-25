@@ -7,23 +7,23 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 const faqs = [
     {
         question: "Do you take my insurance?",
-        answer: "Amazon Pharmacy accepts most insurance plans. Add your plan details to your account and your copay is calculated automatically at checkout.",
+        answer: "Markaz Pharmacy accepts most insurance plans. Add your plan details to your account and your copay is calculated automatically at checkout.",
     },
     {
         question: "How do I check my medication price?",
-        answer: "Search for your medication above. Prices shown include the cash price and, where the medication qualifies, the Prime member price.",
+        answer: "Search for your medication above. Prices shown include the cash price and, where the medication qualifies, the Plus member price.",
     },
     {
-        question: "How do I transfer or add a prescription to Amazon Pharmacy?",
+        question: "How do I transfer or add a prescription to Markaz Pharmacy?",
         answer: "Sign up, then tell us the medication and your current pharmacy. We contact them and handle the transfer for you.",
     },
     {
         question: "What information do I need to give my prescriber?",
-        answer: "Ask them to send your prescription to Amazon Pharmacy Home Delivery, 4500 S Pleasant Valley Road, Suite 201, Austin, TX 78744-2911.",
+        answer: "Ask them to send your prescription to Markaz Pharmacy Home Delivery, 4500 S Pleasant Valley Road, Suite 201, Austin, TX 78744-2911.",
     },
     {
-        question: "Where does Amazon Pharmacy deliver and how fast?",
-        answer: "We deliver to most U.S. addresses, with free standard delivery for Prime members and status updates along the way.",
+        question: "Where does Markaz Pharmacy deliver and how fast?",
+        answer: "We deliver to most U.S. addresses, with free standard delivery for Plus members and status updates along the way.",
     },
 ];
 

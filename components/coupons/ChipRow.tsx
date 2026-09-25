@@ -19,7 +19,7 @@ const ChipRow = ({ chips, active, onSelect, onClear }: any) => {
     const chip = (active: boolean) =>
         `shrink-0 h-12 px-5 rounded-lg border text-sm whitespace-nowrap cursor-pointer ${
             active
-                ? "border-[#0F5FA6] border-2 font-bold bg-white"
+                ? "border-accent-ink border-2 font-bold bg-white"
                 : "border-slate-300 bg-white hover:bg-slate-50"
         }`;
 

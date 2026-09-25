@@ -1,5 +1,5 @@
 {
-    "name": "amazon-clone",
+    "name": "markaz",
     "version": "0.1.0",
     "private": true,
     "scripts": {
@@ -7,6 +7,7 @@
         "build": "next build",
         "start": "next start",
         "lint": "eslint",
+        "check:tokens": "node scripts/check-tokens.mjs",
         "seed": "node scripts/seed.mjs",
         "seed:demo": "node scripts/seed-demo.mjs",
         "seed:videos": "node scripts/seed-videos.mjs",

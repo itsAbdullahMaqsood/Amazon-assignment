@@ -52,7 +52,7 @@ const NavLinks = ({ pathname, collapsed, onNavigate }: any) => (
                         onClick={onNavigate}
                         aria-current={active ? "page" : undefined}
                         title={collapsed ? link.label : undefined}
-                        className={`flex items-center gap-3 h-11 rounded-lg px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-amazon-orange ${
+                        className={`flex items-center gap-3 h-11 rounded-lg px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                             collapsed ? "justify-center" : ""
                         } ${
                             active
@@ -60,7 +60,7 @@ const NavLinks = ({ pathname, collapsed, onNavigate }: any) => (
                                 : "text-slate-300 hover:bg-white/5 hover:text-white"
                         }`}
                     >
-                        <Icon className={`w-5 h-5 shrink-0 ${active ? "text-amazon-orange" : ""}`} />
+                        <Icon className={`w-5 h-5 shrink-0 ${active ? "text-accent" : ""}`} />
                         {collapsed ? <span className="sr-only">{link.label}</span> : link.label}
                     </Link>
                 </li>
@@ -84,21 +84,21 @@ const AdminShell = ({ user, children }: any) => {
         <div className="min-h-screen bg-gray-100 md:flex">
             {/* Tablet and desktop: a fixed-height rail that collapses to icons. */}
             <aside
-                className={`hidden md:flex flex-col shrink-0 sticky top-0 h-screen bg-amazon-blue_dark text-white transition-[width] duration-200 ${
+                className={`hidden md:flex flex-col shrink-0 sticky top-0 h-screen bg-ink-900 text-white transition-[width] duration-200 ${
                     collapsed ? "w-[76px]" : "w-64"
                 }`}
             >
                 <div className={`flex items-center h-16 px-4 ${collapsed ? "justify-center" : "justify-between"}`}>
                     {!collapsed && (
                         <Link href="/admin/dashboard" className="font-bold tracking-tight">
-                            amazon <span className="text-amazon-orange font-normal">admin</span>
+                            markaz <span className="text-accent font-normal">admin</span>
                         </Link>
                     )}
                     <button
                         onClick={() => dispatch(toggleSidebar())}
                         aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
                         aria-expanded={!collapsed}
-                        className="w-10 h-10 rounded-lg flex items-center justify-center text-slate-300 hover:bg-white/10 hover:text-white cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-amazon-orange"
+                        className="w-10 h-10 rounded-lg flex items-center justify-center text-slate-300 hover:bg-white/10 hover:text-white cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent"
                     >
                         {collapsed ? (
                             <ChevronDoubleRightIcon className="w-5 h-5" />
@@ -116,7 +116,7 @@ const AdminShell = ({ user, children }: any) => {
                     <Link
                         href="/"
                         title={collapsed ? "Back to store" : undefined}
-                        className={`flex items-center gap-3 h-11 rounded-lg px-3 text-sm text-slate-300 hover:bg-white/5 hover:text-white outline-none focus-visible:ring-2 focus-visible:ring-amazon-orange ${
+                        className={`flex items-center gap-3 h-11 rounded-lg px-3 text-sm text-slate-300 hover:bg-white/5 hover:text-white outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                             collapsed ? "justify-center" : ""
                         }`}
                     >
@@ -132,7 +132,7 @@ const AdminShell = ({ user, children }: any) => {
             </aside>
 
             {/* Phones: a top bar and a drawer. */}
-            <div className="md:hidden sticky top-0 z-30 flex items-center justify-between h-14 px-3 bg-amazon-blue_dark text-white">
+            <div className="md:hidden sticky top-0 z-30 flex items-center justify-between h-14 px-3 bg-ink-900 text-white">
                 <button
                     onClick={() => setDrawer(true)}
                     aria-label="Open admin menu"
@@ -142,7 +142,7 @@ const AdminShell = ({ user, children }: any) => {
                     <Bars3Icon className="w-6 h-6" />
                 </button>
                 <Link href="/admin/dashboard" className="font-bold">
-                    amazon <span className="text-amazon-orange font-normal">admin</span>
+                    markaz <span className="text-accent font-normal">admin</span>
                 </Link>
                 <Link href="/" aria-label="Back to store" className="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-white/10">
                     <ArrowLeftOnRectangleIcon className="w-6 h-6" />
@@ -157,11 +157,11 @@ const AdminShell = ({ user, children }: any) => {
                         role="dialog"
                         aria-modal="true"
                         aria-label="Admin menu"
-                        className="absolute inset-y-0 left-0 w-72 max-w-[85%] bg-amazon-blue_dark text-white flex flex-col"
+                        className="absolute inset-y-0 left-0 w-72 max-w-[85%] bg-ink-900 text-white flex flex-col"
                     >
                         <div className="flex items-center justify-between h-14 px-4">
                             <span className="font-bold">
-                                amazon <span className="text-amazon-orange font-normal">admin</span>
+                                markaz <span className="text-accent font-normal">admin</span>
                             </span>
                             <button
                                 onClick={() => setDrawer(false)}

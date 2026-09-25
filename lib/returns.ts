@@ -21,7 +21,7 @@ export const refundMethods = [
         hint: "Refunds are issued to the payment method used at checkout.",
     },
     {
-        value: "Amazon gift card balance",
+        value: "Markaz gift card balance",
         hint: "Goes straight onto your balance, usually the fastest option.",
     },
 ];
@@ -69,10 +69,10 @@ export const qtyReturnable = (order: any, line: number) =>
     Math.max(0, (Number(order.products?.[line]?.qty) || 0) - qtyAlreadyRequested(order, line));
 
 export const statusBadge = (status: string) => {
-    if (status === "Refunded") return "bg-[#E3F2E8] text-[#0F6B3A] border-[#9DCBAF]";
-    if (status === "Return approved") return "bg-[#EAF3FB] text-[#0F5FA6] border-[#9EC4E3]";
+    if (status === "Refunded") return "bg-success-soft text-success border-success/30";
+    if (status === "Return approved") return "bg-accent-soft text-accent-ink border-accent";
 
-    return "bg-[#FEF3E3] text-[#8A6116] border-[#E7C98A]";
+    return "bg-warning-soft text-warning border-warning/30";
 };
 
 // What happens next, in the shopper's words, for each status the model allows.

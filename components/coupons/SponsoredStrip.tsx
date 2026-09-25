@@ -45,7 +45,7 @@ const SponsoredStrip = ({ product }: any) => {
                     <div className="shrink-0 text-right">
                         <p className="flex items-start justify-end">
                             {product.coupon > 0 && (
-                                <span className="text-[#CC0C39] text-sm mr-2 self-center">
+                                <span className="text-danger text-sm mr-2 self-center">
                                     -{product.coupon}%
                                 </span>
                             )}
@@ -60,7 +60,7 @@ const SponsoredStrip = ({ product }: any) => {
                                 <span className="line-through">
                                     ${Number(product.listPrice).toFixed(2)}
                                 </span>{" "}
-                                <span className="text-[#0F5FA6] italic font-bold">prime</span>
+                                <span className="text-accent-ink italic font-bold">plus</span>
                             </p>
                         )}
                     </div>

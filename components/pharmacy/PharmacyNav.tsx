@@ -8,13 +8,13 @@ import { placeholder } from "@/components/profile/accountLinks";
 
 const links = [
     { label: "Home", href: "/pharmacy" },
-    { label: "How it works", href: placeholder("How Amazon Pharmacy works") },
+    { label: "How it works", href: placeholder("How Markaz Pharmacy works") },
     { label: "PillPack", href: placeholder("PillPack") },
 ];
 
 export const PharmacyWordmark = ({ className = "" }: any) => (
     <span className={`text-2xl font-bold tracking-tight ${className}`}>
-        amazon <span className="text-[#007a72]">pharmacy</span>
+        markaz <span className="text-success">pharmacy</span>
     </span>
 );
 
@@ -22,7 +22,7 @@ const PharmacyNav = () => {
     const { data: session }: any = useSession();
 
     return (
-        <nav aria-label="Amazon Pharmacy" className="bg-white border-b border-slate-200">
+        <nav aria-label="Markaz Pharmacy" className="bg-white border-b border-slate-200">
             <div className="max-w-[1500px] mx-auto px-6 h-16 flex items-center gap-8">
                 <Link href="/pharmacy">
                     <PharmacyWordmark />
@@ -38,7 +38,7 @@ const PharmacyNav = () => {
                     ))}
                     <li>
                         <Link
-                            href={placeholder("Amazon Pharmacy help")}
+                            href={placeholder("Markaz Pharmacy help")}
                             className="flex items-center gap-1 hover:underline"
                         >
                             <InformationCircleIcon className="w-5 h-5" />

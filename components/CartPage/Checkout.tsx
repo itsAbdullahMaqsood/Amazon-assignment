@@ -32,7 +32,7 @@ const Checkout = ({ subtotal, shipping, total, selected, onContinue }: any) => {
                 className={`w-full rounded-full p-2 my-3 transition duration-300 ${
                     disabled
                         ? "bg-slate-300 text-slate-500 cursor-not-allowed"
-                        : "font-semibold text-amazon-blue_dark bg-linear-to-r from-amazon-orange to-yellow-300 hover:text-slate-100 hover:from-amazon-blue_light hover:to-slate-300 cursor-pointer"
+                        : "font-semibold text-ink-900 bg-accent hover:text-slate-100 hover:bg-accent-strong cursor-pointer"
                 }`}
             >
                 Continue

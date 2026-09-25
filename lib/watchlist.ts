@@ -3,7 +3,7 @@ import { addDays, createLocalStore, today } from "@/lib/localStore";
 // Every title the viewer has saved or "bought" on /watchlist lives under this one
 // key, so any other Prime Video screen can read the same list without a round
 // trip: import { watchlistStore, addTitle, isSaved } from "@/lib/watchlist".
-export const WATCHLIST_KEY = "amazon-clone:watchlist";
+export const WATCHLIST_KEY = "markaz:watchlist";
 
 // An entry is { id, addedAt, purchase } where `purchase` is null for a saved
 // title and { type: "buy" | "rent", at, expiresAt } once it has been acquired.

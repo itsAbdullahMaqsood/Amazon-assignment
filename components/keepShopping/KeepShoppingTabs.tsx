@@ -18,8 +18,8 @@ const KeepShoppingTabs = ({ active }: any) => {
                             aria-current={active === tab.value ? "page" : undefined}
                             className={`block py-3 -mb-px border-b-[3px] cursor-pointer ${
                                 active === tab.value
-                                    ? "border-[#007185] text-[#007185] font-bold"
-                                    : "border-transparent hover:text-[#C7511F]"
+                                    ? "border-accent-ink text-accent-ink font-bold"
+                                    : "border-transparent hover:text-accent-deep"
                             }`}
                         >
                             {tab.label}

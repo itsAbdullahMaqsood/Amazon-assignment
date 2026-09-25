@@ -50,7 +50,7 @@ export const dealLabel = (deal: any) => {
     }
 
     if (deal.coupon >= 30) {
-        return "Early Prime Big Deal";
+        return "Early Plus Big Deal";
     }
 
     return "Limited time deal";

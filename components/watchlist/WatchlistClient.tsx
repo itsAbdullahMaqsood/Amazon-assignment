@@ -56,7 +56,7 @@ const WatchlistClient = ({ videos, suggestions }: any) => {
                         onClick={() => setTab(entry.id)}
                         className={`pb-3 text-sm md:text-base font-semibold cursor-pointer border-b-4 ${
                             tab === entry.id
-                                ? "border-b-[#00A8E1] text-white"
+                                ? "border-b-accent text-white"
                                 : "border-b-transparent text-white/70 hover:text-white"
                         }`}
                     >
@@ -73,10 +73,10 @@ const WatchlistClient = ({ videos, suggestions }: any) => {
                             Save a movie or show and it waits here until you are ready to watch it.
                         </p>
                         <Link
-                            href="/prime-video"
-                            className="inline-block mt-5 px-6 py-2 rounded-full font-semibold bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark"
+                            href="/movies"
+                            className="inline-block mt-5 px-6 py-2 rounded-full font-semibold bg-accent text-ink-900"
                         >
-                            Browse Prime Video
+                            Browse Markaz Movies
                         </Link>
                     </div>
                 ) : (
@@ -103,7 +103,7 @@ const WatchlistClient = ({ videos, suggestions }: any) => {
                     <button
                         type="button"
                         onClick={() => setTab("watchlist")}
-                        className="mt-5 px-6 py-2 rounded-full font-semibold bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                        className="mt-5 px-6 py-2 rounded-full font-semibold bg-accent text-ink-900 cursor-pointer"
                     >
                         Back to your Watchlist
                     </button>
@@ -126,7 +126,7 @@ const WatchlistClient = ({ videos, suggestions }: any) => {
                 <section className="mt-14 border-t border-white/15 pt-8">
                     <h2 className="text-xl font-bold">Add to your Watchlist</h2>
                     <p className="mt-1 text-sm text-white/70">
-                        Popular on Prime Video right now. Your Watchlist is stored in this browser.
+                        Popular on Markaz Movies right now. Your Watchlist is stored in this browser.
                     </p>
 
                     <div className={grid}>

@@ -17,7 +17,7 @@ const pad = (value: number) => String(value).padStart(4, "0");
 
 export const checkDigits = (amount: number) => pad((amount * CHECK_FACTOR) % 10000);
 
-export const giftCardCode = (amount: number) => `AMZN-${pad(amount)}-${checkDigits(amount)}`;
+export const giftCardCode = (amount: number) => `MRKZ-${pad(amount)}-${checkDigits(amount)}`;
 
 // Graders type these by hand, so spaces, dashes and lower case all normalise away.
 export const normalizeGiftCode = (raw: string) =>
@@ -36,7 +36,7 @@ export const parseGiftCode = (raw: string) => {
     const match = normalized.match(/^AMZN(\d{4})(\d{4})$/);
 
     if (!match) {
-        return { error: "That claim code isn't in the AMZN-0000-0000 format." };
+        return { error: "That claim code isn't in the MRKZ-0000-0000 format." };
     }
 
     const amount = Number(match[1]);

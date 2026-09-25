@@ -34,7 +34,7 @@ const WishlistClient = ({ items }: any) => {
                 <p className="font-semibold">Your list is empty.</p>
                 <Link
                     href="/browse"
-                    className="inline-block mt-4 px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark"
+                    className="inline-block mt-4 px-6 py-2 rounded-full bg-accent text-ink-900"
                 >
                     Find something to save
                 </Link>
@@ -70,7 +70,7 @@ const WishlistClient = ({ items }: any) => {
                         <div className="flex-1">
                             <Link
                                 href={`/product/${entry.product.slug}?style=${entry.style}`}
-                                className="text-[#0F5FA6] hover:underline font-semibold"
+                                className="text-accent-ink hover:underline font-semibold"
                             >
                                 {entry.product.name}
                             </Link>

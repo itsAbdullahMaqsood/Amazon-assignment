@@ -60,17 +60,17 @@ const ResetPage = ({ token }: any) => {
             {loading && <DotLoaderSpinner loading={loading} />}
 
             <ApCard>
-                <h1 className="text-[28px] leading-9 text-[#0F1111]">Create new password</h1>
+                <h1 className="text-[28px] leading-9 text-fg">Create new password</h1>
 
-                <p className="text-[13px] text-[#0F1111] mt-2">
+                <p className="text-[13px] text-fg mt-2">
                     We&apos;ll ask for this password whenever you sign in.
                 </p>
 
                 {error && <ApAlert>{error}</ApAlert>}
 
                 {success ? (
-                    <div className="border border-[#067D62] bg-[#f5fbf9] rounded p-3 mt-4">
-                        <p className="text-[13px] text-[#0F1111]">{success}</p>
+                    <div className="border border-success bg-success-soft rounded p-3 mt-4">
+                        <p className="text-[13px] text-fg">{success}</p>
                     </div>
                 ) : (
                     <FormProvider {...methods}>

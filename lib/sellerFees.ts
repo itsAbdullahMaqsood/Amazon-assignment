@@ -100,7 +100,7 @@ export const categories: any[] = [
     { id: "automotive", label: "Automotive & Powersports", tiers: [{ percent: 12 }] },
     { id: "books", label: "Books", tiers: [{ percent: 15 }], closingFee: MEDIA_CLOSING_FEE },
     { id: "music", label: "Music, Video & DVD", tiers: [{ percent: 15 }], closingFee: MEDIA_CLOSING_FEE },
-    { id: "device-accessories", label: "Amazon Device Accessories", tiers: [{ percent: 45 }] },
+    { id: "device-accessories", label: "Markaz Device Accessories", tiers: [{ percent: 45 }] },
     { id: "gift-cards", label: "Gift Cards", tiers: [{ percent: 20 }] },
 ];
 

@@ -13,7 +13,7 @@ const ViewedStrip = ({ heading, items }: any) => {
 
             <Link
                 href="/profile/recent"
-                className="text-[#007185] text-sm hover:underline md:mt-2 shrink-0"
+                className="text-accent-ink text-sm hover:underline md:mt-2 shrink-0"
             >
                 Edit
             </Link>
@@ -23,7 +23,7 @@ const ViewedStrip = ({ heading, items }: any) => {
                     <li key={`${item._id}-${item.style}`} className="shrink-0 text-center">
                         <Link
                             href={`/product/${item.slug}?style=${item.style}`}
-                            className="block w-[100px] h-[100px] border-2 border-[#007185] rounded p-1 relative"
+                            className="block w-[100px] h-[100px] border-2 border-accent-ink rounded p-1 relative"
                         >
                             {item.image && (
                                 <Image

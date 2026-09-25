@@ -43,7 +43,7 @@ const ContactPanel = () => {
                         onClick={() => setOpen(option.id)}
                         className="flex items-center gap-3 border border-slate-300 rounded-lg bg-white p-4 text-left hover:shadow-md hover:border-slate-400 transition cursor-pointer"
                     >
-                        <option.icon className="h-8 w-8 text-[#232f3e] shrink-0" />
+                        <option.icon className="h-8 w-8 text-ink-800 shrink-0" />
                         <span>
                             <span className="block font-bold text-sm">{option.label}</span>
                             <span className="block text-xs text-slate-600">{option.hint}</span>

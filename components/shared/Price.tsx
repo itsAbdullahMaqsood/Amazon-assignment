@@ -18,7 +18,7 @@ const Price = ({
     return (
         <span className={`inline-flex items-start ${className}`}>
             {discount > 0 && (
-                <span className="text-[#CC0C39] font-medium mr-2 self-center">-{discount}%</span>
+                <span className="text-danger font-medium mr-2 self-center">-{discount}%</span>
             )}
 
             <span className={`${scale.symbol} leading-none mt-1`}>$</span>

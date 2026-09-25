@@ -18,7 +18,7 @@ const RegistryResults = ({ results, term }: any) => {
                     reachable by its link, and a private one only by its owner.
                 </p>
 
-                <Link href="/registry" className="inline-block mt-5 text-[#007185] hover:underline">
+                <Link href="/registry" className="inline-block mt-5 text-accent-ink hover:underline">
                     Back to registry &amp; gifting
                 </Link>
             </div>
@@ -36,7 +36,7 @@ const RegistryResults = ({ results, term }: any) => {
                         <RegistryArt art={result.occasion} className="h-20 w-20 shrink-0" />
 
                         <div className="flex-1">
-                            <p className="text-lg font-semibold text-[#0F5FA6]">{result.name}</p>
+                            <p className="text-lg font-semibold text-accent-ink">{result.name}</p>
                             <p className="text-sm text-slate-700">{result.owner}</p>
                             <p className="text-sm text-slate-600 mt-1">
                                 {result.occasionLabel}

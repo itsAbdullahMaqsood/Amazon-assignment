@@ -56,5 +56,5 @@ export const tabs = [
     { label: "Buy Again", value: "buy-again" },
     { label: "Not Yet Shipped", value: "not-shipped" },
     { label: "Digital Orders", value: "digital" },
-    { label: "Amazon Pay", value: "amazon-pay" },
+    { label: "Markaz Pay", value: "amazon-pay" },
 ];

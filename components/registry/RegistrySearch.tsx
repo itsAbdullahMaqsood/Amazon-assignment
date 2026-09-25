@@ -31,13 +31,13 @@ const RegistrySearch = ({ defaultValue = "", buttonLabel = "Search" }: any) => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Search by name of the person or the list"
-                    className="w-full bg-white rounded-l-md py-3 pl-12 pr-4 border border-slate-300 outline-none focus:border-[#007185]"
+                    className="w-full bg-white rounded-l-md py-3 pl-12 pr-4 border border-slate-300 outline-none focus:border-accent-ink"
                 />
             </div>
 
             <button
                 type="submit"
-                className="bg-[#FFD814] hover:bg-[#F7CA00] text-black px-8 rounded-r-md font-medium cursor-pointer"
+                className="bg-accent hover:bg-accent-strong text-black px-8 rounded-r-md font-medium cursor-pointer"
             >
                 {buttonLabel}
             </button>

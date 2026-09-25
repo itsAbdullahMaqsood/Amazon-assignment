@@ -6,11 +6,11 @@ import { placeholder } from "@/components/profile/accountLinks";
 // no Amazon artwork is reproduced.
 const PrimeBanner = () => {
     return (
-        <section className="bg-[#1F6FEB] text-white overflow-hidden">
+        <section className="bg-accent-ink text-white overflow-hidden">
             <div className="max-w-[1500px] mx-auto px-4 py-8 md:py-10 flex items-center gap-6">
                 <div className="grow">
                     <h2 className="text-3xl md:text-5xl font-bold leading-tight">
-                        Prime Big Deal Days is October 6-7
+                        Plus Big Deal Days is October 6-7
                     </h2>
                     <p className="text-lg md:text-2xl mt-2 text-white/90">
                         Members get early deals now
@@ -35,15 +35,15 @@ const PrimeBanner = () => {
 
                 <div className="shrink-0 text-center">
                     <Link
-                        href={placeholder("Join Prime")}
-                        className="inline-block bg-[#FFD814] text-black font-medium rounded-full px-6 py-2 hover:bg-[#F7CA00]"
+                        href={placeholder("Join Plus")}
+                        className="inline-block bg-accent text-black font-medium rounded-full px-6 py-2 hover:bg-accent-strong"
                     >
-                        Join Prime
+                        Join Plus
                     </Link>
                     <p className="text-xs mt-2 text-white/90">
                         Included with a
                         <br />
-                        Prime membership
+                        Plus membership
                     </p>
                 </div>
             </div>

@@ -1,14 +1,12 @@
 import Link from "next/link";
 
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer";
-import MenuSideBar from "@/components/Header/MenuSidebar";
+import StoreShell from "@/components/layout/StoreShell";
+
 
 // Amazon's 404: an apology, a few ways back in, and no site search results.
 const NotFound = () => {
     return (
-        <>
-            <Header title="Page not found" />
+        <StoreShell>
 
             <main className="bg-white">
                 <div className="max-w-4xl mx-auto px-4 py-16 flex flex-col md:flex-row items-center gap-10">
@@ -20,7 +18,7 @@ const NotFound = () => {
                     </div>
 
                     <div>
-                        <h1 className="text-2xl font-bold text-[#0F1111]">
+                        <h1 className="text-2xl font-bold text-fg">
                             Sorry! We couldn&apos;t find that page.
                         </h1>
                         <p className="text-sm text-slate-600 mt-2">
@@ -28,10 +26,10 @@ const NotFound = () => {
                             catalogue. Here are a few places to pick up where you left off.
                         </p>
 
-                        <ul className="mt-5 space-y-2 text-sm text-[#007185]">
+                        <ul className="mt-5 space-y-2 text-sm text-accent-ink">
                             <li>
                                 <Link href="/" className="hover:underline">
-                                    Go to the Amazon home page
+                                    Go to the Markaz home page
                                 </Link>
                             </li>
                             <li>
@@ -54,10 +52,8 @@ const NotFound = () => {
                 </div>
             </main>
 
-            <Footer />
 
-            <MenuSideBar />
-        </>
+        </StoreShell>
     );
 };
 

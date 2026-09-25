@@ -51,8 +51,8 @@ const DevicesClient = ({ devices, titles }: any) => {
                         onClick={() => setTab(entry.id)}
                         className={`px-5 py-3 text-sm font-semibold cursor-pointer border-b-4 ${
                             tab === entry.id
-                                ? "border-b-[#e77600] text-[#C7511F]"
-                                : "border-b-transparent hover:text-[#C7511F]"
+                                ? "border-b-accent-deep text-accent-deep"
+                                : "border-b-transparent hover:text-accent-deep"
                         }`}
                     >
                         {entry.label}
@@ -72,7 +72,7 @@ const DevicesClient = ({ devices, titles }: any) => {
                             <button
                                 type="button"
                                 onClick={() => gone.forEach((id: string) => registerDevice(id))}
-                                className="mt-5 px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                                className="mt-5 px-6 py-2 rounded-full bg-accent text-ink-900 cursor-pointer"
                             >
                                 Restore the device list
                             </button>
@@ -87,7 +87,7 @@ const DevicesClient = ({ devices, titles }: any) => {
                                         key={device.id}
                                         className="border border-slate-300 rounded-lg bg-white p-5 flex flex-col sm:flex-row sm:items-center gap-4"
                                     >
-                                        <span className="flex items-center justify-center w-12 h-12 shrink-0 rounded-full bg-[#f0f7fb] text-[#0f6fa8]">
+                                        <span className="flex items-center justify-center w-12 h-12 shrink-0 rounded-full bg-accent-soft text-accent-ink">
                                             <Icon className="w-7 h-7" />
                                         </span>
 
@@ -95,7 +95,7 @@ const DevicesClient = ({ devices, titles }: any) => {
                                             <p className="font-bold">
                                                 {device.name}
                                                 {device.isCurrent && (
-                                                    <span className="ml-2 text-xs font-semibold px-2 py-1 rounded bg-[#e3f2e1] text-[#1b6b2a]">
+                                                    <span className="ml-2 text-xs font-semibold px-2 py-1 rounded bg-success-soft text-success">
                                                         This device
                                                     </span>
                                                 )}
@@ -127,7 +127,7 @@ const DevicesClient = ({ devices, titles }: any) => {
                             <button
                                 type="button"
                                 onClick={() => gone.forEach((id: string) => registerDevice(id))}
-                                className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline cursor-pointer"
+                                className="text-accent-ink hover:text-accent-deep hover:underline cursor-pointer"
                             >
                                 Register them again
                             </button>
@@ -140,14 +140,14 @@ const DevicesClient = ({ devices, titles }: any) => {
                         <div className="border border-slate-300 rounded-lg bg-white p-8 text-center">
                             <p className="font-semibold">Your content library is empty.</p>
                             <p className="mt-2 text-sm text-slate-600">
-                                Digital titles come from the Prime Video catalogue, which has nothing
+                                Digital titles come from the Markaz Movies catalogue, which has nothing
                                 in it yet.
                             </p>
                             <Link
-                                href="/prime-video"
-                                className="inline-block mt-5 px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark"
+                                href="/movies"
+                                className="inline-block mt-5 px-6 py-2 rounded-full bg-accent text-ink-900"
                             >
-                                Open Prime Video
+                                Open Markaz Movies
                             </Link>
                         </div>
                     ) : (
@@ -183,8 +183,8 @@ const DevicesClient = ({ devices, titles }: any) => {
                                                 {title.mediaType === "tv" ? "TV show" : "Movie"}
                                             </p>
                                             <Link
-                                                href="/prime-video"
-                                                className="inline-block mt-2 text-sm text-[#0F5FA6] hover:text-[#C7511F] hover:underline"
+                                                href="/movies"
+                                                className="inline-block mt-2 text-sm text-accent-ink hover:text-accent-deep hover:underline"
                                             >
                                                 Watch now
                                             </Link>

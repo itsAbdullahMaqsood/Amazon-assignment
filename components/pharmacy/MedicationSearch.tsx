@@ -36,7 +36,7 @@ const MedicationSearch = ({ defaultValue = "" }: any) => {
 
             <button
                 type="submit"
-                className="bg-[#007a72] hover:bg-[#00615b] text-white px-8 rounded-r-md font-semibold cursor-pointer"
+                className="bg-success hover:bg-success text-white px-8 rounded-r-md font-semibold cursor-pointer"
             >
                 Search
             </button>

@@ -13,7 +13,7 @@ const GroceryRow = ({ title, products, delivery, href }: any) => {
                 <h2 className="text-xl md:text-2xl font-bold">{title}</h2>
 
                 {href && (
-                    <Link href={href} className="text-sm text-[#007185] hover:underline shrink-0">
+                    <Link href={href} className="text-sm text-accent-ink hover:underline shrink-0">
                         See more ›
                     </Link>
                 )}

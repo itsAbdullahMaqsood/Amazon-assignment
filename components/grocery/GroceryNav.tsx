@@ -33,14 +33,14 @@ const GroceryNav = ({ departments, active, categoryId }: any) => {
         <nav aria-label="Grocery departments" className="border-b border-slate-200 bg-white">
             <div className="max-w-[1500px] mx-auto px-4 py-3 flex items-center gap-6">
                 <Link href="/groceries" className="shrink-0 hidden md:block">
-                    <span className="text-3xl font-bold lowercase text-[#188C43] tracking-tight">
+                    <span className="text-3xl font-bold lowercase text-success tracking-tight">
                         grocery
                     </span>
-                    <span className="block h-2 w-16 border-b-4 border-[#188C43] rounded-b-full" />
+                    <span className="block h-2 w-16 border-b-4 border-success rounded-b-full" />
                 </Link>
 
                 <p className="shrink-0 hidden lg:block text-sm leading-tight max-w-[215px]">
-                    <span className="font-bold">Join Prime for FREE delivery on $25+</span>
+                    <span className="font-bold">Join Plus for FREE delivery on $25+</span>
                     <br />
                     or $12.99 for Same-day delivery
                 </p>

@@ -2,9 +2,9 @@ import { addDays, addMonths, createLocalStore, today } from "@/lib/localStore";
 
 // One key backs both /prime and /profile/memberships, so joining on the landing
 // page is already reflected in the account area.
-export const MEMBERSHIP_KEY = "amazon-clone:prime-membership";
-export const SUBSCRIPTIONS_KEY = "amazon-clone:subscriptions";
-export const SUBSCRIBE_SAVE_KEY = "amazon-clone:subscribe-save";
+export const MEMBERSHIP_KEY = "markaz:prime-membership";
+export const SUBSCRIPTIONS_KEY = "markaz:subscriptions";
+export const SUBSCRIBE_SAVE_KEY = "markaz:subscribe-save";
 
 export type Membership = {
     member: boolean;
@@ -47,7 +47,7 @@ export const plans = [
     },
     {
         id: "student",
-        name: "Prime Student",
+        name: "Plus Student",
         price: 7.49,
         cadence: "month",
         renewsInMonths: 1,
@@ -88,9 +88,9 @@ export const benefits = [
     },
     {
         icon: "PlayCircleIcon",
-        title: "Prime Video",
+        title: "Markaz Movies",
         copy: "Thousands of movies and shows included, plus rentals and purchases you keep.",
-        href: "/prime-video",
+        href: "/movies",
     },
     {
         icon: "TagIcon",
@@ -100,17 +100,17 @@ export const benefits = [
     },
     {
         icon: "BookOpenIcon",
-        title: "Prime Reading",
+        title: "Plus Reading",
         copy: "A rotating library of books, magazines and comics to read on any device.",
     },
     {
         icon: "PhotoIcon",
-        title: "Amazon Photos",
+        title: "Markaz Photos",
         copy: "Unlimited full-resolution photo storage, shared with five family members.",
     },
     {
         icon: "PuzzlePieceIcon",
-        title: "Prime Gaming",
+        title: "Plus Gaming",
         copy: "A free game selection every month and in-game loot for titles you already play.",
     },
 ];
@@ -120,14 +120,14 @@ export const benefits = [
 // with a zero fee already ship free for everybody.
 export const deliveryTruth =
     "In this build every product carries its own delivery fee and the cart adds those fees up; " +
-    "items listed with no fee already ship free for everyone. Prime membership here is a simulation " +
+    "items listed with no fee already ship free for everyone. Plus membership here is a simulation " +
     "stored in your browser, so joining does not change what checkout charges you.";
 
 export const faqs = [
     {
-        title: "How much does Prime cost?",
+        title: "How much does Plus cost?",
         content:
-            "$14.99 a month, $139 a year, or $7.49 a month on Prime Student. Every plan starts with a 30-day free trial and can be cancelled before the trial ends at no charge.",
+            "$14.99 a month, $139 a year, or $7.49 a month on Plus Student. Every plan starts with a 30-day free trial and can be cancelled before the trial ends at no charge.",
     },
     {
         title: "What happens when the free trial ends?",
@@ -135,13 +135,13 @@ export const faqs = [
             "The plan you picked renews automatically on the date shown in your membership panel. Cancel before that date and you are not billed.",
     },
     {
-        title: "Does Prime change my delivery charges in this store?",
+        title: "Does Plus change my delivery charges in this store?",
         content: deliveryTruth,
     },
     {
         title: "Can I share my membership?",
         content:
-            "Amazon Household lets you share delivery benefits and Prime Video with one other adult and up to four teen profiles. Household sharing is not implemented in this clone.",
+            "Household lets you share delivery benefits and Markaz Movies with one other adult and up to four teen profiles. Household sharing is not implemented in this clone.",
     },
     {
         title: "How do I cancel?",
@@ -164,7 +164,7 @@ export const services = [
     },
     {
         id: "music-unlimited",
-        name: "Amazon Music Unlimited",
+        name: "Markaz Music Unlimited",
         price: 10.99,
         cadence: "month",
         renewsInMonths: 1,

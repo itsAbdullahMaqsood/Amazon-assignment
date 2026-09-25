@@ -10,7 +10,7 @@ import {
     TrashIcon,
 } from "@heroicons/react/24/outline";
 
-const REQUESTS_KEY = "amazon_data_requests";
+const REQUESTS_KEY = "markaz_data_requests";
 
 const categories = [
     {
@@ -132,7 +132,7 @@ const DataClient = ({ email }: any) => {
 
             const disposition = String(response.headers["content-disposition"] || "");
             const match = disposition.match(/filename="?([^"]+)"?/);
-            const filename = match?.[1] || `amazon-data-${category}.json`;
+            const filename = match?.[1] || `markaz-data-${category}.json`;
 
             const url = URL.createObjectURL(response.data);
             const anchor = document.createElement("a");
@@ -210,7 +210,7 @@ const DataClient = ({ email }: any) => {
         <div className="space-y-6">
             <section className="bg-white border border-slate-300 rounded-lg p-5">
                 <div className="flex items-start gap-3">
-                    <ArrowDownTrayIcon className="h-6 w-6 text-amazon-blue_light shrink-0 mt-0.5" />
+                    <ArrowDownTrayIcon className="h-6 w-6 text-ink-800 shrink-0 mt-0.5" />
                     <div>
                         <h2 className="text-lg font-bold">Request your data</h2>
                         <p className="text-sm text-slate-600">
@@ -229,7 +229,7 @@ const DataClient = ({ email }: any) => {
                                 key={option.value}
                                 className={`flex items-start gap-2 p-3 rounded border cursor-pointer ${
                                     category === option.value
-                                        ? "border-amazon-blue_light bg-slate-50"
+                                        ? "border-ink-800 bg-slate-50"
                                         : "border-slate-300"
                                 }`}
                             >
@@ -267,11 +267,11 @@ const DataClient = ({ email }: any) => {
 
             <section className="bg-white border border-slate-300 rounded-lg p-5">
                 <div className="flex items-start gap-3">
-                    <ClockIcon className="h-6 w-6 text-amazon-blue_light shrink-0 mt-0.5" />
+                    <ClockIcon className="h-6 w-6 text-ink-800 shrink-0 mt-0.5" />
                     <div>
                         <h2 className="text-lg font-bold">Data access and requests</h2>
                         <p className="text-sm text-slate-600">
-                            Requests made from this browser. Amazon does not keep a copy of the file.
+                            Requests made from this browser. Markaz does not keep a copy of the file.
                         </p>
                     </div>
                 </div>
@@ -320,7 +320,7 @@ const DataClient = ({ email }: any) => {
                         <button
                             type="button"
                             onClick={() => saveRequests([])}
-                            className="mt-3 inline-flex items-center gap-1 text-sm text-[#0F5FA6] hover:underline cursor-pointer"
+                            className="mt-3 inline-flex items-center gap-1 text-sm text-accent-ink hover:underline cursor-pointer"
                         >
                             <TrashIcon className="h-4 w-4" />
                             Clear this list
@@ -331,7 +331,7 @@ const DataClient = ({ email }: any) => {
 
             <section className="bg-white border border-slate-300 rounded-lg p-5">
                 <div className="flex items-start gap-3">
-                    <DocumentTextIcon className="h-6 w-6 text-amazon-blue_light shrink-0 mt-0.5" />
+                    <DocumentTextIcon className="h-6 w-6 text-ink-800 shrink-0 mt-0.5" />
                     <div>
                         <h2 className="text-lg font-bold">Privacy notice</h2>
                         <p className="text-sm text-slate-600">
@@ -357,7 +357,7 @@ const DataClient = ({ email }: any) => {
             </section>
 
             <section className="bg-white border border-red-300 rounded-lg p-5">
-                <h2 className="text-lg font-bold text-red-700">Close your Amazon account</h2>
+                <h2 className="text-lg font-bold text-red-700">Close your Markaz account</h2>
                 <p className="text-sm text-slate-600 mt-1">
                     Closing removes your account details, saved addresses, lists, browsing history
                     and cart. Past orders are kept as financial records and are not deleted.
@@ -368,7 +368,7 @@ const DataClient = ({ email }: any) => {
                     onClick={() => setCloseStep(1)}
                     className="mt-4 px-6 py-2 text-sm rounded-full border border-red-400 text-red-700 hover:bg-red-50 cursor-pointer"
                 >
-                    Close your Amazon account
+                    Close your Markaz account
                 </button>
             </section>
 

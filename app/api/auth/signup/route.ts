@@ -42,7 +42,7 @@ export const POST = async (req: Request) => {
         const token = createActivationToken({ id: newUser._id.toString() });
         const url = `${process.env.BASE_URL}/auth/activate/${token}`;
 
-        await sendEmail(email, url, "Confirm your account", "Verify your email address", activateEmailTemplate);
+        await sendEmail(email, url, "Confirm your email", "Confirm your Markaz account", activateEmailTemplate);
 
         return NextResponse.json({
             message: "Register success! please activate your email to start.",

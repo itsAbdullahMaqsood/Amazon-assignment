@@ -13,8 +13,8 @@ const ReturnsTabs = ({ active }: any) => {
                             aria-current={active === tab.value ? "page" : undefined}
                             className={`block pb-2 -mb-px border-b-[3px] ${
                                 active === tab.value
-                                    ? "border-[#E77600] font-bold text-black"
-                                    : "border-transparent text-[#0F5FA6] hover:text-[#C7511F] hover:underline"
+                                    ? "border-accent-deep font-bold text-black"
+                                    : "border-transparent text-accent-ink hover:text-accent-deep hover:underline"
                             }`}
                         >
                             {tab.label}

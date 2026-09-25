@@ -31,7 +31,7 @@ const ListShipping = ({ visible, setVisible, addresses, setAddresses, user, prof
                     key={address._id}
                     onClick={() => selectHandler(address._id)}
                     className={`relative cursor-pointer p-4 mb-4 border border-slate-100 rounded-xl shadow-md hover:shadow-xl hover:border-white hover:scale-[101%] transition duration-300 ${
-                        address.active ? "border-l-4 border-l-amazon-blue_light" : ""
+                        address.active ? "border-l-4 border-l-ink-800" : ""
                     }`}
                 >
                     {addresses.length > 1 && (
@@ -84,7 +84,7 @@ const ListShipping = ({ visible, setVisible, addresses, setAddresses, user, prof
                             <span>{address.zipCode}</span>
 
                             {address.active && (
-                                <span className="flex items-center gap-1 text-amazon-blue_light font-semibold">
+                                <span className="flex items-center gap-1 text-ink-800 font-semibold">
                                     <CheckIcon className="w-4 h-4" />
                                     Active
                                 </span>
@@ -97,7 +97,7 @@ const ListShipping = ({ visible, setVisible, addresses, setAddresses, user, prof
             <div className="flex justify-center">
                 <button
                     onClick={() => setVisible(!visible)}
-                    className="w-52 py-4 rounded-xl flex items-center justify-center bg-linear-to-r from-amazon-blue_light to-slate-500 text-slate-100 hover:from-amazon-orange hover:to-yellow-300 hover:text-amazon-blue_dark transition duration-300 hover:scale-95 cursor-pointer"
+                    className="w-52 py-4 rounded-xl flex items-center justify-center bg-ink-800 text-slate-100 hover:bg-accent-strong hover:text-ink-900 transition duration-300 hover:scale-95 cursor-pointer"
                 >
                     {visible ? (
                         <ChevronUpIcon className="w-6 h-6" />

@@ -82,7 +82,7 @@ const RecommendationCarousel = ({ title, products, delivery }: any) => {
 
                             <Link
                                 href={`/product/${product.slug}`}
-                                className="block mt-2 text-sm text-[#0F5FA6] hover:underline line-clamp-3"
+                                className="block mt-2 text-sm text-accent-ink hover:underline line-clamp-3"
                             >
                                 {product.name}
                             </Link>
@@ -90,7 +90,7 @@ const RecommendationCarousel = ({ title, products, delivery }: any) => {
                             {product.numberReviews > 0 && (
                                 <div className="flex items-center gap-1 mt-1">
                                     <StarRating value={product.rating} size="w-4 h-4" />
-                                    <span className="text-xs text-[#0F5FA6]">
+                                    <span className="text-xs text-accent-ink">
                                         {product.numberReviews.toLocaleString()}
                                     </span>
                                 </div>
@@ -103,8 +103,8 @@ const RecommendationCarousel = ({ title, products, delivery }: any) => {
                             )}
 
                             {product.amazonChoice && (
-                                <span className="inline-block bg-[#232f3e] text-white text-[11px] font-semibold px-2 py-0.5 rounded-sm mt-1">
-                                    Amazon&apos;s Choice
+                                <span className="inline-block bg-ink-800 text-white text-[11px] font-semibold px-2 py-0.5 rounded-sm mt-1">
+                                    Markaz&apos;s Choice
                                 </span>
                             )}
 
@@ -118,7 +118,7 @@ const RecommendationCarousel = ({ title, products, delivery }: any) => {
                             </div>
 
                             {product.limitedDeal && (
-                                <span className="inline-block bg-[#CC0C39] text-white text-[11px] font-semibold px-2 py-0.5 rounded-sm mt-1">
+                                <span className="inline-block bg-danger text-white text-[11px] font-semibold px-2 py-0.5 rounded-sm mt-1">
                                     Limited time deal
                                 </span>
                             )}
@@ -137,7 +137,7 @@ const RecommendationCarousel = ({ title, products, delivery }: any) => {
                             </p>
 
                             <p className="text-xs text-slate-600">
-                                FREE Shipping on orders over $35 shipped by Amazon
+                                FREE Shipping on orders over $35 shipped by Markaz
                             </p>
                         </article>
                     ))}

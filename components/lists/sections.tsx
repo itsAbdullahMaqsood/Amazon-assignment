@@ -5,7 +5,7 @@ import { registries } from "@/lib/lists";
 import { AlexaTile, RegistryArt } from "./art";
 
 export const GiftRegistries = () => (
-    <section className="bg-[#f5fbfd] px-4 py-12">
+    <section className="bg-accent-soft px-4 py-12">
         <h2 className="text-3xl text-center">Gift Registries</h2>
 
         <p className="text-center text-slate-700 max-w-2xl mx-auto mt-3">
@@ -35,15 +35,15 @@ export const OtherLists = () => (
 
         <div className="max-w-xl mx-auto mt-8">
             <Link
-                href={placeholder("Alexa Shopping List")}
+                href={placeholder("Shabana Shopping List")}
                 className="flex items-center gap-4 border border-slate-300 rounded-lg p-4 hover:shadow-md transition"
             >
                 <AlexaTile />
 
                 <span>
-                    <span className="block font-bold">Alexa Shopping List</span>
+                    <span className="block font-bold">Shabana Shopping List</span>
                     <span className="block text-sm text-slate-700">
-                        Create and manage your lists on your Alexa-enabled device
+                        Create and manage your lists on your Shabana-enabled device
                     </span>
                 </span>
             </Link>
@@ -52,19 +52,19 @@ export const OtherLists = () => (
 );
 
 export const GetHelp = () => (
-    <section className="bg-[#f5fbfd] px-4 py-10 text-center">
+    <section className="bg-accent-soft px-4 py-10 text-center">
         <h2 className="text-3xl">Get Help</h2>
 
         <p className="mt-4">
             Need more information?{" "}
-            <Link href={placeholder("Help")} className="text-[#007185] hover:underline">
+            <Link href={placeholder("Help")} className="text-accent-ink hover:underline">
                 Visit our Help section
             </Link>
         </p>
 
         <p className="mt-2">
             Want help with a list or registry?{" "}
-            <Link href={placeholder("Customer Service")} className="text-[#007185] hover:underline">
+            <Link href={placeholder("Customer Service")} className="text-accent-ink hover:underline">
                 Contact customer service
             </Link>
         </p>

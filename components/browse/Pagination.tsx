@@ -54,7 +54,7 @@ const Pagination = ({ page, count, onChange }: any) => {
                                 aria-current={entry === page ? "page" : undefined}
                                 className={`${base} ${
                                     entry === page
-                                        ? "bg-amazon-blue_light text-white"
+                                        ? "bg-ink-800 text-white"
                                         : "hover:bg-slate-200"
                                 }`}
                             >

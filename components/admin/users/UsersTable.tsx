@@ -117,7 +117,7 @@ const UsersTable = ({ initial, total, page, pages, q, role, meId }: any) => {
                 {(q || role) && (
                     <Link
                         href={pathname}
-                        className="inline-flex items-center gap-1 text-sm text-[#007185] hover:underline rounded outline-none focus-visible:ring-2 focus-visible:ring-[#007185]"
+                        className="inline-flex items-center gap-1 text-sm text-accent-ink hover:underline rounded outline-none focus-visible:ring-2 focus-visible:ring-accent-ink"
                     >
                         <XMarkIcon className="w-4 h-4" />
                         Clear filters
@@ -165,12 +165,12 @@ const UsersTable = ({ initial, total, page, pages, q, role, meId }: any) => {
                                             ) : (
                                                 <span
                                                     aria-hidden="true"
-                                                    className="w-8 h-8 rounded-full bg-amazon-blue_light text-white text-xs font-semibold flex items-center justify-center shrink-0"
+                                                    className="w-8 h-8 rounded-full bg-ink-800 text-white text-xs font-semibold flex items-center justify-center shrink-0"
                                                 >
                                                     {String(user.name || "?").charAt(0).toUpperCase()}
                                                 </span>
                                             )}
-                                            <span className="font-medium text-[#0F1111]">
+                                            <span className="font-medium text-fg">
                                                 {user.name}
                                                 {isMe && <span className="text-slate-500 font-normal"> (you)</span>}
                                             </span>

@@ -314,9 +314,9 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
                                 role="radio"
                                 aria-checked={variantMode === option.value}
                                 onClick={() => switchMode(option.value)}
-                                className={`text-left rounded-xl border p-4 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#007185] ${
+                                className={`text-left rounded-xl border p-4 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent-ink ${
                                     variantMode === option.value
-                                        ? "border-[#007185] bg-sky-50/60 ring-1 ring-[#007185]"
+                                        ? "border-accent-ink bg-sky-50/60 ring-1 ring-accent-ink"
                                         : "border-slate-200 hover:border-slate-300"
                                 }`}
                             >
@@ -444,14 +444,14 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
                                         <label
                                             key={sub._id}
                                             className={`inline-flex items-center gap-2 h-9 px-3 rounded-full border text-sm cursor-pointer ${
-                                                on ? "border-[#007185] bg-sky-50 text-[#007185]" : "border-slate-300"
+                                                on ? "border-accent-ink bg-sky-50 text-accent-ink" : "border-slate-300"
                                             }`}
                                         >
                                             <input
                                                 type="checkbox"
                                                 checked={on}
                                                 onChange={() => toggleSub(String(sub._id))}
-                                                className="accent-[#007185]"
+                                                className="accent-accent-ink"
                                             />
                                             {sub.name}
                                         </label>
@@ -531,7 +531,7 @@ const ProductForm = ({ mode = "create", categories, subCategories, parents = [],
                                 <SwatchIcon className="w-6 h-6 text-white mix-blend-difference" />
                             </span>
                         )}
-                        <label className={`${btn.secondary} focus-within:ring-2 focus-within:ring-[#007185]`}>
+                        <label className={`${btn.secondary} focus-within:ring-2 focus-within:ring-accent-ink`}>
                             {swatch ? "Replace" : "Upload style image"}
                             <input
                                 type="file"

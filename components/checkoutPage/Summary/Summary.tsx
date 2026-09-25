@@ -92,7 +92,7 @@ const Summary = ({
 
                     <button
                         type="submit"
-                        className="bg-linear-to-r from-amazon-blue_light to-slate-500 text-slate-100 hover:from-amazon-orange hover:to-yellow-300 hover:text-amazon-blue_dark rounded-full w-full my-6 p-2 transition duration-300 cursor-pointer"
+                        className="bg-ink-800 text-slate-100 hover:bg-accent-strong hover:text-ink-900 rounded-full w-full my-6 p-2 transition duration-300 cursor-pointer"
                     >
                         Apply
                     </button>
@@ -130,7 +130,7 @@ const Summary = ({
 
             <button
                 onClick={placeOrderHandler}
-                className="w-full p-4 my-4 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark hover:text-slate-100 hover:from-amazon-blue_light hover:to-slate-400 transition duration-300 cursor-pointer"
+                className="w-full p-4 my-4 rounded-full bg-accent text-ink-900 hover:text-slate-100 hover:bg-accent-strong transition duration-300 cursor-pointer"
             >
                 Place Order
             </button>

@@ -86,14 +86,14 @@ const Page = async ({ params }: any) => {
         <>
             <Link
                 href="/admin/dashboard/orders"
-                className="inline-flex items-center gap-1 text-sm text-[#007185] hover:text-[#C7511F] hover:underline rounded outline-none focus-visible:ring-2 focus-visible:ring-[#007185] mb-3"
+                className="inline-flex items-center gap-1 text-sm text-accent-ink hover:text-accent-deep hover:underline rounded outline-none focus-visible:ring-2 focus-visible:ring-accent-ink mb-3"
             >
                 <ArrowLeftIcon className="w-4 h-4" />
                 All orders
             </Link>
 
             <div className="mb-6">
-                <h1 className="text-2xl font-bold text-[#0F1111]">
+                <h1 className="text-2xl font-bold text-fg">
                     Order <span className="font-mono">{shortId(order._id)}</span>
                 </h1>
                 <p className="text-xs text-slate-500 mt-1 font-mono break-all">{order._id}</p>
@@ -132,7 +132,7 @@ const Page = async ({ params }: any) => {
                                                     {line.product?.slug ? (
                                                         <Link
                                                             href={`/product/${line.product.slug}`}
-                                                            className="text-[#007185] hover:text-[#C7511F] hover:underline rounded outline-none focus-visible:ring-2 focus-visible:ring-[#007185] line-clamp-2"
+                                                            className="text-accent-ink hover:text-accent-deep hover:underline rounded outline-none focus-visible:ring-2 focus-visible:ring-accent-ink line-clamp-2"
                                                         >
                                                             {line.name}
                                                         </Link>
@@ -184,14 +184,14 @@ const Page = async ({ params }: any) => {
                             </Row>
                             {order.couponApplied && (
                                 <Row term={`Coupon (${order.couponApplied})`}>
-                                    <span className="text-[#CC0C39]">
+                                    <span className="text-danger">
                                         −<Price value={couponSaving} size="sm" />
                                     </span>
                                 </Row>
                             )}
                             {giftCard > 0 && (
                                 <Row term="Gift card">
-                                    <span className="text-[#CC0C39]">
+                                    <span className="text-danger">
                                         −<Price value={giftCard} size="sm" />
                                     </span>
                                 </Row>
@@ -223,8 +223,8 @@ const Page = async ({ params }: any) => {
                         <ol className="relative border-l border-slate-200 ml-1.5 space-y-4">
                             {timeline.map((step) => (
                                 <li key={step.label} className="pl-4">
-                                    <span className="absolute -left-1.5 mt-1.5 w-3 h-3 rounded-full bg-[#007185] ring-4 ring-white" />
-                                    <p className="text-sm font-medium text-[#0F1111]">{step.label}</p>
+                                    <span className="absolute -left-1.5 mt-1.5 w-3 h-3 rounded-full bg-accent-ink ring-4 ring-white" />
+                                    <p className="text-sm font-medium text-fg">{step.label}</p>
                                     <p className="text-xs text-slate-600">{formatDate(step.at, true)}</p>
                                 </li>
                             ))}
@@ -234,10 +234,10 @@ const Page = async ({ params }: any) => {
                     <Panel title="Customer">
                         {order.user ? (
                             <div className="text-sm">
-                                <p className="font-medium text-[#0F1111]">{order.user.name}</p>
+                                <p className="font-medium text-fg">{order.user.name}</p>
                                 <a
                                     href={`mailto:${order.user.email}`}
-                                    className="text-[#007185] hover:underline break-all rounded outline-none focus-visible:ring-2 focus-visible:ring-[#007185]"
+                                    className="text-accent-ink hover:underline break-all rounded outline-none focus-visible:ring-2 focus-visible:ring-accent-ink"
                                 >
                                     {order.user.email}
                                 </a>
@@ -249,7 +249,7 @@ const Page = async ({ params }: any) => {
 
                     <Panel title="Shipping address">
                         <address className="not-italic text-sm text-slate-700 leading-6">
-                            <span className="font-medium text-[#0F1111]">
+                            <span className="font-medium text-fg">
                                 {[address.firstName, address.lastName].filter(Boolean).join(" ")}
                             </span>
                             <br />

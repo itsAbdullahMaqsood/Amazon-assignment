@@ -18,11 +18,11 @@ const PrimeNav = () => {
 
     return (
         <div className="flex items-center gap-2 px-3 md:px-6 py-3 overflow-x-auto scrollbar-hide">
-            <Link href="/prime-video" className="mr-2 md:mr-4 text-lg lowercase tracking-tight shrink-0">
+            <Link href="/movies" className="mr-2 md:mr-4 text-lg lowercase tracking-tight shrink-0">
                 <span className="font-semibold">prime</span> video
             </Link>
 
-            <nav aria-label="Prime Video sections" className="flex items-center gap-1 shrink-0">
+            <nav aria-label="Markaz Movies sections" className="flex items-center gap-1 shrink-0">
                 {tabs.map((tab) => (
                     <button
                         key={tab}
@@ -38,10 +38,10 @@ const PrimeNav = () => {
             </nav>
 
             <div className="ml-auto flex items-center gap-3 md:gap-5 text-white/90 shrink-0 pl-3">
-                <Link href={placeholder("Prime Video search")} aria-label="Search Prime Video">
+                <Link href={placeholder("Markaz Movies search")} aria-label="Search Markaz Movies">
                     <MagnifyingGlassIcon className="w-6 h-6" />
                 </Link>
-                <Link href={placeholder("Prime Video apps")} aria-label="Categories">
+                <Link href={placeholder("Markaz Movies apps")} aria-label="Categories">
                     <Squares2X2Icon className="w-6 h-6" />
                 </Link>
                 <Link href={placeholder("Watchlist")} aria-label="Watchlist">

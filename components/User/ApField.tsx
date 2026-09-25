@@ -15,7 +15,7 @@ const ApField = ({ name, label, type = "text", autoComplete, hint }: any) => {
 
     return (
         <div className="mt-3.5">
-            <label htmlFor={name} className="block text-[13px] font-bold text-[#0F1111] mb-0.5">
+            <label htmlFor={name} className="block text-[13px] font-bold text-fg mb-0.5">
                 {label}
             </label>
 
@@ -26,18 +26,18 @@ const ApField = ({ name, label, type = "text", autoComplete, hint }: any) => {
                 {...register(name)}
                 className={`w-full h-[31px] px-[7px] text-[13px] rounded-[3px] border outline-none shadow-[0_1px_0_rgba(255,255,255,.5),0_1px_0_rgba(0,0,0,.07)_inset] ${
                     error
-                        ? "border-[#c40000] shadow-[0_0_3px_2px_rgba(196,0,0,.15)]"
-                        : "border-[#a6a6a6] focus:border-[#e77600] focus:shadow-[0_0_3px_2px_rgba(228,121,17,.5)]"
+                        ? "border-danger shadow-[0_0_3px_2px_rgba(196,0,0,.15)]"
+                        : "border-line-strong focus:border-accent-deep focus:shadow-[0_0_3px_2px_rgba(228,121,17,.5)]"
                 }`}
             />
 
             {error ? (
-                <p className="flex items-start gap-1 text-[12px] text-[#c40000] mt-1">
+                <p className="flex items-start gap-1 text-[12px] text-danger mt-1">
                     <ExclamationCircleIcon className="h-4 w-4 shrink-0" />
                     <span>{error.message}</span>
                 </p>
             ) : (
-                hint && <p className="text-[12px] text-[#0F1111] mt-1">{hint}</p>
+                hint && <p className="text-[12px] text-fg mt-1">{hint}</p>
             )}
         </div>
     );

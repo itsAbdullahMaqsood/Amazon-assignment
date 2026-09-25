@@ -12,7 +12,7 @@ import { INDIVIDUAL_PER_ITEM, PROFESSIONAL_MONTHLY, money } from "@/lib/sellerFe
 
 export const faqs = [
     {
-        title: "How much does it cost to sell on Amazon?",
+        title: "How much does it cost to sell on Markaz?",
         content: `The Professional plan is ${money(PROFESSIONAL_MONTHLY)} a month whatever you sell. The Individual plan has no monthly charge but costs ${money(INDIVIDUAL_PER_ITEM)} for every item sold. Both plans also pay a referral fee on each sale, which is a percentage of the item price set by category.`,
     },
     {
@@ -23,7 +23,7 @@ export const faqs = [
     {
         title: "What is a referral fee?",
         content:
-            "A commission Amazon takes on each sale, worked out as a percentage of the total price. Most categories are 15%; electronics are closer to 8% and device accessories are far higher. The calculator above shows the rate for the category you pick.",
+            "A commission Markaz takes on each sale, worked out as a percentage of the total price. Most categories are 15%; electronics are closer to 8% and device accessories are far higher. The calculator above shows the rate for the category you pick.",
     },
     {
         title: "Do I need a business to register?",
@@ -33,7 +33,7 @@ export const faqs = [
     {
         title: "Who handles shipping?",
         content:
-            "Your choice. Fulfilment by Amazon stores and ships for you and makes items Prime-eligible for an extra fee, or you pack and post orders yourself.",
+            "Your choice. Fulfilment by Markaz stores and ships for you and makes items Plus-eligible for an extra fee, or you pack and post orders yourself.",
     },
     {
         title: "When do I get paid?",
@@ -43,11 +43,11 @@ export const faqs = [
 ];
 
 export const SellHero = () => (
-    <section className="bg-amazon-blue_dark text-white">
+    <section className="bg-ink-900 text-white">
         <div className="max-w-[1500px] mx-auto px-4 py-10 md:py-16 grid gap-8 lg:grid-cols-[1.1fr_1fr] items-center">
             <div>
-                <p className="text-amazon-orange font-semibold tracking-wide text-sm">
-                    SELLING ON AMAZON
+                <p className="text-accent font-semibold tracking-wide text-sm">
+                    SELLING ON MARKAZ
                 </p>
                 <h1 className="text-3xl md:text-5xl font-bold mt-2 leading-tight">
                     Start a selling account for {money(PROFESSIONAL_MONTHLY)}/month + selling fees
@@ -61,7 +61,7 @@ export const SellHero = () => (
                 <div className="mt-6 flex flex-wrap gap-3">
                     <Link
                         href="/auth/register?seller=1"
-                        className="px-8 py-2.5 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark font-medium"
+                        className="px-8 py-2.5 rounded-full bg-accent text-ink-900 font-medium"
                     >
                         Sign up
                     </Link>
@@ -135,7 +135,7 @@ export const Plans = () => (
                     <caption className="sr-only">
                         Individual and Professional selling plans compared
                     </caption>
-                    <thead className="bg-amazon-blue_light text-white text-left">
+                    <thead className="bg-ink-800 text-white text-left">
                         <tr>
                             <th scope="col" className="p-3 font-semibold w-1/3">
                                 Feature
@@ -179,7 +179,7 @@ const steps = [
     {
         number: "3",
         title: "Choose how orders ship",
-        body: "Send stock to Amazon for Prime-eligible fulfilment, or pack and post each order yourself.",
+        body: "Send stock to Markaz for Plus-eligible fulfilment, or pack and post each order yourself.",
     },
     {
         number: "4",
@@ -196,7 +196,7 @@ export const Steps = () => (
             <ol className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 {steps.map((step) => (
                     <li key={step.number} className="bg-white border border-slate-300 rounded-lg p-5">
-                        <span className="w-9 h-9 rounded-full bg-amazon-blue_light text-white flex items-center justify-center font-bold">
+                        <span className="w-9 h-9 rounded-full bg-ink-800 text-white flex items-center justify-center font-bold">
                             {step.number}
                         </span>
                         <h3 className="font-bold mt-3">{step.title}</h3>
@@ -216,8 +216,8 @@ const tools = [
     },
     {
         Icon: TruckIcon,
-        title: "Fulfilment by Amazon",
-        body: "Store stock in Amazon's network and let it pick, pack, ship and handle returns.",
+        title: "Fulfilment by Markaz",
+        body: "Store stock in Markaz's network and let it pick, pack, ship and handle returns.",
     },
     {
         Icon: MegaphoneIcon,
@@ -249,7 +249,7 @@ export const Tools = () => (
             <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {tools.map((tool) => (
                     <div key={tool.title} className="border border-slate-300 rounded-lg p-5">
-                        <tool.Icon className="h-8 w-8 text-amazon-blue_light" />
+                        <tool.Icon className="h-8 w-8 text-ink-800" />
                         <h3 className="font-bold mt-3">{tool.title}</h3>
                         <p className="text-sm text-slate-600 mt-1">{tool.body}</p>
                     </div>

@@ -2,7 +2,7 @@ import { createLocalStore, today } from "@/lib/localStore";
 
 // Amazon Household is account state that this build does not model in Mongo, so
 // it lives per-browser like the membership and device screens.
-export const HOUSEHOLD_KEY = "amazon-clone:household";
+export const HOUSEHOLD_KEY = "markaz:household";
 
 export type HouseholdMember = {
     id: string;
@@ -23,22 +23,22 @@ export const householdStore = createLocalStore(HOUSEHOLD_KEY, fallback);
 export const benefits = [
     {
         id: "delivery",
-        label: "Prime delivery",
+        label: "Plus delivery",
         description: "Shared delivery speeds on everything the household orders.",
     },
     {
         id: "video",
-        label: "Prime Video",
+        label: "Markaz Movies",
         description: "Each person keeps their own watchlist and viewing history.",
     },
     {
         id: "photos",
-        label: "Amazon Photos",
+        label: "Markaz Photos",
         description: "Unlimited full-resolution photo storage for up to five more people.",
     },
     {
         id: "reading",
-        label: "Prime Reading",
+        label: "Plus Reading",
         description: "Borrowed titles are visible to whoever borrowed them.",
     },
 ];

@@ -104,7 +104,7 @@ const FeeCalculator = () => {
                                 key={option.value}
                                 className={`flex items-start gap-2 p-3 rounded border cursor-pointer ${
                                     plan === option.value
-                                        ? "border-amazon-blue_light bg-slate-50"
+                                        ? "border-ink-800 bg-slate-50"
                                         : "border-slate-300"
                                 }`}
                             >

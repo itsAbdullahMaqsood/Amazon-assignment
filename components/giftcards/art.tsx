@@ -69,7 +69,7 @@ const GiftCardArt = ({ design = "classic", amount, className = "" }: any) => {
             )}
 
             <text x="16" y="34" fill={card.ink} fontSize="15" fontWeight="700">
-                amazon
+                markaz
             </text>
             <text x="16" y="52" fill={card.ink} fontSize="9" opacity="0.85">
                 {card.label}

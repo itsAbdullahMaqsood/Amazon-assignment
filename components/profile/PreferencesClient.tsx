@@ -38,7 +38,7 @@ const Switch = ({ id, label, hint, checked, onChange }: any) => (
             aria-checked={checked}
             onClick={() => onChange(!checked)}
             className={`shrink-0 w-12 h-6 rounded-full transition-colors cursor-pointer relative ${
-                checked ? "bg-amazon-blue_light" : "bg-slate-300"
+                checked ? "bg-ink-800" : "bg-slate-300"
             }`}
         >
             <span className="sr-only">{label}</span>
@@ -131,7 +131,7 @@ const PreferencesClient = () => {
                         className="bg-white border border-slate-300 rounded-lg p-5"
                     >
                         <div className="flex items-start gap-3">
-                            <Icon className="h-6 w-6 text-amazon-blue_light shrink-0 mt-0.5" />
+                            <Icon className="h-6 w-6 text-ink-800 shrink-0 mt-0.5" />
                             <div>
                                 <h2 className="text-lg font-bold">{section.title}</h2>
                                 <p className="text-sm text-slate-600">{section.description}</p>
@@ -242,7 +242,7 @@ const PreferencesClient = () => {
                 <button
                     type="button"
                     onClick={resetHandler}
-                    className="text-sm text-[#0F5FA6] hover:underline cursor-pointer"
+                    className="text-sm text-accent-ink hover:underline cursor-pointer"
                 >
                     Reset to defaults
                 </button>

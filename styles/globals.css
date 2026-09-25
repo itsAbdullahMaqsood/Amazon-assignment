@@ -4,16 +4,210 @@
 @source "../app";
 @source "../components";
 
+/*
+ * Markaz design tokens. Components use these names only (bg-surface, text-fg-muted,
+ * bg-accent, rounded-card ...); a hex value outside this block is a bug, and
+ * `npm run check:tokens` says so for the redesigned folders.
+ *
+ * The chrome keeps the feel of a dark navy header on clean white surfaces; the
+ * accent is a light purple. Light purple fills carry dark ink text, and wherever
+ * purple has to be read as text on white it uses the deeper accent-ink.
+ */
 @theme {
-    --color-amazon-blue_light: #232f3e;
-    --color-amazon-blue_dark: #131921;
-    --color-amazon-orange: #febd69;
+    /* Chrome */
+    --color-ink-950: #0c121c;
+    --color-ink-900: #121a27;
+    --color-ink-800: #1c2636;
+    --color-ink-700: #2a3547;
+    --color-ink-600: #3b475b;
+
+    /* Surfaces */
+    --color-canvas: #f5f6f8;
+    --color-surface: #ffffff;
+    --color-surface-muted: #eef0f4;
+    --color-line: #e3e6eb;
+    --color-line-strong: #c9ced6;
+
+    /* Text */
+    --color-fg: #0f1419;
+    --color-fg-muted: #525a66;
+    --color-fg-subtle: #737b87;
+    --color-fg-inverse: #ffffff;
+    --color-fg-inverse-muted: #b8c0cc;
+
+    /* Accent: light purple */
+    --color-accent: #c4b5fd;
+    --color-accent-strong: #a78bfa;
+    --color-accent-soft: #f1edff;
+    --color-accent-ink: #5c3fb8;
+    --color-accent-deep: #452c93;
+
+    /* Status */
+    --color-success: #1a7f4b;
+    --color-success-soft: #e7f5ed;
+    --color-warning: #9a5a06;
+    --color-warning-soft: #fdf3e2;
+    --color-danger: #c0262d;
+    --color-danger-soft: #fdecec;
+
+    --color-star: #8b6cf2;
+
+    /* Type: 12 / 14 / 16 / 18 / 22 / 28 / 36 / 48 */
+    --text-xs: 0.75rem;
+    --text-xs--line-height: 1rem;
+    --text-sm: 0.875rem;
+    --text-sm--line-height: 1.25rem;
+    --text-base: 1rem;
+    --text-base--line-height: 1.5rem;
+    --text-lg: 1.125rem;
+    --text-lg--line-height: 1.625rem;
+    --text-xl: 1.375rem;
+    --text-xl--line-height: 1.75rem;
+    --text-2xl: 1.75rem;
+    --text-2xl--line-height: 2.125rem;
+    --text-3xl: 2.25rem;
+    --text-3xl--line-height: 2.5rem;
+    --text-4xl: 3rem;
+    --text-4xl--line-height: 3.25rem;
+
+    /* Shape */
+    --radius-control: 6px;
+    --radius-card: 10px;
+    --radius-panel: 16px;
+
+    --shadow-card: 0 1px 2px rgb(15 20 25 / 0.06), 0 1px 1px rgb(15 20 25 / 0.04);
+    --shadow-pop: 0 12px 32px -8px rgb(15 20 25 / 0.22), 0 2px 6px rgb(15 20 25 / 0.08);
+
+    --container-page: 80rem;
+
+    --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* next/font exposes the families as variables on <html>. */
+@theme inline {
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    --font-display: var(--font-bricolage), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        @apply bg-canvas text-fg font-sans antialiased;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-accent-ink);
+        outline-offset: 2px;
+    }
+
+    ::selection {
+        background: var(--color-accent);
+        color: var(--color-fg);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
+
+@utility tabular {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Inline text link on light surfaces. */
+@utility text-link {
+    @apply cursor-pointer text-accent-ink underline-offset-2 hover:text-accent-deep hover:underline;
+}
+
+/* Legacy: underline on hover, colour inherited. */
 @utility link {
     @apply cursor-pointer hover:underline;
 }
 
+/* A horizontal row that scrolls on small screens and snaps to its cards. */
+@utility scroll-row {
+    @apply flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-px-4;
+    & > * {
+        @apply snap-start shrink-0;
+    }
+}
+
+@keyframes toast-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes sheet-in-right {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes sheet-in-left {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes sheet-in-bottom {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@utility animate-toast-in {
+    animation: toast-in 180ms var(--ease-out-soft);
+}
+@utility animate-sheet-right {
+    animation: sheet-in-right 220ms var(--ease-out-soft);
+}
+@utility animate-sheet-left {
+    animation: sheet-in-left 220ms var(--ease-out-soft);
+}
+@utility animate-sheet-bottom {
+    animation: sheet-in-bottom 220ms var(--ease-out-soft);
+}
+@utility animate-fade-in {
+    animation: fade-in 150ms ease-out;
+}
+
+/*
+ * Legacy utilities still used by screens that have not been redesigned yet.
+ * Each one is deleted with the last component that uses it.
+ */
 @utility show-account-popup {
     @apply invisible opacity-0 transition duration-500 cursor-default;
     .show-account:hover & {
@@ -41,7 +235,7 @@
 }
 
 @utility button-orange {
-    @apply bg-linear-to-b from-[#f8e3ad] to-[#EEBA37] border border-[#b0820f] rounded-sm;
+    @apply bg-accent hover:bg-accent-strong text-fg border border-accent-strong rounded-control;
 }
 
 @utility menu-sidebar {
@@ -49,19 +243,19 @@
         @apply font-bold text-sm md:text-base px-8 py-3;
     }
     & ul > li {
-        @apply text-sm md:text-base flex items-center px-8 py-2.5 md:py-3 hover:bg-gray-200 cursor-pointer;
+        @apply text-sm md:text-base flex items-center px-8 py-2.5 md:py-3 hover:bg-surface-muted cursor-pointer;
     }
     & ul > li svg {
-        @apply h-5 ml-auto text-gray-500 stroke-3;
+        @apply h-5 ml-auto text-fg-subtle stroke-3;
     }
 }
 
 @utility link-footer {
     & ul {
-        @apply text-slate-200 text-xs space-y-2;
+        @apply text-fg-inverse-muted text-xs space-y-2;
     }
     & h5 {
-        @apply font-semibold text-white mb-3;
+        @apply font-semibold text-fg-inverse mb-3;
     }
     & ul > li {
         @apply hover:underline;
@@ -70,10 +264,10 @@
 
 @utility footer-link-services {
     & li {
-        @apply w-24 hover:underline text-slate-300 text-xs;
+        @apply w-24 hover:underline text-fg-inverse-muted text-xs;
     }
     & li p {
-        @apply text-[#999];
+        @apply text-fg-subtle;
     }
 }
 
@@ -82,35 +276,35 @@
         @apply relative flex items-center;
     }
     .dropdown_sortby > ul {
-        @apply z-20 absolute top-10 right-0 px-4 bg-white rounded border border-slate-200 shadow w-64 h-[250px] transition-all duration-500 overflow-y-auto;
+        @apply z-20 absolute top-10 right-0 px-4 bg-surface rounded-control border border-line shadow-pop w-64 h-[250px] transition-all duration-500 overflow-y-auto;
     }
     .dropdown_sortby > ul > li {
         @apply py-2 hover:font-semibold cursor-pointer;
     }
     .dropdown_sortby > button {
-        @apply py-2 px-3 rounded border border-slate-300;
+        @apply py-2 px-3 rounded-control border border-line-strong;
     }
     .tooltip_btn {
         @apply relative w-[30px] h-[30px] cursor-pointer;
     }
     .tooltip_btn > span:first-child {
-        @apply absolute left-[2px] bottom-0 bg-red-400 w-[27px] hover:bg-red-600;
+        @apply absolute left-[2px] bottom-0 bg-danger w-[27px];
     }
     .tooltip_bubble {
-        @apply invisible opacity-0 transition-opacity duration-200 absolute bottom-[38px] left-1/2 -translate-x-1/2 z-30 w-44 rounded bg-amazon-blue_dark px-2 py-1 text-xs text-white text-center;
+        @apply invisible opacity-0 transition-opacity duration-200 absolute bottom-[38px] left-1/2 -translate-x-1/2 z-30 w-44 rounded-control bg-ink-900 px-2 py-1 text-xs text-fg-inverse text-center;
     }
     .move {
         @apply transition-all duration-150 text-xs -translate-y-2;
     }
     .error-input input {
-        @apply bg-red-300 placeholder:text-gray-800 border-gray-500;
+        @apply bg-danger-soft placeholder:text-fg-muted border-danger;
     }
     .error-input label svg {
-        @apply text-red-500;
+        @apply text-danger;
     }
     .products-swiper .swiper-button-next,
     .products-swiper .swiper-button-prev {
-        @apply bg-white w-9 h-9 rounded-full text-slate-800 shadow-md;
+        @apply bg-surface w-9 h-9 rounded-full text-fg shadow-card;
     }
     .products-swiper .swiper-button-next::after,
     .products-swiper .swiper-button-prev::after {
@@ -118,7 +312,7 @@
     }
     .products-swiper_home .swiper-button-next,
     .products-swiper_home .swiper-button-prev {
-        @apply transition-all top-[40%] opacity-70 hover:opacity-100 bg-white w-8 h-8 md:w-14 md:h-14 rounded-full text-slate-600 shadow-md;
+        @apply transition-all top-[40%] opacity-70 hover:opacity-100 bg-surface w-8 h-8 md:w-14 md:h-14 rounded-full text-fg-muted shadow-card;
     }
     .products-swiper_home .swiper-button-prev {
         @apply left-0;
@@ -138,7 +332,6 @@
     grid-template-rows: repeat(2, 1fr);
 }
 
-/* "New to Amazon?" divider: a centered caption flanked by two hairlines. */
 .auth-divider {
     position: relative;
 }
@@ -149,7 +342,7 @@
     top: 50%;
     width: 31%;
     height: 1px;
-    background-color: var(--color-slate-200);
+    background-color: var(--color-line);
 }
 .auth-divider::before {
     left: 0;
@@ -157,4 +350,3 @@
 .auth-divider::after {
     right: 0;
 }
-

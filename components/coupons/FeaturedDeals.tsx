@@ -24,7 +24,7 @@ const FeaturedDeals = ({ deals }: any) => {
         "absolute top-1/2 -translate-y-1/2 z-10 w-9 h-16 bg-white shadow-md rounded flex items-center justify-center hover:bg-slate-50 cursor-pointer";
 
     return (
-        <section className="bg-[#1F6FEB] pb-8">
+        <section className="bg-accent-ink pb-8">
             <div className="max-w-[1500px] mx-auto px-4">
                 <h2 className="text-2xl font-bold text-white py-4">Featured deals</h2>
 
@@ -66,7 +66,7 @@ const FeaturedDeals = ({ deals }: any) => {
 
                                     <div className="px-3 pb-3 mt-auto">
                                         <div className="flex items-center gap-2">
-                                            <span className="bg-[#CC0C39] text-white text-xs font-bold rounded px-1.5 py-0.5">
+                                            <span className="bg-danger text-white text-xs font-bold rounded px-1.5 py-0.5">
                                                 {deal.coupon}% off
                                             </span>
                                             {dealEnds(deal) ? (

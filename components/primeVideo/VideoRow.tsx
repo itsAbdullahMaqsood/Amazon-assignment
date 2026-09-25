@@ -20,7 +20,7 @@ const VideoRow = ({ title, videos, portrait = false }: any) => {
     };
 
     const arrow =
-        "absolute top-0 bottom-0 z-20 w-12 flex items-center justify-center bg-linear-to-r from-transparent to-[#0f171e]/90 opacity-0 group-hover:opacity-100 transition cursor-pointer";
+        "absolute top-0 bottom-0 z-20 w-12 flex items-center justify-center bg-linear-to-r from-transparent to-ink-950/90 opacity-0 group-hover:opacity-100 transition cursor-pointer";
 
     return (
         <section className="mt-10 group relative">

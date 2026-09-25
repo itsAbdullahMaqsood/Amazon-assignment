@@ -43,7 +43,7 @@ const SimilarSwiper = ({ products }: any) => {
                                     className="object-contain rounded"
                                 />
                             </div>
-                            <p className="text-sm text-[#007185] group-hover:text-[#C7511F] group-hover:underline line-clamp-2 mt-2">
+                            <p className="text-sm text-accent-ink group-hover:text-accent-deep group-hover:underline line-clamp-2 mt-2">
                                 {product.name}
                             </p>
                         </Link>
@@ -51,7 +51,7 @@ const SimilarSwiper = ({ products }: any) => {
                         {product.numberReviews > 0 && (
                             <div className="flex items-center gap-1 mt-1">
                                 <StarRating value={product.rating} size="w-4 h-4" />
-                                <span className="text-xs text-[#007185]">
+                                <span className="text-xs text-accent-ink">
                                     {product.numberReviews.toLocaleString()}
                                 </span>
                             </div>

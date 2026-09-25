@@ -88,7 +88,7 @@ const AddShipping = ({ setAddresses, setVisible }: any) => {
 
                 <button
                     type="submit"
-                    className="mb-4 mx-3 py-4 rounded-xl font-bold bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark hover:text-slate-100 hover:from-amazon-blue_light hover:to-slate-300 transition duration-300 cursor-pointer"
+                    className="mb-4 mx-3 py-4 rounded-xl font-bold bg-accent text-ink-900 hover:text-slate-100 hover:bg-accent-strong transition duration-300 cursor-pointer"
                 >
                     Save Address
                 </button>

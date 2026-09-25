@@ -63,8 +63,8 @@ const GiftCardsClient = ({ name, balance: initialBalance, history: initialHistor
                                 aria-current={tab === entry.value ? "page" : undefined}
                                 className={`block py-3 -mb-px border-b-[3px] cursor-pointer ${
                                     tab === entry.value
-                                        ? "border-[#007185] text-[#007185] font-bold"
-                                        : "border-transparent hover:text-[#C7511F]"
+                                        ? "border-accent-ink text-accent-ink font-bold"
+                                        : "border-transparent hover:text-accent-deep"
                                 }`}
                             >
                                 {entry.label}
@@ -87,7 +87,7 @@ const GiftCardsClient = ({ name, balance: initialBalance, history: initialHistor
                         </p>
                         <button
                             onClick={() => setTab("redeem")}
-                            className="mt-4 w-full px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                            className="mt-4 w-full px-6 py-2 rounded-full bg-accent text-ink-900 cursor-pointer"
                         >
                             Redeem a gift card
                         </button>
@@ -125,7 +125,7 @@ const GiftCardsClient = ({ name, balance: initialBalance, history: initialHistor
                                         <span
                                             className={
                                                 entry.type === "used"
-                                                    ? "text-[#C7511F]"
+                                                    ? "text-accent-deep"
                                                     : "text-green-700"
                                             }
                                         >
@@ -151,13 +151,13 @@ const GiftCardsClient = ({ name, balance: initialBalance, history: initialHistor
                         <input
                             value={code}
                             onChange={(e) => setCode(e.target.value)}
-                            placeholder="AMZN-0000-0000"
+                            placeholder="MRKZ-0000-0000"
                             aria-label="Claim code"
-                            className="grow min-w-56 border border-slate-400 rounded px-3 py-2 outline-none focus:border-amazon-orange"
+                            className="grow min-w-56 border border-slate-400 rounded px-3 py-2 outline-none focus:border-accent"
                         />
                         <button
                             type="submit"
-                            className="px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                            className="px-6 py-2 rounded-full bg-accent text-ink-900 cursor-pointer"
                         >
                             Apply to your balance
                         </button>
@@ -169,7 +169,7 @@ const GiftCardsClient = ({ name, balance: initialBalance, history: initialHistor
                     <div className="mt-5 bg-slate-50 border border-slate-200 rounded p-4 text-sm">
                         <p className="font-semibold">Test codes for this build</p>
                         <p className="text-slate-600 mt-1">
-                            Codes are <span className="font-mono">AMZN-&lt;amount&gt;-&lt;check&gt;</span>,
+                            Codes are <span className="font-mono">MRKZ-&lt;amount&gt;-&lt;check&gt;</span>,
                             where the amount is the face value in whole dollars and the check digits
                             are (amount × 7919) mod 10000. Each code can only be redeemed once.
                         </p>
@@ -202,7 +202,7 @@ const GiftCardsClient = ({ name, balance: initialBalance, history: initialHistor
                                 aria-pressed={design === entry.value}
                                 className={`rounded-lg p-2 border-2 cursor-pointer transition ${
                                     design === entry.value
-                                        ? "border-[#007185]"
+                                        ? "border-accent-ink"
                                         : "border-transparent hover:border-slate-300"
                                 }`}
                             >
@@ -221,7 +221,7 @@ const GiftCardsClient = ({ name, balance: initialBalance, history: initialHistor
                                 aria-pressed={amount === preset}
                                 className={`px-4 py-1.5 rounded-full border text-sm cursor-pointer ${
                                     amount === preset
-                                        ? "bg-amazon-blue_light text-white border-amazon-blue_light"
+                                        ? "bg-ink-800 text-white border-ink-800"
                                         : "border-slate-400 hover:bg-slate-100"
                                 }`}
                             >
@@ -231,7 +231,7 @@ const GiftCardsClient = ({ name, balance: initialBalance, history: initialHistor
 
                         <button
                             onClick={issueHandler}
-                            className="px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                            className="px-6 py-2 rounded-full bg-accent text-ink-900 cursor-pointer"
                         >
                             Issue claim code
                         </button>
@@ -246,7 +246,7 @@ const GiftCardsClient = ({ name, balance: initialBalance, history: initialHistor
                                     setCode(issued);
                                     setTab("redeem");
                                 }}
-                                className="text-[#007185] hover:underline cursor-pointer mt-2"
+                                className="text-accent-ink hover:underline cursor-pointer mt-2"
                             >
                                 Redeem it now
                             </button>
@@ -272,7 +272,7 @@ const GiftCardsClient = ({ name, balance: initialBalance, history: initialHistor
                                 aria-pressed={amount === preset}
                                 className={`px-4 py-1.5 rounded-full border text-sm cursor-pointer ${
                                     amount === preset
-                                        ? "bg-amazon-blue_light text-white border-amazon-blue_light"
+                                        ? "bg-ink-800 text-white border-ink-800"
                                         : "border-slate-400 hover:bg-slate-100"
                                 }`}
                             >
@@ -283,7 +283,7 @@ const GiftCardsClient = ({ name, balance: initialBalance, history: initialHistor
 
                     <button
                         onClick={issueHandler}
-                        className="mt-5 px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                        className="mt-5 px-6 py-2 rounded-full bg-accent text-ink-900 cursor-pointer"
                     >
                         Reload ${amount}
                     </button>
@@ -296,7 +296,7 @@ const GiftCardsClient = ({ name, balance: initialBalance, history: initialHistor
                                     setCode(issued);
                                     setTab("redeem");
                                 }}
-                                className="text-[#007185] hover:underline cursor-pointer"
+                                className="text-accent-ink hover:underline cursor-pointer"
                             >
                                 Redeem a gift card
                             </button>{" "}

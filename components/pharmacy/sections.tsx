@@ -21,13 +21,13 @@ import {
 import { PharmacyWordmark } from "./PharmacyNav";
 
 const orangeButton =
-    "inline-block bg-[#febd69] hover:bg-[#f3b45f] text-black font-semibold px-6 py-3 rounded transition";
+    "inline-block bg-accent hover:bg-accent text-black font-semibold px-6 py-3 rounded transition";
 
 export const PromoBanner = () => (
-    <div className="bg-[#1b45d6] text-white">
+    <div className="bg-accent-ink text-white">
         <div className="max-w-[1500px] mx-auto px-6 py-4 flex flex-wrap items-center justify-center gap-6 text-center">
             <p className="font-bold">
-                Need treatment? Get connected to a One Medical provider for $0 with Prime
+                Need treatment? Get connected to a One Medical provider for $0 with Plus
             </p>
             <Link href={placeholder("One Medical terms")} className="underline">
                 Terms apply
@@ -37,21 +37,21 @@ export const PromoBanner = () => (
 );
 
 export const Hero = () => (
-    <section className="bg-[#eef6f1]">
+    <section className="bg-success-soft">
         <div className="max-w-[1500px] mx-auto px-6 grid md:grid-cols-2 gap-8 items-center py-16">
             <div>
-                <h1 className="text-5xl md:text-6xl font-extrabold text-[#102b3f] leading-[1.05]">
+                <h1 className="text-5xl md:text-6xl font-extrabold text-ink-800 leading-[1.05]">
                     Save time, save money, stay healthy.
                 </h1>
 
                 <Link href="/auth/register" className={`${orangeButton} mt-8`}>
-                    Sign up for Amazon Pharmacy
+                    Sign up for Markaz Pharmacy
                 </Link>
 
                 <p className="mt-6">
                     <Link
                         href={placeholder("Check if we accept your insurance")}
-                        className="text-[#007a72] font-semibold hover:underline"
+                        className="text-success font-semibold hover:underline"
                     >
                         Check if we accept your insurance ›
                     </Link>
@@ -77,18 +77,18 @@ const benefits = [
 ];
 
 export const BenefitsStrip = () => (
-    <section className="bg-[#eef6f1] border-t border-white">
+    <section className="bg-success-soft border-t border-white">
         <div className="max-w-[1500px] mx-auto px-6 py-6 flex flex-wrap items-center gap-x-16 gap-y-3">
             {benefits.map((benefit) => (
                 <p key={benefit} className="flex items-center gap-2">
-                    <CheckCircleIcon className="w-6 h-6 text-[#00a19a]" />
+                    <CheckCircleIcon className="w-6 h-6 text-success" />
                     {benefit}
                 </p>
             ))}
 
             <Link
-                href={placeholder("All Amazon Pharmacy benefits")}
-                className="ml-auto text-[#007a72] font-semibold hover:underline"
+                href={placeholder("All Markaz Pharmacy benefits")}
+                className="ml-auto text-success font-semibold hover:underline"
             >
                 See all benefits +
             </Link>
@@ -99,15 +99,15 @@ export const BenefitsStrip = () => (
 const savings = [
     {
         art: <PrimeSavingsArt />,
-        title: "Prime savings",
-        copy: "Save up to 80%* with exclusive discounts for Prime members.",
-        cta: "Learn more about Prime savings ›",
+        title: "Plus savings",
+        copy: "Save up to 80%* with exclusive discounts for Plus members.",
+        cta: "Learn more about Plus savings ›",
     },
     {
         art: <RxPassArt />,
-        title: "RxPass",
-        copy: "Prime members, get as many eligible meds as you take for one $5-a-month subscription.**",
-        cta: "Learn more about RxPass ›",
+        title: "Rx Saver",
+        copy: "Plus members, get as many eligible meds as you take for one $5-a-month subscription.**",
+        cta: "Learn more about Rx Saver ›",
     },
     {
         art: <CouponArt />,
@@ -118,11 +118,11 @@ const savings = [
 ];
 
 export const SpendLess = () => (
-    <section className="bg-[#f3e8f2]">
+    <section className="bg-accent-soft">
         <div className="max-w-[1400px] mx-auto px-6 py-16 text-center">
-            <h2 className="text-4xl font-extrabold text-[#102b3f]">More ways to spend less</h2>
+            <h2 className="text-4xl font-extrabold text-ink-800">More ways to spend less</h2>
             <p className="mt-3 text-lg">
-                From coupons to Prime member savings, we work hard to find you low prices.
+                From coupons to Plus member savings, we work hard to find you low prices.
             </p>
 
             <div className="grid md:grid-cols-3 gap-6 mt-10 text-left">
@@ -134,7 +134,7 @@ export const SpendLess = () => (
                             <p className="mt-2 text-slate-700">{card.copy}</p>
                             <Link
                                 href={placeholder(card.title)}
-                                className="inline-block mt-4 text-[#007a72] font-semibold hover:underline"
+                                className="inline-block mt-4 text-success font-semibold hover:underline"
                             >
                                 {card.cta}
                             </Link>
@@ -147,12 +147,12 @@ export const SpendLess = () => (
 );
 
 export const InsuranceSection = () => (
-    <section className="bg-[#e7f6fb]">
+    <section className="bg-accent-soft">
         <div className="max-w-[1400px] mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
             <InsuranceCardArt />
 
             <div>
-                <h2 className="text-4xl font-extrabold text-[#102b3f]">Most insurance plans accepted</h2>
+                <h2 className="text-4xl font-extrabold text-ink-800">Most insurance plans accepted</h2>
                 <p className="mt-4 text-lg">
                     We calculate your copay automatically, so you never have to wonder what&apos;s covered.
                 </p>
@@ -168,17 +168,17 @@ export const InsuranceSection = () => (
 );
 
 export const CaregiverSection = () => (
-    <section className="bg-[#f3e8f2]">
+    <section className="bg-accent-soft">
         <div className="max-w-[1400px] mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
-            <div className="bg-[#d9c6d8] rounded-xl h-[320px] flex items-end p-4">
-                <span className="bg-[#3f3f46] text-white text-xs px-2 py-1 rounded">Caregiver</span>
+            <div className="bg-accent-soft rounded-xl h-[320px] flex items-end p-4">
+                <span className="bg-fg text-white text-xs px-2 py-1 rounded">Caregiver</span>
             </div>
 
             <div>
-                <span className="inline-block bg-[#00c1a6] text-[#102b3f] text-xs font-bold px-3 py-1 rounded">
+                <span className="inline-block bg-success text-ink-800 text-xs font-bold px-3 py-1 rounded">
                     NEW
                 </span>
-                <h2 className="text-4xl font-extrabold text-[#102b3f] mt-4">
+                <h2 className="text-4xl font-extrabold text-ink-800 mt-4">
                     Get help with your medication
                 </h2>
                 <p className="mt-4 text-lg">
@@ -191,10 +191,10 @@ export const CaregiverSection = () => (
                 </Link>
 
                 <div className="flex items-start gap-3 mt-8">
-                    <UserIcon className="w-8 h-8 text-[#007a72]" />
+                    <UserIcon className="w-8 h-8 text-success" />
                     <p>
                         <span className="font-bold block">Want to help another adult?</span>
-                        Ask them to invite you from their Amazon Pharmacy settings.{" "}
+                        Ask them to invite you from their Markaz Pharmacy settings.{" "}
                         <Link href={placeholder("Caregiver FAQs")} className="underline">
                             See FAQs
                         </Link>
@@ -207,16 +207,16 @@ export const CaregiverSection = () => (
 );
 
 export const DeliverySection = () => (
-    <section className="bg-[#fdf3ec]">
+    <section className="bg-warning-soft">
         <div className="max-w-[1400px] mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
             <div>
-                <h2 className="text-4xl font-extrabold text-[#102b3f]">Goodbye, pharmacy line</h2>
+                <h2 className="text-4xl font-extrabold text-ink-800">Goodbye, pharmacy line</h2>
                 <p className="mt-4 text-lg">
                     We deliver your medication right to your door, with status updates along the way.
                 </p>
 
                 <Link href="/auth/register" className={`${orangeButton} mt-8`}>
-                    Sign up for Amazon Pharmacy
+                    Sign up for Markaz Pharmacy
                 </Link>
 
                 <p className="mt-6">
@@ -232,10 +232,10 @@ export const DeliverySection = () => (
 );
 
 export const HereForYou = () => (
-    <section className="bg-[#eef6f1]">
+    <section className="bg-success-soft">
         <div className="max-w-[1400px] mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
             <div>
-                <h2 className="text-4xl font-extrabold text-[#102b3f]">We&apos;re here for you</h2>
+                <h2 className="text-4xl font-extrabold text-ink-800">We&apos;re here for you</h2>
                 <p className="mt-4 text-lg">
                     Our U.S.-licensed pharmacists check every order before it goes out. Have a question for
                     them? Reach out anytime, day or night.
@@ -253,7 +253,7 @@ export const HereForYou = () => (
                 </div>
             </div>
 
-            <div className="h-[320px] rounded-full bg-[#dff1e6]" />
+            <div className="h-[320px] rounded-full bg-success-soft" />
         </div>
     </section>
 );
@@ -261,7 +261,7 @@ export const HereForYou = () => (
 const steps = [
     {
         icon: DevicePhoneMobileIcon,
-        title: "1. Sign up for Amazon Pharmacy",
+        title: "1. Sign up for Markaz Pharmacy",
         copy: "It's simple. And free, always.",
         link: { label: "Sign in or sign up", href: "/auth/signin?callbackUrl=/pharmacy" },
     },
@@ -280,21 +280,21 @@ const steps = [
 export const HowItWorks = () => (
     <section className="bg-white">
         <div className="max-w-[1400px] mx-auto px-6 py-16 text-center">
-            <h2 className="text-4xl font-extrabold text-[#102b3f]">How it works</h2>
+            <h2 className="text-4xl font-extrabold text-ink-800">How it works</h2>
 
             <Link
-                href={placeholder("Discover Amazon Pharmacy")}
-                className="inline-flex items-center gap-2 mt-4 text-[#007a72] font-semibold hover:underline"
+                href={placeholder("Discover Markaz Pharmacy")}
+                className="inline-flex items-center gap-2 mt-4 text-success font-semibold hover:underline"
             >
                 <PlayCircleIcon className="w-7 h-7" />
-                Discover Amazon Pharmacy (0:47)
+                Discover Markaz Pharmacy (0:47)
             </Link>
 
             <div className="grid md:grid-cols-3 gap-10 mt-12">
                 {steps.map((step) => (
                     <div key={step.title}>
-                        <div className="w-40 h-40 mx-auto rounded-full bg-[#eef6f1] flex items-center justify-center">
-                            <step.icon className="w-16 h-16 text-[#007a72]" />
+                        <div className="w-40 h-40 mx-auto rounded-full bg-success-soft flex items-center justify-center">
+                            <step.icon className="w-16 h-16 text-success" />
                         </div>
                         <h3 className="font-bold text-lg mt-6">{step.title}</h3>
                         <p className="mt-2 text-slate-700">{step.copy}</p>
@@ -308,8 +308,8 @@ export const HowItWorks = () => (
             </div>
 
             <Link
-                href={placeholder("How Amazon Pharmacy works")}
-                className="inline-block mt-12 bg-[#007a72] hover:bg-[#00615b] text-white font-semibold px-8 py-3 rounded transition"
+                href={placeholder("How Markaz Pharmacy works")}
+                className="inline-block mt-12 bg-success hover:bg-success text-white font-semibold px-8 py-3 rounded transition"
             >
                 Learn more about how it works
             </Link>
@@ -323,11 +323,11 @@ const testimonials = [
         name: "Anita F",
     },
     {
-        quote: "Ordering from Amazon is so simple. I don't have to wait in line, and when I order it shows up at the door.",
+        quote: "Ordering from Markaz is so simple. I don't have to wait in line, and when I order it shows up at the door.",
         name: "Louis D",
     },
     {
-        quote: "I don't have to follow up with my doctor's office for refills anymore. Amazon Pharmacy handles everything.",
+        quote: "I don't have to follow up with my doctor's office for refills anymore. Markaz Pharmacy handles everything.",
         name: "Meredith M",
     },
     {
@@ -337,21 +337,21 @@ const testimonials = [
 ];
 
 export const Testimonials = () => (
-    <section className="bg-[#f4f9fb]">
+    <section className="bg-accent-soft">
         <div className="max-w-[1400px] mx-auto px-6 py-16 text-center">
-            <h2 className="text-4xl font-extrabold text-[#102b3f]">What customers are saying</h2>
+            <h2 className="text-4xl font-extrabold text-ink-800">What customers are saying</h2>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
                 {testimonials.map((entry) => (
                     <figure key={entry.name} className="bg-white border border-slate-200 rounded-lg p-6">
                         <div className="flex justify-center gap-1">
                             {[0, 1, 2, 3, 4].map((i) => (
-                                <StarIcon key={i} className="w-5 h-5 text-[#00a19a]" />
+                                <StarIcon key={i} className="w-5 h-5 text-success" />
                             ))}
                         </div>
                         <blockquote className="font-bold mt-4">“{entry.quote}”</blockquote>
                         <figcaption className="text-sm text-slate-600 mt-4">
-                            – {entry.name}, Amazon Pharmacy customer
+                            – {entry.name}, Markaz Pharmacy customer
                         </figcaption>
                     </figure>
                 ))}
@@ -363,7 +363,7 @@ export const Testimonials = () => (
 const explore = [
     {
         title: "One Medical Membership",
-        copy: "Get on-demand medical care for $99/year with Prime, or book a visit at our 200+ offices.",
+        copy: "Get on-demand medical care for $99/year with Plus, or book a visit at our 200+ offices.",
     },
     {
         title: "One Medical On-Demand Care (formerly Pay-Per-Visit)",
@@ -372,21 +372,21 @@ const explore = [
 ];
 
 export const MoreToExplore = () => (
-    <section className="bg-[#e3efe9]">
+    <section className="bg-success-soft">
         <div className="max-w-[1200px] mx-auto px-6 py-16 text-center">
-            <h2 className="text-4xl font-extrabold text-[#102b3f]">More to explore</h2>
-            <p className="mt-3 text-lg">Discover other ways Amazon can help you stay healthy.</p>
+            <h2 className="text-4xl font-extrabold text-ink-800">More to explore</h2>
+            <p className="mt-3 text-lg">Discover other ways Markaz can help you stay healthy.</p>
 
             <div className="grid md:grid-cols-2 gap-6 mt-10">
                 {explore.map((card) => (
                     <article key={card.title} className="bg-white rounded-xl overflow-hidden">
-                        <div className="h-[280px] bg-[#cfe3d8]" />
+                        <div className="h-[280px] bg-success-soft" />
                         <div className="p-6">
                             <h3 className="font-bold">{card.title}</h3>
                             <p className="mt-2 text-slate-700">{card.copy}</p>
                             <Link
                                 href={placeholder(card.title)}
-                                className="inline-block mt-4 text-[#007a72] font-semibold hover:underline"
+                                className="inline-block mt-4 text-success font-semibold hover:underline"
                             >
                                 Learn more ›
                             </Link>
@@ -399,12 +399,12 @@ export const MoreToExplore = () => (
 );
 
 export const CtaBand = () => (
-    <section className="bg-[#0b3b3c] text-white">
+    <section className="bg-success text-white">
         <div className="max-w-[1400px] mx-auto px-6 py-16 text-center">
             <h2 className="text-4xl font-extrabold">Your medication, delivered.</h2>
 
             <Link href="/auth/register" className={`${orangeButton} mt-8`}>
-                Sign up for Amazon Pharmacy
+                Sign up for Markaz Pharmacy
             </Link>
 
             <p className="mt-6">
@@ -422,14 +422,14 @@ export const PharmacyFooter = () => (
             <div className="flex flex-wrap items-start justify-between gap-6">
                 <div>
                     <PharmacyWordmark />
-                    <ul className="flex flex-wrap items-center gap-6 mt-5 text-[#007a72]">
+                    <ul className="flex flex-wrap items-center gap-6 mt-5 text-success">
                         <li>
                             <Link href="/pharmacy" className="hover:underline">
                                 Home
                             </Link>
                         </li>
                         <li>
-                            <Link href={placeholder("How Amazon Pharmacy works")} className="hover:underline">
+                            <Link href={placeholder("How Markaz Pharmacy works")} className="hover:underline">
                                 How it works
                             </Link>
                         </li>
@@ -439,7 +439,7 @@ export const PharmacyFooter = () => (
                             </Link>
                         </li>
                         <li>
-                            <Link href={placeholder("Amazon Pharmacy help")} className="hover:underline">
+                            <Link href={placeholder("Markaz Pharmacy help")} className="hover:underline">
                                 Help
                             </Link>
                         </li>
@@ -459,13 +459,13 @@ export const PharmacyFooter = () => (
             </div>
 
             <div className="border-t border-slate-200 mt-8 pt-6 flex flex-wrap items-center gap-8 text-sm">
-                <p>Amazon Pharmacy Home Delivery 4500 S Pleasant Valley Road, Suite 201 Austin, TX 78744-2911</p>
-                <Link href={placeholder("Amazon Pharmacy help")} className="text-[#007a72] hover:underline">
+                <p>Markaz Pharmacy Home Delivery 4500 S Pleasant Valley Road, Suite 201 Austin, TX 78744-2911</p>
+                <Link href={placeholder("Markaz Pharmacy help")} className="text-success hover:underline">
                     Help
                 </Link>
                 <p>Fax: 512.884.5981</p>
-                <Link href={placeholder("Amazon Pharmacy for prescribers")} className="text-[#007a72] hover:underline">
-                    Amazon Pharmacy for prescribers ›
+                <Link href={placeholder("Markaz Pharmacy for prescribers")} className="text-success hover:underline">
+                    Markaz Pharmacy for prescribers ›
                 </Link>
             </div>
 
@@ -484,7 +484,7 @@ export const PharmacyFooter = () => (
                 <p>
                     <span className="font-bold">**RXPASS IS NOT INSURANCE.</span> Only certain medications
                     are eligible for purchase under the program. Other limitations apply, see the full
-                    terms at RxPass Terms of Use or visit our Help Center. You agree to Amazon
+                    terms at Rx Saver Terms of Use or visit our Help Center. You agree to Markaz
                     Pharmacy&apos;s Notice of Privacy Practices.
                 </p>
             </div>

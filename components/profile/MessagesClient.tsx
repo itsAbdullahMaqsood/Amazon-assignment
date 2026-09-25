@@ -13,7 +13,7 @@ import {
 
 import { folders, formatDate } from "@/lib/messages";
 
-const KEY = "amazon:messages";
+const KEY = "markaz:messages";
 const EMPTY: any = { read: [], archived: [] };
 
 // Read and archive state is the one thing the server cannot know, so it lives in
@@ -145,7 +145,7 @@ const MessagesClient = ({ messages }: any) => {
                                 >
                                     <span className="grow">{entry.label}</span>
                                     {unread > 0 && (
-                                        <span className="text-xs font-bold text-[#C7511F]">
+                                        <span className="text-xs font-bold text-accent-deep">
                                             {unread}
                                         </span>
                                     )}
@@ -166,7 +166,7 @@ const MessagesClient = ({ messages }: any) => {
                         <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-3">
                             <button
                                 onClick={() => setSelectedId("")}
-                                className="flex items-center text-sm text-[#007185] hover:underline cursor-pointer"
+                                className="flex items-center text-sm text-accent-ink hover:underline cursor-pointer"
                             >
                                 <ChevronLeftIcon className="h-4" />
                                 Back to {folders.find((entry) => entry.value === folder)?.label}
@@ -175,7 +175,7 @@ const MessagesClient = ({ messages }: any) => {
                             <div className="ml-auto flex items-center gap-4">
                                 <button
                                     onClick={() => setRead(selected.id, false)}
-                                    className="flex items-center gap-1 text-sm text-[#007185] hover:underline cursor-pointer"
+                                    className="flex items-center gap-1 text-sm text-accent-ink hover:underline cursor-pointer"
                                 >
                                     <EnvelopeIcon className="h-4" />
                                     Mark as unread
@@ -183,7 +183,7 @@ const MessagesClient = ({ messages }: any) => {
 
                                 <button
                                     onClick={() => setArchived(selected.id, !archived.has(selected.id))}
-                                    className="flex items-center gap-1 text-sm text-[#007185] hover:underline cursor-pointer"
+                                    className="flex items-center gap-1 text-sm text-accent-ink hover:underline cursor-pointer"
                                 >
                                     {archived.has(selected.id) ? (
                                         <ArrowUturnLeftIcon className="h-4" />
@@ -211,7 +211,7 @@ const MessagesClient = ({ messages }: any) => {
                             {selected.href && (
                                 <Link
                                     href={selected.href}
-                                    className="inline-block mt-6 px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark"
+                                    className="inline-block mt-6 px-6 py-2 rounded-full bg-accent text-ink-900"
                                 >
                                     View order details
                                 </Link>
@@ -227,7 +227,7 @@ const MessagesClient = ({ messages }: any) => {
                         </p>
                         <Link
                             href="/profile/orders"
-                            className="inline-block mt-5 px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark"
+                            className="inline-block mt-5 px-6 py-2 rounded-full bg-accent text-ink-900"
                         >
                             Go to Your Orders
                         </Link>
@@ -244,7 +244,7 @@ const MessagesClient = ({ messages }: any) => {
                                 >
                                     <div className="flex items-start gap-3 px-4 py-3 hover:bg-slate-50">
                                         {unread ? (
-                                            <EnvelopeIcon className="h-5 shrink-0 mt-0.5 text-[#C7511F]" />
+                                            <EnvelopeIcon className="h-5 shrink-0 mt-0.5 text-accent-deep" />
                                         ) : (
                                             <EnvelopeOpenIcon className="h-5 shrink-0 mt-0.5 text-slate-400" />
                                         )}
@@ -255,7 +255,7 @@ const MessagesClient = ({ messages }: any) => {
                                         >
                                             <p className="text-xs text-slate-600">{message.from}</p>
                                             <p
-                                                className={`text-sm ${unread ? "font-bold" : ""} text-[#0F5FA6]`}
+                                                className={`text-sm ${unread ? "font-bold" : ""} text-accent-ink`}
                                             >
                                                 {message.subject}
                                             </p>
@@ -272,7 +272,7 @@ const MessagesClient = ({ messages }: any) => {
                                                 onClick={() =>
                                                     setArchived(message.id, !archived.has(message.id))
                                                 }
-                                                className="text-xs text-[#007185] hover:underline cursor-pointer mt-1"
+                                                className="text-xs text-accent-ink hover:underline cursor-pointer mt-1"
                                             >
                                                 {archived.has(message.id) ? "Restore" : "Archive"}
                                             </button>

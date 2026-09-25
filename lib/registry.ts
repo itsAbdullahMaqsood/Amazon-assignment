@@ -47,7 +47,7 @@ export const toRegistryResult = (user: any, list: any) => {
     return {
         _id: String(list._id),
         name: list.name,
-        owner: user.name || "Amazon customer",
+        owner: user.name || "Markaz customer",
         privacy: list.privacy || "private",
         privacyLabel: privacyLabel(list.privacy || "private"),
         occasion: key,
@@ -96,7 +96,7 @@ export const registryDate = (value: string) =>
 export const reasons = [
     {
         title: "Earth's biggest selection",
-        body: "Add items from Amazon to create a gift registry for any occasion.",
+        body: "Add items from Markaz to create a gift registry for any occasion.",
         art: "globe",
     },
     {
@@ -129,7 +129,7 @@ export const uniqueCards = [
     },
     {
         title: "Easy to shop",
-        body: "Shopping an Amazon Registry is a familiar experience for family and friends.",
+        body: "Shopping an Markaz Registry is a familiar experience for family and friends.",
         art: "kitchen",
     },
 ];

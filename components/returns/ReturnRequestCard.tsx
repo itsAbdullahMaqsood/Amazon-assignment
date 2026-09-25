@@ -45,7 +45,7 @@ const ReturnRequestCard = ({ request }: any) => {
                 <p className="uppercase text-slate-600">Order # {orderNumber(request.orderId)}</p>
                 <Link
                     href={`/order/${request.orderId}`}
-                    className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline"
+                    className="text-accent-ink hover:text-accent-deep hover:underline"
                 >
                     View order details
                 </Link>

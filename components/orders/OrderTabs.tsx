@@ -7,7 +7,7 @@ import { placeholder } from "@/components/profile/accountLinks";
 // "Amazon Pay" is not part of this build.
 const href = (value: string, params: string) => {
     if (value === "buy-again") return "/buy-again";
-    if (value === "amazon-pay") return placeholder("Amazon Pay");
+    if (value === "amazon-pay") return placeholder("Markaz Pay");
 
     const query = new URLSearchParams(params);
 
@@ -33,8 +33,8 @@ const OrderTabs = ({ active, params }: any) => {
                             aria-current={active === tab.value ? "page" : undefined}
                             className={`block pb-2 -mb-px border-b-[3px] ${
                                 active === tab.value
-                                    ? "border-[#E77600] font-bold text-black"
-                                    : "border-transparent text-[#0F5FA6] hover:text-[#C7511F] hover:underline"
+                                    ? "border-accent-deep font-bold text-black"
+                                    : "border-transparent text-accent-ink hover:text-accent-deep hover:underline"
                             }`}
                         >
                             {tab.label}

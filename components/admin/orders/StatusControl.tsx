@@ -91,7 +91,7 @@ const StatusControl = ({ order, onUpdated, compact = false }: any) => {
                     value={choice}
                     onChange={(e) => setChoice(e.target.value)}
                     disabled={busy}
-                    className={`h-9 rounded-lg border border-slate-300 bg-white px-2 text-sm outline-none focus:border-[#007185] focus:ring-2 focus:ring-[#007185]/25 ${
+                    className={`h-9 rounded-lg border border-slate-300 bg-white px-2 text-sm outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent-ink/25 ${
                         compact ? "w-36" : "w-44"
                     }`}
                 >
@@ -128,7 +128,7 @@ const StatusControl = ({ order, onUpdated, compact = false }: any) => {
                         <div className="flex gap-3">
                             <ExclamationTriangleIcon className="w-6 h-6 shrink-0 text-red-600" />
                             <div>
-                                <h2 id={`${selectId}-title`} className="font-semibold text-[#0F1111]">
+                                <h2 id={`${selectId}-title`} className="font-semibold text-fg">
                                     Cancel order {shortId(order._id)}?
                                 </h2>
                                 <div id={`${selectId}-desc`} className="text-sm text-slate-600 mt-2 space-y-2">

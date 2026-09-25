@@ -25,7 +25,7 @@ export const POST = async (req: Request) => {
         const token = passwordResetToken({ id: user._id.toString() });
         const url = `${process.env.BASE_URL}/auth/reset/${token}`;
 
-        await sendEmail(email, url, "Reset password", "Password reset", passwordResetTemplate);
+        await sendEmail(email, url, "Reset password", "Reset your Markaz password", passwordResetTemplate);
 
         return NextResponse.json({
             message: "Reset Link has been send to your account. please use it for reset your password.",

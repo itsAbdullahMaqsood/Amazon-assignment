@@ -31,7 +31,7 @@ const ServiceCard = ({ service, compact = false }: any) => {
 
                 <span
                     className={`text-xs font-semibold px-2 py-1 rounded ${
-                        active ? "bg-[#e3f2e1] text-[#1b6b2a]" : "bg-slate-100 text-slate-600"
+                        active ? "bg-success-soft text-success" : "bg-slate-100 text-slate-600"
                     }`}
                 >
                     {active ? "Active" : "Inactive"}
@@ -50,7 +50,7 @@ const ServiceCard = ({ service, compact = false }: any) => {
 
                 <span
                     className={`text-xs font-semibold px-2 py-1 rounded ${
-                        active ? "bg-[#e3f2e1] text-[#1b6b2a]" : "bg-slate-100 text-slate-600"
+                        active ? "bg-success-soft text-success" : "bg-slate-100 text-slate-600"
                     }`}
                 >
                     {active ? "Active" : "Not subscribed"}
@@ -100,7 +100,7 @@ const ServiceCard = ({ service, compact = false }: any) => {
                     <button
                         type="button"
                         onClick={() => subscribeService(service.id)}
-                        className="px-5 py-2 rounded-full font-semibold bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                        className="px-5 py-2 rounded-full font-semibold bg-accent text-ink-900 cursor-pointer"
                     >
                         Start {service.trialCopy.toLowerCase()}
                     </button>

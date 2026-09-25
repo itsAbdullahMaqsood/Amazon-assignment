@@ -20,7 +20,7 @@ const statusLine = (order: any) => {
 };
 
 const yellow =
-    "px-4 py-1.5 rounded-full text-sm text-center bg-[#FFD814] hover:bg-[#F7CA00] text-black";
+    "px-4 py-1.5 rounded-full text-sm text-center bg-accent hover:bg-accent-strong text-black";
 const outline =
     "px-4 py-1.5 rounded-full text-sm text-center border border-slate-400 bg-white hover:bg-slate-100 shadow-sm";
 
@@ -31,7 +31,7 @@ const OrderCard = ({ order, returnable }: any) => {
 
     return (
         <article className="border border-slate-300 rounded-lg overflow-hidden bg-white">
-            <div className="bg-[#F0F2F2] border-b border-slate-300 px-4 py-3 flex flex-wrap gap-8 text-xs text-slate-700">
+            <div className="bg-surface-muted border-b border-slate-300 px-4 py-3 flex flex-wrap gap-8 text-xs text-slate-700">
                 <div>
                     <p className="uppercase">Order placed</p>
                     <p className="text-sm text-black">{formatDate(order.createdAt)}</p>
@@ -44,7 +44,7 @@ const OrderCard = ({ order, returnable }: any) => {
 
                 <div>
                     <p className="uppercase">Ship to</p>
-                    <p className="text-sm text-[#0F5FA6]">
+                    <p className="text-sm text-accent-ink">
                         {order.shippingAddress?.firstName} {order.shippingAddress?.lastName}
                     </p>
                 </div>
@@ -52,11 +52,11 @@ const OrderCard = ({ order, returnable }: any) => {
                 <div className="md:ml-auto md:text-right">
                     <p className="uppercase">Order # {shortId}</p>
                     <p className="text-sm">
-                        <Link href={`/order/${order._id}`} className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline">
+                        <Link href={`/order/${order._id}`} className="text-accent-ink hover:text-accent-deep hover:underline">
                             View order details
                         </Link>
                         <span className="mx-2 text-slate-400">|</span>
-                        <Link href={`/order/${order._id}`} className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline">
+                        <Link href={`/order/${order._id}`} className="text-accent-ink hover:text-accent-deep hover:underline">
                             Invoice
                         </Link>
                     </p>
@@ -85,7 +85,7 @@ const OrderCard = ({ order, returnable }: any) => {
                                 <div className="grow min-w-0">
                                     <Link
                                         href={href}
-                                        className="text-sm text-[#0F5FA6] hover:text-[#C7511F] hover:underline line-clamp-2"
+                                        className="text-sm text-accent-ink hover:text-accent-deep hover:underline line-clamp-2"
                                     >
                                         {line.name}
                                     </Link>
@@ -105,13 +105,13 @@ const OrderCard = ({ order, returnable }: any) => {
                                     <div className="flex flex-wrap gap-4 mt-2 text-xs">
                                         <Link
                                             href={`${href}#customer-reviews`}
-                                            className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline"
+                                            className="text-accent-ink hover:text-accent-deep hover:underline"
                                         >
                                             Write a product review
                                         </Link>
                                         <Link
                                             href={`/order/${order._id}`}
-                                            className="text-[#0F5FA6] hover:text-[#C7511F] hover:underline"
+                                            className="text-accent-ink hover:text-accent-deep hover:underline"
                                         >
                                             Get product support
                                         </Link>

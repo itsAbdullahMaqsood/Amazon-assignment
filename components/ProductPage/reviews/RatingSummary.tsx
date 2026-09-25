@@ -43,18 +43,18 @@ const RatingSummary = ({ average, reviews, ratings, filter, onFilter }: any) => 
                                 total ? "cursor-pointer hover:bg-slate-100" : "cursor-default"
                             } ${active ? "bg-slate-100 font-semibold" : ""}`}
                         >
-                            <span className="w-14 shrink-0 text-left text-[#0F5FA6] group-hover:text-[#C7511F] group-hover:underline">
+                            <span className="w-14 shrink-0 text-left text-accent-ink group-hover:text-accent-deep group-hover:underline">
                                 {rating} star
                             </span>
 
-                            <span className="grow h-5 rounded-sm bg-[#F0F2F2] border border-slate-400 overflow-hidden">
+                            <span className="grow h-5 rounded-sm bg-surface-muted border border-slate-400 overflow-hidden">
                                 <span
-                                    className="block h-full bg-linear-to-r from-amazon-orange to-[#F0A32E]"
+                                    className="block h-full bg-linear-to-r from-accent to-accent"
                                     style={{ width: `${percentage}%` }}
                                 />
                             </span>
 
-                            <span className="w-10 shrink-0 text-right text-[#0F5FA6] group-hover:text-[#C7511F] group-hover:underline">
+                            <span className="w-10 shrink-0 text-right text-accent-ink group-hover:text-accent-deep group-hover:underline">
                                 {percentage}%
                             </span>
                         </button>

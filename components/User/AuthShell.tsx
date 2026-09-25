@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+
+import Wordmark from "@/components/ui/Wordmark";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 
@@ -34,13 +36,7 @@ export const OAuthRow = ({ verb = "Sign in" }: any) => {
 export const AuthCard = ({ children }: any) => (
     <div className="w-full px-4 sm:w-3/5 md:w-3/5 lg:w-2/5 pt-8 pb-16 mx-auto">
         <Link href="/" className="flex justify-center">
-            <Image
-                src="/assets/images/amazon-dark.png"
-                alt="amazon"
-                width={200}
-                height={60}
-                className="w-28 md:w-48 object-contain"
-            />
+            <Wordmark tone="dark" size="lg" />
         </Link>
 
         {children}

@@ -83,15 +83,15 @@ const RegisterPage = ({ business, seller, email = "" }: any) => {
             {loading && <DotLoaderSpinner loading={loading} />}
 
             <ApCard>
-                <h1 className="text-[28px] leading-9 text-[#0F1111]">
+                <h1 className="text-[28px] leading-9 text-fg">
                     {business ? "Create a Business account" : seller ? "Create a Selling account" : "Create account"}
                 </h1>
 
                 {error && <ApAlert>{error}</ApAlert>}
 
                 {success && (
-                    <div className="border border-[#067D62] bg-[#f5fbf9] rounded p-3 mt-3">
-                        <p className="text-[13px] text-[#0F1111]">{success}</p>
+                    <div className="border border-success bg-success-soft rounded p-3 mt-3">
+                        <p className="text-[13px] text-fg">{success}</p>
                     </div>
                 )}
 
@@ -110,8 +110,8 @@ const RegisterPage = ({ business, seller, email = "" }: any) => {
                             autoComplete="new-password"
                         />
 
-                        <p className="flex items-start gap-1 text-[12px] text-[#0F1111] mt-1">
-                            <InformationCircleIcon className="h-4 w-4 text-[#0F5FA6] shrink-0" />
+                        <p className="flex items-start gap-1 text-[12px] text-fg mt-1">
+                            <InformationCircleIcon className="h-4 w-4 text-accent-ink shrink-0" />
                             Passwords must be at least 6 characters.
                         </p>
 
@@ -128,32 +128,32 @@ const RegisterPage = ({ business, seller, email = "" }: any) => {
                     </form>
                 </FormProvider>
 
-                <p className="text-[12px] text-[#0F1111] mt-5">
-                    By creating an account, you agree to Amazon&apos;s{" "}
-                    <Link href="/customer-service/security-privacy" className="text-[#0066c0] hover:underline hover:text-[#c45500]">
+                <p className="text-[12px] text-fg mt-5">
+                    By creating an account, you agree to Markaz&apos;s{" "}
+                    <Link href="/customer-service/security-privacy" className="text-accent-ink hover:underline hover:text-accent-deep">
                         Conditions of Use
                     </Link>{" "}
                     and{" "}
-                    <Link href="/profile/data" className="text-[#0066c0] hover:underline hover:text-[#c45500]">
+                    <Link href="/profile/data" className="text-accent-ink hover:underline hover:text-accent-deep">
                         Privacy Notice
                     </Link>
                     .
                 </p>
 
-                <div className="h-px bg-[#e7e7e7] my-5" />
+                <div className="h-px bg-surface-muted my-5" />
 
                 {!business && (
-                    <p className="text-[13px] text-[#0F1111]">
+                    <p className="text-[13px] text-fg">
                         Buying for work?{" "}
-                        <Link href="/business" className="text-[#0066c0] hover:underline hover:text-[#c45500]">
+                        <Link href="/business" className="text-accent-ink hover:underline hover:text-accent-deep">
                             Create a free business account
                         </Link>
                     </p>
                 )}
 
-                <p className="text-[13px] text-[#0F1111] mt-3">
+                <p className="text-[13px] text-fg mt-3">
                     Already have an account?{" "}
-                    <Link href="/auth/signin" className="text-[#0066c0] hover:underline hover:text-[#c45500]">
+                    <Link href="/auth/signin" className="text-accent-ink hover:underline hover:text-accent-deep">
                         Sign in ›
                     </Link>
                 </p>

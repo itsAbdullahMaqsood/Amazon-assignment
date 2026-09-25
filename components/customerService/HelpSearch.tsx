@@ -38,7 +38,7 @@ const HelpSearch = ({ topics }: any) => {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search our help library"
-                    className="grow h-11 px-4 rounded-l-md text-black bg-white outline-none focus:ring-3 focus:ring-[#f90]"
+                    className="grow h-11 px-4 rounded-l-md text-black bg-white outline-none focus:ring-3 focus:ring-accent"
                 />
 
                 <button

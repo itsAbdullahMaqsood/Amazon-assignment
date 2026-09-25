@@ -86,13 +86,13 @@ const AlexaPanel = ({ open, onClose }: any) => {
     // text-white and whitespace-nowrap, and shared that nav's stacking and
     // overflow context.
     return createPortal(
-        <div className="text-[#0f1111] whitespace-normal normal-case">
+        <div className="text-fg whitespace-normal normal-case">
             <div className="fixed inset-0 bg-black/30 z-40" onClick={onClose} aria-hidden="true" />
 
             <aside
                 role="dialog"
-                aria-label="Alexa for shopping"
-                className="fixed top-0 left-0 z-50 h-screen w-full sm:w-[430px] bg-[#f7f7f7] flex flex-col shadow-2xl"
+                aria-label="Shabana for shopping"
+                className="fixed top-0 left-0 z-50 h-screen w-full sm:w-[430px] bg-surface-muted flex flex-col shadow-2xl"
             >
                 <header className="flex items-center gap-2 px-5 py-4 bg-white">
                     <AlexaWordmark />
@@ -101,7 +101,7 @@ const AlexaPanel = ({ open, onClose }: any) => {
                         <button aria-label="Conversation options" className="p-1 cursor-pointer">
                             <EllipsisVerticalIcon className="w-6 h-6" />
                         </button>
-                        <button onClick={onClose} aria-label="Close Alexa" className="p-1 cursor-pointer">
+                        <button onClick={onClose} aria-label="Close Shabana" className="p-1 cursor-pointer">
                             <XMarkIcon className="w-7 h-7" />
                         </button>
                     </div>
@@ -134,7 +134,7 @@ const AlexaPanel = ({ open, onClose }: any) => {
                                                     <h4 className="font-bold">{group.title}</h4>
                                                     <Link
                                                         href={`/browse?search=${encodeURIComponent(group.title)}`}
-                                                        className="text-[#0F5FA6] hover:underline"
+                                                        className="text-accent-ink hover:underline"
                                                     >
                                                         see more
                                                     </Link>
@@ -156,7 +156,7 @@ const AlexaPanel = ({ open, onClose }: any) => {
                                                     <button
                                                         key={followUp}
                                                         onClick={() => send(followUp)}
-                                                        className="bg-[#bcd9f7] text-[#0f2f5b] rounded-full px-4 py-2.5 text-left font-medium cursor-pointer"
+                                                        className="bg-accent-soft text-ink-950 rounded-full px-4 py-2.5 text-left font-medium cursor-pointer"
                                                     >
                                                         {followUp}
                                                     </button>
@@ -176,7 +176,7 @@ const AlexaPanel = ({ open, onClose }: any) => {
                                 )
                             )}
 
-                            {loading && <p className="text-slate-500">Alexa is thinking…</p>}
+                            {loading && <p className="text-slate-500">Shabana is thinking…</p>}
                             {error && <p className="text-red-500 text-sm">{error}</p>}
 
                             <div ref={bottomRef} />
@@ -189,7 +189,7 @@ const AlexaPanel = ({ open, onClose }: any) => {
                         e.preventDefault();
                         send(input);
                     }}
-                    className="p-4 bg-[#f7f7f7]"
+                    className="p-4 bg-surface-muted"
                 >
                     <div className="bg-white border border-slate-300 rounded-2xl px-4 pt-4 pb-3">
                         <label htmlFor="alexa-input" className="sr-only">

@@ -15,7 +15,7 @@ import { initialOf, likeCount, likedBy, splitReview } from "./reviewUtils";
 const LONG = 280;
 
 const Chip = ({ children }: any) => (
-    <span className="inline-flex items-center gap-1.5 text-xs text-slate-700 bg-[#F0F2F2] border border-slate-300 rounded-full px-2.5 py-0.5">
+    <span className="inline-flex items-center gap-1.5 text-xs text-slate-700 bg-surface-muted border border-slate-300 rounded-full px-2.5 py-0.5">
         {children}
     </span>
 );
@@ -72,13 +72,13 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                         {initialOf(review.reviewBy?.name)}
                     </span>
                 )}
-                <span className="text-sm">{review.reviewBy?.name || "Amazon Customer"}</span>
+                <span className="text-sm">{review.reviewBy?.name || "Markaz Customer"}</span>
                 {mine && <Chip>Your review</Chip>}
             </div>
 
             <div className="flex items-center gap-2 mt-2">
                 <StarRating value={review.rating} size="w-4 h-4" />
-                {title && <h4 className="font-bold text-sm text-[#0F1111]">{title}</h4>}
+                {title && <h4 className="font-bold text-sm text-fg">{title}</h4>}
             </div>
 
             {date && <p className="text-sm text-slate-600 mt-1">Reviewed on {date}</p>}
@@ -107,7 +107,7 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                 )}
                 {review.fit && <Chip>Fit: {review.fit}</Chip>}
                 {review.verified && (
-                    <span className="inline-flex items-center gap-1 text-xs font-bold text-[#C45500]">
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-accent-deep">
                         <CheckBadgeIcon className="w-4 h-4" />
                         Verified Purchase
                     </span>
@@ -116,7 +116,7 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
 
             {body && (
                 <p
-                    className={`text-sm text-[#0F1111] mt-2 whitespace-pre-line ${
+                    className={`text-sm text-fg mt-2 whitespace-pre-line ${
                         body.length > LONG && !expanded ? "line-clamp-4" : ""
                     }`}
                 >
@@ -128,7 +128,7 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                 <button
                     onClick={() => setExpanded(!expanded)}
                     aria-expanded={expanded}
-                    className="text-sm text-[#007185] hover:text-[#C7511F] hover:underline mt-1 cursor-pointer"
+                    className="text-sm text-accent-ink hover:text-accent-deep hover:underline mt-1 cursor-pointer"
                 >
                     {expanded ? "Read less" : "Read more"}
                 </button>
@@ -141,7 +141,7 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                             key={image.public_url || image.url}
                             onClick={() => setPhoto(i)}
                             aria-label={`Open photo ${i + 1} of ${images.length}`}
-                            className="relative w-20 h-20 rounded-lg overflow-hidden border border-slate-300 cursor-pointer hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#007185]"
+                            className="relative w-20 h-20 rounded-lg overflow-hidden border border-slate-300 cursor-pointer hover:opacity-90 focus-visible:ring-2 focus-visible:ring-accent-ink"
                         >
                             <Image src={image.url} alt="" fill sizes="80px" className="object-cover" />
                         </button>
@@ -159,7 +159,7 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                 {mine ? (
                     <button
                         onClick={onEdit}
-                        className="text-sm text-[#007185] hover:text-[#C7511F] hover:underline cursor-pointer"
+                        className="text-sm text-accent-ink hover:text-accent-deep hover:underline cursor-pointer"
                     >
                         Edit your review
                     </button>
@@ -170,7 +170,7 @@ const ReviewCard = ({ review, productId, userId, onEdit, onVoted }: any) => {
                         aria-pressed={liked}
                         className={`inline-flex items-center gap-1.5 h-9 px-4 rounded-full border text-sm shadow-sm cursor-pointer disabled:opacity-60 ${
                             liked
-                                ? "bg-[#EDFDFF] border-[#007185] text-[#007185]"
+                                ? "bg-accent-soft border-accent-ink text-accent-ink"
                                 : "bg-white border-slate-400 hover:bg-slate-50"
                         }`}
                     >

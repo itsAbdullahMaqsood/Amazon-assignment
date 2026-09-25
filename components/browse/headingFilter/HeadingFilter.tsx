@@ -91,7 +91,7 @@ const HeadingFilter = ({ current, filter, priceHandler, multiPriceHandler }: any
                     className="cursor-pointer mr-1"
                 />
                 {[0, 1, 2, 3].map((i) => (
-                    <StarIcon key={i} className="w-4 h-4 fill-[#FACF19]" />
+                    <StarIcon key={i} className="w-4 h-4 fill-accent" />
                 ))}
                 <span className="text-sm">&amp; up</span>
             </label>

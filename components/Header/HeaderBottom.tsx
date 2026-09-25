@@ -8,14 +8,14 @@ import AlexaLauncher from "@/components/alexa/AlexaLauncher";
 
 // Partner names stay as plain text labels rather than reproduced logos.
 const links = [
-    { label: "Early Prime Deals", href: "/browse?sort=topSelling" },
-    { label: "Prime Video", href: "/prime-video" },
+    { label: "Early Plus Deals", href: "/browse?sort=topSelling" },
+    { label: "Markaz Movies", href: "/movies" },
     { label: "Buy Again", href: "/buy-again" },
     { label: "Groceries", href: "/groceries" },
     { label: "Coupons", href: "/coupons" },
     { label: "Pharmacy", href: "/pharmacy" },
     { label: "Electronics", href: "/browse?category=electronics" },
-    { label: "Amazon Home", href: "/furniture", caret: true },
+    { label: "Markaz Home", href: "/furniture", caret: true },
     { label: "Registry", href: "/registry" },
     { label: "Beauty", href: "/browse?category=beauty" },
     { label: "Whole Foods", href: "/groceries" },
@@ -28,7 +28,7 @@ const HeaderBottom = ({ handleOpenMenu }: any) => {
         <>
             <nav
                 aria-label="Shop by department"
-                className="bg-amazon-blue_dark md:bg-amazon-blue_light text-white flex items-center px-3 md:px-4 text-sm"
+                className="bg-ink-900 md:bg-ink-800 text-white flex items-center px-3 md:px-4 text-sm"
             >
                 <button
                     onClick={handleOpenMenu}
@@ -45,10 +45,10 @@ const HeaderBottom = ({ handleOpenMenu }: any) => {
 
                     <li>
                         <Link
-                            href="/prime"
-                            className="bg-white text-amazon-blue_dark font-semibold rounded-full px-3 py-1"
+                            href="/plus"
+                            className="bg-white text-ink-900 font-semibold rounded-full px-3 py-1"
                         >
-                            Join Prime
+                            Join Plus
                         </Link>
                     </li>
 
@@ -69,7 +69,7 @@ const HeaderBottom = ({ handleOpenMenu }: any) => {
                 </ul>
             </nav>
 
-            <div className="md:hidden bg-amazon-blue_light text-white flex items-center px-3 py-2 text-sm">
+            <div className="md:hidden bg-ink-800 text-white flex items-center px-3 py-2 text-sm">
                 <MapPinIcon className="h-5 mr-1" />
                 <span>Deliver to Germany</span>
             </div>

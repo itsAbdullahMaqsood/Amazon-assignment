@@ -102,13 +102,13 @@ const Page = async () => {
                     <Link
                         key={stat.label}
                         href={stat.href}
-                        className="bg-white rounded-xl border border-slate-200 p-4 hover:border-slate-300 hover:shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-[#007185]"
+                        className="bg-white rounded-xl border border-slate-200 p-4 hover:border-slate-300 hover:shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-accent-ink"
                     >
                         <div className="flex items-center justify-between">
                             <span className="text-sm text-slate-600">{stat.label}</span>
                             <stat.icon className={`w-5 h-5 ${stat.warn ? "text-amber-600" : "text-slate-400"}`} />
                         </div>
-                        <p className="text-2xl font-bold mt-2 text-[#0F1111]">{stat.value}</p>
+                        <p className="text-2xl font-bold mt-2 text-fg">{stat.value}</p>
                         <p className="text-xs text-slate-500 mt-0.5">{stat.note}</p>
                     </Link>
                 ))}
@@ -139,7 +139,7 @@ const Page = async () => {
             </Panel>
 
             <div className="grid lg:grid-cols-2 gap-6">
-                <Panel title="Latest orders" action={<Link href="/admin/dashboard/orders" className="text-sm text-[#007185] hover:underline">View all</Link>}>
+                <Panel title="Latest orders" action={<Link href="/admin/dashboard/orders" className="text-sm text-accent-ink hover:underline">View all</Link>}>
                     {latest.length === 0 ? (
                         <EmptyState title="No orders yet" />
                     ) : (

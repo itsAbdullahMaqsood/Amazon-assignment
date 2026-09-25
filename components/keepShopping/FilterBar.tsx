@@ -36,7 +36,7 @@ const Dropdown = ({ label, active, children }: any) => {
                 aria-haspopup="true"
                 aria-expanded={open}
                 className={`flex items-center gap-2 h-11 px-4 rounded-lg border bg-white text-sm cursor-pointer ${
-                    active ? "border-2 border-[#0F5FA6] font-bold" : "border-slate-400 hover:bg-slate-50"
+                    active ? "border-2 border-accent-ink font-bold" : "border-slate-400 hover:bg-slate-50"
                 }`}
             >
                 {label}
@@ -106,7 +106,7 @@ const FilterBar = ({ current }: any) => {
                         <div className="flex items-center gap-3 mt-3">
                             <button
                                 type="submit"
-                                className="px-4 py-1 rounded-full bg-[#FFD814] hover:bg-[#F7CA00] text-sm cursor-pointer"
+                                className="px-4 py-1 rounded-full bg-accent hover:bg-accent-strong text-sm cursor-pointer"
                             >
                                 Go
                             </button>
@@ -118,7 +118,7 @@ const FilterBar = ({ current }: any) => {
                                         filter({ price: "" });
                                         close();
                                     }}
-                                    className="text-sm text-[#007185] hover:underline cursor-pointer"
+                                    className="text-sm text-accent-ink hover:underline cursor-pointer"
                                 >
                                     Clear
                                 </button>
@@ -136,7 +136,7 @@ const FilterBar = ({ current }: any) => {
                                 <StarIcon
                                     key={i}
                                     className={`w-4 h-4 ${
-                                        i < Number(rating || 4) ? "text-[#FF9900]" : "text-slate-300"
+                                        i < Number(rating || 4) ? "text-accent" : "text-slate-300"
                                     }`}
                                 />
                             ))}
@@ -158,7 +158,7 @@ const FilterBar = ({ current }: any) => {
                                     close();
                                 }}
                                 aria-pressed={rating === tier.value}
-                                className={`block w-full text-left text-sm py-1 hover:text-[#C7511F] cursor-pointer ${
+                                className={`block w-full text-left text-sm py-1 hover:text-accent-deep cursor-pointer ${
                                     rating === tier.value ? "font-bold" : ""
                                 }`}
                             >

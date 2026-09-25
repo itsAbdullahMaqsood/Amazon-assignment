@@ -12,7 +12,7 @@ const LinkCards = () => {
                     <ul className="space-y-2 text-sm">
                         {card.links.map((item: any) => (
                             <li key={item.label}>
-                                <Link href={item.href} className="text-[#0F5FA6] hover:underline">
+                                <Link href={item.href} className="text-accent-ink hover:underline">
                                     {item.label}
                                 </Link>
                             </li>

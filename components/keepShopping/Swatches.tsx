@@ -42,7 +42,7 @@ const Swatches = ({ styles, active, onSelect, href, visible = 6, size = "w-7 h-7
             ))}
 
             {hidden > 0 && (
-                <Link href={href} className="text-sm text-slate-700 underline hover:text-[#C7511F]">
+                <Link href={href} className="text-sm text-slate-700 underline hover:text-accent-deep">
                     +{hidden}
                 </Link>
             )}

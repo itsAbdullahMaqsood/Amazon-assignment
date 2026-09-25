@@ -67,7 +67,7 @@ const CouponsClient = ({
                             </p>
                             <button
                                 onClick={clear}
-                                className="px-6 py-2 rounded-full bg-linear-to-r from-amazon-orange to-yellow-300 text-amazon-blue_dark cursor-pointer"
+                                className="px-6 py-2 rounded-full bg-accent text-ink-900 cursor-pointer"
                             >
                                 Clear Filters
                             </button>

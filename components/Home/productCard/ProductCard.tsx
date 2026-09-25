@@ -51,11 +51,11 @@ const ProductCard = ({ product }: any) => {
             {product.numberReviews > 0 && (
                 <div className="flex items-center gap-1 mt-1">
                     <StarRating value={product.rating} size="w-4 h-4" />
-                    <span className="text-xs text-[#007185]">({product.numberReviews})</span>
+                    <span className="text-xs text-accent-ink">({product.numberReviews})</span>
                 </div>
             )}
 
-            <span className="text-[#B12704] mt-1 flex items-baseline">
+            <span className="text-danger mt-1 flex items-baseline">
                 <span className="text-xs mr-0.5">USD</span>
                 <span className="text-lg font-medium leading-none">{low.whole}</span>
                 <span className="text-xs">{low.cents}</span>
@@ -74,7 +74,7 @@ const ProductCard = ({ product }: any) => {
             )}
 
             {product.subProducts.length > 1 && (
-                <span className="text-xs text-[#007185] mt-0.5">
+                <span className="text-xs text-accent-ink mt-0.5">
                     +{product.subProducts.length - 1} other colour
                     {product.subProducts.length > 2 ? "s" : ""}
                 </span>

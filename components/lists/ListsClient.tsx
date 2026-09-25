@@ -55,8 +55,8 @@ const ListsClient = ({ initialLists, children, startCreating = false }: any) => 
                             onClick={() => setTab(entry)}
                             className={`text-2xl md:text-3xl pb-2 border-b-4 cursor-pointer ${
                                 tab === entry
-                                    ? "font-bold text-[#007185] border-[#007185]"
-                                    : "text-slate-800 border-transparent hover:text-[#007185]"
+                                    ? "font-bold text-accent-ink border-accent-ink"
+                                    : "text-slate-800 border-transparent hover:text-accent-ink"
                             }`}
                         >
                             {entry}
@@ -91,14 +91,14 @@ const ListsClient = ({ initialLists, children, startCreating = false }: any) => 
                             <div className="flex justify-center mt-8">
                                 <button
                                     onClick={createHandler}
-                                    className="bg-[#ffd814] hover:bg-[#f7ca00] border border-[#fcd200] rounded-full px-8 py-2.5 text-sm font-medium cursor-pointer"
+                                    className="bg-accent hover:bg-accent-strong border border-accent rounded-full px-8 py-2.5 text-sm font-medium cursor-pointer"
                                 >
                                     Create a List
                                 </button>
                             </div>
 
                             {error && (
-                                <p role="alert" className="text-sm text-[#C40000] text-center mt-4">
+                                <p role="alert" className="text-sm text-danger text-center mt-4">
                                     {error}
                                 </p>
                             )}
@@ -123,7 +123,7 @@ const ListsClient = ({ initialLists, children, startCreating = false }: any) => 
                                             from any product page to{" "}
                                             <Link
                                                 href="/profile/wishlist"
-                                                className="text-[#007185] hover:underline"
+                                                className="text-accent-ink hover:underline"
                                             >
                                                 your default list
                                             </Link>
@@ -149,7 +149,7 @@ const ListsClient = ({ initialLists, children, startCreating = false }: any) => 
 
                         <Link
                             href="/registry/find"
-                            className="inline-block mt-6 text-sm text-[#007185] hover:underline"
+                            className="inline-block mt-6 text-sm text-accent-ink hover:underline"
                         >
                             Find a list or registry ›
                         </Link>

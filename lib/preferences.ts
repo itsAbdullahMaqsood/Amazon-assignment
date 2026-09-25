@@ -2,7 +2,7 @@
 // every switch on /profile/preferences, and anything in the app that wants to
 // respect a preference reads it through the helpers at the bottom of this file.
 
-export const PREFERENCES_KEY = "amazon_shopping_preferences";
+export const PREFERENCES_KEY = "markaz_shopping_preferences";
 
 export const sections = [
     {
@@ -14,7 +14,7 @@ export const sections = [
             {
                 id: "language",
                 label: "Language",
-                hint: "Applies to page text and email from Amazon.",
+                hint: "Applies to page text and email from Markaz.",
                 options: [
                     { value: "en-US", label: "English - EN" },
                     { value: "es-US", label: "Español - ES" },
@@ -116,7 +116,7 @@ export const sections = [
             {
                 id: "alwaysShowCaptions",
                 label: "Always show captions on video",
-                hint: "Applies to Prime Video and product videos.",
+                hint: "Applies to Markaz Movies and product videos.",
             },
         ],
     },
@@ -124,7 +124,7 @@ export const sections = [
         id: "advertising",
         icon: "MegaphoneIcon",
         title: "Advertising preferences",
-        description: "What Amazon may use to choose the adverts you are shown.",
+        description: "What Markaz may use to choose the adverts you are shown.",
         choices: [],
         toggles: [
             {
@@ -135,7 +135,7 @@ export const sections = [
             {
                 id: "adsFromThirdParties",
                 label: "Use information from advertising partners",
-                hint: "Data shared by sites that run Amazon adverts.",
+                hint: "Data shared by sites that run Markaz adverts.",
             },
             {
                 id: "interestBasedEmail",

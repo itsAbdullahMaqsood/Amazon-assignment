@@ -13,7 +13,7 @@ import { FITS, RATINGS, bucketOf, sortReviews } from "./reviewUtils";
 const PER_PAGE = 3;
 
 const control =
-    "h-9 border border-slate-400 rounded-lg px-2 text-sm bg-[#F0F2F2] shadow-sm cursor-pointer outline-none focus:border-[#007185] focus:ring-2 focus:ring-[#007185]/30";
+    "h-9 border border-slate-400 rounded-lg px-2 text-sm bg-surface-muted shadow-sm cursor-pointer outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent-ink/30";
 
 // Everything the list does — filter, sort, paginate — runs over reviews already
 // on the page; only writing a review or voting goes to the server.
@@ -161,7 +161,7 @@ const Reviews = ({ product }: any) => {
                             {!writing && (
                                 <button
                                     onClick={writeHandler}
-                                    className="mt-4 px-6 h-11 rounded-full bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] text-sm cursor-pointer"
+                                    className="mt-4 px-6 h-11 rounded-full bg-accent hover:bg-accent-strong border border-accent text-sm cursor-pointer"
                                 >
                                     {session ? "Write a customer review" : "Sign in to write a review"}
                                 </button>
@@ -253,7 +253,7 @@ const Reviews = ({ product }: any) => {
                                     ))}
                                 </select>
 
-                                <label className="inline-flex items-center gap-2 h-9 px-3 border border-slate-400 rounded-lg text-sm bg-white cursor-pointer has-checked:bg-[#EDFDFF] has-checked:border-[#007185]">
+                                <label className="inline-flex items-center gap-2 h-9 px-3 border border-slate-400 rounded-lg text-sm bg-white cursor-pointer has-checked:bg-accent-soft has-checked:border-accent-ink">
                                     <input
                                         type="checkbox"
                                         checked={filters.photos}
@@ -269,7 +269,7 @@ const Reviews = ({ product }: any) => {
                                             setFilters({ star: 0, size: "", style: "", fit: "", photos: false });
                                             setPage(1);
                                         }}
-                                        className="text-sm text-[#007185] hover:text-[#C7511F] hover:underline cursor-pointer"
+                                        className="text-sm text-accent-ink hover:text-accent-deep hover:underline cursor-pointer"
                                     >
                                         Clear filters
                                     </button>

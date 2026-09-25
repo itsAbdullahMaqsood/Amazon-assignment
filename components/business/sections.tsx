@@ -29,7 +29,7 @@ export const HowItWorks = () => (
                         key={step.number}
                         className="border border-slate-300 rounded-lg p-5 flex gap-4"
                     >
-                        <span className="shrink-0 w-9 h-9 rounded-full bg-amazon-blue_light text-white flex items-center justify-center font-bold">
+                        <span className="shrink-0 w-9 h-9 rounded-full bg-ink-800 text-white flex items-center justify-center font-bold">
                             {step.number}
                         </span>
                         <div>
@@ -57,7 +57,7 @@ export const Benefits = () => (
                             key={benefit.title}
                             className="bg-white border border-slate-300 rounded-lg p-5"
                         >
-                            <Icon className="h-8 w-8 text-amazon-blue_light" />
+                            <Icon className="h-8 w-8 text-ink-800" />
                             <h3 className="font-bold mt-3">{benefit.title}</h3>
                             <p className="text-sm text-slate-600 mt-1">{benefit.body}</p>
                         </div>
@@ -76,10 +76,10 @@ export const Comparison = () => (
             <div className="mt-6 overflow-x-auto">
                 <table className="w-full min-w-[640px] text-sm border border-slate-300 rounded-lg overflow-hidden">
                     <caption className="sr-only">
-                        Feature comparison between a personal Amazon account and an Amazon Business
+                        Feature comparison between a personal Markaz account and an Markaz Business
                         account
                     </caption>
-                    <thead className="bg-amazon-blue_light text-white text-left">
+                    <thead className="bg-ink-800 text-white text-left">
                         <tr>
                             <th scope="col" className="p-3 font-semibold w-1/3">
                                 Feature
@@ -110,7 +110,7 @@ export const Comparison = () => (
 );
 
 export const Quotes = () => (
-    <section className="bg-amazon-blue_dark text-white">
+    <section className="bg-ink-900 text-white">
         <div className="max-w-[1500px] mx-auto px-4 py-10">
             <h2 className="text-2xl md:text-3xl font-bold">Why businesses switch</h2>
 
@@ -118,7 +118,7 @@ export const Quotes = () => (
                 {quotes.map((entry) => (
                     <figure
                         key={entry.name}
-                        className="bg-amazon-blue_light rounded-lg p-5 flex flex-col"
+                        className="bg-ink-800 rounded-lg p-5 flex flex-col"
                     >
                         <blockquote className="grow text-white/90">
                             &ldquo;{entry.quote}&rdquo;

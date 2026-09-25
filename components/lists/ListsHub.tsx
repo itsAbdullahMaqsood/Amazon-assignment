@@ -1,9 +1,6 @@
 import { auth } from "@/auth";
 import connectDb from "@/lib/db";
 import User from "@/models/User";
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer";
-import MenuSideBar from "@/components/Header/MenuSidebar";
 import RecommendationCarousel from "@/components/profile/RecommendationCarousel";
 import ListsNav from "@/components/lists/ListsNav";
 import ListsClient from "@/components/lists/ListsClient";
@@ -33,7 +30,6 @@ const ListsHub = async ({ create = false }: any) => {
 
     return (
         <>
-            <Header title="Lists & Registries" />
 
             <main className="bg-white min-h-screen">
                 <ListsNav active="Your Lists" />
@@ -57,9 +53,7 @@ const ListsHub = async ({ create = false }: any) => {
                 </div>
             </main>
 
-            <Footer />
 
-            <MenuSideBar />
         </>
     );
 };

@@ -6,7 +6,7 @@ const GlobalError = ({ error, retry }: any) => {
     return (
         <html lang="en">
             <body style={{ fontFamily: "system-ui, sans-serif", padding: "80px 24px", textAlign: "center" }}>
-                <h1 style={{ fontSize: 24, fontWeight: 700 }}>Amazon is temporarily unavailable</h1>
+                <h1 style={{ fontSize: 24, fontWeight: 700 }}>Markaz is temporarily unavailable</h1>
                 <p style={{ marginTop: 8, color: "#565959" }}>
                     The page failed to load. Try again in a moment.
                 </p>

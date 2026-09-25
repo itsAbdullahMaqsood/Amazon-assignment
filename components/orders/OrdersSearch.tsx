@@ -39,13 +39,13 @@ const OrdersSearch = ({ initial = "", params = "" }: any) => {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search all orders"
-                    className="w-[260px] md:w-[360px] border border-slate-400 rounded-lg py-2.5 pl-10 pr-3 outline-none focus:border-[#007185]"
+                    className="w-[260px] md:w-[360px] border border-slate-400 rounded-lg py-2.5 pl-10 pr-3 outline-none focus:border-accent-ink"
                 />
             </div>
 
             <button
                 type="submit"
-                className="bg-[#232f3e] text-white rounded-full px-5 py-2.5 font-semibold hover:bg-black transition cursor-pointer"
+                className="bg-ink-800 text-white rounded-full px-5 py-2.5 font-semibold hover:bg-black transition cursor-pointer"
             >
                 Search Orders
             </button>

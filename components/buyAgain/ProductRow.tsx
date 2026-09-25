@@ -80,7 +80,7 @@ const ProductRow = ({ title, products, delivery }: any) => {
 
                             <Link
                                 href={`/product/${product.slug}?style=0`}
-                                className="block mt-2 text-sm text-[#0F5FA6] hover:underline line-clamp-2"
+                                className="block mt-2 text-sm text-accent-ink hover:underline line-clamp-2"
                             >
                                 {product.name}
                             </Link>
@@ -92,7 +92,7 @@ const ProductRow = ({ title, products, delivery }: any) => {
                             {product.numberReviews > 0 && (
                                 <div className="flex items-center gap-1 mt-1">
                                     <StarRating value={product.rating} size="w-4 h-4" />
-                                    <span className="text-xs text-[#0F5FA6]">
+                                    <span className="text-xs text-accent-ink">
                                         {product.numberReviews.toLocaleString()}
                                     </span>
                                 </div>

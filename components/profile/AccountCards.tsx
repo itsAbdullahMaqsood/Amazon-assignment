@@ -43,8 +43,8 @@ const AccountCards = () => {
                         href={card.href}
                         className="flex items-start gap-4 bg-white border border-slate-300 rounded-lg p-5 hover:shadow-md transition"
                     >
-                        <span className="shrink-0 w-16 h-16 rounded-full bg-[#d6eaed] flex items-center justify-center">
-                            <Icon className="w-8 h-8 text-[#146eb4]" />
+                        <span className="shrink-0 w-16 h-16 rounded-full bg-accent-soft flex items-center justify-center">
+                            <Icon className="w-8 h-8 text-accent-ink" />
                         </span>
 
                         <span>
