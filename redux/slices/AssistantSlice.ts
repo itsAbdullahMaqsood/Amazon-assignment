@@ -11,6 +11,7 @@ export interface ShabanaMessage {
     content: string;
     groups?: any[];
     followUps?: string[];
+    link?: { href: string; label: string } | null;
     unavailable?: boolean;
 }
 
@@ -79,6 +80,7 @@ export const AssistantSlice = createSlice({
                     content: action.payload.reply,
                     groups: action.payload.groups,
                     followUps: action.payload.followUps,
+                    link: action.payload.link,
                     unavailable: action.payload.unavailable,
                 });
             })

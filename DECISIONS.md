@@ -127,6 +127,40 @@ in the panel, so it survives closing the panel and moving between pages.
   server loads its description, specs and reviews, and she answers only from them ("two of three
   reviewers say …"), saying so when they don't cover the question.
 
+**She knows the whole store, not just the catalogue.** A shop assistant who can only answer
+about shirts is half an assistant, so retrieval was extended to everything Markaz actually has.
+The model never returns a result — it says *what kind* of thing it wants and the server looks
+it up:
+
+- **`kind: "product"`** — the original department-scoped search.
+- **`kind: "movie"`** — Markaz Movies, by title or genre, with both prices as the server
+  computes them. She is told that nothing streams and that the cheapest titles are sold
+  outright, so she never promises a rental a card would then contradict.
+- **`kind: "medication"`** — the pharmacy look-up, by brand, generic name or ingredient, with
+  the cash and Plus prices. She is told to suggest nothing the shopper did not name, never to
+  advise on taking anything, and to say Markaz only quotes.
+- **Add:** **the shopper's own account**, for signed-in visitors. A short summary — first name,
+  membership, gift-card balance, saved counts, the four most recent orders with status, date,
+  total and first item, live rentals and auto-reorders — goes into the system prompt, so
+  "where is my order" is answered from fact and quoted exactly rather than guessed. Signed out,
+  she says she cannot see an account until you sign in.
+- **Add:** a **link** on her answers. The model names a page rather than writing a URL into its
+  prose, and the server validates it against a list of this store's own paths — so it can point
+  at your order, your returns or Markaz Plus, and cannot point anywhere else.
+- **Privacy:** that account summary is sent to Google Gemini with your message, so the panel
+  footer links to it, Privacy & data lists exactly which fields, and the help article says the
+  same. It never includes an address, an email, a phone number or a payment detail.
+
+**Add: Compare with Shabana** (the last item from the plan's stretch list). The browse grid has
+a Compare button; ticking two or three products and pressing it opens Shabana with all of them
+in context, and she answers from their descriptions, specs and reviews — the same grounding as
+a single product, which is what makes a comparison worth reading.
+
+**Fix, found while wiring the film search:** the rental price is 40% of the purchase price with
+a $1.99 floor, which meant a title selling for $1.99 also "rented" for $1.99. Those are sold
+outright now: the rent button, the rent price and the API action are all withheld, and the
+sheet says why.
+
 ---
 
 ## 2. Home

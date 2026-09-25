@@ -109,7 +109,7 @@ const MyListView = ({ initial }: any) => {
                                     saved
                                     footer={
                                         <p className="mt-1 text-xs text-fg-inverse-muted">
-                                            {entry.video.price > 0 ? `From ${money(entry.video.rentPrice)} to rent` : "Not for sale yet"}
+                                            {entry.video.price > 0 ? (entry.video.canRent ? `From ${money(entry.video.rentPrice)} to rent` : `${money(entry.video.price)} to buy`) : "Not for sale yet"}
                                         </p>
                                     }
                                 />

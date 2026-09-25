@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import connectDb from "@/lib/db";
 import User from "@/models/User";
 import Video from "@/models/Video";
-import { RENTAL_DAYS, rentPrice, rentalLive } from "@/lib/movies";
+import { RENTAL_DAYS, canRent, rentPrice, rentalLive } from "@/lib/movies";
 import { getUserMovies } from "@/lib/movieQueries";
 
 const SELECT = "watchlist library";
@@ -78,6 +78,13 @@ export const POST = async (req: Request) => {
 
         if (!video.price) {
             return NextResponse.json({ message: "This title isn't for sale on Markaz." }, { status: 400 });
+        }
+
+        if (action === "rent" && !canRent(video.price)) {
+            return NextResponse.json(
+                { message: "This title is sold outright — renting it would cost the same as owning it." },
+                { status: 400 }
+            );
         }
 
         const owned = user.library.find((entry: any) => String(entry.video) === String(videoId) && entry.type === "buy");

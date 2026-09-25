@@ -10,6 +10,11 @@ export const RENTAL_DAYS = 30;
 export const rentPrice = (price: number) =>
     price > 0 ? Math.max(1.99, Math.round(Number(price) * 0.4) - 0.01) : 0;
 
+// The $1.99 floor meets the cheapest titles: a film that sells for $1.99 would
+// "rent" for the same money, which is not a choice. Those are sold outright, and
+// the rent price is never shown or accepted for them.
+export const canRent = (price: number) => Number(price) > 0 && rentPrice(price) < Number(price);
+
 // The rows the seeder fills, in the order the page shows them. The two priced
 // rows are named after the band the seeder actually used, so the label cannot
 // drift from the prices underneath it.

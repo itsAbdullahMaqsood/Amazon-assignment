@@ -63,7 +63,7 @@ const Hero = ({ title, onOpen }: any) => {
 
                         <div className="mt-6 flex flex-wrap gap-2">
                             <Button onClick={() => onOpen(title)}>
-                                {title.price > 0 ? `Buy or rent from ${money(title.rentPrice)}` : "See this title"}
+                                {title.price > 0 ? (title.canRent ? `Buy or rent from ${money(title.rentPrice)}` : `Buy for ${money(title.price)}`) : "See this title"}
                             </Button>
                         </div>
                     </div>

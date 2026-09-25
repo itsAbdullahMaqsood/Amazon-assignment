@@ -190,6 +190,7 @@ export const helpTopics: any = {
                 heading: "Shabana",
                 body: [
                     "Shabana is the assistant in the header. She is a language model with the catalogue behind her: she picks a department that exists, and every product she shows comes from the database rather than from her own text. Opened from a product page she is handed that product's description, specs and reviews, and answers only from them.",
+                    "She can also look up a film in Markaz Movies, a medication's price in the pharmacy, and — when you are signed in — your own recent orders, membership and balance. For that last one a short summary of your account is sent to Google Gemini with your message: your first name, membership, balance, saved counts and your four most recent orders. Never an address, an email, a phone number or a payment detail. Privacy & data lists it.",
                     "There is no microphone. Nothing is recorded, and she cannot place an order for you.",
                 ],
             },

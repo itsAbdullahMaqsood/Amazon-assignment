@@ -95,21 +95,26 @@ const TitleSheet = ({ title, open, onClose, signedIn, saved, entry, busy, onSave
                                         <Button onClick={() => onAcquire(title, "buy")} loading={busy === "buy"}>
                                             Buy {money(title.price)}
                                         </Button>
-                                        <Button variant="inverse" onClick={() => onAcquire(title, "rent")} loading={busy === "rent"}>
-                                            Rent {money(title.rentPrice)}
-                                        </Button>
+                                        {title.canRent && (
+                                            <Button variant="inverse" onClick={() => onAcquire(title, "rent")} loading={busy === "rent"}>
+                                                Rent {money(title.rentPrice)}
+                                            </Button>
+                                        )}
                                     </>
                                 ) : (
                                     // Signed out, the prices are still the answer to "how much";
                                     // the button just goes to sign-in rather than failing there.
                                     <Button href={`/auth/signin?callbackUrl=${encodeURIComponent("/movies")}`}>
-                                        Sign in to buy {money(title.price)} or rent {money(title.rentPrice)}
+                                        Sign in to buy {money(title.price)}
+                                        {title.canRent && <> or rent {money(title.rentPrice)}</>}
                                     </Button>
                                 )}
                             </div>
                             <p className="mt-2 text-xs text-fg-inverse-muted">
-                                A rental plays for {RENTAL_DAYS} days. Nothing is charged: purchases here are simulated, as they
-                                are in the rest of the store.
+                                {title.canRent
+                                    ? `A rental plays for ${RENTAL_DAYS} days. `
+                                    : "This one is sold outright — renting it would cost the same as owning it. "}
+                                Nothing is charged: purchases here are simulated, as they are in the rest of the store.
                             </p>
                         </>
                     ) : (

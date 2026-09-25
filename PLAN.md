@@ -153,7 +153,7 @@ drawer that repeats the strip, and "Sign in" showing on mobile even when signed 
 - **Add:**
   - Suggestions with thumbnail, price and department that open the product directly, plus sub-category matches and a "Search 'x' in all departments" escape row.
   - A no-results state offering to drop the department or the last filter.
-  - "Compare with Shabana" on 2–3 selected products (**stretch**).
+  - "Compare with Shabana" on 2–3 selected products (**stretch**) — done.
 - **Backend:** aggregation `$addFields` for effective (discounted) min price, used by sort and filter; richer `/api/search/suggestions`.
 
 ### 4. Product detail
@@ -339,6 +339,11 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 ## Handoff notes (for continuing on another machine)
 
 **Done and pushed:** Phase 0 and all 24 pages. The redesign is complete.
+
+**After it:** Shabana's retrieval was extended past the product catalogue — films,
+medications and the signed-in shopper's own orders, membership and balance — plus the
+"Compare with Shabana" stretch item on browse. `lib/shabanaContext.ts` holds the account
+summary and the two new searches; the route routes on a `kind` the model returns.
 
 **§5 backend moves: all done.** Items 5–11 are in MongoDB. **Item 8 (saved cards) was dropped** on
 page 9: checkout asks for no card details, so a wallet of cards nothing can charge would be the

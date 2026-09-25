@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AdjustmentsHorizontalIcon, MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { AdjustmentsHorizontalIcon, MagnifyingGlassIcon, ScaleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import { useAppDispatch } from "@/redux/hooks";
 import { openAssistant } from "@/redux/slices/AssistantSlice";
@@ -58,6 +58,25 @@ const BrowseView = ({ data, children }: any) => {
     const { set, pending } = useBrowseQuery();
     const { chips, clearAll } = useAppliedFilters();
     const [sheetOpen, setSheetOpen] = useState(false);
+    // Comparing is off until asked for: a checkbox on every card, all the time,
+    // would be clutter on a page whose job is to be scanned.
+    const [comparing, setComparing] = useState(false);
+    const [picked, setPicked] = useState<any[]>([]);
+
+    const MAX_COMPARE = 3;
+    const isPicked = (product: any) => picked.some((entry) => entry.id === product._id);
+    const togglePick = (product: any) =>
+        setPicked((current) =>
+            current.some((entry) => entry.id === product._id)
+                ? current.filter((entry) => entry.id !== product._id)
+                : current.length >= MAX_COMPARE
+                  ? current
+                  : [...current, { id: product._id, name: product.name }]
+        );
+    const stopComparing = () => {
+        setComparing(false);
+        setPicked([]);
+    };
     const { query, category, sub, total, products, facets, page, pageCount, dealsOnly } = { ...data, page: data.query.page };
 
     const base = dealsOnly ? "/coupons" : "/browse";
@@ -171,7 +190,18 @@ const BrowseView = ({ data, children }: any) => {
                                 )}
                             </div>
 
-                            {sortSelect}
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    variant={comparing ? "primary" : "outline"}
+                                    size="sm"
+                                    aria-pressed={comparing}
+                                    onClick={() => (comparing ? stopComparing() : setComparing(true))}
+                                >
+                                    <ScaleIcon className="h-4 w-4" />
+                                    <span className="sr-only sm:not-sr-only">Compare</span>
+                                </Button>
+                                {sortSelect}
+                            </div>
                         </div>
 
                         {chips.length > 0 && (
@@ -195,7 +225,14 @@ const BrowseView = ({ data, children }: any) => {
                                 <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 xl:grid-cols-4">
                                     {products.map((product: any, i: number) => (
                                         <li key={product._id}>
-                                            <ProductCard product={product} priority={i < 4} />
+                                            <ProductCard
+                                                product={product}
+                                                priority={i < 4}
+                                                selectable={comparing}
+                                                selected={isPicked(product)}
+                                                selectDisabled={picked.length >= MAX_COMPARE}
+                                                onSelect={togglePick}
+                                            />
                                         </li>
                                     ))}
                                 </ul>
@@ -236,6 +273,47 @@ const BrowseView = ({ data, children }: any) => {
                         </div>
 
                         <Pagination page={page} count={pageCount} onChange={(n: number) => set({ page: n })} className="mt-10" />
+
+                        {comparing && (
+                            <div className="sticky bottom-4 z-20 mt-6 flex flex-wrap items-center gap-3 rounded-panel border border-line bg-surface p-3 shadow-pop">
+                                <p className="min-w-0 flex-1 text-sm">
+                                    {picked.length === 0 ? (
+                                        <span className="text-fg-muted">Tick up to {MAX_COMPARE} products, then ask Shabana.</span>
+                                    ) : (
+                                        <>
+                                            <span className="text-fg sm:hidden">
+                                                {picked.length} of {MAX_COMPARE} picked
+                                            </span>
+                                            <span className="hidden text-fg sm:inline">
+                                                {picked.map((entry) => entry.name).join(" · ")}
+                                            </span>
+                                        </>
+                                    )}
+                                </p>
+
+                                <Button
+                                    size="sm"
+                                    disabled={picked.length < 2}
+                                    onClick={() => {
+                                        dispatch(
+                                            openAssistant({
+                                                context: picked,
+                                                prompt:
+                                                    picked.length === 2
+                                                        ? "Compare these two for me."
+                                                        : "Compare these for me.",
+                                            })
+                                        );
+                                        stopComparing();
+                                    }}
+                                >
+                                    Compare with Shabana
+                                </Button>
+                                <Button size="sm" variant="ghost" onClick={stopComparing}>
+                                    Cancel
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </Container>

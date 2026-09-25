@@ -15,7 +15,18 @@ import useAddToCart from "@/components/cart/useAddToCart";
 // product with a single option can go straight into the cart from here; one
 // with colours or sizes opens its page, because picking for the shopper is a
 // guess.
-const ProductCard = ({ product, priority = false, className = "", sizes = "(max-width: 768px) 45vw, 240px" }: any) => {
+const ProductCard = ({
+    product,
+    priority = false,
+    className = "",
+    sizes = "(max-width: 768px) 45vw, 240px",
+    // Set only while a page is picking products to compare; everywhere else the
+    // card has no checkbox and behaves exactly as before.
+    selectable = false,
+    selected = false,
+    onSelect,
+    selectDisabled = false,
+}: any) => {
     const { add, isPending } = useAddToCart();
     const href = `/product/${product.slug}`;
 
@@ -34,6 +45,25 @@ const ProductCard = ({ product, priority = false, className = "", sizes = "(max-
                         />
                     )}
                 </Link>
+
+                {selectable && (
+                    <label
+                        className={cn(
+                            "absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full border bg-surface shadow-card",
+                            selected ? "border-accent-ink" : "border-line-strong",
+                            selectDisabled && !selected ? "opacity-40" : "cursor-pointer"
+                        )}
+                    >
+                        <input
+                            type="checkbox"
+                            checked={selected}
+                            disabled={selectDisabled && !selected}
+                            onChange={() => onSelect?.(product)}
+                            aria-label={`Compare ${product.name}`}
+                            className="h-4 w-4 cursor-pointer accent-accent-ink disabled:cursor-not-allowed"
+                        />
+                    </label>
+                )}
 
                 <div className="pointer-events-none absolute left-2 top-2 flex flex-col items-start gap-1">
                     {product.discount > 0 && <Badge tone="success">−{product.discount}%</Badge>}

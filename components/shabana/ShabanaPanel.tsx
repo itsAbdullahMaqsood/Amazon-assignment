@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowPathIcon, ArrowUpIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowPathIcon, ArrowUpIcon, ArrowUpRightIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { askShabana, closeAssistant, newConversation, selectAssistant } from "@/redux/slices/AssistantSlice";
@@ -11,12 +11,14 @@ import { Notice } from "@/components/ui/Layout";
 import { cn } from "@/components/ui/cn";
 import ShabanaMark from "./ShabanaMark";
 import ProductSuggestion from "./ProductSuggestion";
+import MovieSuggestion from "./MovieSuggestion";
+import MedicationSuggestion from "./MedicationSuggestion";
 
 const starters = [
     "A gift for a runner under $50",
-    "Compare the best-rated smartphones",
-    "Skin care for dry skin",
-    "Kitting out a small kitchen",
+    "Where is my latest order?",
+    "A film to rent under $3",
+    "What does ibuprofen cost here?",
 ];
 
 const productStarters = ["What do reviewers say?", "Is it worth the price?", "What are the main downsides?"];
@@ -124,19 +126,38 @@ const ShabanaPanel = () => {
                                         <p className="text-[15px] leading-relaxed text-fg">{message.content}</p>
                                     </div>
 
+                                    {message.link && (
+                                        <div className="pl-8">
+                                            <Link
+                                                href={message.link.href}
+                                                onClick={close}
+                                                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-medium text-fg hover:border-accent-ink hover:bg-accent-soft"
+                                            >
+                                                {message.link.label}
+                                                <ArrowUpRightIcon className="h-4 w-4" />
+                                            </Link>
+                                        </div>
+                                    )}
+
                                     {message.groups?.map((group: any) => (
                                         <section key={group.title} className="space-y-2 pl-8">
                                             <div className="flex items-baseline justify-between gap-2">
                                                 <h3 className="text-sm font-semibold">{group.title}</h3>
                                                 {group.href && (
                                                     <Link href={group.href} onClick={close} className="text-link text-sm">
-                                                        See all
+                                                        {group.kind === "movie" ? "Markaz Movies" : group.kind === "medication" ? "Pharmacy" : "See all"}
                                                     </Link>
                                                 )}
                                             </div>
-                                            {group.products.map((product: any) => (
-                                                <ProductSuggestion key={product._id} product={product} onNavigate={close} />
-                                            ))}
+                                            {group.products.map((item: any) =>
+                                                group.kind === "movie" ? (
+                                                    <MovieSuggestion key={item._id} title={item} onNavigate={close} />
+                                                ) : group.kind === "medication" ? (
+                                                    <MedicationSuggestion key={item._id} medication={item} onNavigate={close} />
+                                                ) : (
+                                                    <ProductSuggestion key={item._id} product={item} onNavigate={close} />
+                                                )
+                                            )}
                                         </section>
                                     ))}
 
@@ -222,7 +243,12 @@ const ShabanaPanel = () => {
                         <ArrowUpIcon className="h-5 w-5 stroke-2" />
                     </button>
                 </div>
-                <p className="mt-2 text-center text-xs text-fg-subtle">Shabana only suggests products Markaz actually stocks.</p>
+                <p className="mt-2 text-center text-xs text-fg-subtle">
+                    Shabana only shows what Markaz really has.{" "}
+                    <Link href="/profile/data" onClick={close} className="underline underline-offset-2">
+                        What she is told about you
+                    </Link>
+                </p>
             </form>
         </Sheet>
     );

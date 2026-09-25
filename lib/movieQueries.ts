@@ -1,6 +1,6 @@
 import connectDb from "@/lib/db";
 import Video from "@/models/Video";
-import { movieRows, rentPrice } from "@/lib/movies";
+import { canRent, movieRows, rentPrice } from "@/lib/movies";
 
 const CARD_FIELDS = "title slug overview posterPath backdropPath genres rating voteCount releaseDate mediaType price badge";
 
@@ -21,6 +21,7 @@ export const toTitle = (video: any) => ({
     badge: video.badge || "",
     price: video.price || 0,
     rentPrice: rentPrice(video.price || 0),
+    canRent: canRent(video.price || 0),
 });
 
 export const getMovieHome = async () => {

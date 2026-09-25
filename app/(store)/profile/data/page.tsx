@@ -34,6 +34,10 @@ const holdings = [
         body: "Saved items, named lists with the privacy you chose for each, My list and your Markaz Movies library.",
     },
     {
+        title: "What Shabana is told",
+        body: "When you are signed in and ask her something that is not about a product in front of you, Shabana is given a short summary of your account — your first name, membership, gift card balance, how many things you have saved, and your four most recent orders with their status, date, total and first item. It is sent to Google Gemini with your message so she can answer from fact instead of guessing. No address, email, phone number or payment detail is ever included.",
+    },
+    {
         title: "How you sign in",
         body: "The user-agent string of each browser you have signed in from, and the first and last time it did. Nothing else about the request, and no location.",
     },
