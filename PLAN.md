@@ -331,14 +331,14 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 - [x] 7 Orders + returns · [x] 8 Auth · [x] 9 Profile · [x] 10 Movies + My List + Shabana
 - [x] 11 Deals · [x] 12 Buy again / Keep shopping · [x] 13 Lists + Registry · [x] 14 Gift cards · [x] 15 Plus + Memberships
 - [x] 16 Groceries · [x] 17 Markaz Home · [x] 18 Pharmacy · [x] 19 Account sub-pages · [x] 20 Help
-- [x] 21 Business + Sell · [ ] 22 System pages · [ ] 23 Admin rebrand · [ ] 24 README + DECISIONS
+- [x] 21 Business + Sell · [x] 22 System pages · [ ] 23 Admin rebrand · [ ] 24 README + DECISIONS
 
 
 ---
 
 ## Handoff notes (for continuing on another machine)
 
-**Done and pushed:** Phase 0 and pages 1–21. **Next up: page 22 (system pages).**
+**Done and pushed:** Phase 0 and pages 1–22. **Next up: page 23 (admin rebrand).**
 
 **§5 backend moves: all done.** Items 5–11 are in MongoDB. **Item 8 (saved cards) was dropped** on
 page 9: checkout asks for no card details, so a wallet of cards nothing can charge would be the
@@ -366,16 +366,10 @@ decorative state this redesign removes. `/profile/credit-cards` was cut and redi
 - `seed -- --reset` rebuilds the live DB (products, grocery, furniture, meds, movies,
   registries) and prunes dangling refs; re-run `seed:demo` afterwards.
 
-**Legacy code still in use (delete when its last user is redesigned)**
-- `components/Home/productCard/*` and `components/profile/RecommendationCarousel` → older
-  satellite pages (buy again, lists).
-- Deleted on page 9: `components/User/*`, `components/checkoutPage/*` (its `countries.ts` moved
-  to `lib/countries.ts`), the account tile and link-card components, and the
-  `toCardProduct().amazonChoice` alias.
-- `components/shared/{Accordion,Price,DialogModal,AddToCartButton}`: legacy primitives; new code
-  uses `components/ui`.
-- `lib/localStore.ts` has one user left: `formatDate` in `components/ProductPage/reviews/
-  ReviewCard.tsx`. Move it and the file goes.
+**Legacy code**
+- All gone as of page 22 except `components/shared/{Price,StarRating,DialogModal}`, whose last
+  users are the admin dashboard and the review form.
+
 
 **Added on page 15**
 - Markaz Plus is real: `User.membership` decides whether `summarize()` waives the per-item

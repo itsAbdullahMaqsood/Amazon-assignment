@@ -1,42 +1,36 @@
 "use client";
 
-import Link from "next/link";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+
+import Button from "@/components/ui/Button";
+import { Container, EmptyState } from "@/components/ui/Layout";
 
 // Segment-level boundary. `retry` re-renders the segment on the server, which is
-// enough for the transient database or upstream-API failures this app can hit.
-const Error = ({ error, retry }: any) => {
-    return (
-        <main className="bg-white min-h-[60vh]">
-            <div className="max-w-3xl mx-auto px-4 py-20 text-center">
-                <h1 className="text-2xl font-bold text-fg">
-                    Sorry, something went wrong on our end.
-                </h1>
-                <p className="text-sm text-slate-600 mt-2">
-                    Nothing you did caused this. Try the page again, and if it keeps failing use
-                    the links below.
+// enough for the transient database failures this app can actually hit.
+const Error = ({ error, retry }: any) => (
+    <main>
+        <Container className="max-w-2xl py-16">
+            <EmptyState
+                icon={ExclamationTriangleIcon}
+                title="Something went wrong at our end"
+                description="Nothing you did caused this. Trying again often works — the usual cause is the database taking too long to answer."
+                action={
+                    <>
+                        <Button onClick={() => retry()}>Try again</Button>
+                        <Button href="/" variant="outline">
+                            Back to the store
+                        </Button>
+                    </>
+                }
+            />
+
+            {error?.digest && (
+                <p className="mt-4 text-center text-xs text-fg-subtle">
+                    Reference <span className="tabular">{error.digest}</span>
                 </p>
-
-                {error?.digest && (
-                    <p className="text-xs text-slate-400 mt-3">Reference: {error.digest}</p>
-                )}
-
-                <div className="flex items-center justify-center gap-3 mt-6">
-                    <button
-                        onClick={() => retry()}
-                        className="px-6 py-2 rounded-full bg-accent text-ink-900 cursor-pointer"
-                    >
-                        Try again
-                    </button>
-                    <Link
-                        href="/"
-                        className="px-6 py-2 rounded-full border border-slate-300 text-fg"
-                    >
-                        Back to home
-                    </Link>
-                </div>
-            </div>
-        </main>
-    );
-};
+            )}
+        </Container>
+    </main>
+);
 
 export default Error;

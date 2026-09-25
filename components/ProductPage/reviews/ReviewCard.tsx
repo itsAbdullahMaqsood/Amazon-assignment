@@ -8,7 +8,7 @@ import { CheckBadgeIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
 
 import StarRating from "@/components/shared/StarRating";
 import Lightbox from "@/components/shared/Lightbox";
-import { formatDate } from "@/lib/localStore";
+import { formatDate } from "@/lib/returns";
 import { colorName } from "@/lib/colors";
 import { initialOf, likeCount, likedBy, splitReview } from "./reviewUtils";
 

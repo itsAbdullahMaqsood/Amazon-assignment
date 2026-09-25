@@ -1,32 +1,33 @@
-import Link from "next/link";
-
-import StoreShell from "@/components/layout/StoreShell";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
 
+import StoreShell from "@/components/layout/StoreShell";
+import Button from "@/components/ui/Button";
+import { Container, EmptyState } from "@/components/ui/Layout";
 
-export const metadata = { title: "Access denied" };
+export const metadata = { title: "Not your page" };
 
+// Reached when forbidden() is called: an admin route opened by an account whose
+// role is not admin. A real 403, rather than a quiet redirect that leaves you
+// wondering where you went.
 const Forbidden = () => (
     <StoreShell>
-
-        <main className="bg-white">
-            <div className="max-w-2xl mx-auto px-4 py-20 text-center">
-                <LockClosedIcon className="w-12 h-12 mx-auto text-slate-400" />
-                <h1 className="text-2xl font-bold mt-4">You don&apos;t have access to this page</h1>
-                <p className="text-sm text-slate-600 mt-2">
-                    This area is for store administrators. If you think you should have access,
-                    ask an admin to change your account&apos;s role.
-                </p>
-                <Link
-                    href="/"
-                    className="inline-block mt-6 px-6 py-2 rounded-full bg-accent hover:bg-accent-strong text-sm"
-                >
-                    Back to shopping
-                </Link>
-            </div>
+        <main>
+            <Container className="max-w-2xl py-16">
+                <EmptyState
+                    icon={LockClosedIcon}
+                    title="That page is for administrators"
+                    description="Your account is signed in, it just doesn't have the admin role. Nothing is wrong with it — this part of the store is where the catalogue is managed from."
+                    action={
+                        <>
+                            <Button href="/">Back to shopping</Button>
+                            <Button href="/profile" variant="outline">
+                                Your account
+                            </Button>
+                        </>
+                    }
+                />
+            </Container>
         </main>
-
-
     </StoreShell>
 );
 

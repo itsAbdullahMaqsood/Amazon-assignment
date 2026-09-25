@@ -1000,3 +1000,38 @@ whose catalogue is seeded from public data and managed in one admin area by one 
 - **Cut:** the seller hero, the registration steps, the seller tools, the FAQ and the "Start a
   Selling Account" button that only registered a shopper. A link to the admin area replaces it,
   because that is how something really gets into this catalogue.
+
+---
+
+## 22. The pages nobody plans: 404, errors, forbidden, loading
+
+**What Amazon's does badly:** the 404 is a dog photo and a search box, the error page apologises in
+the passive voice, and both drop you out of the store's design. The clone's were worse in one
+specific way: the global error page — the one that replaces the root layout when the layout itself
+throws — was hardcoded in Amazon yellow (`#FFD814` on a `#FCD200` border), which is the one page
+that *cannot* import the stylesheet and so was the last place the old brand survived.
+
+- **Change:** every one of them is the store's own empty state — icon, a sentence saying what
+  happened, and two or three real ways on. No dog.
+- **Change:** the error page says what usually causes it (the database taking too long) and that
+  trying again often works, because "something went wrong" on its own tells you nothing about
+  whether to wait or leave. The digest is printed as a reference rather than hidden.
+- **Change:** the **global error page** is rewritten in inline styles in the Markaz palette, since
+  it can rely on neither the stylesheet nor the fonts loading — the wordmark is drawn in type, and
+  the purple is the token's value written out.
+- **Change:** `forbidden()` says the account is fine and simply has not got the admin role, instead
+  of "You don't have access", which reads like an accusation.
+- **Add:** loading skeletons shaped like the page they stand in for — browse, the product page,
+  orders, and Markaz Movies, whose skeleton is dark because its page is, so it does not flash white
+  and then go black.
+- **Cut:** `/profile/[...section]`, the catch-all that answered every unknown account URL with
+  "this section isn't available in this build yet". Every section the account has is in one list
+  now; if a path is not in it, it does not exist, and a 404 is the honest answer.
+- **Change:** `/placeholder` was the destination for 56 account links with nothing behind them.
+  All 56 are now real pages or gone, so nothing in the store points there. The URL stays for old
+  bookmarks and says so, with the full list of what the account does hold.
+
+**Removed with this page:** the last of the pre-redesign components — `ProfileShell`,
+`accountLinks` (the placeholder link table), `RecommendationCarousel`, `components/Home/productCard`,
+`shared/Accordion`, `shared/AddToCartButton` and `lib/localStore`, the per-browser store that four
+pages used to keep their state in.
