@@ -628,3 +628,53 @@ wearing different names.
 - **Add:** one card (`components/shopping/ShoppingCard`) shared by both pages: image, name, one line
   saying why it is here, the price as it is today, and a single action. The pages differ in their
   note and their button, not in how a row reads.
+
+---
+
+## 13. Lists and registries
+
+**What Amazon's does badly:** the Lists hub is a brochure. Three illustrated promises ("Stay
+organized", "Shop with friends", "Save money"), a registry tile strip, an "other lists" block, a
+help block and a recommendation carousel — and your actual lists are one small panel in the middle.
+"Create a List" is a URL that shows the same brochure with a dialog on top of it.
+
+The registry hub is worse, because most of what it promises is not true here: "Extended returns —
+registry gifts have an extended return period" (they do not), "We help keep track of who bought what
+item and when" (nothing did), and "Earth's biggest selection". Its eight occasions (Baby, Wedding,
+Birthday, Holiday, Housewarming, College, Graduation, Gift) were decoration: a list has no occasion
+field, so `occasionKeyOf()` **guessed** one by looking for words in the list's name.
+
+And underneath all of it, the feature did not work. A list could be created and deleted, but
+**nothing could be put in one** — the product page's save button writes to the wishlist, not to a
+named list — so every list was permanently empty.
+
+- **Keep:** lists as named sets with three privacy levels, and search by name over public lists.
+  The privacy model was already right: private is invisible, shared works by link, public is
+  searchable.
+- **Fix, and it is the point of this page:** a list can now hold things. `PUT /api/user/lists` adds
+  a product and colour to a list, and **saved items is where you do it** — one save gesture on the
+  product page, organising afterwards, the same way the cart's "save for later" works. The decision
+  panel on a product page stays one button, not a menu.
+- **Add:** `/lists/[id]`, your own list: its items at today's price, remove, add to cart, rename,
+  change who can see it, and the share link with a copy button. A private list says plainly that it
+  has no link to give out yet.
+- **Change:** `/lists` is your lists and nothing else — a card each with the first four thumbnails,
+  the count, the privacy, and what has been marked bought. Creating one happens in a sheet and then
+  opens the new list, because an empty list is not somewhere to stop.
+- **Change:** `/lists/create` redirects to `/lists?new=1`. A URL whose only job is to open a dialog
+  is a dialog, not a page.
+- **Change:** `/registry` and `/registry/find` were two pages with the same search box. They are one:
+  `/registry` is the search, with a short honest paragraph about what a registry is here — a list
+  you made public — and `/registry/find` redirects to it.
+- **Add:** a **purchased count that is real**. Markaz cannot tell that an order was meant for a
+  particular list: the cart carries no list with it, and inferring it from "someone, somewhere
+  bought this product" would be a guess. So a signed-in guest marks a gift bought themselves, the
+  record keeps **who** and **when**, the list header says "1 of 8 already bought", and the item says
+  who has it covered. The mark is a toggle for the person who made it and locked for everyone else.
+  The page says in one sentence what marking does and does not do.
+- **Cut:** the illustrated promise cards, the occasion strip and the whole occasion guess, "extended
+  returns", "Earth's biggest selection", "we keep track of who bought what" (now true, so it is
+  stated where it happens instead), the registry hero, the "unique to you" block, the help block,
+  the recommendation carousel, and the hand-drawn art files behind them.
+- **Note:** a list and a registry are the same object, and the pages say so rather than implying a
+  second product with its own rules.

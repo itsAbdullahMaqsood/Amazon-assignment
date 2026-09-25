@@ -34,5 +34,5 @@ const proxy = async (req: any) => {
 export default proxy;
 
 export const config = {
-    matcher: ["/checkout", "/order/:path*", "/profile/:path*", "/movies/my-list", "/admin/:path*"],
+    matcher: ["/checkout", "/order/:path*", "/profile/:path*", "/lists/:path*", "/movies/my-list", "/admin/:path*"],
 };

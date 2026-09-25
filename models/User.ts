@@ -95,6 +95,15 @@ const userSchema = new mongoose.Schema(
                             ref: "Product",
                         },
                         style: String,
+                        addedAt: Date,
+                        // Set when someone viewing a shared or public list says
+                        // they have bought it, which is the only way this store
+                        // can know: the cart carries no list with it.
+                        purchasedBy: {
+                            type: ObjectId,
+                            ref: "User",
+                        },
+                        purchasedAt: Date,
                     },
                 ],
                 createdAt: Date,

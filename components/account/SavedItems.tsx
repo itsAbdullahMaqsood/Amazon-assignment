@@ -12,6 +12,7 @@ import Rating from "@/components/ui/Rating";
 import Price from "@/components/ui/Price";
 import { EmptyState, Notice } from "@/components/ui/Layout";
 import useAddToCart from "@/components/cart/useAddToCart";
+import AddToListSheet from "@/components/lists/AddToListSheet";
 
 // Saved items are priced from the catalogue on every visit, so this list never
 // promises yesterday's price. A saved thing you can buy in one option goes
@@ -20,6 +21,7 @@ import useAddToCart from "@/components/cart/useAddToCart";
 const SavedItems = ({ items: initial }: any) => {
     const [items, setItems] = useState<any[]>(initial || []);
     const [removing, setRemoving] = useState("");
+    const [listing, setListing] = useState<any>(null);
     const [error, setError] = useState("");
     const { add, pending } = useAddToCart();
 
@@ -91,6 +93,10 @@ const SavedItems = ({ items: initial }: any) => {
                                             </button>
                                         ))}
 
+                                    <button type="button" onClick={() => setListing(item)} className="text-link">
+                                        Add to a list
+                                    </button>
+
                                     <button
                                         type="button"
                                         onClick={() => remove(item)}
@@ -105,6 +111,8 @@ const SavedItems = ({ items: initial }: any) => {
                     );
                 })}
             </ul>
+
+            <AddToListSheet item={listing} open={!!listing} onClose={() => setListing(null)} />
         </>
     );
 };

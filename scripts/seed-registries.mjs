@@ -3,7 +3,7 @@ import nextEnv from "@next/env";
 
 nextEnv.loadEnvConfig(process.cwd());
 
-// /registry/find searches the public lists shoppers created, and nothing in the
+// /registry searches the public lists shoppers created, and nothing in the
 // build creates one yet, so the search has nothing to find on a fresh database.
 // This hangs a few public registries off the reviewer accounts `npm run seed`
 // creates (never off a real shopper's account), each filled with products from
@@ -56,10 +56,12 @@ const run = async () => {
     const pick = (size) => {
         const shuffled = [...products].sort(() => Math.random() - 0.5).slice(0, size);
 
-        return shuffled.map((product) => ({
+        return shuffled.map((product, index) => ({
             _id: new mongoose.Types.ObjectId(),
             product: product._id,
             style: String(Math.floor(Math.random() * (product.subProducts?.length || 1))),
+            // Spread over the past fortnight, so a list reads newest first.
+            addedAt: new Date(Date.now() - (index + 1) * 36 * 60 * 60 * 1000),
         }));
     };
 

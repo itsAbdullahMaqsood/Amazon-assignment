@@ -329,7 +329,7 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 - [x] Phase 0 foundation
 - [x] 1 Header / nav / footer · [x] 2 Home · [x] 3 Browse + search · [x] 4 Product · [x] 5 Cart · [x] 6 Checkout
 - [x] 7 Orders + returns · [x] 8 Auth · [x] 9 Profile · [x] 10 Movies + My List + Shabana
-- [x] 11 Deals · [x] 12 Buy again / Keep shopping · [ ] 13 Lists + Registry · [ ] 14 Gift cards · [ ] 15 Plus + Memberships
+- [x] 11 Deals · [x] 12 Buy again / Keep shopping · [x] 13 Lists + Registry · [ ] 14 Gift cards · [ ] 15 Plus + Memberships
 - [ ] 16 Groceries · [ ] 17 Markaz Home · [ ] 18 Pharmacy · [ ] 19 Account sub-pages · [ ] 20 Help
 - [ ] 21 Business + Sell · [ ] 22 System pages · [ ] 23 Admin rebrand · [ ] 24 README + DECISIONS
 
@@ -338,7 +338,7 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 
 ## Handoff notes (for continuing on another machine)
 
-**Done and pushed:** Phase 0 and pages 1–12. **Next up: page 13 (Lists + Registry).**
+**Done and pushed:** Phase 0 and pages 1–13. **Next up: page 14 (Gift cards).**
 
 **Still to do from §5 (backend moves):** items 6, 7, 9, 10 and 11 (membership, auto-reorder,
 household, preferences, sign-ins with `sessionVersion`). They land with the pages that use
@@ -378,6 +378,15 @@ decorative state this redesign removes. `/profile/credit-cards` was cut and redi
   uses `components/ui`.
 - Pages still on localStorage state: `/plus`, memberships, devices, household, preferences
   (see §5).
+
+**Added on page 13**
+- Lists can finally hold products: `PUT /api/user/lists`, added from Saved items through
+  `components/lists/AddToListSheet`. `lists.items[]` gained `addedAt`, `purchasedBy` and
+  `purchasedAt`; `/api/registry/purchase` toggles the last two.
+- `Container` now lets a `max-w-*` in its className win instead of fighting `max-w-page`.
+  Several pages (`/lists`, `/registry`, checkout, order detail) depended on that working.
+- `/lists/create` → `/lists?new=1` and `/registry/find` → `/registry`; `/lists/:path*` joined
+  the proxy matcher.
 
 **Added on page 12**
 - `/keep-shopping` and `/profile/recent` showed the same `recentlyViewed` list, so they are one

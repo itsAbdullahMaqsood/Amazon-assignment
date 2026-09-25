@@ -1,5 +1,6 @@
-// Static copy and shapers for the Lists & Registries hub. Nothing here touches
-// mongoose, so the client components can import it too.
+// The rules a list follows, shared by the pages, the sheet and the route that
+// writes them. Nothing here touches mongoose, so a client component can import
+// it too.
 
 export const MAX_NAME = 50;
 
@@ -50,29 +51,12 @@ export const toList = (list: any) => ({
     name: list.name,
     privacy: list.privacy || "private",
     count: (list.items || []).length,
+    bought: (list.items || []).filter((item: any) => item.purchasedAt).length,
     createdAt: list.createdAt ? new Date(list.createdAt).toISOString() : "",
 });
 
-export const benefits = [
-    {
-        title: "Stay organized",
-        body: "Save your items and ideas in one convenient location",
-        art: "box",
-    },
-    {
-        title: "Shop with friends",
-        body: "View and edit items in lists together with friends",
-        art: "friends",
-    },
-    {
-        title: "Save money",
-        body: "Check deals and price drops on your saved items",
-        art: "deal",
-    },
-];
+// A shared or public list has a link worth giving out; a private one does not.
+export const isShareable = (privacy: string) => privacy === "shared" || privacy === "public";
 
-export const registries = [
-    { title: "I'm getting married", art: "wedding", occasion: "Wedding Registry" },
-    { title: "I'm welcoming a baby", art: "baby", occasion: "Baby Registry" },
-    { title: "Celebrating a different occasion", art: "gift", occasion: "Custom Gift List" },
-];
+export const listDate = (value: any) =>
+    value ? new Date(value).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }) : "";

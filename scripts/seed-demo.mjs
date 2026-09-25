@@ -211,6 +211,7 @@ const run = async () => {
                 $pull: {
                     address: { seededBy: DEMO_TAG },
                     whishlist: { seededBy: DEMO_TAG },
+                    lists: { seededBy: DEMO_TAG },
                     recentlyViewed: { seededBy: DEMO_TAG },
                     giftCardHistory: { seededBy: DEMO_TAG },
                     watchlist: { seededBy: DEMO_TAG },
@@ -423,6 +424,27 @@ const run = async () => {
             .map((id) => ({ _id: new mongoose.Types.ObjectId(), product: id, style: "0", seededBy: DEMO_TAG })),
     ];
 
+    // Two named lists, one shared by link and one public so it can be found by
+    // name on /registry, each with products from the catalogue.
+    const keptLists = strip(fresh.lists);
+    const listItems = (indexes) =>
+        indexes.map((index, i) => ({
+            _id: new mongoose.Types.ObjectId(),
+            product: pick(index)._id,
+            style: "0",
+            addedAt: daysAgo(i + 1),
+        }));
+
+    const lists = [
+        ...keptLists,
+        ...[
+            { name: "Kitchen for the new flat", privacy: "shared", items: listItems([30, 31, 32, 33]) },
+            { name: "Birthday wish list", privacy: "public", items: listItems([34, 35, 36]) },
+        ]
+            .filter((demo) => !keptLists.some((entry) => entry.name === demo.name))
+            .map((demo) => ({ _id: new mongoose.Types.ObjectId(), ...demo, createdAt: daysAgo(20), seededBy: DEMO_TAG })),
+    ];
+
     // Real views stay on top; demo views fill in behind them.
     const keptViews = strip(fresh.recentlyViewed);
     const recentlyViewed = [
@@ -500,6 +522,7 @@ const run = async () => {
             $set: {
                 address: addresses,
                 whishlist: wishlist,
+                lists,
                 recentlyViewed,
                 watchlist,
                 library,
@@ -522,6 +545,7 @@ const run = async () => {
     console.log(`  wishlist        ${wishlist.length} items`);
     console.log(`  history         ${recentlyViewed.length} products`);
     console.log(`  addresses       ${addresses.length}`);
+    console.log(`  lists           ${lists.length} (${lists.filter((entry) => entry.privacy !== "private").length} shareable)`);
     console.log(`  movies          ${watchlist.length} on My list, ${library.length} bought or rented`);
     console.log(`  gift balance    $${giftCardBalance.toFixed(2)}`);
     console.log("");

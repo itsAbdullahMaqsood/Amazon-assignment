@@ -51,5 +51,11 @@
 "components/shopping",
 "lib/buyAgain.ts",
 "app/(store)/buy-again",
-"app/(store)/profile/recent"
+"app/(store)/profile/recent",
+"components/lists",
+"components/registry",
+"lib/lists.ts",
+"lib/listQueries.ts",
+"app/(store)/lists",
+"app/(store)/registry"
 ]

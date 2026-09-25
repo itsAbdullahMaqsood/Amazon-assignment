@@ -3,9 +3,13 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid";
 
 import { cn } from "./cn";
 
-// The page column: 1280px max, 16px gutters on phones, 32px on desktop.
+// The page column: 1280px max, 16px gutters on phones, 32px on desktop. A
+// narrower page passes its own max-w-* and that wins, rather than two width
+// classes fighting over which one the stylesheet happens to put last.
 export const Container = ({ as: Tag = "div", className = "", children }: any) => (
-    <Tag className={cn("mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8", className)}>{children}</Tag>
+    <Tag className={cn("mx-auto w-full px-4 sm:px-6 lg:px-8", !/(^|\s)max-w-/.test(className) && "max-w-page", className)}>
+        {children}
+    </Tag>
 );
 
 export const PageHeader = ({ title, description, eyebrow, action, className = "" }: any) => (
