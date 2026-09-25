@@ -1,8 +1,7 @@
-import ForgotPage from "@/components/User/ForgotPage";
+import ForgotForm from "@/components/auth/ForgotForm";
 
-export const metadata = { title: "Markaz Password Assistance" };
+export const metadata = { title: "Reset your password" };
 
-// Bare chrome, like the rest of the ap/* screens.
-const Page = () => <ForgotPage />;
+const Page = () => <ForgotForm />;
 
 export default Page;

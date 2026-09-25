@@ -1,11 +1,11 @@
-import ResetPage from "@/components/User/ResetPage";
+import ResetForm from "@/components/auth/ResetForm";
 
-export const metadata = { title: "Markaz Password Reset" };
+export const metadata = { title: "Choose a new password" };
 
 const Page = async ({ params }: any) => {
     const { token } = await params;
 
-    return <ResetPage token={token} />;
+    return <ResetForm token={token} />;
 };
 
 export default Page;

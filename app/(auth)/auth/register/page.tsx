@@ -1,26 +1,27 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import RegisterPage from "@/components/User/RegisterPage";
+import RegisterForm from "@/components/auth/RegisterForm";
 
-export const metadata = { title: "Markaz Sign Up" };
+export const metadata = { title: "Create an account" };
+
+const safeCallback = (value: any) => (typeof value === "string" && value.startsWith("/") && !value.startsWith("//") ? value : "");
 
 const Page = async ({ searchParams }: any) => {
     const query = await searchParams;
+    const callbackUrl = safeCallback(query?.callbackUrl);
     const session = await auth();
 
     if (session) {
-        redirect(query?.callbackUrl || "/");
+        redirect(callbackUrl || "/");
     }
 
-    // amazon.com/ap/register carries no site header or footer, so the page is
-    // the form alone.
-    // /business and /sell hand the address the visitor already typed over.
+    // /business and /sell hand over the address the visitor already typed.
     return (
-        <RegisterPage
-            business={query?.business === "1"}
-            seller={query?.seller === "1"}
+        <RegisterForm
             email={query?.email || ""}
+            callbackUrl={callbackUrl}
+            context={query?.business === "1" ? "business" : query?.seller === "1" ? "seller" : ""}
         />
     );
 };

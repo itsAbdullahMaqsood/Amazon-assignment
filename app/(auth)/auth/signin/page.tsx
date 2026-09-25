@@ -1,24 +1,23 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import SignInPage from "@/components/User/SignInPage";
+import SignInForm from "@/components/auth/SignInForm";
+
+export const metadata = { title: "Sign in" };
+
+// Only same-site paths are followed after signing in.
+const safeCallback = (value: any) => (typeof value === "string" && value.startsWith("/") && !value.startsWith("//") ? value : "");
 
 const Page = async ({ searchParams }: any) => {
     const query = await searchParams;
+    const callbackUrl = safeCallback(query?.callbackUrl);
     const session = await auth();
 
     if (session) {
-        redirect(query?.callbackUrl || "/");
+        redirect(callbackUrl || "/");
     }
 
-    // amazon.com/ap/signin has no site header or footer either.
-    return (
-        <SignInPage
-            callbackUrl={query?.callbackUrl || ""}
-            activated={query?.activated === "1"}
-            tokenError={query?.error === "invalid_token"}
-        />
-    );
+    return <SignInForm callbackUrl={callbackUrl} activated={query?.activated === "1"} tokenError={query?.error === "invalid_token"} />;
 };
 
 export default Page;

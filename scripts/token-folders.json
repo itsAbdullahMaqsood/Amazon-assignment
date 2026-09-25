@@ -28,5 +28,8 @@
 "app/(store)/order",
 "app/(store)/profile/orders",
 "app/(store)/profile/returns",
-"lib/orderQueries.ts"
+"lib/orderQueries.ts",
+"components/auth",
+"app/(auth)",
+"lib/authRules.ts"
 ]

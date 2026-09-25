@@ -346,3 +346,41 @@ even when its product page said "7-day returns" or "No return policy".
 - **Cut:** the sponsored product, the recommendation carousel, the "Digital Orders" and "Amazon
   Pay" tabs, "View transactions", the invoice link (it pointed at the same page), and the per-item
   "Get product support" / "Track package" buttons (all the same page).
+
+---
+
+## 8. Sign in, create account, password reset
+
+**What Amazon's does badly:** sign-in is two screens, email first and then password, which only
+makes sense when an account can sign in several ways. Registration asks for the password twice.
+Errors are written like validator output ("Wrong or Invalid email address or mobile phone
+number"). The clone had the same, plus some security leaks: sign-in said "This email does not
+exist" and password reset answered "This email does not exist" (both tell a stranger who has an
+account), an expired reset link crashed with a raw 500, and "Me@x.com" and "me@x.com" could be
+two accounts.
+
+- **Keep:** email and password, Google and GitHub, email confirmation, password reset by
+  emailed link, and returning you to where you were.
+- **Change:** **one screen** to sign in: email and password together, with "Forgot it?" beside
+  the password label.
+- **Change:** Google and GitHub come first. One tap is the fastest way in for most people.
+- **Change:** no "re-enter password". A show/hide toggle does that job, and the password rules
+  (8+ characters, a letter, a number) tick themselves off as you type.
+- **Change:** a new account is signed in straight away. Confirming the email can wait.
+- **Change:** choosing a new password after a reset signs you in, instead of sending you back to
+  type it again.
+- **Change:** the same rules are enforced on the server, from one module (`lib/authRules.ts`)
+  shared by the forms and the routes.
+- **Change:** errors in plain words: "That email and password don't match an account."; "An
+  account already uses this email. Sign in, or reset the password…"; "This reset link has expired.
+  Send a new link."
+- **Fix:** sign-in and reset no longer reveal whether an email has an account. Emails are stored
+  lower case and matched case-insensitively. Expired reset links get a 400 with a way forward.
+  `callbackUrl` only follows same-site paths.
+- **Add:** a split layout on wide screens. The form is on the left, and a navy panel on the right
+  says what an account gets you (only things that are true in this store). Phones get the form
+  alone.
+- **Add:** coming from the cart, the heading says so ("Then you can check out. Your cart stays
+  as it is.").
+- **Cut:** the two-step sign-in, "Conditions of Use" legalese, the "Need help?" disclosure (now
+  one link in the footer), and the confirm-password field.

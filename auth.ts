@@ -7,6 +7,7 @@ import crypto from "crypto";
 
 import connectDb from "@/lib/db";
 import User from "@/models/User";
+import { emailQuery } from "@/lib/authRules";
 
 // Auth.js v5 swallows plain Errors thrown from authorize() and reports a generic
 // failure, so the message travels in `code`, which signIn() returns to the client.
@@ -44,19 +45,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             authorize: async (credentials: any) => {
                 await connectDb();
 
-                const user: any = await User.findOne({ email: credentials?.email }).lean();
+                const user: any = await User.findOne(emailQuery(credentials?.email)).lean();
 
-                if (!user) {
-                    throw new CredentialsError("This email does not exist.");
-                }
-
-                const passwordMatches = await bcrypt.compare(
-                    String(credentials?.password || ""),
-                    user.password || ""
-                );
+                // One message for both cases, so the form doesn't tell a stranger
+                // which emails have accounts.
+                const passwordMatches = user
+                    ? await bcrypt.compare(String(credentials?.password || ""), user.password || "")
+                    : false;
 
                 if (!passwordMatches) {
-                    throw new CredentialsError("Please enter the correct password.");
+                    throw new CredentialsError("That email and password don't match an account.");
                 }
 
                 return {
@@ -87,7 +85,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
             await connectDb();
 
-            const existing = await User.findOne({ email: user.email });
+            const existing = await User.findOne(emailQuery(user.email));
 
             if (!existing) {
                 await new User({
@@ -110,7 +108,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     // The provider's own id must never survive here: every API route
                     // resolves the user by token.sub.
                     await connectDb();
-                    const dbUser: any = await User.findOne({ email: user.email }).lean();
+                    const dbUser: any = await User.findOne(emailQuery(user.email)).lean();
 
                     if (dbUser) {
                         token.sub = String(dbUser._id);
