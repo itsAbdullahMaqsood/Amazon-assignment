@@ -6,12 +6,10 @@ import Footer from "@/components/Footer";
 import MenuSideBar from "@/components/Header/MenuSidebar";
 import ShabanaPanel from "@/components/shabana/ShabanaPanel";
 import Toaster from "@/components/ui/Toaster";
-import { STOREFRONT_SLUGS } from "@/components/Header/navigation";
+import { departmentHref } from "@/components/Header/navigation";
 
 // Departments as the database has them, biggest first, so the nav never offers
-// an empty aisle. Grocery and Furniture have their own storefronts, reached
-// from "More stores", so the department row skips them; the search picker
-// still offers every department.
+// an empty aisle. Grocery and Home & Kitchen link to their storefronts.
 const getDepartments = async () => {
     try {
         await connectDb();
@@ -27,13 +25,14 @@ const getDepartments = async () => {
             .map((category) => ({
                 name: category.name,
                 slug: category.slug,
+                href: departmentHref(category.slug),
                 count: countOf.get(String(category._id)) || 0,
             }))
             .filter((category) => category.count > 0)
             .sort((a, b) => b.count - a.count);
 
         return {
-            nav: all.filter((category) => !STOREFRONT_SLUGS.includes(category.slug)),
+            nav: all,
             search: [...all].sort((a, b) => a.name.localeCompare(b.name)),
         };
     } catch {

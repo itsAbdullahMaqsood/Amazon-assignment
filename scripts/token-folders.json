@@ -1,1 +1,1 @@
-["components/ui", "components/layout", "components/Header", "components/Footer.tsx", "components/shabana", "components/cart"]
+["components/ui", "components/layout", "components/Header", "components/Footer.tsx", "components/shabana", "components/cart", "components/landing", "components/product", "lib/home.ts"]

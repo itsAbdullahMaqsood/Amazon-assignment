@@ -84,7 +84,7 @@ const Header = ({ departments = [], searchDepartments = [] }: any) => {
                         </li>
                         {departments.map((department: any) => (
                             <li key={department.slug}>
-                                <Link href={`/browse?category=${department.slug}`} className={navLink(false)}>
+                                <Link href={department.href} className={navLink(false)}>
                                     {department.name}
                                 </Link>
                             </li>

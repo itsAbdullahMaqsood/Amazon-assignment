@@ -1,6 +1,7 @@
 import connectDb from "@/lib/db";
 import Product from "@/models/Product";
 import User from "@/models/User";
+import { applyDiscount, inStock, lowestPrice } from "@/lib/price";
 
 const DELIVERY_DAYS = 4;
 
@@ -11,32 +12,37 @@ export const deliveryLabel = () => {
     return date.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
 };
 
-// Shapes one product into what the recommendation card renders, deriving the
-// badges from the data the catalog actually holds.
+// Shapes one product into what a product card renders, deriving every badge
+// from data the catalogue actually holds. The price is the cheapest thing the
+// listing sells after its variant's discount; `fromPrice` says whether other
+// options cost more.
 export const toCardProduct = (product: any) => {
-    const sub = product.subProducts?.[0] || {};
-    const prices = (sub.sizes || []).map((size: any) => size.price).sort((a: number, b: number) => a - b);
-    const listPrice = prices[0] || 0;
-    const discount = sub.discount || 0;
-    const price = discount > 0 ? Number((listPrice - (listPrice * discount) / 100).toFixed(2)) : listPrice;
-    const sold = (product.subProducts || []).reduce(
-        (acc: number, entry: any) => acc + (entry.sold || 0),
-        0
-    );
+    const subs = product.subProducts || [];
+    const sub = subs[0] || {};
+    const { price, listPrice, discount } = lowestPrice(product);
+    const allPrices = subs.flatMap((entry: any) => (entry.sizes || []).map((size: any) => applyDiscount(size.price, entry.discount || 0)));
+    const sold = subs.reduce((acc: number, entry: any) => acc + (entry.sold || 0), 0);
+    const topPick = (product.rating || 0) >= 4.5 && (product.numberReviews || 0) >= 3;
 
     return {
         _id: String(product._id),
         name: product.name,
         slug: product.slug,
+        brand: product.brand || "",
         image: sub.images?.[0]?.url || "",
         rating: product.rating || 0,
         numberReviews: product.numberReviews || 0,
         price,
         listPrice,
         discount,
+        fromPrice: allPrices.some((value: number) => value > price),
         sold,
-        // Amazon's Choice: well rated and selling; Limited time deal: an active discount.
-        amazonChoice: (product.rating || 0) >= 4 && sold >= 200,
+        colors: subs.length,
+        hasOptions: subs.length > 1 || (sub.sizes || []).length > 1,
+        inStock: inStock(product),
+        // Top pick: rated 4.5 or better by at least three reviewers.
+        topPick,
+        amazonChoice: topPick,
         limitedDeal: discount > 0,
         shipping: product.shipping || 0,
     };

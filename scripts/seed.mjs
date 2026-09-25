@@ -18,7 +18,9 @@ nextEnv.loadEnvConfig(process.cwd());
 //   npm run seed -- --reset --core-only   only the general departments
 //
 // Category slugs are stable across reseeds, so links like
-// /browse?category=electronics keep working.
+// /browse?category=electronics keep working. Home & Kitchen and Grocery come
+// from their own seeders, which add the room, style and aisle data their
+// storefronts need.
 const CATALOG = [
     {
         category: "Women's Fashion",
@@ -71,14 +73,6 @@ const CATALOG = [
             { name: "Laptops", source: "laptops", sizes: ["8GB RAM", "16GB RAM"] },
             { name: "Tablets", source: "tablets", sizes: ["64GB", "128GB"] },
             { name: "Phone Accessories", source: "mobile-accessories", sizes: ["One Size"] },
-        ],
-    },
-    {
-        category: "Home & Kitchen",
-        slug: "home-kitchen",
-        subs: [
-            { name: "Home Decor", source: "home-decoration", sizes: ["One Size"] },
-            { name: "Kitchen", source: "kitchen-accessories", sizes: ["One Size"] },
         ],
     },
     {

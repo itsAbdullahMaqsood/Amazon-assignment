@@ -32,9 +32,18 @@ const Footer = () => (
                         when you&apos;re not sure what that is.
                     </p>
                 </div>
-                <Column title="Shop" links={[{ label: "All departments", href: "/browse" }, ...quickLinks, ...stores.slice(0, 3)]} />
+                <Column
+                    title="Shop"
+                    links={[
+                        { label: "All departments", href: "/browse" },
+                        ...quickLinks,
+                        { label: "Groceries", href: "/groceries" },
+                        { label: "Markaz Home", href: "/furniture" },
+                        { label: "Pharmacy", href: "/pharmacy" },
+                    ]}
+                />
                 <Column title="Your account" links={accountLinks.slice(0, 6)} />
-                <Column title="More from Markaz" links={[...stores.slice(3), ...helpLinks.slice(0, 1)]} />
+                <Column title="More from Markaz" links={[...stores.slice(1), ...helpLinks.slice(0, 1)]} />
             </div>
         </Container>
 

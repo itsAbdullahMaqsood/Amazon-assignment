@@ -1,42 +1,60 @@
-import connectDb from "@/lib/db";
-import Product from "@/models/Product";
-import Category from "@/models/Category";
-import HeroCarousel from "@/components/Home/HeroCarousel";
-import CategoriesProducts from "@/components/Home/CategoriesProduct/CategoriesProducts";
-import HomeProductSwiper from "@/components/Home/HomeProductSwiper";
+import { auth } from "@/auth";
+import { getHomeData } from "@/lib/home";
+import { Container } from "@/components/ui/Layout";
+import Hero from "@/components/landing/Hero";
+import DepartmentGrid from "@/components/landing/DepartmentGrid";
+import ProductRail from "@/components/landing/ProductRail";
+import MoviesStrip from "@/components/landing/MoviesStrip";
 
-// Rendered per request: the catalog changes independently of deploys, and this
-// keeps `next build` from needing a live database connection.
+// Rendered per request: the catalogue changes independently of deploys, and
+// this keeps `next build` from needing a live database connection.
 export const dynamic = "force-dynamic";
 
 const Home = async () => {
-    await connectDb();
-
-    const products = await Product.find()
-        .populate({ path: "category", model: Category })
-        .sort({ updatedAt: -1 })
-        .lean();
-
-    const serialized = JSON.parse(JSON.stringify(products));
+    const session = await auth();
+    const data = await getHomeData(session?.user?.id);
+    const firstName = session?.user?.name ? String(session.user.name).split(" ")[0] : "";
 
     return (
-        <>
+        <main>
+            <Container className="space-y-12 pt-4 md:space-y-16 md:pt-6">
+                <Hero departments={data.departments} productCount={data.productCount} firstName={firstName} />
 
-            <main className="max-w-screen-2xl mx-auto bg-gray-100">
-                <HeroCarousel />
+                <ProductRail
+                    title="Pick up where you left off"
+                    description="Things you looked at recently"
+                    href="/profile/recent"
+                    linkLabel="Your history"
+                    products={data.recent}
+                />
 
-                <CategoriesProducts products={serialized} />
+                <DepartmentGrid departments={data.departments} />
 
-                <div className="z-10 relative">
-                    <HomeProductSwiper products={serialized} category="women clothing" />
-                    <HomeProductSwiper products={serialized} category="shoes" />
-                    <HomeProductSwiper products={serialized} category="Beauty" />
-                    <HomeProductSwiper products={serialized} category="Kids" />
-                </div>
-            </main>
+                <ProductRail
+                    title="On sale now"
+                    description="The biggest real discounts in the catalogue"
+                    href="/coupons"
+                    linkLabel="All deals"
+                    products={data.deals}
+                />
 
+                <ProductRail
+                    title="Buy again"
+                    description="From your past orders"
+                    href="/buy-again"
+                    products={data.buyAgain}
+                />
 
-        </>
+                <ProductRail
+                    title="Top rated"
+                    description="4.5 stars and up, from at least three reviews"
+                    href="/browse?sort=topReviewed"
+                    products={data.topRated}
+                />
+
+                <MoviesStrip movies={data.movies} />
+            </Container>
+        </main>
     );
 };
 

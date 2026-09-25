@@ -77,7 +77,7 @@ const MenuSideBar = ({ departments = [] }: any) => {
                     onNavigate={close}
                     links={[
                         { label: "All departments", href: "/browse" },
-                        ...departments.map((d: any) => ({ label: d.name, href: `/browse?category=${d.slug}` })),
+                        ...departments.map((d: any) => ({ label: d.name, href: d.href })),
                         ...quickLinks,
                     ]}
                 />

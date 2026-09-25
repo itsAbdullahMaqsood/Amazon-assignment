@@ -114,3 +114,42 @@ in the panel, so it survives closing the panel and moving between pages.
 - **Add:** product context. Opened from a product page, Shabana is handed that product. The
   server loads its description, specs and reviews, and she answers only from them ("two of three
   reviewers say …"), saying so when they don't cover the question.
+
+---
+
+## 2. Home
+
+**What Amazon's does badly:** the first screen is an autoplaying banner carousel of promotions,
+which most people scroll straight past. Below it, category tiles overlap the banner, and then
+come four near-identical carousels, one per category, each asking you to page sideways through
+products you didn't ask for. It tells you nothing about the store and nothing about you.
+
+- **Cut:** the carousel and its five banner images (they were Amazon's own artwork).
+- **Cut:** the tiles overlapping the hero, and the four per-category swipers.
+- **Change:** the hero is one sentence about what this store promises: prices re-checked at
+  checkout, delivery and returns stated on every product, no sponsored rows. Beside it are four
+  real departments with their best-rated product as the picture.
+- **Add:** the fastest way in for someone who doesn't know the product name yet: "Ask Shabana",
+  plus three example questions that open her with the question already asked.
+- **Add:** "Pick up where you left off" (your browsing history) and "Buy again" (your paid
+  orders), only when signed in, and never padded with filler when empty.
+- **Add:** "Shop by department" with real product counts, so the store's size is visible at a
+  glance.
+- **Change:** product rows are fixed grids on desktop and a snap-scrolling row on phones. No
+  carousel arrows; every row has one "See all" to a filtered page.
+- **Change:** "On sale now" is the deepest real discounts. "Top rated" means 4.5 stars or better
+  from at least three reviews, and the row says so in its description.
+- **Add:** a Markaz Movies strip, so the store's other half is discoverable from the front page.
+- **Change:** each row is its own small query. The old page loaded and serialised the whole
+  catalogue to draw four rows.
+
+**The product card** (used everywhere from here on) shows image, name, rating, price and
+delivery, in that order. A saving shows as a green "−20%" badge and a struck list price.
+"Top pick" is earned (4.5+ from 3+ reviews) and replaces "Amazon's Choice". A product with
+colour or size options opens its page instead of guessing an option. A single-option product
+has a quick-add button that confirms with a toast.
+
+**Catalogue fix found here:** the furniture seeder and the main seed both imported dummyjson's
+kitchen and décor products, so items like the "Boxed Blender" existed twice. Home & Kitchen is now
+one department (the Markaz Home storefront's). Grocery and Home & Kitchen appear in the
+department row like any other department, and link to their richer storefronts.

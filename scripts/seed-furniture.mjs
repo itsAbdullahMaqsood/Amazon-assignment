@@ -4,7 +4,8 @@ import nextEnv from "@next/env";
 
 nextEnv.loadEnvConfig(process.cwd());
 
-// The Furniture storefront is one category ("Furniture") whose subcategories are
+// The Markaz Home storefront (/furniture) is one category ("Home & Kitchen", slug
+// "furniture") whose subcategories are
 // the tiles Amazon's "Shop by category" strip carries. Every product also gets a
 // Room and a Style detail written onto it, so /furniture reads the "Shop by room"
 // and "Shop by style" filters out of the database instead of hardcoding lists.
@@ -138,7 +139,7 @@ const run = async () => {
 
     const categoryDoc = {
         _id: new mongoose.Types.ObjectId(),
-        name: "Furniture",
+        name: "Home & Kitchen",
         slug: "furniture",
         createdAt: new Date(),
         updatedAt: new Date(),

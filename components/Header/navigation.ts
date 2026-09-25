@@ -3,8 +3,6 @@
 
 // The specialty storefronts, each with its own page.
 export const stores = [
-    { label: "Groceries", href: "/groceries", description: "Fresh food and pantry staples" },
-    { label: "Markaz Home", href: "/furniture", description: "Furniture by room and style" },
     { label: "Pharmacy", href: "/pharmacy", description: "Search medications and prices" },
     { label: "Registry & lists", href: "/registry", description: "Wedding, baby and gift lists" },
     { label: "Gift cards", href: "/gift-cards", description: "Balance, redeem and reload" },
@@ -35,6 +33,7 @@ export const helpLinks = [
     { label: "Delivery", href: "/customer-service/shipping-delivery" },
 ];
 
-// Grocery and Furniture have storefronts of their own (above), so the header's
-// department row leaves them out rather than listing them twice.
-export const STOREFRONT_SLUGS = ["grocery", "furniture"];
+// Two departments have storefronts richer than a filtered grid: aisles for
+// groceries, rooms and styles for the home. Their department links go there.
+export const departmentHref = (slug: string) =>
+    slug === "grocery" ? "/groceries" : slug === "furniture" ? "/furniture" : `/browse?category=${slug}`;
