@@ -1,11 +1,15 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import connectDb from "@/lib/db";
 import User from "@/models/User";
 import Product from "@/models/Product";
-import ProfileShell from "@/components/profile/ProfileShell";
-import WishlistClient from "@/components/profile/WishlistClient";
+import { toSavedItem } from "@/lib/account";
+import { PageHeader } from "@/components/ui/Layout";
+import SavedItems from "@/components/account/SavedItems";
+
+export const metadata = { title: "Saved items" };
 
 const Page = async () => {
     const session = await auth();
@@ -21,16 +25,29 @@ const Page = async () => {
         .populate({
             path: "whishlist.product",
             model: Product,
-            select: "name slug subProducts",
+            select: "name slug rating numberReviews shipping subProducts",
         })
         .lean();
 
-    const items = (user?.whishlist || []).filter((entry: any) => entry.product);
+    // A product deleted from the catalogue leaves an entry pointing at nothing.
+    const items = (user?.whishlist || []).filter((entry: any) => entry.product).map(toSavedItem);
 
     return (
-        <ProfileShell title="Your Lists">
-            <WishlistClient items={JSON.parse(JSON.stringify(items))} />
-        </ProfileShell>
+        <>
+            <PageHeader
+                title="Saved items"
+                description={
+                    <>
+                        Things you kept for later, priced as they are today. For named lists you can share, see{" "}
+                        <Link href="/lists" className="text-link">
+                            your lists
+                        </Link>
+                        .
+                    </>
+                }
+            />
+            <SavedItems items={JSON.parse(JSON.stringify(items))} />
+        </>
     );
 };
 

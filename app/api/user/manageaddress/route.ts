@@ -52,7 +52,16 @@ export const DELETE = async (req: Request) => {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
+        const wasActive = user.address.some((address: any) => String(address._id) === String(id) && address.active);
+
         user.address = user.address.filter((address: any) => String(address._id) !== String(id));
+
+        // Removing the address checkout was using must not leave the account
+        // with none chosen, or checkout would silently have nowhere to ship to.
+        if (wasActive && user.address.length && !user.address.some((address: any) => address.active)) {
+            user.address[0].active = true;
+        }
+
         await user.save();
 
         return NextResponse.json({ addresses: user.address });

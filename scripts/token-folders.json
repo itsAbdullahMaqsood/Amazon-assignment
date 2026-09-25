@@ -31,5 +31,14 @@
 "lib/orderQueries.ts",
 "components/auth",
 "app/(auth)",
-"lib/authRules.ts"
+"lib/authRules.ts",
+"components/account",
+"lib/account.ts",
+"app/(store)/profile/layout.tsx",
+"app/(store)/profile/page.tsx",
+"app/(store)/profile/address",
+"app/(store)/profile/payment",
+"app/(store)/profile/security",
+"app/(store)/profile/wishlist",
+"components/profile/ProfileShell.tsx"
 ]

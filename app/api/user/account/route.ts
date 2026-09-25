@@ -6,6 +6,40 @@ import User from "@/models/User";
 import Cart from "@/models/Cart";
 import Order from "@/models/Order";
 
+// PUT /api/user/account
+//
+// The only detail of the account that can be changed here is the display name.
+// The email address is the account's identity — every order, list and sign-in
+// hangs off it — so changing it would need re-verification and is not offered.
+export const PUT = async (req: Request) => {
+    try {
+        const session = await auth();
+
+        if (!session) {
+            return NextResponse.json({ message: "Not signed in" }, { status: 401 });
+        }
+
+        const { name } = await req.json();
+        const trimmed = String(name || "").trim().replace(/\s+/g, " ");
+
+        if (trimmed.length < 2 || trimmed.length > 60) {
+            return NextResponse.json({ message: "Your name needs between 2 and 60 characters." }, { status: 400 });
+        }
+
+        await connectDb();
+
+        const result = await User.updateOne({ _id: session.user.id }, { $set: { name: trimmed } });
+
+        if (!result.matchedCount) {
+            return NextResponse.json({ message: "User not found" }, { status: 404 });
+        }
+
+        return NextResponse.json({ name: trimmed, message: "Your name has been saved." });
+    } catch (error: any) {
+        return NextResponse.json({ message: error.message }, { status: 500 });
+    }
+};
+
 // DELETE /api/user/account
 //
 // Closing an account is irreversible, so the request has to carry both the

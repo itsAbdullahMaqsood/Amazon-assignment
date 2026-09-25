@@ -3,7 +3,6 @@ import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
 import bcrypt from "bcrypt";
-import crypto from "crypto";
 
 import connectDb from "@/lib/db";
 import User from "@/models/User";
@@ -87,19 +86,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
             const existing = await User.findOne(emailQuery(user.email));
 
+            // No password is stored for a provider account: there is none to give
+            // out, and "Login & security" can then say honestly how you sign in.
+            // Setting one later goes through the ordinary reset-by-email flow.
             if (!existing) {
                 await new User({
                     name: user.name,
                     email: user.email,
                     image: user.image,
                     emailVerified: true,
-                    password: await bcrypt.hash(crypto.randomBytes(24).toString("base64url"), 12),
                 }).save();
             }
 
             return true;
         },
-        jwt: async ({ token, user, account }: any) => {
+        jwt: async ({ token, user, account, trigger, session }: any) => {
+            // The account page renames the user and calls update({ name }); without
+            // this the header would keep greeting them by the old name until they
+            // signed in again.
+            if (trigger === "update" && session?.name) {
+                token.name = session.name;
+            }
+
             if (user) {
                 if (account?.provider === "credentials") {
                     token.sub = user.id;

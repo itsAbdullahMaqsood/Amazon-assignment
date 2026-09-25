@@ -28,6 +28,7 @@ const nextConfig: NextConfig = {
         { source: "/watchlist", destination: "/movies/my-list", permanent: true },
         { source: "/prime", destination: "/plus", permanent: true },
         { source: "/profile/family", destination: "/profile/household", permanent: true },
+        { source: "/profile/credit-cards", destination: "/profile/payment", permanent: true },
     ],
     typescript: {
         ignoreBuildErrors: true,

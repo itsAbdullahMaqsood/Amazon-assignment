@@ -102,7 +102,7 @@ const RecommendationCarousel = ({ title, products, delivery }: any) => {
                                 </p>
                             )}
 
-                            {product.amazonChoice && (
+                            {product.topPick && (
                                 <span className="inline-block bg-ink-800 text-white text-[11px] font-semibold px-2 py-0.5 rounded-sm mt-1">
                                     Markaz&apos;s Choice
                                 </span>

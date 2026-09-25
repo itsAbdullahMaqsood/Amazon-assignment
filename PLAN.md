@@ -328,7 +328,7 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 ## Progress
 - [x] Phase 0 foundation
 - [x] 1 Header / nav / footer · [x] 2 Home · [x] 3 Browse + search · [x] 4 Product · [x] 5 Cart · [x] 6 Checkout
-- [x] 7 Orders + returns · [x] 8 Auth · [ ] 9 Profile · [ ] 10 Movies + My List + Shabana
+- [x] 7 Orders + returns · [x] 8 Auth · [x] 9 Profile · [ ] 10 Movies + My List + Shabana
 - [ ] 11 Deals · [ ] 12 Buy again / Keep shopping · [ ] 13 Lists + Registry · [ ] 14 Gift cards · [ ] 15 Plus + Memberships
 - [ ] 16 Groceries · [ ] 17 Markaz Home · [ ] 18 Pharmacy · [ ] 19 Account sub-pages · [ ] 20 Help
 - [ ] 21 Business + Sell · [ ] 22 System pages · [ ] 23 Admin rebrand · [ ] 24 README + DECISIONS
@@ -338,12 +338,15 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 
 ## Handoff notes (for continuing on another machine)
 
-**Done and pushed:** Phase 0 and pages 1–8. Shabana's panel, persona, product grounding
-and budget filtering are also done (part of page 10). **Next up: page 9 (Profile).**
+**Done and pushed:** Phase 0 and pages 1–9. Shabana's panel, persona, product grounding
+and budget filtering are also done (part of page 10). **Next up: page 10 (Movies + My List).**
 
-**Still to do from §5 (backend moves):** items 5–11 (movie watchlist and library, membership,
-auto-reorder, saved cards, household, preferences, sign-ins with `sessionVersion`). They land
-with the pages that use them (9, 10, 15, 19).
+**Still to do from §5 (backend moves):** items 5, 6, 7, 9, 10 and 11 (movie watchlist and
+library, membership, auto-reorder, household, preferences, sign-ins with `sessionVersion`).
+They land with the pages that use them (10, 15, 19). **Item 8 (saved cards) was dropped** on
+page 9: checkout asks for no card details, so a wallet of cards nothing can charge would be the
+decorative state this redesign removes. `/profile/credit-cards` was cut and redirects to
+`/profile/payment`.
 
 **Conventions used so far**
 - Every redesigned page: tokens and `components/ui` primitives only; its folder is added to
@@ -367,13 +370,20 @@ with the pages that use them (9, 10, 15, 19).
   registries) and prunes dangling refs; re-run `seed:demo` afterwards.
 
 **Legacy code still in use (delete when its last user is redesigned)**
-- `components/User/LoginInput`, `ButtonInput` → `components/profile/SecurityClient` (page 9).
-- `components/checkoutPage/{ShippingPage,ListShipping,AddShipping,ShippingInput,SingularSelect,
-  payment/Payment,countries}` → profile address and payment (page 9). `countries` is also
-  used by `components/checkout/AddressForm`.
 - `components/Home/productCard/*` and `components/profile/RecommendationCarousel` → older
-  satellite pages. `toCardProduct().amazonChoice` is an alias of `topPick` for them.
+  satellite pages (buy again, lists).
+- Deleted on page 9: `components/User/*`, `components/checkoutPage/*` (its `countries.ts` moved
+  to `lib/countries.ts`), the account tile and link-card components, and the
+  `toCardProduct().amazonChoice` alias.
 - `components/shared/{Accordion,Price,DialogModal,AddToCartButton}`: legacy primitives; new code
   uses `components/ui`.
 - Pages still on localStorage state: `/plus`, memberships, devices, household, watchlist,
-  saved cards, preferences (see §5).
+  preferences (see §5).
+
+**Added on page 9**
+- `app/(store)/profile/layout.tsx` wraps every account page, including orders and returns, so
+  those two no longer draw their own `<main>`, container or breadcrumb.
+- `components/account/sections.ts` is the one list of account sections; the rail, the phone
+  sheet and the overview grid all read it.
+- A demo session cookie for `shot.mjs` comes from POSTing `csrfToken` + email + password to
+  `/api/auth/callback/credentials` and reading `authjs.session-token` off the response.

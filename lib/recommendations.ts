@@ -44,7 +44,6 @@ export const toCardProduct = (product: any) => {
         inStock: inStock(product),
         // Top pick: rated 4.5 or better by at least three reviewers.
         topPick,
-        amazonChoice: topPick,
         limitedDeal: discount > 0,
         shipping: product.shipping || 0,
     };

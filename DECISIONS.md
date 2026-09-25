@@ -384,3 +384,104 @@ two accounts.
   as it is.").
 - **Cut:** the two-step sign-in, "Conditions of Use" legalese, the "Need help?" disclosure (now
   one link in the footer), and the confirm-password field.
+
+---
+
+## 9. Your account: overview, addresses, payment, login & security, saved items
+
+**What Amazon's does badly:** "Your Account" is a wall. Twelve large tiles, then seven more cards
+holding about eighty links, most of which are programmes you are not in ("Markaz Coins", "Twitch
+settings", "One Medical membership"). Nothing on the page tells you anything about *your* account:
+not where your last order is, not where it is being sent, not what you have saved. Underneath, each
+section is an island — its own page, its own breadcrumb, no way across to the next one without going
+back to the wall. In the clone it was worse: 56 of those links pointed at a `/placeholder` page, the
+card page offered three invented credit cards with invented cash-back rates, and "Your Lists" showed
+the unnamed wishlist.
+
+- **Keep:** every section. Addresses, payments, password, saved items, orders, returns, household,
+  devices, messages and data all stay; they move into one shell instead of being cut.
+- **Change:** the account is a **place, not a list of destinations**. One layout wraps every
+  `/profile` page: a rail on the left, grouped Orders / Shopping / Settings / Membership & sharing /
+  Messages & data, so you can go from addresses to your password without passing through a hub.
+  Orders and returns moved into it too, and lost their own breadcrumb and container.
+- **Change:** on a phone the rail folds into **one button naming the section you are in**, opening a
+  sheet. Not a row of chips: orders and returns already carry a row of tabs, and two scrolling rows
+  would compete for the same gesture.
+- **Change:** the overview answers "what is happening with my account" before it offers navigation.
+  Your latest order with its real status and total, the address checkout will use, the payment method
+  it will use, your Markaz balance, and the products you were last looking at. The full section list
+  sits underneath with a live count beside each one (7 orders, 5 saved, 2 addresses) — counted from
+  the account, not decoration.
+- **Cut:** the twelve marketing tiles, the seven link cards and their ~80 links, and with them most
+  of the `/placeholder` traffic. What is left is what exists.
+- **Cut:** `/profile/credit-cards` entirely, redirected to Payment. It offered three Markaz credit
+  cards with invented rewards and an "Apply now" button that opened a dialog admitting nothing had
+  been submitted. It also contradicted checkout, which says plainly that no card details are asked
+  for or stored.
+
+**Addresses.** Amazon shows addresses as a grid of tiles with a dashed "Add address" tile that looks
+like an address until you read it.
+
+- **Change:** the address checkout will use is marked "Used at checkout", sorted first and outlined,
+  because that is the only thing that distinguishes one of your addresses from another.
+- **Change:** each address has three plain actions — Edit, Use at checkout, Remove — instead of a
+  row of buttons under every tile.
+- **Add:** **editing in place.** The clone could only add and delete, so fixing a typo left a
+  duplicate behind. `PUT /api/user/saveaddress` validates the edit with the same schema the form
+  uses, and whether an address is the active one is not something the request body can change.
+- **Fix:** deleting the address checkout was using no longer leaves the account with none chosen;
+  the next one takes over. Before, checkout had nowhere to ship to and did not say so.
+- **Add:** removing asks first, and says what it does not touch: orders already placed keep the
+  address they were sent to.
+
+**Payment.** Amazon's payment page is a wallet with an advertisement in it ("Get a $150 gift card
+upon approval").
+
+- **Change:** it holds the two things that are real — the payment method checkout opens on, and the
+  Markaz gift-card balance with the ledger behind it (redeemed, spent, with dates and amounts, from
+  `giftCardHistory`).
+- **Change:** choosing a method saves it immediately. There is one setting on the card; a Save button
+  would only be a second click.
+- **Add:** a plain statement of why there are no cards to manage: no card number, expiry or security
+  code is ever asked for or stored, so there is nothing to store. This is the same claim checkout
+  makes, and now the account page agrees with it.
+- **Trade-off:** the plan (§5, item 8) was to move saved cards into MongoDB as `last4` records. That
+  was dropped. A wallet of cards that nothing can ever charge is exactly the kind of decorative state
+  this redesign has been removing, and it would have contradicted checkout's own copy.
+
+**Login & security.** Amazon's version is a list of rows that each open a separate page, and the
+clone's was a lone "change password" box with three fields.
+
+- **Change:** two cards. "Your details" — your name, editable in place — and "How you sign in".
+- **Change:** the password form lost its "re-type your new password" box. The show/hide toggle does
+  that job, and the rules tick themselves off as you type, from the same `lib/authRules` the
+  registration form and the server use. The route enforced 6 characters while the sign-up form asked
+  for 8 plus a letter and a number; now both run the same check.
+- **Add:** the page says **how this account actually signs in**. A Google or GitHub account has no
+  password stored, so instead of a form it cannot use it offers to email a link to set one, and says
+  signing in with the provider keeps working.
+- **Fix:** provider accounts used to be created with a random password hash nobody was ever told,
+  which made "this account has no password" impossible to detect — the change-password form answered
+  "Current password is incorrect" and left you stuck. New provider accounts store no password.
+- **Change:** the email address is shown with its confirmed state and an explanation of why it can't
+  be swapped here (every order, list and sign-in hangs off it, and changing it needs re-verification)
+  rather than a link to a page that doesn't exist.
+- **Add:** renaming yourself updates the session, so the header greets you by the new name straight
+  away instead of after the next sign-in.
+- **Cut:** closing the account is not repeated here; it lives once, under Privacy & data.
+
+**Saved items.** The clone called the wishlist "Your Lists", which is a different thing, and priced
+each row from the first variant regardless of which one you saved.
+
+- **Change:** it is **Saved items**, and named lists are a link away, so the two stop pretending to
+  be one feature.
+- **Change:** each row is priced from the catalogue on every visit, from the **variant you saved**,
+  with the discount applied the same way the cards and the cart apply it. It never shows the price
+  something was when you saved it.
+- **Add:** the same rule the product cards use — something with one option goes straight into the
+  cart; something with sizes says "Choose a size" and opens its page, because picking a size for
+  someone is a guess. Out of stock is said, not hidden.
+
+**Legacy removed with this page:** `components/checkoutPage/*` (the old shipping and payment
+widgets, whose last user was the profile address page), `components/User/{LoginInput,ButtonInput}`,
+and the account tile and link-card components. `countries.ts` moved to `lib/`.

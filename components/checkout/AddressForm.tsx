@@ -9,15 +9,15 @@ import Button from "@/components/ui/Button";
 import { Field, Input, Select, TextField } from "@/components/ui/Field";
 import { Notice } from "@/components/ui/Layout";
 import { addressSchema, emptyAddress } from "@/lib/address";
-import { countries } from "@/components/checkoutPage/countries";
+import { countries } from "@/lib/countries";
 
-// Adds an address to the account. The route validates with the same schema and
-// makes the new address the active one.
-const AddressForm = ({ onSaved, onCancel }: any) => {
+// Adds an address to the account, or edits one when `address` is given. The
+// route validates with the same schema; a new address becomes the active one.
+const AddressForm = ({ address, onSaved, onCancel, submitLabel }: any) => {
     const [error, setError] = useState("");
     const { register, handleSubmit, formState } = useForm({
         resolver: zodResolver(addressSchema),
-        defaultValues: emptyAddress,
+        defaultValues: address ? { ...emptyAddress, ...address } : emptyAddress,
     });
     const errors: any = formState.errors;
 
@@ -25,7 +25,9 @@ const AddressForm = ({ onSaved, onCancel }: any) => {
         setError("");
 
         try {
-            const { data } = await axios.post("/api/user/saveaddress", { address: values });
+            const { data } = address?._id
+                ? await axios.put("/api/user/saveaddress", { id: address._id, address: values })
+                : await axios.post("/api/user/saveaddress", { address: values });
             onSaved(data.addresses);
         } catch (err: any) {
             setError(err.response?.data?.message || "The address couldn't be saved.");
@@ -78,7 +80,7 @@ const AddressForm = ({ onSaved, onCancel }: any) => {
 
             <div className="flex gap-2 sm:col-span-2">
                 <Button type="submit" loading={formState.isSubmitting}>
-                    Save and use this address
+                    {submitLabel || "Save and use this address"}
                 </Button>
                 {onCancel && (
                     <Button variant="ghost" onClick={onCancel}>

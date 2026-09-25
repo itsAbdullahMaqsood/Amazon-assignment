@@ -3,8 +3,10 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import connectDb from "@/lib/db";
 import User from "@/models/User";
-import ProfileShell from "@/components/profile/ProfileShell";
-import AddressClient from "@/components/profile/AddressClient";
+import { PageHeader } from "@/components/ui/Layout";
+import AddressBook from "@/components/account/AddressBook";
+
+export const metadata = { title: "Your addresses" };
 
 const Page = async () => {
     const session = await auth();
@@ -14,12 +16,17 @@ const Page = async () => {
     }
 
     await connectDb();
-    const user: any = await User.findById(session.user.id).lean();
+
+    const user: any = await User.findById(session.user.id).select("address").lean();
 
     return (
-        <ProfileShell title="Your Addresses">
-            <AddressClient user={JSON.parse(JSON.stringify(user))} />
-        </ProfileShell>
+        <>
+            <PageHeader
+                title="Your addresses"
+                description="Checkout uses the one marked for it. Adding an address here saves a step later."
+            />
+            <AddressBook addresses={JSON.parse(JSON.stringify(user?.address || []))} />
+        </>
     );
 };
 

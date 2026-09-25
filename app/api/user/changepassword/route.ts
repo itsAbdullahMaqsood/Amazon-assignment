@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
 import { auth } from "@/auth";
+import { passwordIssue } from "@/lib/authRules";
 import connectDb from "@/lib/db";
 import User from "@/models/User";
 
@@ -16,11 +17,11 @@ export const PUT = async (req: Request) => {
 
         const { current_password, new_password } = await req.json();
 
-        if (!new_password || new_password.length < 6) {
-            return NextResponse.json(
-                { message: "New password must be at least 6 characters." },
-                { status: 400 }
-            );
+        // The same rules the form ticks off as you type.
+        const issue = passwordIssue(new_password);
+
+        if (issue) {
+            return NextResponse.json({ message: issue }, { status: 400 });
         }
 
         await connectDb();
@@ -31,13 +32,13 @@ export const PUT = async (req: Request) => {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
-        // OAuth accounts carry a random hash they were never told, so there is no
-        // current password to compare against.
+        // A provider account has no password stored, so there is nothing to
+        // compare against. Setting a first one goes through the email link.
         if (!user.password) {
             return NextResponse.json(
                 {
                     message:
-                        "This account signs in with Google or GitHub, so it has no password to change.",
+                        "This account signs in with Google or GitHub. Use \u201cEmail me a link\u201d to set a password.",
                 },
                 { status: 400 }
             );
