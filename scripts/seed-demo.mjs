@@ -136,6 +136,7 @@ const run = async () => {
 
     const db = mongoose.connection.db;
     const users = db.collection("users");
+    const videos = db.collection("videos");
     const orders = db.collection("orders");
     const products = db.collection("products");
 
@@ -162,6 +163,8 @@ const run = async () => {
             giftCardHistory: [],
             address: [],
             recentlyViewed: [],
+            watchlist: [],
+            library: [],
             lists: [],
             whishlist: [],
             createdAt: daysAgo(400),
@@ -210,6 +213,8 @@ const run = async () => {
                     whishlist: { seededBy: DEMO_TAG },
                     recentlyViewed: { seededBy: DEMO_TAG },
                     giftCardHistory: { seededBy: DEMO_TAG },
+                    watchlist: { seededBy: DEMO_TAG },
+                    library: { seededBy: DEMO_TAG },
                 },
             }
         );
@@ -434,6 +439,53 @@ const run = async () => {
             })),
     ].slice(0, 20);
 
+    // --- Markaz Movies: three titles saved, one bought and one rented, so My
+    // list and Purchases & rentals both have something in them. Titles that can
+    // be bought are the ones the video seeder gave a price.
+    const priced = await videos.find({ price: { $gt: 0 } }).project({ price: 1 }).limit(8).toArray();
+    const free = await videos.find({ price: 0 }).project({ _id: 1 }).limit(3).toArray();
+    // The store's rental rule, the same one lib/movies.ts applies at runtime.
+    const rentOf = (price) => round2(Math.max(1.99, Math.round(price * 0.4) - 0.01));
+
+    const keptWatchlist = strip(fresh.watchlist);
+    const keptLibrary = strip(fresh.library);
+    const bought = priced[0];
+    const rented = priced[1];
+    const saved = [...free, ...priced.slice(2)].slice(0, 3);
+
+    const watchlist = [
+        ...keptWatchlist,
+        ...saved
+            .filter((video) => !keptWatchlist.some((entry) => String(entry.video) === String(video._id)))
+            .map((video, index) => ({
+                _id: new mongoose.Types.ObjectId(),
+                video: video._id,
+                addedAt: daysAgo(index + 2),
+                seededBy: DEMO_TAG,
+            })),
+    ];
+
+    const library = [
+        ...keptLibrary,
+        ...(bought
+            ? [{ _id: new mongoose.Types.ObjectId(), video: bought._id, type: "buy", price: round2(bought.price), at: daysAgo(20), seededBy: DEMO_TAG }]
+            : []),
+        ...(rented
+            ? [
+                  {
+                      _id: new mongoose.Types.ObjectId(),
+                      video: rented._id,
+                      type: "rent",
+                      price: rentOf(rented.price),
+                      at: daysAgo(6),
+                      // Still running, so the rental shows a countdown.
+                      expiresAt: new Date(Date.now() + 24 * 24 * 60 * 60 * 1000),
+                      seededBy: DEMO_TAG,
+                  },
+              ]
+            : []),
+    ];
+
     // The balance moves by exactly what the demo ledger adds (+50 redeemed, -5
     // spent), and only once however many times this runs.
     const keptLedger = strip(fresh.giftCardHistory);
@@ -449,6 +501,8 @@ const run = async () => {
                 address: addresses,
                 whishlist: wishlist,
                 recentlyViewed,
+                watchlist,
+                library,
                 defaultPaymentMethod: fresh.defaultPaymentMethod || "paypal",
                 giftCardBalance,
                 giftCardHistory: [
@@ -468,6 +522,7 @@ const run = async () => {
     console.log(`  wishlist        ${wishlist.length} items`);
     console.log(`  history         ${recentlyViewed.length} products`);
     console.log(`  addresses       ${addresses.length}`);
+    console.log(`  movies          ${watchlist.length} on My list, ${library.length} bought or rented`);
     console.log(`  gift balance    $${giftCardBalance.toFixed(2)}`);
     console.log("");
     console.log("One order is still inside the 30-day window, so the Returns Center has a card to file against.");

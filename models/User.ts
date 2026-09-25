@@ -100,6 +100,34 @@ const userSchema = new mongoose.Schema(
                 createdAt: Date,
             },
         ],
+        // Markaz Movies. Saved titles and the library are the account's, not the
+        // browser's: the price on a purchase or rental is read from the Video
+        // document by the route that writes it, never sent by the client.
+        watchlist: [
+            {
+                video: {
+                    type: ObjectId,
+                    ref: "Video",
+                },
+                addedAt: Date,
+            },
+        ],
+        library: [
+            {
+                video: {
+                    type: ObjectId,
+                    ref: "Video",
+                },
+                type: {
+                    type: String,
+                    enum: ["buy", "rent"],
+                },
+                price: Number,
+                at: Date,
+                // Rentals only; a purchase never expires.
+                expiresAt: Date,
+            },
+        ],
         // Misspelled on purpose: later prompts read `whishlist`.
         whishlist: [
             {

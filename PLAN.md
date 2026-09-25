@@ -328,7 +328,7 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 ## Progress
 - [x] Phase 0 foundation
 - [x] 1 Header / nav / footer · [x] 2 Home · [x] 3 Browse + search · [x] 4 Product · [x] 5 Cart · [x] 6 Checkout
-- [x] 7 Orders + returns · [x] 8 Auth · [x] 9 Profile · [ ] 10 Movies + My List + Shabana
+- [x] 7 Orders + returns · [x] 8 Auth · [x] 9 Profile · [x] 10 Movies + My List + Shabana
 - [ ] 11 Deals · [ ] 12 Buy again / Keep shopping · [ ] 13 Lists + Registry · [ ] 14 Gift cards · [ ] 15 Plus + Memberships
 - [ ] 16 Groceries · [ ] 17 Markaz Home · [ ] 18 Pharmacy · [ ] 19 Account sub-pages · [ ] 20 Help
 - [ ] 21 Business + Sell · [ ] 22 System pages · [ ] 23 Admin rebrand · [ ] 24 README + DECISIONS
@@ -338,12 +338,11 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 
 ## Handoff notes (for continuing on another machine)
 
-**Done and pushed:** Phase 0 and pages 1–9. Shabana's panel, persona, product grounding
-and budget filtering are also done (part of page 10). **Next up: page 10 (Movies + My List).**
+**Done and pushed:** Phase 0 and pages 1–10. **Next up: page 11 (Deals).**
 
-**Still to do from §5 (backend moves):** items 5, 6, 7, 9, 10 and 11 (movie watchlist and
-library, membership, auto-reorder, household, preferences, sign-ins with `sessionVersion`).
-They land with the pages that use them (10, 15, 19). **Item 8 (saved cards) was dropped** on
+**Still to do from §5 (backend moves):** items 6, 7, 9, 10 and 11 (membership, auto-reorder,
+household, preferences, sign-ins with `sessionVersion`). They land with the pages that use
+them (15, 19). **Item 8 (saved cards) was dropped** on
 page 9: checkout asks for no card details, so a wallet of cards nothing can charge would be the
 decorative state this redesign removes. `/profile/credit-cards` was cut and redirects to
 `/profile/payment`.
@@ -377,8 +376,17 @@ decorative state this redesign removes. `/profile/credit-cards` was cut and redi
   `toCardProduct().amazonChoice` alias.
 - `components/shared/{Accordion,Price,DialogModal,AddToCartButton}`: legacy primitives; new code
   uses `components/ui`.
-- Pages still on localStorage state: `/plus`, memberships, devices, household, watchlist,
-  preferences (see §5).
+- Pages still on localStorage state: `/plus`, memberships, devices, household, preferences
+  (see §5).
+
+**Added on page 10**
+- `lib/movies.ts` holds the rules (rental price, row labels, badge labels) and is safe to
+  import from a client component; `lib/movieQueries.ts` holds everything that touches the
+  database. Importing a file that pulls in mongoose from a `"use client"` component fails in
+  dev with a misleading `ENOENT ... build-manifest.json`.
+- `Sheet`'s panel carries `bg-surface`; a `className` override of it loses to class order, so a
+  dark sheet sets `bodyClassName` instead. The same applies to `Badge` and `Notice` tones.
+- `seed:demo` now also seeds My list and the library (a purchase and a live rental).
 
 **Added on page 9**
 - `app/(store)/profile/layout.tsx` wraps every account page, including orders and returns, so

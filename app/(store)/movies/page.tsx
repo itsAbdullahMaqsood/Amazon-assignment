@@ -1,88 +1,51 @@
 import Link from "next/link";
 
+import { auth } from "@/auth";
 import connectDb from "@/lib/db";
-import Video from "@/models/Video";
-import PrimeNav from "@/components/primeVideo/PrimeNav";
-import Hero from "@/components/primeVideo/Hero";
-import VideoRow from "@/components/primeVideo/VideoRow";
+import User from "@/models/User";
+import { getMovieHome, getUserMovies } from "@/lib/movieQueries";
+import MoviesView from "@/components/movies/MoviesView";
 
-const rows = [
-    { row: "popular-now", label: "Popular now", portrait: false },
-    { row: "action-adventure", label: "Action and adventure movies", portrait: false },
-    { row: "mystery-thriller", label: "Mystery and thriller movies", portrait: false },
-    { row: "featured-originals", label: "Featured Originals and Exclusives", portrait: true },
-    { row: "deals-under-5", label: "$4.99 or less movie deals", portrait: false },
-    { row: "drama-movies", label: "Drama movies", portrait: false },
-    { row: "under-10-price-drops", label: "Under $10: New movie price drops", portrait: false },
-];
-
-export const metadata = {
-    title: "Markaz Movies",
-};
+export const metadata = { title: "Markaz Movies" };
 
 const Page = async () => {
-    await connectDb();
+    const session = await auth();
+    const { hero, rows, count } = await getMovieHome();
 
-    const videos = await Video.find().lean();
-    const serialized = JSON.parse(JSON.stringify(videos));
+    // Signed out, the catalogue still browses; only the list and the library
+    // need an account, because they are stored on it.
+    let initial: any = { list: [], library: [] };
 
-    const forRow = (row: string) =>
-        serialized.filter((video: any) => (video.rows || []).includes(row));
+    if (session) {
+        await connectDb();
+        const user: any = await User.findById(session.user.id).select("watchlist library").lean();
 
-    // The hero runs on the four most popular originals that have a backdrop.
-    const byPopularity = (a: any, b: any) => (b.popularity || 0) - (a.popularity || 0);
+        if (user) {
+            initial = await getUserMovies(user);
+        }
+    }
 
-    const heroSlides = serialized
-        .filter((video: any) => video.backdropPath && video.isOriginal)
-        .sort(byPopularity)
-        .slice(0, 4);
-
-    const fallbackHero = serialized
-        .filter((video: any) => video.backdropPath)
-        .sort(byPopularity)
-        .slice(0, 4);
-    const slides = heroSlides.length ? heroSlides : fallbackHero;
+    if (!count) {
+        return (
+            <main className="bg-ink-950 text-fg-inverse">
+                <div className="mx-auto max-w-xl px-4 py-24 text-center">
+                    <h1 className="font-display text-2xl font-semibold">No titles yet</h1>
+                    <p className="mt-3 text-sm text-fg-inverse-muted">
+                        The Markaz Movies catalogue is seeded from TMDB. Add <code>TMDB_API_KEY</code> to{" "}
+                        <code>.env.local</code> and run <code>npm run seed:videos</code>.
+                    </p>
+                    <Link href="/" className="mt-6 inline-block text-sm text-accent underline underline-offset-2">
+                        Back to the store
+                    </Link>
+                </div>
+            </main>
+        );
+    }
 
     return (
-        <>
-
-            <main className="bg-ink-950 text-white min-h-screen">
-                <PrimeNav />
-
-                {serialized.length === 0 ? (
-                    <div className="max-w-2xl mx-auto my-24 px-6 text-center">
-                        <h1 className="text-3xl font-bold">No titles yet</h1>
-                        <p className="mt-3 text-white/70">
-                            The Markaz Movies catalog is seeded from TMDB. Add <code>TMDB_API_KEY</code>{" "}
-                            to <code>.env.local</code> and run <code>npm run seed:videos</code>.
-                        </p>
-                        <Link
-                            href="/"
-                            className="inline-block mt-6 px-6 py-2 rounded-full bg-accent text-ink-900"
-                        >
-                            Back to the store
-                        </Link>
-                    </div>
-                ) : (
-                    <>
-                        <Hero slides={slides} />
-
-                        <div className="max-w-[1500px] mx-auto pb-16">
-                            {rows.map((row) => (
-                                <VideoRow
-                                    key={row.row}
-                                    title={row.label}
-                                    videos={forRow(row.row)}
-                                    portrait={row.portrait}
-                                />
-                            ))}
-                        </div>
-                    </>
-                )}
-            </main>
-
-
-        </>
+        <main>
+            <MoviesView hero={hero} rows={rows} count={count} initial={initial} signedIn={!!session} />
+        </main>
     );
 };
 

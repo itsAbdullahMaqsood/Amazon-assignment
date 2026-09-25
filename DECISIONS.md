@@ -485,3 +485,64 @@ each row from the first variant regardless of which one you saved.
 **Legacy removed with this page:** `components/checkoutPage/*` (the old shipping and payment
 widgets, whose last user was the profile address page), `components/User/{LoginInput,ButtonInput}`,
 and the account tile and link-card components. `countries.ts` moved to `lib/`.
+
+---
+
+## 10. Markaz Movies and My list
+
+**What Amazon's does badly:** Prime Video's storefront is a shop that never tells you the price.
+Every tile carries the word "prime"; the hero sells a 30-day free trial over the top of the film it
+is meant to be showing you; and the row titles ("$4.99 or less movie deals", "Under $10: New movie
+price drops") are the only place money is mentioned at all. It also builds a second navigation —
+Home / Movies / TV shows / Sports, a search icon and a categories icon — on top of the store's own
+header, so there are two of everything.
+
+The clone inherited all of that and added two problems of its own. **Every tile went to
+`/placeholder`**: there was no way to find out anything about a title. And the prices were invented
+in the browser: `rentPrice = video.price || 3.99` and `buyPrice = rent + 6`, computed in a React
+component, for a catalogue where only a third of the titles have a price at all. The watchlist,
+purchases and rentals lived in `localStorage`, so "your library" was really "this browser's
+library".
+
+- **Keep:** the dark surface. Posters are the content here, and they read better against ink than
+  against white; it is the one place in Markaz that isn't a white shop floor.
+- **Keep:** the rows, which come from the database (`Video.rows`, filled by the TMDB seeder), and
+  the saved-titles idea, which is genuinely useful.
+- **Change:** the second navigation becomes one slim bar: "Markaz Movies", Browse, My list, and how
+  many titles the catalogue holds. The store header above it already does search and account.
+- **Change:** **the title sheet replaces `/placeholder`.** Any poster opens it, and it holds what
+  the catalogue actually knows: the backdrop, the synopsis, the genres, the TMDB rating with its
+  vote count (attributed, because it is TMDB's rating and not Markaz's), and the two prices.
+- **Change:** **prices are the server's.** `Video.price` is what a title costs to own. A rental is
+  40% of that, rounded to .99 with a $1.99 floor — one rule in `lib/movies.ts`, applied on the
+  server, shown on the poster, in the sheet, and written into the record of the rental. The browser
+  never computes a price and never sends one.
+- **Change:** a title with no price says so — "Markaz doesn't sell this title yet" — instead of
+  being given an invented $3.99. Two thirds of the catalogue is in that state, and pretending
+  otherwise was the biggest lie on the page.
+- **Change:** the hero is one still title, the most popular one that has a backdrop *and* a price,
+  so its button does something. No slides, no dots.
+- **Change:** the badges the seeder derives are written out in words — "New release", "Highly
+  rated" — and "DEAL" is dropped, because the price is already on the poster.
+- **Cut:** "prime" on every tile, "prime original" (nothing here is a Markaz original — those titles
+  are simply well-reviewed series, and the row now says "Acclaimed series"), "Watch with Plus ·
+  Start your 30-day free trial", the fake tab bar, the search and categories icons, the maturity
+  rating badge (the seeder never fills it), and the "See more" links that went to `/placeholder`.
+- **Cut:** the hover-only scroll arrows. The rows scroll and snap like the store's rows, which works
+  the same with a finger.
+- **Add:** **My list and your library live in MongoDB** (PLAN §5, item 5), on `watchlist` and
+  `library` sub-documents with one route, `/api/user/movies`. The page says what that buys you:
+  "saved on your account, so it follows you between devices".
+- **Add:** the rules that make a library a library, enforced on the server: you can't buy a title
+  twice, you can't rent one you are already renting, buying a title you had rented replaces the
+  rental, and buying or renting takes a title off My list, because it isn't something you mean to
+  get around to any more.
+- **Add:** a rental keeps its own price and expiry and counts down ("Rental ends in 24 days");
+  a purchase says what it cost and when. A rental that a purchase superseded stays on the shelf and
+  says so, rather than being deleted — it happened.
+- **Honest about what this is:** nothing streams. Buying and renting record what you chose against
+  your account and charge nothing, which the sheet says in the same words checkout uses.
+
+**Signed out:** the catalogue browses normally and the prices are shown, because "how much is it"
+is the question a signed-out visitor is asking. The buttons go to sign-in rather than failing there.
+My list needs an account, and the proxy sends you to sign in with the page you asked for.

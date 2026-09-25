@@ -40,5 +40,9 @@
 "app/(store)/profile/payment",
 "app/(store)/profile/security",
 "app/(store)/profile/wishlist",
-"components/profile/ProfileShell.tsx"
+"components/profile/ProfileShell.tsx",
+"components/movies",
+"lib/movies.ts",
+"lib/movieQueries.ts",
+"app/(store)/movies"
 ]
