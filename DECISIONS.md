@@ -62,3 +62,55 @@ as a bitmap.
 
 Old URLs redirect permanently. Pages share one shell through route groups (`app/(store)`,
 `app/(auth)`) instead of each page importing its own header and footer.
+
+---
+
+## 1. Header, navigation and footer
+
+**What Amazon's does badly:** the header is a control panel. Two rows carry a delivery location
+you can't change, a language flag, an "Account & Lists" hover menu that vanishes when your mouse
+drifts, "Returns & Orders" as one label for two things, and a strip of thirteen links mixing
+departments, programmes and a brand-name grocery chain. On a phone the location bar appears twice.
+
+- **Keep:** navy chrome; search as the widest thing in the header; the department scope on search
+  (it genuinely narrows results); account, orders and cart at the right.
+- **Change:** the department row comes **from the database**, biggest department first, so it
+  never offers an empty aisle and follows the catalogue when an admin adds one.
+- **Change:** the scope picker is a pill inside the search field, tinted when a department is
+  picked, and the placeholder says where you're searching ("Search Electronics").
+- **Change:** suggestions show a thumbnail, department and price, and open the product directly.
+  Amazon's suggestions only re-run a search with the product's name. The first row is always
+  "Search for '…'", and a scoped search offers "… in all departments" as a way out. Suggestions
+  also match sub-categories, so "lap" finds the MacBooks.
+- **Change:** menus open on click, not hover, and close on Escape, outside click or navigation.
+- **Change:** the cart badge counts items, not lines (two of the same shirt is 2).
+- **Cut:** "Deliver to Germany" (hardcoded, did nothing), the language picker (English only),
+  "Join Prime" in the nav, the desktop "All" drawer (it repeated the department row), and the
+  footer's 40-link corporate wall.
+- **Cut:** the mobile "Sign in" link that showed even when you were signed in.
+- **Add:** "Ask Shabana" in the header on every page. On phones it's an icon beside account and cart.
+- **Add:** "More stores" holds the specialty storefronts (groceries, home, pharmacy, registry,
+  gift cards, Plus, business, selling). Each gets a one-line description, instead of those stores
+  crowding the department row.
+- **Add:** the phone drawer is grouped by intent: Shop / Stores / Your account / Help, with
+  sign in and create account as the first thing a signed-out visitor sees.
+- **Add:** a skip-to-content link, and one navigation config (`components/Header/navigation.ts`)
+  that the header, drawer and footer all read, so they can't disagree.
+- **Footer:** three short columns of pages that exist, plus the data sources (dummyjson, TMDB,
+  openFDA) and a plain note that payments are simulated.
+
+## Shabana (the panel)
+
+Shabana is Alexa's replacement, powered by Gemini. The conversation now lives in the store, not
+in the panel, so it survives closing the panel and moving between pages.
+
+- **Keep:** retrieval stays grounded. The model picks a department that exists, and products come
+  from MongoDB, never from the model's text. When nothing matches, her reply says Markaz doesn't
+  carry it instead of claiming it does.
+- **Change:** budgets are honoured ("under $50" filters on the discounted price), and each group
+  links to the matching filtered browse page.
+- **Cut:** "FREE delivery on $35.00 of items shipped by Amazon" under every suggested product.
+  No such policy exists in this store. Also cut: thumbs-up/down buttons that recorded nothing.
+- **Add:** product context. Opened from a product page, Shabana is handed that product. The
+  server loads its description, specs and reviews, and she answers only from them ("two of three
+  reviewers say …"), saying so when they don't cover the question.

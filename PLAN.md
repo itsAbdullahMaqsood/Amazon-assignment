@@ -326,8 +326,8 @@ the next. If time runs out, pages not yet reached are branded and consistent, bu
 ---
 
 ## Progress
-- [ ] Phase 0 foundation
-- [ ] 1 Header / nav / footer · [ ] 2 Home · [ ] 3 Browse + search · [ ] 4 Product · [ ] 5 Cart · [ ] 6 Checkout
+- [x] Phase 0 foundation
+- [x] 1 Header / nav / footer · [ ] 2 Home · [ ] 3 Browse + search · [ ] 4 Product · [ ] 5 Cart · [ ] 6 Checkout
 - [ ] 7 Orders + returns · [ ] 8 Auth · [ ] 9 Profile · [ ] 10 Movies + My List + Shabana
 - [ ] 11 Deals · [ ] 12 Buy again / Keep shopping · [ ] 13 Lists + Registry · [ ] 14 Gift cards · [ ] 15 Plus + Memberships
 - [ ] 16 Groceries · [ ] 17 Markaz Home · [ ] 18 Pharmacy · [ ] 19 Account sub-pages · [ ] 20 Help

@@ -12,8 +12,12 @@ export const GET = async (req: Request, { params }: any) => {
 
         await connectDb();
 
-        const product: any = await Product.findById(id).lean();
-        const subProduct = product.subProducts[style];
+        const product: any = await Product.findById(id).lean().catch(() => null);
+        const subProduct = product?.subProducts?.[style];
+
+        if (!subProduct) {
+            return NextResponse.json({ message: "This product is no longer in the catalogue." }, { status: 404 });
+        }
         // Callers that have no size picker (card buttons, buy again) omit the
         // param and get the same row the product page preselects.
         const size = resolveSizeIndex(subProduct.sizes, searchParams.get("size"));

@@ -2,61 +2,110 @@
 
 import { Suspense } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 
 import { useAppDispatch } from "@/redux/hooks";
 import { openMenu } from "@/redux/slices/MenuSlice";
-import Search from "./Search";
-import DeliveryTo from "./DeliveryTo";
-import Language from "./Language";
-import AccountButtons from "./AccountButtons";
-import HeaderBottom from "./HeaderBottom";
-
 import Wordmark from "@/components/ui/Wordmark";
+import IconButton from "@/components/ui/IconButton";
+import { cn } from "@/components/ui/cn";
+import Search from "./Search";
+import { AccountMenu, CartLink, OrdersLink, ShabanaButton, StoresMenu } from "./HeaderActions";
+import { quickLinks } from "./navigation";
 
-// `title` is kept on the props for call-site compatibility; the document title,
-// description and viewport are now declared as metadata in app/layout.tsx.
-const Header = ({ title, searchHandler }: any) => {
+const SearchFallback = () => <div className="h-11 w-full rounded-card bg-surface" />;
+
+const navLink = (active: boolean) =>
+    cn(
+        "flex h-8 items-center whitespace-nowrap rounded-control px-3 text-sm transition-colors",
+        active ? "bg-fg-inverse/10 text-fg-inverse font-medium" : "text-fg-inverse-muted hover:bg-fg-inverse/10 hover:text-fg-inverse"
+    );
+
+// Two rows. The first is everything a shopper reaches for (search, Shabana,
+// account, orders, cart); the second is where to shop: the departments as they
+// exist in the database, then Deals, Movies and the other storefronts.
+const Header = ({ departments = [], searchDepartments = [] }: any) => {
     const dispatch = useAppDispatch();
-
-    const openMenuHandler = () => {
-        dispatch(openMenu());
-    };
+    const pathname = usePathname();
 
     return (
-        <header>
-            <div className="bg-ink-900 flex flex-col md:flex-row">
-                <div className="flex grow items-center p-3 md:space-x-5 md:px-4 text-white">
-                    <Bars3Icon
-                        className="h-8 md:hidden cursor-pointer mr-3"
-                        onClick={openMenuHandler}
-                    />
+        <header className="relative z-[55] bg-ink-900 text-fg-inverse">
+            <div className="mx-auto max-w-page px-4 sm:px-6 lg:px-8">
+                <div className="flex h-14 items-center gap-2 md:h-16 md:gap-6">
+                    <IconButton
+                        tone="inverse"
+                        label="Open menu"
+                        onClick={() => dispatch(openMenu())}
+                        className="-ml-2 md:hidden"
+                    >
+                        <Bars3Icon className="h-6 w-6" />
+                    </IconButton>
 
-                    <Link href="/" aria-label="Markaz home">
+                    <Link href="/" aria-label="Markaz home" className="shrink-0 rounded-control py-1">
                         <Wordmark />
                     </Link>
 
-                    <DeliveryTo />
-
-                    <div className="hidden md:flex grow">
-                        <Suspense fallback={null}>
-                            <Search searchHandler={searchHandler} />
+                    <div className="hidden flex-1 md:block md:max-w-3xl">
+                        <Suspense fallback={<SearchFallback />}>
+                            <Search departments={searchDepartments} />
                         </Suspense>
                     </div>
 
-                    <Language />
-
-                    <AccountButtons />
+                    <div className="ml-auto flex items-center gap-0.5 md:gap-1">
+                        <ShabanaButton />
+                        <AccountMenu />
+                        <OrdersLink />
+                        <CartLink />
+                    </div>
                 </div>
 
-                <div className="md:hidden">
-                    <Suspense fallback={null}>
-                        <Search />
+                <div className="pb-3 md:hidden">
+                    <Suspense fallback={<SearchFallback />}>
+                        <Search departments={searchDepartments} />
                     </Suspense>
                 </div>
             </div>
 
-        <HeaderBottom handleOpenMenu={openMenuHandler} />
+            <nav aria-label="Shop" className="border-t border-fg-inverse/5 bg-ink-800">
+                <div className="mx-auto flex h-11 max-w-page items-center gap-2 px-2 sm:px-4 lg:px-6">
+                    <ul className="flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto scrollbar-hide">
+                        {quickLinks.map((link) => (
+                            <li key={link.href} className="md:hidden">
+                                <Link href={link.href} className={navLink(pathname === link.href)}>
+                                    {link.label}
+                                </Link>
+                            </li>
+                        ))}
+                        <li>
+                            <Link href="/browse" className={navLink(pathname === "/browse" && false)}>
+                                All
+                            </Link>
+                        </li>
+                        {departments.map((department: any) => (
+                            <li key={department.slug}>
+                                <Link href={`/browse?category=${department.slug}`} className={navLink(false)}>
+                                    {department.name}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <div className="hidden shrink-0 items-center gap-0.5 border-l border-fg-inverse/10 pl-2 md:flex">
+                        {quickLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                aria-current={pathname.startsWith(link.href) ? "page" : undefined}
+                                className={navLink(pathname.startsWith(link.href))}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                        <StoresMenu />
+                    </div>
+                </div>
+            </nav>
         </header>
     );
 };

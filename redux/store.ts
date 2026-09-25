@@ -6,6 +6,7 @@ import menu from "./slices/MenuSlice";
 import dialog from "./slices/DialogSlice";
 import cart from "./slices/CartSlice";
 import toast from "./slices/ToastSlice";
+import assistant from "./slices/AssistantSlice";
 
 // redux-persist touches window.localStorage on import, which does not exist while
 // rendering on the server, so fall back to a storage that resolves to nothing.
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
     dialog,
     cart,
     toast,
+    assistant,
 });
 
 // Only the cart survives a reload; menus, dialogs and toasts are per-visit.

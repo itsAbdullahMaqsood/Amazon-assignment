@@ -1,158 +1,99 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { ChevronDownIcon, GlobeAltIcon, UserCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { signOut, useSession } from "next-auth/react";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { closeMenu, selectMenu } from "@/redux/slices/MenuSlice";
-import { menuSections } from "./menuLinks";
+import Sheet from "@/components/ui/Sheet";
+import Wordmark from "@/components/ui/Wordmark";
+import Button from "@/components/ui/Button";
+import { Avatar, firstName } from "./HeaderActions";
+import { accountLinks, helpLinks, quickLinks, stores } from "./navigation";
 
-const row =
-    "flex items-center w-full text-left text-sm md:text-base px-8 py-2.5 md:py-3 hover:bg-gray-200 cursor-pointer";
+const Section = ({ title, links, onNavigate }: any) => (
+    <section className="py-3">
+        <h3 className="px-5 pb-1 text-xs font-semibold uppercase tracking-wider text-fg-subtle">{title}</h3>
+        <ul>
+            {links.map((link: any) => (
+                <li key={link.href}>
+                    <Link
+                        href={link.href}
+                        onClick={onNavigate}
+                        className="flex items-center justify-between px-5 py-2.5 text-base text-fg hover:bg-surface-muted"
+                    >
+                        {link.label}
+                        <ChevronRightIcon className="h-4 w-4 text-fg-subtle" />
+                    </Link>
+                </li>
+            ))}
+        </ul>
+    </section>
+);
 
-const MenuSideBar = () => {
+// The phone menu: who you are, then Shop / Stores / Your account / Help. Every
+// row goes to a real page.
+const MenuSideBar = ({ departments = [] }: any) => {
     const dispatch = useAppDispatch();
-    const menuOpened = useAppSelector(selectMenu);
+    const open = useAppSelector(selectMenu);
     const { data: session }: any = useSession();
-
-    // Amazon hides the tail of a long section behind "See all".
-    const [expanded, setExpanded] = useState<string>("");
-
-    const closeMenuHandler = () => {
-        dispatch(closeMenu());
-    };
-
-    const firstName = session?.user?.name ? String(session.user.name).split(" ")[0] : "";
+    const close = () => dispatch(closeMenu());
+    const user = session?.user;
 
     return (
-        <>
-            <div
-                className={`fixed top-0 left-0 w-[85%] max-w-sm md:w-96 h-screen bg-white z-50 transition duration-300 ${
-                    menuOpened ? "translate-x-0" : "-translate-x-full"
-                }`}
-            >
-                {session ? (
-                    <Link
-                        href="/profile"
-                        onClick={closeMenuHandler}
-                        className="bg-ink-800 text-white flex items-center px-8 py-3"
-                    >
-                        <UserCircleIcon className="h-8 mr-2" />
-                        <span className="font-bold text-lg truncate">Hello, {firstName}</span>
-                    </Link>
-                ) : (
-                    <Link
-                        href="/auth/signin"
-                        onClick={closeMenuHandler}
-                        className="bg-ink-800 text-white flex items-center px-8 py-3"
-                    >
-                        <UserCircleIcon className="h-8 mr-2" />
-                        <span className="font-bold text-lg">Hello, sign in</span>
-                    </Link>
-                )}
-
-                <button
-                    onClick={closeMenuHandler}
-                    aria-label="Close the menu"
-                    className="absolute top-3 -right-12 text-white cursor-pointer"
-                >
-                    <XMarkIcon className="h-8" />
+        <Sheet open={open} onClose={close} side="left" title="Menu" hideHeader bodyClassName="flex flex-col">
+            <div className="flex items-center justify-between bg-ink-900 px-5 py-4">
+                <Wordmark size="sm" />
+                <button type="button" onClick={close} className="text-sm text-fg-inverse-muted hover:text-fg-inverse cursor-pointer">
+                    Close
                 </button>
-
-                <div className="h-[calc(100vh-56px)] overflow-y-auto pb-20">
-                    {menuSections.map((section) => {
-                        const hidden = section.links.filter((link: any) => link.more).length > 0;
-                        const open = expanded === section.title;
-                        const visible = section.links.filter(
-                            (link: any) => open || !link.more
-                        );
-
-                        return (
-                            <div key={section.title} className="border-b border-gray-200 py-2">
-                                <h3 className="font-bold text-base md:text-lg px-8 py-3">
-                                    {section.title}
-                                </h3>
-
-                                <ul>
-                                    {visible.map((link: any) => (
-                                        <li key={link.label}>
-                                            <Link
-                                                href={link.href}
-                                                onClick={closeMenuHandler}
-                                                className={row}
-                                            >
-                                                {link.label}
-                                            </Link>
-                                        </li>
-                                    ))}
-
-                                    {hidden && (
-                                        <li>
-                                            <button
-                                                onClick={() =>
-                                                    setExpanded(open ? "" : section.title)
-                                                }
-                                                className={row}
-                                            >
-                                                {open ? "See less" : "See all"}
-                                                <ChevronDownIcon
-                                                    className={`h-5 ml-2 text-gray-500 stroke-2 transition-transform ${
-                                                        open ? "rotate-180" : ""
-                                                    }`}
-                                                />
-                                            </button>
-                                        </li>
-                                    )}
-                                </ul>
-                            </div>
-                        );
-                    })}
-
-                    <div className="py-2">
-                        <ul>
-                            <li className={`${row} cursor-default hover:bg-transparent gap-2`}>
-                                <GlobeAltIcon className="h-5 text-gray-500" />
-                                English
-                            </li>
-                            <li className={`${row} cursor-default hover:bg-transparent gap-2`}>
-                                <span aria-hidden="true">🇺🇸</span>
-                                United States
-                            </li>
-                            <li>
-                                {session ? (
-                                    <button
-                                        onClick={() => {
-                                            closeMenuHandler();
-                                            signOut({ callbackUrl: "/" });
-                                        }}
-                                        className={row}
-                                    >
-                                        Sign Out
-                                    </button>
-                                ) : (
-                                    <Link
-                                        href="/auth/signin"
-                                        onClick={closeMenuHandler}
-                                        className={row}
-                                    >
-                                        Sign In
-                                    </Link>
-                                )}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
             </div>
 
-            {menuOpened && (
-                <div
-                    onClick={closeMenuHandler}
-                    className="fixed top-0 left-0 w-full h-full bg-zinc-900/85 z-40"
+            <div className="border-b border-line px-5 py-4">
+                {user ? (
+                    <Link href="/profile" onClick={close} className="flex items-center gap-3">
+                        <Avatar user={user} className="h-10 w-10 text-base" />
+                        <span className="min-w-0">
+                            <span className="block font-medium">Hi, {firstName(user.name)}</span>
+                            <span className="block truncate text-sm text-fg-muted">{user.email}</span>
+                        </span>
+                    </Link>
+                ) : (
+                    <div className="flex gap-2">
+                        <Button href="/auth/signin" onClick={close} block>
+                            Sign in
+                        </Button>
+                        <Button href="/auth/register" onClick={close} variant="outline" block>
+                            Create account
+                        </Button>
+                    </div>
+                )}
+            </div>
+
+            <div className="flex-1 divide-y divide-line overflow-y-auto">
+                <Section
+                    title="Shop"
+                    onNavigate={close}
+                    links={[
+                        { label: "All departments", href: "/browse" },
+                        ...departments.map((d: any) => ({ label: d.name, href: `/browse?category=${d.slug}` })),
+                        ...quickLinks,
+                    ]}
                 />
-            )}
-        </>
+                <Section title="Stores" links={stores} onNavigate={close} />
+                {user && <Section title="Your account" links={accountLinks} onNavigate={close} />}
+                <Section title="Help" links={helpLinks} onNavigate={close} />
+
+                {user && (
+                    <div className="px-5 py-4">
+                        <Button variant="outline" block onClick={() => signOut({ callbackUrl: "/" })}>
+                            Sign out
+                        </Button>
+                    </div>
+                )}
+            </div>
+        </Sheet>
     );
 };
 
