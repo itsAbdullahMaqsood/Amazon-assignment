@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import connectDb from "@/lib/db";
 import User from "@/models/User";
+import { forgetSessionVersion } from "@/lib/sessionVersion";
 
 // DELETE /api/user/sessions — sign out everywhere.
 //
@@ -28,6 +29,8 @@ export const DELETE = async () => {
         if (!result.matchedCount) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
+
+        forgetSessionVersion(session.user.id);
 
         return NextResponse.json({ message: "Signed out everywhere. You'll need to sign in again." });
     } catch (error: any) {

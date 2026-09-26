@@ -8,6 +8,7 @@ import bcrypt from "bcrypt";
 import connectDb from "@/lib/db";
 import User from "@/models/User";
 import { emailQuery } from "@/lib/authRules";
+import { currentSessionVersion } from "@/lib/sessionVersion";
 
 // Auth.js v5 swallows plain Errors thrown from authorize() and reports a generic
 // failure, so the message travels in `code`, which signIn() returns to the client.
@@ -161,14 +162,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
             // Every later call checks the token against the account's session
             // version. "Sign out everywhere" bumps that number, which is what
-            // makes tokens issued before it stop working. One small read per
-            // auth() call is the price.
+            // makes tokens issued before it stop working. The lookup is cached
+            // for a few seconds per process, so the several auth() calls inside
+            // one request cost one read rather than several.
             if (token.sub) {
-                await connectDb();
+                const version = await currentSessionVersion(token.sub);
 
-                const current: any = await User.findById(token.sub).select("sessionVersion").lean();
-
-                if (!current || (current.sessionVersion || 1) !== (token.sv || 1)) {
+                if (version === null || version !== (token.sv || 1)) {
                     return null;
                 }
             }

@@ -191,8 +191,11 @@ Client code never decides a price.
   sign-in so every route can resolve a user by `token.sub`, and they are stored with **no**
   password, which is what lets "Login & security" say honestly how an account signs in.
 - Every token carries the account's `sessionVersion`. "Sign out everywhere" raises it, so every
-  token issued before that moment is refused on its next request. It costs one small read per
-  `auth()` call.
+  token issued before that moment is refused on its next request. The lookup is shared and
+  briefly cached (`lib/sessionVersion.ts`): a page render calls `auth()` twice, concurrently,
+  and each API call it makes adds another, so without that a signed-in page view cost two
+  identical primary-key reads and every fetch cost one more. It is now one read per account per
+  five seconds, and a sign-out reaches a mid-burst session within that window.
 - `authorize()` throws a `CredentialsSignin` subclass because Auth.js v5 swallows plain
   `Error`s — the message travels in `code` and the sign-in form reads it back.
 - `proxy.ts` (Next 16's renamed middleware) guards `/checkout`, `/order/*`, `/profile/*`,
