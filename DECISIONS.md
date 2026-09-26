@@ -933,8 +933,12 @@ current browser.
   reading in.
 - **Add:** **"Sign out everywhere" that works.** Every token carries the account's `sessionVersion`;
   the button raises it, so every token issued before that moment is refused on its next request,
-  this browser included. The cost is one small read per `auth()` call, which is the price of the
-  feature being real rather than a button that clears local state.
+  this browser included. The price of it being real rather than a button that clears local state
+  is a database read — so the read is shared. One page render calls `auth()` twice, concurrently,
+  and every fetch it makes calls it again, which measured as two identical primary-key lookups per
+  page view plus one per request after it. `lib/sessionVersion.ts` shares the in-flight read and
+  holds the answer for five seconds: one read per account per five seconds, and a sign-out reaches
+  a session that is mid-burst inside that window.
 - **Cut:** the invented hardware, and per-row deregistration — a row is a note that a sign-in
   happened, not the session itself, so removing one would mean nothing.
 
