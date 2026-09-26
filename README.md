@@ -56,6 +56,21 @@ Tailwind palette class. Components are built from the primitives in `components/
 | Mail | nodemailer over SMTP (activation, password reset, order confirmation) |
 | AI | Gemini, behind Shabana |
 
+### Tests
+
+`npm test` runs the suite in `tests/` on Node's own test runner — no framework, no extra
+dependency, and no build step: Node 24 strips the types, and `tests/alias.mjs` teaches it the
+`@/…` imports the app uses.
+
+It covers the rules that decide what someone is charged and what they are told, which is where
+a mistake is expensive and a unit test is cheap: `lib/pricing` (delivery per line, the coupon
+never touching delivery, the gift card capped at what is left), `lib/giftcards` (the claim-code
+scheme — this suite exists partly because a prefix rename broke redemption silently),
+`lib/returns` (each product's own window, and the clock starting at delivery), `lib/movies`,
+`lib/membership`, `lib/authRules`, `lib/sellerFees`, the account rules, and the order
+confirmation email. Anything that needs a database or a browser is left to the seed scripts and
+`scripts/dev/shot.mjs`.
+
 TypeScript runs loose on purpose (`strict: false`, `ignoreBuildErrors: true`): the codebase
 uses `any` at route boundaries the way the original tutorial code did.
 
@@ -68,6 +83,7 @@ npm install
 cp .env.example .env.local     # then fill in the values below
 npm run seed -- --reset        # products, categories, coupons, an admin user
 npm run dev                    # http://localhost:3000
+npm test                       # the money and correctness rules
 ```
 
 Node 20.9+ is required.
