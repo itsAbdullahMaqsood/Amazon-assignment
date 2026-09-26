@@ -10,6 +10,9 @@ import Product from "@/models/Product";
 import { computeQuote } from "@/lib/checkout";
 import { PAYMENT_IDS, paidOnPlacement } from "@/lib/payments";
 import { adjustStock } from "@/lib/stock";
+import { siteUrl } from "@/lib/site";
+import { sendHtmlEmail } from "@/utils/sendEmails";
+import orderConfirmationTemplate from "@/emails/orderConfirmationTemplate";
 
 // Places an order in one step. Lines, prices, delivery, the coupon and the
 // gift card all come from computeQuote, the same function behind the checkout
@@ -109,6 +112,16 @@ export const POST = async (req: Request) => {
         }
 
         await Cart.deleteOne({ user: session.user.id });
+
+        // The receipt. sendHtmlEmail never throws and never blocks the answer:
+        // a placed order must not fail because SMTP is down, and the order page
+        // is the record either way.
+        void sendHtmlEmail(
+            user.email,
+            `Your Markaz order #${String(order._id).slice(-8).toUpperCase()}`,
+            orderConfirmationTemplate(user.email, `${siteUrl()}/order/${order._id}`, JSON.parse(JSON.stringify(order))),
+            `order confirmation for ${siteUrl()}/order/${order._id}`
+        );
 
         return NextResponse.json({ order_id: order._id });
     } catch (error: any) {

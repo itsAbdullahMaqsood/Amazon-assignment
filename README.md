@@ -53,7 +53,7 @@ Tailwind palette class. Components are built from the primitives in `components/
 | Data | MongoDB via mongoose 9, cached connection in `lib/db.ts` |
 | Auth | Auth.js (NextAuth) v5 — Credentials, Google, GitHub; JWT sessions |
 | Forms | react-hook-form + zod |
-| Mail | nodemailer over SMTP (activation, password reset) |
+| Mail | nodemailer over SMTP (activation, password reset, order confirmation) |
 | AI | Gemini, behind Shabana |
 
 TypeScript runs loose on purpose (`strict: false`, `ignoreBuildErrors: true`): the codebase
@@ -105,7 +105,7 @@ rest unlock individual features:
 | `AUTH_URL` / `NEXTAUTH_URL` | **local development only** — never set these on a hosted deployment, or Auth.js builds its callbacks from the stale value instead of the request host |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google sign-in |
 | `GITHUB_ID` / `GITHUB_SECRET` | GitHub sign-in |
-| `SMTP_*`, `MAIL_FROM` | activation and reset email |
+| `SMTP_*`, `MAIL_FROM` | activation, password reset and order confirmation email |
 | `TMDB_API_KEY` | `npm run seed:videos` |
 | `GEMINI_API_KEY`, `GEMINI_MODEL` | Shabana |
 | `CLOUDINARY_*` | image uploads from the admin product form |
