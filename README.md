@@ -82,7 +82,7 @@ Node 20.9+ is required.
 | `npm run seed:meds` | pharmacy drug labels | openFDA (no key needed) |
 | `npm run seed:furniture` | the Markaz Home catalogue | dummyjson |
 | `npm run seed:registries` | public gift lists to search for | generated |
-| `npm run seed:demo -- --email=you@example.com` | a lived-in account: orders in every status, a return, reviews, saved items, lists, a Plus trial, My list and a rental, history, addresses, gift balance | generated from the catalogue |
+| `npm run seed:demo -- --email=you@example.com` | a lived-in account: orders in every status, a return, reviews, saved items, named lists, a Plus trial, a household, My list and a rental, browsing history, addresses, sign-in records and a gift balance | generated from the catalogue |
 
 Pass `-- --reset` to drop what a script owns before inserting. `seed:demo` is safe to re-run —
 it replaces its own rows and never touches data you created by hand — and takes `--remove` to

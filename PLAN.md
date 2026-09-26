@@ -360,7 +360,10 @@ decorative state this redesign removes. `/profile/credit-cards` was cut and redi
 - `scripts/dev/map-palette.py <files>` maps raw Tailwind palette classes to tokens as a first
   pass on a legacy screen. `scripts/dev/shot.mjs` takes screenshots through a headless Chrome.
 - A demo account with orders in every state is made with
-  `npm run seed:demo -- --email=<email> --password=<password>`.
+  `npm run seed:demo -- --email=<email> --password=<password>`. It now also seeds the
+  membership, household, lists, My list and library, sign-in records and preferences; every
+  row it writes carries `seededBy: "demo-seed"`, so re-running replaces its own work and
+  `--remove` takes exactly it back out.
 
 **Gotchas**
 - macOS is case-insensitive: `components/Home` (legacy) and a new `components/home` would be the

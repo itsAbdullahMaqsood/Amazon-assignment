@@ -5,9 +5,10 @@ import nextEnv from "@next/env";
 nextEnv.loadEnvConfig(process.cwd());
 
 // Fills ONE account with the history a demo needs: orders across every status,
-// reviews, a wishlist, browsing history, saved addresses and a gift-card
-// balance. A fresh account shows empty states everywhere, which is exactly what
-// a walkthrough should not open on.
+// reviews, saved items, named lists, browsing history, saved addresses, a
+// gift-card balance, a Markaz Plus trial, a film library, a household and a
+// couple of sign-in records. A fresh account shows empty states everywhere,
+// which is exactly what a walkthrough should not open on.
 //
 //   npm run seed:demo -- --email=you@example.com
 //   npm run seed:demo -- --email=you@example.com --password=secret123   (creates the account if missing)
@@ -165,6 +166,8 @@ const run = async () => {
             recentlyViewed: [],
             watchlist: [],
             library: [],
+            household: { members: [], sharing: { delivery: true } },
+            signIns: [],
             lists: [],
             whishlist: [],
             createdAt: daysAgo(400),
@@ -216,6 +219,8 @@ const run = async () => {
                     giftCardHistory: { seededBy: DEMO_TAG },
                     watchlist: { seededBy: DEMO_TAG },
                     library: { seededBy: DEMO_TAG },
+                    "household.members": { seededBy: DEMO_TAG },
+                    signIns: { seededBy: DEMO_TAG },
                 },
             }
         );
@@ -452,6 +457,59 @@ const run = async () => {
               renewsAt: new Date(daysAgo(4).getTime() + 30 * 24 * 60 * 60 * 1000),
           };
 
+    // Someone to share Plus delivery with, so /profile/household is not an empty
+    // state and the shared-delivery rule has something to act on.
+    const keptMembers = strip(fresh.household?.members);
+    const householdMembers = [
+        ...keptMembers,
+        ...[{ name: "Sara Maqsood", email: "sara@markaz.shop" }]
+            .filter((demo) => !keptMembers.some((entry) => entry.email === demo.email))
+            .map((demo) => ({
+                _id: new mongoose.Types.ObjectId(),
+                ...demo,
+                addedAt: daysAgo(12),
+                seededBy: DEMO_TAG,
+            })),
+    ];
+
+    const household = {
+        members: householdMembers,
+        sharing: { delivery: fresh.household?.sharing?.delivery !== false },
+    };
+
+    // Two browsers, so "Where you're signed in" has rows and one of them is
+    // plainly not the machine the reviewer is on. These are the same shape the
+    // jwt callback writes on a real sign-in.
+    const keptSignIns = strip(fresh.signIns);
+    const signIns = [
+        ...keptSignIns,
+        ...[
+            {
+                userAgent:
+                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+                firstSeen: daysAgo(40),
+                lastSeen: daysAgo(1),
+            },
+            {
+                userAgent:
+                    "Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1 Mobile/15E148 Safari/604.1",
+                firstSeen: daysAgo(22),
+                lastSeen: daysAgo(6),
+            },
+        ]
+            .filter((demo) => !keptSignIns.some((entry) => entry.userAgent === demo.userAgent))
+            .map((demo) => ({ _id: new mongoose.Types.ObjectId(), ...demo, seededBy: DEMO_TAG })),
+    ];
+
+    // The three preferences the store honours. Only written when the account has
+    // never saved any, so a choice made by hand is never overwritten; the values
+    // are the defaults, so this only means the page reads a stored row.
+    const preferences = fresh.preferences || {
+        useBrowsingHistory: true,
+        reduceMotion: false,
+        largerText: false,
+    };
+
     // Two named lists, one shared by link and one public so it can be found by
     // name on /registry, each with products from the catalogue.
     const keptLists = strip(fresh.lists);
@@ -551,6 +609,9 @@ const run = async () => {
                 address: addresses,
                 whishlist: wishlist,
                 membership,
+                household,
+                signIns,
+                preferences,
                 lists,
                 recentlyViewed,
                 watchlist,
@@ -575,6 +636,8 @@ const run = async () => {
     console.log(`  history         ${recentlyViewed.length} products`);
     console.log(`  addresses       ${addresses.length}`);
     console.log(`  membership      Markaz Plus, ${membership.status}`);
+    console.log(`  household       ${household.members.length} sharing delivery`);
+    console.log(`  sign-ins        ${signIns.length} browsers`);
     console.log(`  lists           ${lists.length} (${lists.filter((entry) => entry.privacy !== "private").length} shareable)`);
     console.log(`  movies          ${watchlist.length} on My list, ${library.length} bought or rented`);
     console.log(`  gift balance    $${giftCardBalance.toFixed(2)}`);
