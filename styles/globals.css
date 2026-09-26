@@ -30,11 +30,15 @@
     --color-surface-muted: #eef0f4;
     --color-line: #e3e6eb;
     --color-line-strong: #c9ced6;
+    /* The edge of a form control has to be told apart from the page behind it:
+       WCAG 1.4.11 asks for 3:1, which a hairline in --color-line-strong is not.
+       Decorative edges keep the lighter one. */
+    --color-line-control: #7e8694;
 
     /* Text */
     --color-fg: #0f1419;
     --color-fg-muted: #525a66;
-    --color-fg-subtle: #737b87;
+    --color-fg-subtle: #656d7a;
     --color-fg-inverse: #ffffff;
     --color-fg-inverse-muted: #b8c0cc;
 
@@ -46,7 +50,7 @@
     --color-accent-deep: #452c93;
 
     /* Status */
-    --color-success: #1a7f4b;
+    --color-success: #177043;
     --color-success-soft: #e7f5ed;
     --color-warning: #9a5a06;
     --color-warning-soft: #fdf3e2;

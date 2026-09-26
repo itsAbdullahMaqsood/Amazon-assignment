@@ -54,14 +54,17 @@ export const Breadcrumbs = ({ items, className = "" }: any) => (
     </nav>
 );
 
-export const EmptyState = ({ icon: Icon, title, description, action, className = "" }: any) => (
+// `as` is the heading level: an empty state usually sits under a page heading,
+// but on the pages that are nothing but an empty state — 404, forbidden — it is
+// the page's own heading and has to be the h1.
+export const EmptyState = ({ icon: Icon, title, description, action, as: Heading = "h2", className = "" }: any) => (
     <div className={cn("flex flex-col items-center text-center rounded-card border border-dashed border-line-strong bg-surface px-6 py-12", className)}>
         {Icon && (
             <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft text-accent-ink">
                 <Icon className="h-6 w-6" />
             </span>
         )}
-        <h2 className="font-display text-lg font-semibold text-fg">{title}</h2>
+        <Heading className="font-display text-lg font-semibold text-fg">{title}</Heading>
         {description && <p className="mt-1 max-w-md text-sm text-fg-muted">{description}</p>}
         {action && <div className="mt-5 flex flex-wrap justify-center gap-2">{action}</div>}
     </div>

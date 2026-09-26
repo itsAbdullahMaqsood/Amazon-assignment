@@ -15,6 +15,7 @@ const Forbidden = () => (
             <Container className="max-w-2xl py-16">
                 <EmptyState
                     icon={LockClosedIcon}
+                    as="h1"
                     title="That page is for administrators"
                     description="Your account is signed in, it just doesn't have the admin role. Nothing is wrong with it — this part of the store is where the catalogue is managed from."
                     action={

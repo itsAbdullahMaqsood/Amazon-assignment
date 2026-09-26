@@ -41,7 +41,7 @@ const RestockRow = ({ items }: any) => {
             <div className="scroll-row -mx-4 px-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible lg:grid-cols-6">
                 {items.map((item: any) => (
                     <article key={item.key} className="w-40 shrink-0 rounded-card border border-line bg-surface p-3 md:w-auto">
-                        <Link href={`/product/${item.slug}`} className="relative block aspect-square overflow-hidden rounded-control bg-surface-muted">
+                        <Link href={`/product/${item.slug}`} aria-hidden="true" tabIndex={-1} className="relative block aspect-square overflow-hidden rounded-control bg-surface-muted">
                             {item.image && <Image src={item.image} alt="" fill sizes="160px" className="object-contain p-2" />}
                         </Link>
 

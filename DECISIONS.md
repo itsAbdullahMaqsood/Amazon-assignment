@@ -45,6 +45,13 @@ with tabular figures wherever numbers line up. Scale: 12 / 14 / 16 / 18 / 22 / 2
 controls, 10px for cards and buttons, 16px for sheets and panels. Two shadows: `card`
 (barely there) and `pop` (menus, sheets, toasts).
 
+**Contrast.** Every token pair the store paints is measured against its WCAG bar by
+`scripts/dev/contrast.mjs`, which fails if one slips. Two came out of that: small print
+(`fg-subtle`) was 3.75:1 on a muted panel and is now 4.58:1, and a form control's edge needs
+3:1 to be told apart from the page (WCAG 1.4.11) — a hairline in `line-strong` was 1.58:1, so
+controls took a darker `line-control` while decorative edges, which nothing depends on seeing,
+kept the lighter one.
+
 **Identity.** The wordmark is set type, lowercase "markaz" with a light purple dot: the centre
 the name means. The favicon is the same "m" and dot on navy, drawn in SVG rather than shipped
 as a bitmap.

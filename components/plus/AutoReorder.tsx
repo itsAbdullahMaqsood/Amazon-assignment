@@ -73,7 +73,7 @@ const AutoReorder = ({ schedules: initial, candidates }: any) => {
 
                             return (
                                 <li key={entry._id} className="flex gap-4 rounded-card border border-line bg-surface p-4">
-                                    <Link href={`/product/${entry.slug}`} className="relative h-20 w-20 shrink-0 overflow-hidden rounded-control bg-surface-muted">
+                                    <Link href={`/product/${entry.slug}`} aria-hidden="true" tabIndex={-1} className="relative h-20 w-20 shrink-0 overflow-hidden rounded-control bg-surface-muted">
                                         {entry.image && <Image src={entry.image} alt="" fill sizes="80px" className="object-contain p-1.5" />}
                                     </Link>
 

@@ -19,6 +19,7 @@ const Page = async ({ searchParams }: any) => {
             <Container className="max-w-3xl">
                 <EmptyState
                     className="mt-10"
+                    as="h1"
                     icon={MapIcon}
                     title={title ? `“${title}” isn't a page any more` : "There's nothing at this address"}
                     description="Markaz used to send links with nothing behind them here. They have all been built or removed, so this page is only reached by an old bookmark."

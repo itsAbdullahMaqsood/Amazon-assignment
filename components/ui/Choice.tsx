@@ -7,7 +7,7 @@ export const Checkbox = forwardRef<HTMLInputElement, any>(({ label, description,
         <input
             ref={ref}
             type="checkbox"
-            className="mt-0.5 h-4 w-4 shrink-0 rounded-sm border-line-strong accent-accent-ink cursor-pointer"
+            className="mt-0.5 h-4 w-4 shrink-0 rounded-sm border-line-control accent-accent-ink cursor-pointer"
             {...rest}
         />
         <span>
@@ -24,7 +24,7 @@ export const RadioCard = ({ checked, label, description, aside, children, classN
     <label
         className={cn(
             "relative flex items-start gap-3 rounded-card border p-4 cursor-pointer transition-colors",
-            checked ? "border-accent-ink bg-accent-soft ring-1 ring-accent-ink" : "border-line bg-surface hover:border-line-strong",
+            checked ? "border-accent-ink bg-accent-soft ring-1 ring-accent-ink" : "border-line-control bg-surface hover:border-fg-muted",
             className
         )}
     >
@@ -56,7 +56,7 @@ export const Switch = ({ checked, onChange, label, description, disabled }: any)
                 onChange={(e) => onChange(e.target.checked)}
                 className="peer sr-only"
             />
-            <span className="h-6 w-11 rounded-full bg-line-strong transition-colors peer-checked:bg-accent-ink peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent-ink peer-disabled:opacity-50" />
+            <span className="h-6 w-11 rounded-full bg-line-control transition-colors peer-checked:bg-accent-ink peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent-ink peer-disabled:opacity-50" />
             <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-surface shadow-card transition-transform peer-checked:translate-x-5" />
         </span>
     </label>

@@ -13,7 +13,7 @@ import { cn } from "@/components/ui/cn";
 // how a row reads.
 const ShoppingCard = ({ item, href, note, action, aside, className = "" }: any) => (
     <article className={cn("flex gap-4 rounded-card border border-line bg-surface p-4", className)}>
-        <Link href={href} className="relative h-24 w-24 shrink-0 overflow-hidden rounded-control bg-surface-muted">
+        <Link href={href} aria-hidden="true" tabIndex={-1} className="relative h-24 w-24 shrink-0 overflow-hidden rounded-control bg-surface-muted">
             {item.image && <Image src={item.image} alt="" fill sizes="96px" className="object-contain p-1.5" />}
         </Link>
 

@@ -7,7 +7,7 @@ export const controlClass = (invalid?: boolean, className = "") =>
         "w-full h-11 px-3 rounded-control border bg-surface text-fg text-base md:text-sm placeholder:text-fg-subtle",
         "transition-colors outline-none focus:border-accent-ink focus:ring-2 focus:ring-accent/60",
         "disabled:bg-surface-muted disabled:text-fg-subtle",
-        invalid ? "border-danger" : "border-line-strong hover:border-fg-subtle",
+        invalid ? "border-danger" : "border-line-control hover:border-fg-muted",
         className
     );
 

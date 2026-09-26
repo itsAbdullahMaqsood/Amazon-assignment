@@ -10,7 +10,8 @@ const NotFoundContent = () => (
         <Container className="py-16">
             <EmptyState
                 icon={MagnifyingGlassIcon}
-                title="We couldn't find that page"
+                as="h1"
+                    title="We couldn't find that page"
                 description="The link may be old, or the product may have left the catalogue. Search for it, or start from one of these."
                 action={
                     <>

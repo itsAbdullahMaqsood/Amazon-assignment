@@ -71,6 +71,21 @@ scheme — this suite exists partly because a prefix rename broke redemption sil
 confirmation email. Anything that needs a database or a browser is left to the seed scripts and
 `scripts/dev/shot.mjs`.
 
+### Accessibility
+
+Two checks live in `scripts/dev/`, both repeatable:
+
+- `node scripts/dev/contrast.mjs` measures every token pair the store paints against its WCAG
+  bar — 4.5:1 for text, 3:1 for a control's own edge — and exits non-zero if one slips. It is
+  why form controls use `--color-line-control` rather than the lighter `--color-line-strong`
+  that decorative hairlines keep.
+- `node scripts/dev/a11y.mjs "<session-token>" /browse /cart …` walks the rendered pages for
+  accessible names, form labels, alt attributes, duplicate ids, the `main` landmark, exactly one
+  `h1` and heading order.
+
+Beyond those: one skip link, focus rings on everything, sheets that trap focus, restore it to
+whatever opened them and close on Escape, and every icon-only control carrying a name.
+
 TypeScript runs loose on purpose (`strict: false`, `ignoreBuildErrors: true`): the codebase
 uses `any` at route boundaries the way the original tutorial code did.
 

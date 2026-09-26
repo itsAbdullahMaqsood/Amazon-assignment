@@ -11,6 +11,7 @@ const Error = ({ error, retry }: any) => (
     <main>
         <Container className="max-w-2xl py-16">
             <EmptyState
+                as="h1"
                 icon={ExclamationTriangleIcon}
                 title="Something went wrong at our end"
                 description="Nothing you did caused this. Trying again often works — the usual cause is the database taking too long to answer."

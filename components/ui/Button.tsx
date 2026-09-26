@@ -10,7 +10,7 @@ export const buttonVariants: Record<string, string> = {
     primary: "bg-accent text-fg hover:bg-accent-strong active:bg-accent-strong",
     // Navy: a confident second choice.
     secondary: "bg-ink-900 text-fg-inverse hover:bg-ink-700",
-    outline: "border border-line-strong bg-surface text-fg hover:bg-surface-muted",
+    outline: "border border-line-control bg-surface text-fg hover:bg-surface-muted",
     ghost: "text-fg hover:bg-surface-muted",
     link: "text-accent-ink hover:text-accent-deep hover:underline underline-offset-2 px-0! h-auto!",
     danger: "bg-danger text-fg-inverse hover:bg-danger/90",
